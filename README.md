@@ -2,6 +2,14 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.6.
 
+## Project structure
+
+- `src/app` main application code
+- `src/app/core` singleton services, guards, interceptors, global handlers, config
+- `src/app/shared` shared modules and common UI dependencies
+- `src/app/components` feature and page components
+- `src/assets/i18n` translation files for `@ngx-translate`
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
@@ -14,13 +22,17 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Lint
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm run lint` to see lint errors in the console.
 
-## Running end-to-end tests
+## Formatting
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Run:
+
+```bash
+npx prettier --config prettier.config.json --write "{*,src/**/*}.{ts,html,js,scss,css,json,md,yaml,yml}"
+```
 
 ## Further help
 

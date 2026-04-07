@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  padding: 16px 8px 24px;
+  background: var(--app-surface);
+}
+
+.sidebar-title {
+  margin: 0 12px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-muted);
+}
+
+.sidebar-tree {
+  background: transparent;
+}
+
+.node-row,
+.mat-tree-node {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-placeholder {
+  visibility: hidden;
+}
+
+.node-icon {
+  margin-right: 8px;
+  color: var(--brand-blue-600);
+}
+
+.node-label,
+.node-link {
+  font-size: 14px;
+  color: var(--app-text);
+}
+
+.node-link {
+  text-decoration: none;
+}
+
+.node-link:hover {
+  text-decoration: underline;
+  color: var(--brand-blue-600);
+}
+
+.tree-inset {
+  margin-left: 24px;
+}
+
+.node-row:hover,
+.mat-tree-node:hover {
+  background: var(--brand-blue-50);
+  border-radius: 6px;
+}

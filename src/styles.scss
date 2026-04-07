@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "bootstrap/scss/bootstrap";
+
+:root {
+  --brand-blue: #6bb7ff;
+  --brand-blue-600: #3a8fe6;
+  --brand-blue-50: #e8f3ff;
+  --app-bg: #f3f7ff;
+  --app-surface: #ffffff;
+  --app-text: #0f172a;
+  --app-muted: #64748b;
+  --app-border: #dbe7f3;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-mdc-fab,
+.mat-mdc-mini-fab,
+.mat-raised-button,
+.mat-flat-button {
+  background-color: var(--brand-blue-600);
+  color: #ffffff;
+}
