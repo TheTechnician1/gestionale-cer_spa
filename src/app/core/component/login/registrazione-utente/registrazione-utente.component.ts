@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
+import { FormBuilder, Validators  } from '@angular/forms';
 
 @Component({
   selector: 'app-registrazione-utente',
@@ -6,5 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./registrazione-utente.component.scss']
 })
 export class RegistrazioneUtenteComponent {
+  constructor(private fb: FormBuilder) {}
 
+  form = this.fb.group (
+    {
+      nome: ['', Validators.required],
+      cognome: ['', Validators.required],
+      codice_fiscale: ['', Validators.required],
+      email: ['', Validators.required, Validators.email],
+      telefono: ['', Validators.required],
+      ruolo: ['']
+    }
+  )
 }
+

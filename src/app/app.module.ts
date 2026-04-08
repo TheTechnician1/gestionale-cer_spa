@@ -14,7 +14,7 @@ import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
-import { UtenteComponent } from './utente/utente.component';
+import { UtenteComponent } from './core/component/utente/utente.component';
 import { ConfigurazioneComponent } from './core/component/configurazione/configurazione.component';
 import { ImpiantoComponent } from './core/component/impianto/impianto.component';
 import { CERComponent } from './core/component/cer/cer.component';

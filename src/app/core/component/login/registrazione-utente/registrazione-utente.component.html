@@ -1,1 +1,27 @@
-<p>registrazione-utente works!</p>
+<div>
+    <div rows="2">
+      <label for="">Nome</label>
+      <input type="text" aria-label="nome">
+      <label for="">Cognome</label>
+      <input type="text" aria-label="cognome">
+    </div>
+    <label for="">Codice Fiscale</label>
+    <input type="text" aria-label="cf">
+    <label for="">Email</label>
+    <input type="text" aria-label="email">
+    <mat-form-field appearance="fill">
+      <label for="">Telefono</label>
+      <input type="text" aria-label="tel" required>
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-hint>Includi il prefisso</mat-hint>
+    </mat-form-field>
+    <select name="ruoli" id="ruoli">
+      <option value="admin">Admin</option>
+      <option value="gestore">Gestore</option>
+      <option value="ospite">Ospite</option>
+    </select>
+    <div rows="2">
+      <button mat-button>Registrati</button>
+      <button mat-button>Annulla</button>
+    </div>
+</div>

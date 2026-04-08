@@ -11,6 +11,7 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
+  { label: "Registrazione", icon: "person_add", route: "/registrazione" },
   {
     label: "Anagrafiche",
     icon: "badge",

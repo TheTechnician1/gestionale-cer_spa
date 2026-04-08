@@ -1,12 +1,18 @@
 export interface CER {
-    id: string,
+    id_cer: string,
     ragione_sociale: string,
     codice_fiscale: string,
-    comune_legale: string,
-    provincia_legale: string,
-    regione_legale: string,
+    comune_sede_legale: string,
+    provincia_sede_legale: string,
     forma_giuridica: string,
-    email: string,
-    pec: string,
-    referente: string
+    contatti:
+    [
+      {
+        telefono: string,
+        email: string,
+        pec: string,
+        sito_web: string,
+        referente: string
+      }
+    ];
 }
