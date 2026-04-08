@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CER } from '../interfaces/cer.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6,4 +7,8 @@ import { Injectable } from '@angular/core';
 export class CERService {
 
   constructor() { }
+
+  cer?: CER;
+
+
 }
