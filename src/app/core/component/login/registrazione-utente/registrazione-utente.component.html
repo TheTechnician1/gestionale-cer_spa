@@ -1,21 +1,22 @@
 <div>
+  <div [formGroup]="form">
     <div rows="2">
-      <label for="">Nome</label>
-      <input type="text" aria-label="nome">
-      <label for="">Cognome</label>
-      <input type="text" aria-label="cognome">
+      <label >Nome</label>
+      <input type="text" formControlName="nome">
+      <label>Cognome</label>
+      <input type="text" formControlName="cognome">
     </div>
-    <label for="">Codice Fiscale</label>
-    <input type="text" aria-label="cf">
-    <label for="">Email</label>
-    <input type="text" aria-label="email">
+    <label>Codice Fiscale</label>
+    <input type="text" formControlName="codice_fiscale">
+    <label >Email</label>
+    <input type="text" formControlName="email">
     <mat-form-field appearance="fill">
-      <label for="">Telefono</label>
-      <input type="text" aria-label="tel" required>
+      <mat-label >Telefono</mat-label>
+      <input type="text" matInput formControlName="telefono" required>
       <mat-icon matSuffix>phone</mat-icon>
       <mat-hint>Includi il prefisso</mat-hint>
     </mat-form-field>
-    <select name="ruoli" id="ruoli">
+    <select name="ruoli" id="ruoli" formControlName="ruolo">
       <option value="admin">Admin</option>
       <option value="gestore">Gestore</option>
       <option value="ospite">Ospite</option>
@@ -24,4 +25,5 @@
       <button mat-button>Registrati</button>
       <button mat-button>Annulla</button>
     </div>
+  </div>
 </div>

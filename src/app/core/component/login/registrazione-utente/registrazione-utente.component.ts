@@ -1,5 +1,5 @@
 import { Component, NgModule } from '@angular/core';
-import { FormBuilder, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
 
 @Component({
   selector: 'app-registrazione-utente',
@@ -13,7 +13,7 @@ export class RegistrazioneUtenteComponent {
     {
       nome: ['', Validators.required],
       cognome: ['', Validators.required],
-      codice_fiscale: ['', Validators.required],
+      codice_fiscale: ['', Validators.required, Validators.pattern(/^[A-Z0-9]{16}$/)],
       email: ['', Validators.required, Validators.email],
       telefono: ['', Validators.required],
       ruolo: ['']
