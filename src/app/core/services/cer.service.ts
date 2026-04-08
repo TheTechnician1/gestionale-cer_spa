@@ -10,5 +10,7 @@ export class CERService {
 
   cer?: CER;
 
+  getCER() {
 
+  }
 }
