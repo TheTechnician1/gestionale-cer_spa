@@ -20,6 +20,7 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Fornitori", icon: "local_shipping", route: "/anagrafiche/fornitori" },
     ],
   },
+  { label: "Comunità Energetiche", icon: "factory" , route: "/cer"},
   {
     label: "Impianti",
     icon: "bolt",

@@ -1,5 +1,5 @@
 export interface CER {
-    id_cer: string,
+    id_cer: number,
     ragione_sociale: string,
     codice_fiscale: string,
     comune_sede_legale: string,
