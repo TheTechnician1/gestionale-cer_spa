@@ -8,6 +8,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
 ];
 
 export const routes: Routes = [
-  { path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ },
   { path: "login", component: LoginComponent },
+  { path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ },
+  
 ];
