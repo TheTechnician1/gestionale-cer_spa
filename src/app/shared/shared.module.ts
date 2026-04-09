@@ -25,6 +25,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTreeModule } from "@angular/material/tree";
+import { MatGridListModule } from '@angular/material/grid-list';
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -48,6 +49,7 @@ export const MATERIAL_MODULES = [
   MatProgressSpinnerModule,
   MatTabsModule,
   MatTreeModule,
+  MatGridListModule
 ];
 
 @NgModule({
