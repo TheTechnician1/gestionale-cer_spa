@@ -11,6 +11,6 @@ export class HeaderComponent {
   isLog = true;
 
   ngOnInit() {
-    
+
   }
 }
