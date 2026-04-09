@@ -1,12 +1,14 @@
 export interface DatiEnergetici {
-    id_scheda_energetica: string,
-    anno: string,
-    energia_prodotta: string,
-    energia_prelevata: string,
-    energia_immessa: string,
-    energia_condivisa: string,
-    energia_autoconsumata: string,
-    tariffa_premio: string,
-    corrispettivo_premio: string,
-    riduzione_emissione: string
+  id_dati: string,
+  id_cer: string,
+  id_config: string,
+  anno: string,
+  energia_prodotta: number,
+  energia_prelevata: number,
+  energia_immessa: number,
+  energia_condivisa: number,
+  energia_autoconsumata: number,
+  tariffa_premio: number,
+  corrispettivo_premio: number,
+  riduzione_emissione: string
 }

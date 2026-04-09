@@ -1,5 +1,6 @@
 export interface Impianto {
     id_impianto: string,
+    id_configurazione: string,
     codice_cabina: string,
     flag_impianto: boolean,
     data_entrata_esercizio: string,
