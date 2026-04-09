@@ -14,9 +14,10 @@ import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
+import { LoginComponent } from "./login/login.component";
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, LoginComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
