@@ -22,10 +22,12 @@ import { DatiEnergeticiComponent } from './core/component/dati-energetici/dati-e
 import { RegistrazioneUtenteComponent } from './core/component/login/registrazione-utente/registrazione-utente.component';
 import { LoginComponent } from './core/component/login/login/login.component';
 import { DettaglioCerComponent } from './core/component/dettaglio-cer/dettaglio-cer.component';
+import { CdkOverlayOrigin } from "@angular/cdk/overlay";
+import { A11yModule } from "@angular/cdk/a11y";
 
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
