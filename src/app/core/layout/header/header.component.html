@@ -10,7 +10,12 @@
   <button mat-icon-button aria-label="Notifiche">
     <mat-icon>notifications</mat-icon>
   </button>
-  <button mat-icon-button aria-label="Profilo" routerLink="">
+  <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
+    <mat-menu #menu="matMenu">
+      <button *ngIf="isLog" mat-menu-item routerLink="login">Login</button>
+      <button *ngIf="!isLog" mat-menu-item>Home</button>
+      <button *ngIf="!isLog" mat-menu-item>Logout</button>
+    </mat-menu>
   </button>
 </mat-toolbar>

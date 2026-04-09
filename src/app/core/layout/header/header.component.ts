@@ -7,4 +7,10 @@ import { Component, EventEmitter, Output } from "@angular/core";
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
+
+  isLog = true;
+
+  ngOnInit() {
+    
+  }
 }
