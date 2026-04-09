@@ -21,9 +21,10 @@ import { CERComponent } from './core/component/cer/cer.component';
 import { DatiEnergeticiComponent } from './core/component/dati-energetici/dati-energetici.component';
 import { RegistrazioneUtenteComponent } from './core/component/login/registrazione-utente/registrazione-utente.component';
 import { LoginComponent } from './core/component/login/login/login.component';
+import { DettaglioCerComponent } from './core/component/dettaglio-cer/dettaglio-cer.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
