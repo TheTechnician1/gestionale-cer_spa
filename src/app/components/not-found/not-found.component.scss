@@ -1,52 +1,103 @@
-// Auto-generated: class scaffolding from component HTML
-// Add styles per Material Design guidelines where needed
+:host {
+  display: block;
+  height: 100%;
+}
 
+/* Contenitore principale */
 .not-found {
   display: flex;
   align-items: center;
-  min-height: calc(100vh - 120px);
-  padding: 32px 16px;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px;
+  text-align: center;
 }
 
-.container {
-}
-
-.row {
-}
-
-.justify-content-center {
-}
-
-.col-12 {
-}
-
-.col-lg-6 {
-}
-
+/* Card */
 .not-found-card {
-  padding: 32px 28px;
-  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  padding: 40px 32px;
+  border-radius: 20px;
+  background: var(--app-surface);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.text-center {
+.not-found-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
+/* Icona */
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.not-found-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: var(--mat-primary-500, #3f51b5);
+  opacity: 0.9;
+}
+
+/* Codice 404 */
 .code {
   font-size: 72px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-weight: 800;
   line-height: 1;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #3f51b5, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 8px;
-  color: #1f2937;
 }
 
+/* Titolo */
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 8px 0;
+  color: var(--app-text, #1f2937);
+}
+
+/* Testo descrittivo */
 .text-muted {
   font-size: 16px;
-  margin: 8px 0 20px;
+  color: var(--app-text-muted, #6b7280);
+  margin-bottom: 24px;
 }
 
-h3 {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 8px 0 4px;
+/* Azioni */
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+button mat-icon {
+  margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .not-found-card {
+    padding: 32px 20px;
+  }
+
+  .code {
+    font-size: 56px;
+  }
+
+  .not-found-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
 }
