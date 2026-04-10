@@ -20,7 +20,9 @@
   padding: 40px 32px;
   border-radius: 20px;
   background: var(--app-surface);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .not-found-card:hover {
