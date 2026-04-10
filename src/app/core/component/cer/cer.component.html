@@ -1,5 +1,7 @@
 <div>
-  <h3 [matBadge]="cer.length" matBadgeOverlap="true" class="demo-section">Gestione Comunità Energetiche</h3>
+  <div>
+    <h3 [matBadge]="cer.length" matBadgeOverlap="true" class="demo-section">Gestione Comunità Energetiche</h3>
+  </div>
   <div class="filtro" rows="3">
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Ragione Sociale</mat-label>
@@ -24,7 +26,7 @@
   </div>
 </div>
 <div class="table">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="isFiltering ? listaFiltrata : dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="id_cer">
       <th mat-header-cell *matHeaderCellDef> No. </th>
       <td mat-cell *matCellDef="let element"> {{element.id_cer}} </td>

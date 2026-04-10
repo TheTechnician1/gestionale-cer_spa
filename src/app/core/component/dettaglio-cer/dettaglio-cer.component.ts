@@ -1,6 +1,8 @@
 import { getTreeControlFunctionsMissingError } from '@angular/cdk/tree';
 import { Component } from '@angular/core';
 import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Stato } from '../../interfaces/stato.model';
+
 
 @Component({
   selector: 'app-dettaglio-cer',
@@ -28,9 +30,8 @@ export class DettaglioCerComponent {
   }
 
   hide = true;
-    stati: Stato[] = [
-      { value: 'attivo', viewValue: 'Attivo'},
-      { value: 'non attivo', viewValue: 'Non attivo'}
-    ]
-
+  stati: Stato[] = [
+    { value: 'attivo', viewValue: 'Attivo'},
+    { value: 'non attivo', viewValue: 'Non attivo'}
+  ]
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CER } from '../../interfaces/cer.model';
+import { CERService } from '../../services/cer.service';
 
 @Component({
   selector: 'app-cer',
@@ -8,8 +9,10 @@ import { CER } from '../../interfaces/cer.model';
 })
 
 export class CERComponent {
-  constructor() {}
+  constructor(private cerService: CERService) {}
   tableCER: string[] = ['id_cer', 'ragione_sociale', 'partita_iva', 'forma_giuridica', 'azioni'];
+
+  cers: CER[] = [];
 
   cer: CER[] = [
     {
@@ -110,14 +113,19 @@ cer: CER =
   isFiltering = false;
 
   ngOnInit() {
-    this.loadCER();
+    this.loadCERS();
   }
 
-  loadCER() {
+  loadCERS() {
+    // this.cers = this.cerService.getCERS();
+  }
 
+  loadCER(id: number) {
+    // cer = this.cerService.getCER(id);
   }
 
   filtraCER() {
+    console.log(this.filtro);
     this.listaFiltrata = this.cer.filter(p => {
       return (
         (this.filtro.ragione_sociale ? p.ragione_sociale.toLowerCase().includes(this.filtro.ragione_sociale.toLowerCase()) : true) &&
@@ -125,6 +133,8 @@ cer: CER =
         (this.filtro.forma_giuridica ? p.partita_iva.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true)
       );
     });
+
+    console.log(this.listaFiltrata);
 
     this.isFiltering = true;
 
