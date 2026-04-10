@@ -8,7 +8,7 @@ import { CER } from '../../interfaces/cer.model';
 })
 
 export class CERComponent {
-  ELEMENT_DATA: CER[] = [
+  /*ELEMENT_DATA: CER[] = [
     {
       id_cer: 1,
       ragione_sociale: 'Associazione Solare Bologna',
@@ -30,4 +30,5 @@ export class CERComponent {
 
   displayedColumns: string[] = ['id_cer', 'ragione_sociale'];
   dataSource = this.ELEMENT_DATA;
+  */
 }

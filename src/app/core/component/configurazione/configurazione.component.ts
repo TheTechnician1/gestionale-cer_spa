@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./configurazione.component.scss']
 })
 export class ConfigurazioneComponent {
+  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
