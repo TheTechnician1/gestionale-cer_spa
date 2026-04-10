@@ -1,0 +1,62 @@
+<div class="page container">
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="page-card">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h3 class="mb-1">Gestione Impianti</h3>
+            <p class="text-muted mb-0">Ricerca e consultazione</p>
+          </div>
+          <button mat-raised-button color="primary" [routerLink]="'/impianti/nuovo'">Inserisci Impianto</button>
+        </div>
+
+        <form [formGroup]="form" class="row g-3">
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Tipologia</mat-label>
+              <input matInput formControlName="tipologia" />
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Localizzazione</mat-label>
+              <input matInput formControlName="localizzazione" />
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>CER</mat-label>
+              <input matInput formControlName="cer" />
+            </mat-form-field>
+          </div>
+        </form>
+
+        <div class="table-placeholder mt-4">
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-100">
+            <ng-container *ngFor="let header of headers" [matColumnDef]="header.key">
+              <th mat-header-cell *matHeaderCellDef>{{ header.label }}</th>
+              <td mat-cell *matCellDef="let row">
+                <ng-container [ngSwitch]="header.key">
+                  <span *ngSwitchCase="'cod_tipologia'">{{ row.cod_tipologia }}</span>
+                  <span *ngSwitchCase="'pre_nom'">{{ row.pre_nom }}</span>
+                  <span *ngSwitchCase="'id_configurazione'">{{ row.id_configurazione }}</span>
+                  <span *ngSwitchCase="'stato'">{{ getStato(row) }}</span>
+                  <div *ngSwitchCase="'azioni'" class="d-flex gap-2">
+                    <button *ngFor="let action of rowActions" mat-icon-button (click)="handleRowAction(action.action, row)" [attr.aria-label]="action.ariaLabel" [style.display]="!action.requiresEdit || canEdit ? 'inline-flex' : 'none'">
+                      <mat-icon>{{ action.icon }}</mat-icon>
+                    </button>
+                  </div>
+                  <span *ngSwitchDefault>{{ row[header.key] }}</span>
+                </ng-container>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+.page {
+  padding: 24px 0;
+}
+
+.page-card {
+  padding: 20px;
+  border: 1px solid var(--app-border);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.08);
+}
+
+.table-placeholder {
+  padding: 16px;
+  border: 1px dashed var(--app-border);
+  border-radius: 8px;
+  background: var(--app-surface);
+}

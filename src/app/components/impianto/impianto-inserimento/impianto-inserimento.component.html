@@ -1,0 +1,95 @@
+<div class="page container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <mat-card class="page-card">
+        <h3>Inserimento Impianto</h3>
+        <form [formGroup]="form" class="row g-3 mt-2">
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID Impianto</mat-label>
+              <input matInput formControlName="id_impianto" />
+              <mat-error *ngIf="form.get('id_impianto')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID Configurazione</mat-label>
+              <input matInput formControlName="id_configurazione" />
+              <mat-error *ngIf="form.get('id_configurazione')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Flag esercizio (S/N)</mat-label>
+              <input matInput formControlName="flg_esercizio" />
+              <mat-error *ngIf="form.get('flg_esercizio')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Data esercizio</mat-label>
+              <input matInput type="date" formControlName="data_eserc" />
+              <mat-error *ngIf="form.get('data_eserc')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Codice tipologia</mat-label>
+              <input matInput formControlName="cod_tipologia" />
+              <mat-error *ngIf="form.get('cod_tipologia')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Potenza nominale (kW)</mat-label>
+              <input matInput formControlName="pre_nom" />
+              <mat-error *ngIf="form.get('pre_nom')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Flag accumulo</mat-label>
+              <input matInput formControlName="flg_accumulo" />
+              <mat-error *ngIf="form.get('flg_accumulo')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Capacita accumulo (kWh)</mat-label>
+              <input matInput formControlName="cap_accumulo" />
+              <mat-error *ngIf="form.get('cap_accumulo')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Tipo produttore</mat-label>
+              <input matInput formControlName="tipo_produttore" />
+              <mat-error *ngIf="form.get('tipo_produttore')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Codice categoria produttore</mat-label>
+              <input matInput formControlName="cod_cat_prod" />
+              <mat-error *ngIf="form.get('cod_cat_prod')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Flag cancellazione</mat-label>
+              <input matInput formControlName="flg_cancellazione" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 d-flex justify-content-end gap-2">
+            <button mat-stroked-button color="primary" type="button" [routerLink]="'/impianti'">Annulla</button>
+            <button mat-raised-button color="primary">Salva</button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

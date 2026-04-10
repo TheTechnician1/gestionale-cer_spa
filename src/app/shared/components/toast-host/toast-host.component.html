@@ -1,0 +1,11 @@
+<div class="toast-host">
+  <div class="toast" *ngFor="let toast of toasts">
+    <div class="toast-text">
+      <div class="toast-title" *ngIf="toast.title">{{ toast.title }}</div>
+      <div class="toast-message">{{ toast.message }}</div>
+    </div>
+    <button mat-icon-button type="button" (click)="dismiss(toast.id)" aria-label="Chiudi">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>

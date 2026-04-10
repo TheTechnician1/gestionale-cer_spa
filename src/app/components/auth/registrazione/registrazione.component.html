@@ -1,0 +1,117 @@
+<div class="auth-page container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <mat-card class="auth-card">
+        <mat-card-title>{{ "auth.registration.title" | translate }}</mat-card-title>
+        <mat-card-subtitle>{{ "auth.registration.subtitle" | translate }}</mat-card-subtitle>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.nome" | translate }}</mat-label>
+                <input matInput formControlName="nome" />
+                <mat-error *ngIf="form.get('nome')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.cognome" | translate }}</mat-label>
+                <input matInput formControlName="cognome" />
+                <mat-error *ngIf="form.get('cognome')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.codice_fiscale" | translate }}</mat-label>
+                <input matInput formControlName="codiceFiscale" />
+                <mat-error *ngIf="form.get('codiceFiscale')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+                <mat-error *ngIf="form.get('codiceFiscale')?.hasError('pattern')">{{ "common.invalid_format" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.telefono" | translate }}</mat-label>
+                <input matInput formControlName="telefono" />
+                <mat-error *ngIf="form.get('telefono')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+                <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">{{ "common.invalid_format" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.email" | translate }}</mat-label>
+                <input matInput formControlName="email" />
+                <mat-error *ngIf="form.get('email')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+                <mat-error *ngIf="form.get('email')?.hasError('email')">{{ "common.invalid_email" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.ruolo" | translate }}</mat-label>
+                <mat-select formControlName="ruolo">
+                  <mat-option *ngFor="let role of roles" [value]="role.code">{{ role.labelKey }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('ruolo')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.password" | translate }}</mat-label>
+                <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+                <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="'common.show_hide_password' | translate">
+                  <mat-icon>{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+                <mat-error *ngIf="form.get('password')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+                <mat-error *ngIf="form.get('password')?.hasError('pattern')">{{ "common.invalid_password" | translate }}</mat-error>
+              </mat-form-field>
+              <div class="password-rules-panel">
+                <div class="password-rules-title">{{ "auth.registration.password_requirements" | translate }}</div>
+                <ul class="password-rules">
+                  <li [class.valid]="isPasswordRuleValid('min')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('min')">{{ "auth.registration.password_rules.min" | translate }}</li>
+                  <li [class.valid]="isPasswordRuleValid('max')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('max')">{{ "auth.registration.password_rules.max" | translate }}</li>
+                  <li [class.valid]="isPasswordRuleValid('lower')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('lower')">{{ "auth.registration.password_rules.lower" | translate }}</li>
+                  <li [class.valid]="isPasswordRuleValid('upper')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('upper')">{{ "auth.registration.password_rules.upper" | translate }}</li>
+                  <li [class.valid]="isPasswordRuleValid('number')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('number')">{{ "auth.registration.password_rules.number" | translate }}</li>
+                  <li [class.valid]="isPasswordRuleValid('special')" [class.invalid]="passwordControl?.touched && !isPasswordRuleValid('special')">{{ "auth.registration.password_rules.special" | translate }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ "auth.registration.fields.confirm_password" | translate }}</mat-label>
+                <input matInput [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" />
+                <button mat-icon-button matSuffix type="button" (click)="showConfirmPassword = !showConfirmPassword" [attr.aria-label]="'common.show_hide_confirm_password' | translate">
+                  <mat-icon>{{ showConfirmPassword ? "visibility_off" : "visibility" }}</mat-icon>
+                </button>
+                <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+                <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">{{ "common.password_mismatch" | translate }}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button mat-stroked-button color="primary" type="button" [routerLink]="'/'">
+              {{ "common.cancel" | translate }}
+            </button>
+            <button mat-raised-button color="primary" type="submit">
+              {{ "auth.registration.actions.create" | translate }}
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,16 @@ body {
   color: var(--app-text);
 }
 
+.app-delete-dialog .mat-mdc-dialog-container {
+  padding: 0;
+}
+
+.app-delete-dialog .mat-mdc-dialog-surface {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
 .mat-mdc-raised-button,
 .mat-mdc-unelevated-button,
 .mat-mdc-fab,

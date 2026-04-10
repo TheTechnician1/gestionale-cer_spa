@@ -1,0 +1,49 @@
+<div class="page container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <mat-card class="page-card">
+        <h3>Inserimento Configurazione</h3>
+        <form [formGroup]="form" class="row g-3 mt-2">
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID Configurazione</mat-label>
+              <input matInput formControlName="id_config" />
+              <mat-error *ngIf="form.get('id_config')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID CER</mat-label>
+              <input matInput formControlName="id_cer" />
+              <mat-error *ngIf="form.get('id_cer')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Codice Cabina</mat-label>
+              <input matInput formControlName="codice_cabina" />
+              <mat-error *ngIf="form.get('codice_cabina')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Anno Attivazione</mat-label>
+              <input matInput formControlName="anno_attivazione" />
+              <mat-error *ngIf="form.get('anno_attivazione')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Flag cancellazione</mat-label>
+              <input matInput formControlName="flg_cancellazione" />
+            </mat-form-field>
+          </div>
+          <div class="col-12 d-flex justify-content-end gap-2">
+            <button mat-stroked-button color="primary" type="button" [routerLink]="'/configurazioni'">Annulla</button>
+            <button mat-raised-button color="primary">Salva</button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

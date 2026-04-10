@@ -3,14 +3,23 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span class="title">CER Gestionale</span>
+  <span class="title">{{ "header.title" | translate }}</span>
 
   <span class="spacer"></span>
 
-  <button mat-icon-button aria-label="Notifiche">
+  <button mat-icon-button [attr.aria-label]="'header.notifications' | translate" matTooltip="{{ 'header.notifications' | translate }}">
     <mat-icon>notifications</mat-icon>
   </button>
-  <button mat-icon-button aria-label="Profilo">
+  <button mat-icon-button [attr.aria-label]="'header.account' | translate" matTooltip="{{ 'header.account' | translate }}" [matMenuTriggerFor]="accountMenu">
     <mat-icon>account_circle</mat-icon>
   </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">
+      {{ "header.menu.login" | translate }}
+    </button>
+    <button mat-menu-item *ngIf="isLoggedIn$ | async" (click)="onLogout()">
+      {{ "header.menu.logout" | translate }}
+    </button>
+  </mat-menu>
 </mat-toolbar>

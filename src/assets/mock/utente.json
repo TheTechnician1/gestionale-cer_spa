@@ -1,0 +1,13 @@
+{
+  "id_utente": "U-001",
+  "nome_utente": "Mario",
+  "cognome_utente": "Rossi",
+  "codice_fiscale": "RSSMRA80A01H501U",
+  "mail": "mario.rossi@example.com",
+  "num_telefono": "+39333111222",
+  "ruolo": "ADMIN",
+  "flg_cancellato": "N",
+  "utente_upd": null,
+  "data_inserimento": "2026-04-08",
+  "data_modifica": "2026-04-08"
+}

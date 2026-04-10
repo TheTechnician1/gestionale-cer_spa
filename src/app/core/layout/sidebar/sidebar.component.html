@@ -1,11 +1,11 @@
 <nav class="sidebar">
-  <div class="sidebar-title">Sezioni</div>
+  <div class="sidebar-title">{{ "sidebar.sections" | translate }}</div>
 
   <mat-tree class="sidebar-tree" [dataSource]="dataSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <button mat-icon-button class="toggle-placeholder" disabled></button>
       <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
-      <a class="node-link" [routerLink]="node.route">{{ node.label }}</a>
+      <a class="node-link" [routerLink]="node.route">{{ node.label | translate }}</a>
     </mat-tree-node>
 
     <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
@@ -16,7 +16,7 @@
           </mat-icon>
         </button>
         <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
-        <span class="node-label">{{ node.label }}</span>
+        <span class="node-label">{{ node.label | translate }}</span>
       </div>
 
       <div class="tree-inset" *ngIf="treeControl.isExpanded(node)">

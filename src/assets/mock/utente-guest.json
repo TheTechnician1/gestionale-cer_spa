@@ -1,0 +1,13 @@
+{
+  "id_utente": "U-999",
+  "nome_utente": "Guest",
+  "cognome_utente": "User",
+  "codice_fiscale": null,
+  "mail": "guest@guest.guest",
+  "num_telefono": null,
+  "ruolo": "GUEST",
+  "flg_cancellato": "N",
+  "utente_upd": null,
+  "data_inserimento": "2026-04-09",
+  "data_modifica": "2026-04-09"
+}

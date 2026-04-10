@@ -1,0 +1,10 @@
+.page {
+  padding: 24px 0;
+}
+
+.page-card {
+  min-height: 200px;
+  padding: 20px;
+  border: 1px solid var(--app-border);
+  box-shadow: 0 8px 20px rgba(30, 64, 175, 0.08);
+}

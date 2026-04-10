@@ -1,6 +1,77 @@
 {
-  "app": {
+  "progetto": {
     "main-title": "CER SPA Manager",
-    "hello": "Hello"
+    "campo testo": "Select string",
+    "pippo": "pollo"
+  },
+  "common": {
+    "required": "Required field",
+    "invalid_format": "Invalid format",
+    "invalid_email": "Invalid email",
+    "invalid_password": "Invalid password",
+    "password_mismatch": "Passwords do not match",
+    "cancel": "Cancel",
+    "show_hide_password": "Show or hide password",
+    "show_hide_confirm_password": "Show or hide confirm password"
+  },
+  "header": {
+    "title": "CER Management",
+    "notifications": "Notifications",
+    "account": "Account",
+    "menu": {
+      "login": "Login",
+      "logout": "Logout"
+    }
+  },
+  "sidebar": {
+    "sections": "Sections",
+    "items": {
+      "dashboard": "Dashboard",
+      "cer": "CER",
+      "configurazioni": "Configurations",
+      "impianti": "Implants",
+      "dati energetici": "Energy data",
+      "registrazione": "Registration"
+    }
+  },
+  "auth": {
+    "registration": {
+      "title": "User Registration",
+      "subtitle": "Enter personal and contact details",
+      "fields": {
+        "nome": "First name",
+        "cognome": "Last name",
+        "codice_fiscale": "Tax code",
+        "telefono": "Phone",
+        "email": "Email",
+        "ruolo": "Role",
+        "password": "Password",
+        "confirm_password": "Confirm password"
+      },
+      "password_requirements": "Password requirements",
+      "password_rules": {
+        "min": "Minimum 8 characters",
+        "max": "Maximum 16 characters",
+        "lower": "At least one lowercase letter",
+        "upper": "At least one uppercase letter",
+        "number": "At least one number",
+        "special": "At least one special character"
+      },
+      "actions": {
+        "create": "Create user"
+      }
+    },
+    "login": {
+      "title": "Login",
+      "subtitle": "Enter your credentials",
+      "fields": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "actions": {
+        "login": "Sign in",
+        "guest": "Continue as Guest"
+      }
+    }
   }
 }

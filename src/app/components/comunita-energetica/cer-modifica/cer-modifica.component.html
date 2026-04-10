@@ -1,0 +1,120 @@
+<div class="page container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <mat-card class="page-card">
+        <h3>Modifica CER</h3>
+        <form [formGroup]="form" class="row g-3 mt-2">
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>ID CER</mat-label>
+              <input matInput formControlName="id_cer" />
+              <mat-error *ngIf="form.get('id_cer')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-8">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Ragione Sociale</mat-label>
+              <input matInput formControlName="rag_sociale" />
+              <mat-error *ngIf="form.get('rag_sociale')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Codice Fiscale</mat-label>
+              <input matInput formControlName="cod_fisc" />
+              <mat-error *ngIf="form.get('cod_fisc')?.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.get('cod_fisc')?.hasError('pattern')">Formato non valido</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Partita IVA</mat-label>
+              <input matInput formControlName="partita_iva" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Comune legale</mat-label>
+              <input matInput formControlName="comune_legale" />
+              <mat-error *ngIf="form.get('comune_legale')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Provincia legale</mat-label>
+              <input matInput formControlName="provincia_legale" />
+              <mat-error *ngIf="form.get('provincia_legale')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Regione legale</mat-label>
+              <input matInput formControlName="regione_legale" />
+              <mat-error *ngIf="form.get('regione_legale')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Forma giuridica</mat-label>
+              <input matInput formControlName="forma_giuridica" />
+              <mat-error *ngIf="form.get('forma_giuridica')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Telefono</mat-label>
+              <input matInput formControlName="telefono" />
+              <mat-error *ngIf="form.get('telefono')?.hasError('pattern')">Formato non valido</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="e_mail" />
+              <mat-error *ngIf="form.get('e_mail')?.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.get('e_mail')?.hasError('email')">Email non valida</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>PEC</mat-label>
+              <input matInput formControlName="pec" />
+              <mat-error *ngIf="form.get('pec')?.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.get('pec')?.hasError('email')">Email non valida</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Sito web</mat-label>
+              <input matInput formControlName="sito_web" />
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Referente</mat-label>
+              <input matInput formControlName="referente" />
+              <mat-error *ngIf="form.get('referente')?.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-md-4">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Flag cancellazione</mat-label>
+              <input matInput formControlName="flg_cancellazione" />
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 d-flex justify-content-end gap-2">
+            <button mat-stroked-button color="primary" type="button" [routerLink]="'/cer'">Annulla</button>
+            <button *ngIf="!isDetail" mat-raised-button color="primary">Salva modifiche</button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

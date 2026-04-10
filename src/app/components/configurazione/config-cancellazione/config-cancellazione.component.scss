@@ -1,0 +1,36 @@
+// Auto-generated: class scaffolding from component HTML
+// Add styles per Material Design guidelines where needed
+
+.delete-dialog {
+  padding: 24px;
+  min-width: 320px;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.delete-header {
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  button {
+    min-width: 150px;
+  }
+}

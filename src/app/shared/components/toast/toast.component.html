@@ -1,0 +1,9 @@
+<div class="toast">
+  <div class="toast-text">
+    <div class="toast-title" *ngIf="data.title">{{ data.title }}</div>
+    <div class="toast-message">{{ data.message }}</div>
+  </div>
+  <button mat-icon-button type="button" (click)="close()" aria-label="Chiudi">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

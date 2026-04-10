@@ -1,6 +1,77 @@
 {
-  "app": {
+  "progetto": {
     "main-title": "CER SPA Manager",
-    "hello": "Hello"
+    "campo-testo": "Select string",
+    "pippo": "pollo"
+  },
+  "common": {
+    "required": "Campo obbligatorio",
+    "invalid_format": "Formato non valido",
+    "invalid_email": "Email non valida",
+    "invalid_password": "Password non valida",
+    "password_mismatch": "Le password non coincidono",
+    "cancel": "Annulla",
+    "show_hide_password": "Mostra o nascondi password",
+    "show_hide_confirm_password": "Mostra o nascondi conferma password"
+  },
+  "header": {
+    "title": "CER Gestionale",
+    "notifications": "Notifiche",
+    "account": "Account",
+    "menu": {
+      "login": "Login",
+      "logout": "Logout"
+    }
+  },
+  "sidebar": {
+    "sections": "Sezioni",
+    "items": {
+      "dashboard": "Dashboard",
+      "cer": "Comunità Energetiche",
+      "configurazioni": "Configurazioni",
+      "impianti": "Impianti",
+      "dati energetici": "Dati Energetici",
+      "registrazione": "Registrazione"
+    }
+  },
+  "auth": {
+    "registration": {
+      "title": "Registrazione Utente",
+      "subtitle": "Inserisci i dati anagrafici e di contatto",
+      "fields": {
+        "nome": "Nome",
+        "cognome": "Cognome",
+        "codice_fiscale": "Codice Fiscale",
+        "telefono": "Telefono",
+        "email": "Email",
+        "ruolo": "Ruolo",
+        "password": "Password",
+        "confirm_password": "Conferma Password"
+      },
+      "password_requirements": "Requisiti password",
+      "password_rules": {
+        "min": "Minimo 8 caratteri",
+        "max": "Massimo 16 caratteri",
+        "lower": "Almeno una lettera minuscola",
+        "upper": "Almeno una lettera maiuscola",
+        "number": "Almeno un numero",
+        "special": "Almeno un carattere speciale"
+      },
+      "actions": {
+        "create": "Crea utente"
+      }
+    },
+    "login": {
+      "title": "Login",
+      "subtitle": "Inserisci le credenziali",
+      "fields": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "actions": {
+        "login": "Accedi",
+        "guest": "Entra come Ospite"
+      }
+    }
   }
 }

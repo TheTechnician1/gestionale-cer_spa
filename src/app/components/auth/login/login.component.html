@@ -1,0 +1,34 @@
+<div class="auth-page">
+  <mat-card class="auth-card">
+    <mat-card-title>{{ "auth.login.title" | translate }}</mat-card-title>
+    <mat-card-subtitle>{{ "auth.login.subtitle" | translate }}</mat-card-subtitle>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "auth.login.fields.email" | translate }}</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="form.get('email')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">{{ "common.invalid_email" | translate }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ "auth.login.fields.password" | translate }}</mat-label>
+        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword" [attr.aria-label]="'common.show_hide_password' | translate">
+          <mat-icon>{{ showPassword ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-stroked-button color="accent" type="button" (click)="onGuestLogin()">
+          <mat-icon aria-hidden="true">person_outline</mat-icon>
+          {{ "auth.login.actions.guest" | translate }}
+        </button>
+        <button mat-raised-button color="primary" type="submit">
+          {{ "auth.login.actions.login" | translate }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

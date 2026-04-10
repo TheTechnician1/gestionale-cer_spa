@@ -14,9 +14,51 @@ import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
+import { RegistrazioneComponent } from "./components/auth/registrazione/registrazione.component";
+import { LoginComponent } from "./components/auth/login/login.component";
+import { CerGestioneComponent } from "./components/comunita-energetica/cer-gestione/cer-gestione.component";
+import { CerInserimentoComponent } from "./components/comunita-energetica/cer-inserimento/cer-inserimento.component";
+import { CerModificaComponent } from "./components/comunita-energetica/cer-modifica/cer-modifica.component";
+import { CerCancellazioneComponent } from "./components/comunita-energetica/cer-cancellazione/cer-cancellazione.component";
+import { ConfigGestioneComponent } from "./components/configurazione/config-gestione/config-gestione.component";
+import { ConfigInserimentoComponent } from "./components/configurazione/config-inserimento/config-inserimento.component";
+import { ConfigModificaComponent } from "./components/configurazione/config-modifica/config-modifica.component";
+import { ConfigCancellazioneComponent } from "./components/configurazione/config-cancellazione/config-cancellazione.component";
+import { ImpiantoGestioneComponent } from "./components/impianto/impianto-gestione/impianto-gestione.component";
+import { ImpiantoInserimentoComponent } from "./components/impianto/impianto-inserimento/impianto-inserimento.component";
+import { ImpiantoModificaComponent } from "./components/impianto/impianto-modifica/impianto-modifica.component";
+import { ImpiantoCancellazioneComponent } from "./components/impianto/impianto-cancellazione/impianto-cancellazione.component";
+import { NotFoundComponent } from "./components/not-found/not-found.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { ToastComponent } from "./shared/components/toast/toast.component";
+import { ToastHostComponent } from "./shared/components/toast-host/toast-host.component";
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent],
+  declarations: [
+    AppComponent,
+    FullLayoutComponent,
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent,
+    RegistrazioneComponent,
+    LoginComponent,
+    CerGestioneComponent,
+    CerInserimentoComponent,
+    CerModificaComponent,
+    CerCancellazioneComponent,
+    ConfigGestioneComponent,
+    ConfigInserimentoComponent,
+    ConfigModificaComponent,
+    ConfigCancellazioneComponent,
+    ImpiantoGestioneComponent,
+    ImpiantoInserimentoComponent,
+    ImpiantoModificaComponent,
+    ImpiantoCancellazioneComponent,
+    DashboardComponent,
+    NotFoundComponent,
+    ToastComponent,
+    ToastHostComponent,
+  ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

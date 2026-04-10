@@ -1,0 +1,10 @@
+<div class="delete-dialog">
+  <div class="delete-header">
+    <h3>{{ data.title }}</h3>
+    <p>{{ data.message }}</p>
+  </div>
+  <div class="delete-actions">
+    <button mat-stroked-button color="primary" (click)="close()">Annulla</button>
+    <button mat-raised-button color="warn" (click)="confirm()">Conferma cancellazione</button>
+  </div>
+</div>
