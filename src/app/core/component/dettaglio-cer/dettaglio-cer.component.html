@@ -1,47 +1,138 @@
 <h4>Dettaglio Comunità Energetica</h4>
 
-<div style="display: flex; gap: 20px; margin-top: 20px;">
-    <mat-card style="flex: 1;">
-        <mat-card-title>Anagrafica</mat-card-title>
-        <mat-card-content>
-            <p><strong>Regione Sociale</strong> <!-- {{ cer?.nome }}</p> -->
-            <p><strong>Partita IVA</strong> <!-- {{ cer?.indirizzo }}</p> -->
-            <p><strong>Codice Fiscale</strong> <!-- {{ cer?.numeroMembri }}</p> -->
-            <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px;">
-                <mat-label>Froma giuridica CER</mat-label>
-                <input matInput formControlName="formaGiuridica" required>
-            </mat-form-field>
-        </mat-card-content>
-        <mat-card-title>Contatti</mat-card-title>
-        <mat-card-content>
-            <p><strong>Telefono</strong> <!-- {{ cer?.produzioneTotale }} kWh</p> -->
-            <p><strong>Email</strong> <!-- {{ cer?.consumoTotale }} kWh</p> -->
-             <p><strong>PEC</strong> <!-- {{ cer?.bilancioEnergetico }} kWh</p> -->
-             <p><strong>Sito Wev</strong> <!-- {{ cer?.percentualeAutoconsumo }}% --></p>
-        </mat-card-content>
-        <mat-card-title>Referente</mat-card-title>
-        <mat-card-content>
-             <p><strong>Percentuale di Energia Esportata:</strong> <!-- {{ cer?.percentualeEnergiaEsportata }}% --></p>
-             <p><strong>Percentuale di Energia Importata:</strong> <!-- {{ cer?.percentualeEnergiaImportata }}% --></p>
-             <p><strong>Emissioni Evitate:</strong> <!-- {{ cer?.emissioniEvitate }} kg CO2</p> -->
-             <p><strong>Stato Attuale:</strong> <!-- {{ cer?.statoAttuale }}</p> -->    
-        </mat-card-content>
-    </mat-card>
+<form [formGroup]="cerForm">
+    <div style="display: flex; gap: 20px; margin-top: 20px;">
+        <mat-card style="flex: 1;">
 
-    <mat-card style="flex: 1;">
-        <mat-card-title>Dettagli Tecnici</mat-card-title>
-        <mat-card-content>
-             <p><strong>Capacità di Produzione:</strong> <!-- {{ cer?.capacitaProduzione }} kW</p> -->
-            <p><strong>Capacità di Consumo:</strong> <!-- {{ cer?.capacitaConsumo }} kW</p> -->
-             <p><strong>Data di Creazione:</strong> <!-- {{ cer?.dataCreazione | date }} --></p>
-             <p><strong>Ultimo Aggiornamento:</strong> <!-- {{ cer?.ultimoAggiornamento | date }} --></p>
-             <p><strong>Tipo di Energia Prodotta:</strong> <!-- {{ cer?.tipoEnergiaProdotta }} --></p>
-             <p><strong>Tipo di Energia Consumata:</strong> <!-- {{ cer?.tipoEnergiaConsumata }} --></p>
-             <p><strong>Percentuale di Autoconsumo:</strong> <!-- {{ cer?.percentualeAutoconsumo }}% --></p>
-             <p><strong>Percentuale di Energia Esportata:</strong> <!-- {{ cer?.percentualeEnergiaEsportata }}% --></p>
-             <p><strong>Percentuale di Energia Importata:</strong> <!-- {{ cer?.percentualeEnergiaImportata }}% --></p>
-             <p><strong>Emissioni Evitate:</strong> <!-- {{ cer?.emissioniEvitate }} kg CO2</p> -->
-            <p><strong>Stato Attuale:</strong> <!-- {{ cer?.statoAttuale }}</p> -->
-        </mat-card-content>
-    </mat-card>
-</div>
+            <h6 style="margin: 4px">ANAGRAFICA</h6>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Regione Sociale</mat-label>
+                        <input matInput formControlName="regioneSociale" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Partita IVA</mat-label> <!-- {{ }} -->
+                        <input matInput formControlName="partitaIva" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Codice Fiscale</mat-label> <!-- {{ }} -->
+                        <input matInput formControlName="codiceFiscale" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Froma giuridica CER</mat-label>
+                        <input matInput formControlName="formaGiuridica" required>
+                    </mat-form-field>
+                </mat-card-content>
+
+            <h6>CONTATTI</h6>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Telefono</mat-label>
+                        <input matInput formControlName="telefono" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15  ">
+                        <mat-label>PEC</mat-label>
+                        <input matInput formControlName="pec" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Sito Web</mat-label>
+                        <input matInput formControlName="sitoWeb" required>
+                    </mat-form-field>
+                </mat-card-content>
+
+            <h6>REFERENTE</h6>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Nome e Cognome Referente</mat-label>
+                        <input matInput formControlName="nomeCognomeReferente" required>
+                    </mat-form-field>
+                </mat-card-content>
+
+            <h6>CABINE PRIMARIE</h6>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Numero Cabine</mat-label>
+                        <input matInput formControlName="numeroCabine" required>
+                    </mat-form-field>
+                </mat-card-content>
+
+            <h6>STATO ATTUALE</h6>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Stato CER</mat-label>
+                            <mat-select formControlName="statoCer">
+                                <mat-option *ngFor="let stato of stati" [value]="stato.value">
+                                    {{stato.viewValue}}
+                                </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+        </mat-card>
+
+        <mat-card style="flex: 1;">
+            <mat-card-title>SEDE LEGALE</mat-card-title>
+                <mat-card-content>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Via sede legale</mat-label>
+                        <input matInput formControlName="viaSedeLegale" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Cap</mat-label>
+                        <input matInput formControlName="cap" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Comune sede legale</mat-label>
+                            <mat-select formControlName="comuneSedeLegale">
+                                <mat-option>
+                                </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="mb-15">
+                        <mat-label>Provincia sede legale</mat-label>
+                            <mat-select formControlName="provinciaSedeLegale">
+                                <mat-option>
+                                </mat-option>
+                            </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+    
+        <mat-card-title>DOCUMENTI</mat-card-title>
+            <mat-card-content>
+                <p>Atto Costitutivo <!-- {{  }} --></p>
+                <p>Statuto Stipulato <!-- {{  }} --></p>
+                <p>Regolamento CER <!-- {{  }} --></p>
+            </mat-card-content>
+            
+        <mat-card-title>CABINE PRIMARIE</mat-card-title>
+            <mat-card-content>
+                <mat-checkbox formControlName="iscrizioneRunts" style="margin-bottom: 15px;">Iscrizione RUNTS</mat-checkbox><!-- {{ cer?.percentualeEnergiaEsportata }}% -->
+                <mat-checkbox formControlName="terzoSettore" style="margin-bottom: 15px;">Terzo Settore</mat-checkbox>
+                <mat-checkbox formControlName="progettiInclusioneSociale" style="margin-bottom: 15px;">Progetti inclusione sociale</mat-checkbox>
+                <mat-checkbox formControlName="areeMontaneOInterne" style="margin-bottom: 15px;">Aree montane o interne</mat-checkbox>
+                <mat-checkbox formControlName="progettiCambiamentiClimatici" style="margin-bottom: 15px;">Progetti cambiamenti climatici</mat-checkbox>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
+        <button mat-raised-button color="primary" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
+            <mat-icon>edit</mat-icon> Modifica
+        </button>
+
+        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Cancella
+        </button>
+
+        <button mat-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Ripristina Cancellazione
+        </button>
+
+        <button mat-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Conferma Dati
+        </button>
+    </div>
+</form>
