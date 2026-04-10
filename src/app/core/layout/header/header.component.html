@@ -1,23 +1,47 @@
 <mat-toolbar class="app-toolbar">
-  <button mat-icon-button (click)="toggleSidebar.emit()" aria-label="Apri/chiudi menu">
+  <!-- Toggle Sidebar -->
+  <button
+    mat-icon-button
+    (click)="toggleSidebar.emit()"
+    aria-label="Apri/chiudi menu"
+  >
     <mat-icon>menu</mat-icon>
   </button>
 
+  <!-- Titolo -->
   <span class="title">{{ "header.title" | translate }}</span>
 
   <span class="spacer"></span>
 
-  <button mat-icon-button [attr.aria-label]="'header.notifications' | translate" matTooltip="{{ 'header.notifications' | translate }}">
+  <!-- Notifiche -->
+  <button
+    mat-icon-button
+    [attr.aria-label]="'header.notifications' | translate"
+    [matTooltip]="'header.notifications' | translate"
+  >
     <mat-icon>notifications</mat-icon>
   </button>
-  <button mat-icon-button [attr.aria-label]="'header.account' | translate" matTooltip="{{ 'header.account' | translate }}" [matMenuTriggerFor]="accountMenu">
-    <mat-icon>account_circle</mat-icon>
+
+  <!-- Account -->
+  <button
+    mat-icon-button
+    [attr.aria-label]="'header.account' | translate"
+    [matTooltip]="(isLoggedIn$ | async) 
+      ? (userTooltip$ | async) 
+      : ('header.account' | translate)"
+    matTooltipPosition="below"
+    matTooltipClass="user-tooltip"
+    [matMenuTriggerFor]="accountMenu"
+  >
+    <mat-icon>{{ accountIcon$ | async }}</mat-icon>
   </button>
 
+  <!-- Menu Account -->
   <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item *ngIf="!(isLoggedIn$ | async)" [routerLink]="'/login'">
+    <button mat-menu-item *ngIf="!(isLoggedIn$ | async)" routerLink="/login">
       {{ "header.menu.login" | translate }}
     </button>
+
     <button mat-menu-item *ngIf="isLoggedIn$ | async" (click)="onLogout()">
       {{ "header.menu.logout" | translate }}
     </button>
