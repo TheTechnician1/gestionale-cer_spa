@@ -27,6 +27,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatTreeModule } from "@angular/material/tree";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableDataSource } from "@angular/material/table";
+import {MatBadgeModule} from '@angular/material/badge';
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -50,7 +51,8 @@ export const MATERIAL_MODULES = [
   MatProgressSpinnerModule,
   MatTabsModule,
   MatTreeModule,
-  MatGridListModule
+  MatGridListModule,
+  MatBadgeModule
 ];
 
 @NgModule({

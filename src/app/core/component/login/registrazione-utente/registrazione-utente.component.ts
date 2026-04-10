@@ -25,8 +25,7 @@ export class RegistrazioneUtenteComponent {
   hide = true;
   ruoli: Ruolo[] = [
     { value: 'admin', viewValue: 'Admin'},
-    { value: 'gestore', viewValue: 'Gestore'},
-    { value: 'guest', viewValue: 'Ospite'}
+    { value: 'gestore', viewValue: 'Gestore'}
   ]
 
   ngOnInit() {

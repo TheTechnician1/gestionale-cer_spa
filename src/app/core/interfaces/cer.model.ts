@@ -7,6 +7,7 @@ export interface CER {
     provincia_sede_legale: string,
     regione_legale: string,
     forma_giuridica: string,
+    flag_cancellato: boolean,
     contatti:
     [
       {

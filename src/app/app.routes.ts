@@ -9,8 +9,11 @@ import { DettaglioCerComponent } from "./core/component/dettaglio-cer/dettaglio-
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "registrazione", component: RegistrazioneUtenteComponent },
   { path: "login", component: LoginComponent },
-  { path: "cer", component: CERComponent },
-  { path: "cer/dettaglio-cer", component: DettaglioCerComponent }
+  { path: "cer", component: CERComponent,
+    children: [
+      { path: "dettaglio-cer", component: DettaglioCerComponent }
+    ]
+  }
 ];
 
 export const routes: Routes = [{ path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ }];

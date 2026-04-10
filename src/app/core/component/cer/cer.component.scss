@@ -1,0 +1,35 @@
+th {
+  font-weight: bold;
+}
+
+h3 {
+  font-size: medium;
+}
+
+.form-field {
+  margin-left: 6px;
+  margin-right: 6px;
+  width:32%;
+}
+
+.table {
+  margin-top: 20px;
+}
+
+.button-filtro, button {
+  margin: 5px;
+}
+
+.mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+    right: 75%;
+}
+
+.button-filtro {
+  justify-self: center;
+}
+
+.filtro {
+  background-color: white;
+  box-shadow: -10px 10px 10px -10px;
+  padding:10px;
+}

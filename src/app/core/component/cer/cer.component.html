@@ -1,1 +1,59 @@
-<button mat-button routerLink="dettaglio-cer"><mat-icon>visibility</mat-icon></button>
+<div>
+  <h3 [matBadge]="cer.length" matBadgeOverlap="true" class="demo-section">Gestione Comunità Energetiche</h3>
+  <div class="filtro" rows="3">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Ragione Sociale</mat-label>
+      <input [(ngModel)]="filtro.ragione_sociale" matInput type="text" aria-label="ragione_sociale">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Partita IVA</mat-label>
+      <input [(ngModel)]="filtro.partita_iva" matInput type="text" aria-label="partita_iva">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Forma Giuridica</mat-label>
+      <input [(ngModel)]="filtro.forma_giuridica" matInput type="text" aria-label="forma_giuridica">
+    </mat-form-field>
+    <div class="button-filtro">
+      <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraCER()">
+        <mat-icon>search</mat-icon> Ricerca
+      </button>
+      <button mat-raised-button type="button" (click)="resetFiltro()">
+        <mat-icon>close</mat-icon> Reset
+      </button>
+    </div>
+  </div>
+</div>
+<div class="table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id_cer">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id_cer}} </td>
+    </ng-container>
+    <ng-container matColumnDef="ragione_sociale">
+      <th mat-header-cell *matHeaderCellDef> Ragione Sociale </th>
+      <td mat-cell *matCellDef="let element"> {{element.ragione_sociale}} </td>
+    </ng-container>
+    <ng-container matColumnDef="partita_iva">
+      <th mat-header-cell *matHeaderCellDef> P.IVA </th>
+      <td mat-cell *matCellDef="let element"> {{element.partita_iva}} </td>
+    </ng-container>
+    <ng-container matColumnDef="forma_giuridica">
+      <th mat-header-cell *matHeaderCellDef> Forma Giuridica </th>
+      <td mat-cell *matCellDef="let element"> {{element.forma_giuridica}} </td>
+    </ng-container>
+    <ng-container matColumnDef="azioni">
+      <th mat-header-cell *matHeaderCellDef> Azioni </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button routerLink="">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-button routerLink="dettaglio-cer">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="tableCER"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableCER;"></tr>
+  </table>
+</div>
+<router-outlet></router-outlet>
