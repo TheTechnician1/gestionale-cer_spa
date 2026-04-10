@@ -23,14 +23,20 @@ export class DettaglioCerComponent {
       sitoWeb: ['', Validators.required],
       nomeCognomeReferente: ['', Validators.required],
       numeroCabine: ['', Validators.required],
+      viaSedeLegale: ['', Validators.required],
+      cap: ['', Validators.required],
+      comuneSedeLegale: ['', Validators.required],
+      provinciaSedeLegale: ['', Validators.required],
+      regioneSedeLegale: ['', Validators.required],
+
       statoCer: ['', Validators.required]
     });
   }
 
   hide = true;
-    stati: Stato[] = [
-      { value: 'attivo', viewValue: 'Attivo'},
-      { value: 'non attivo', viewValue: 'Non attivo'}
-    ]
+    // stati: Stato[] = [
+    //   { value: 'attivo', viewValue: 'Attivo'},
+    //   { value: 'non attivo', viewValue: 'Non attivo'}
+    // ]
 
 }
