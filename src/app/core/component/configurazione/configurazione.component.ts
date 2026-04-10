@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Configurazione } from '../../interfaces/configurazione.model';
 
 @Component({
   selector: 'app-configurazione',
@@ -7,7 +9,12 @@ import { Component } from '@angular/core';
 })
 export class ConfigurazioneComponent {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  ELEMENT_DATA: Configurazione[] = [
+    { id_configurazione: "", id_cer: "", codice_cabina: "", anno_attivazione: "" }
+  ];
+
+  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

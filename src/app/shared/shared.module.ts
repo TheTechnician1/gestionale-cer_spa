@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTreeModule } from "@angular/material/tree";
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableDataSource } from "@angular/material/table";
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
