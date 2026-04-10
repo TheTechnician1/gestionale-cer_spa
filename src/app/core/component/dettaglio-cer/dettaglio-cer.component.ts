@@ -25,6 +25,12 @@ export class DettaglioCerComponent {
       sitoWeb: ['', Validators.required],
       nomeCognomeReferente: ['', Validators.required],
       numeroCabine: ['', Validators.required],
+      viaSedeLegale: ['', Validators.required],
+      cap: ['', Validators.required],
+      comuneSedeLegale: ['', Validators.required],
+      provinciaSedeLegale: ['', Validators.required],
+      regioneSedeLegale: ['', Validators.required],
+
       statoCer: ['', Validators.required]
     });
   }
