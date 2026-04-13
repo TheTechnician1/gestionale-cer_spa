@@ -17,6 +17,8 @@ import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
 
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
+import { HomeComponent } from './home/home.component';
+import { GestioneCERComponent } from './gestione-cer/gestione-cer.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazio
     SidebarComponent,
     LoginComponent,
     RegistrazioneUtenteComponent,
+    HomeComponent,
+    GestioneCERComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,15 +12,19 @@
           <mat-form-field appearance="outline">
             <mat-label>Nome</mat-label>
             <input matInput formControlName="nome" type="text" />
-            <mat-error *ngIf="nome?.hasError('required')">Il nome è obbligatorio</mat-error>
-            <mat-error *ngIf="nome?.hasError('minlength')">Il nome deve contenere almeno 2 caratteri</mat-error>
+            <mat-error *ngIf="nome.hasError('required')">Il nome è obbligatorio</mat-error>
+            <mat-error *ngIf="nome.hasError('minlength')">
+              Il nome deve contenere almeno 2 caratteri
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Cognome</mat-label>
             <input matInput formControlName="cognome" type="text" />
-            <mat-error *ngIf="cognome?.hasError('required')">Il cognome è obbligatorio</mat-error>
-            <mat-error *ngIf="cognome?.hasError('minlength')">Il cognome deve contenere almeno 2 caratteri</mat-error>
+            <mat-error *ngIf="cognome.hasError('required')">Il cognome è obbligatorio</mat-error>
+            <mat-error *ngIf="cognome.hasError('minlength')">
+              Il cognome deve contenere almeno 2 caratteri
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -34,10 +38,10 @@
               maxlength="16"
               style="text-transform: uppercase;"
             />
-            <mat-error *ngIf="codiceFiscale?.hasError('required')">
+            <mat-error *ngIf="codiceFiscale.hasError('required')">
               Il codice fiscale è obbligatorio
             </mat-error>
-            <mat-error *ngIf="codiceFiscale?.hasError('pattern')">
+            <mat-error *ngIf="codiceFiscale.hasError('pattern')">
               Inserisci un codice fiscale valido di 16 caratteri
             </mat-error>
           </mat-form-field>
@@ -45,8 +49,8 @@
           <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" type="email" />
-            <mat-error *ngIf="email?.hasError('required')">L'email è obbligatoria</mat-error>
-            <mat-error *ngIf="email?.hasError('email')">Inserisci un'email valida</mat-error>
+            <mat-error *ngIf="email.hasError('required')">L'email è obbligatoria</mat-error>
+            <mat-error *ngIf="email.hasError('email')">Inserisci un'email valida</mat-error>
           </mat-form-field>
         </div>
 
@@ -54,11 +58,23 @@
           <mat-form-field appearance="outline">
             <mat-label>Numero di telefono</mat-label>
             <input matInput formControlName="numeroTelefono" type="text" />
-            <mat-error *ngIf="numeroTelefono?.hasError('required')">
+            <mat-error *ngIf="numeroTelefono.hasError('required')">
               Il numero di telefono è obbligatorio
             </mat-error>
-            <mat-error *ngIf="numeroTelefono?.hasError('pattern')">
+            <mat-error *ngIf="numeroTelefono.hasError('pattern')">
               Inserisci un numero di telefono valido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Ruolo</mat-label>
+            <mat-select formControlName="ruolo">
+              <mat-option *ngFor="let ruoloDisponibile of elencoRuoli" [value]="ruoloDisponibile">
+                {{ ruoloDisponibile }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="ruolo.hasError('required')">
+              Il ruolo è obbligatorio
             </mat-error>
           </mat-form-field>
         </div>
@@ -80,11 +96,13 @@
             >
               <mat-icon>{{ nascondiPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-            <mat-error *ngIf="password?.hasError('required')">La password è obbligatoria</mat-error>
-            <mat-error *ngIf="password?.hasError('minlength')">
+            <mat-error *ngIf="password.hasError('required')">
+              La password è obbligatoria
+            </mat-error>
+            <mat-error *ngIf="password.hasError('minlength')">
               La password deve contenere almeno 8 caratteri
             </mat-error>
-            <mat-error *ngIf="password?.hasError('pattern')">
+            <mat-error *ngIf="password.hasError('pattern')">
               La password deve contenere almeno una lettera maiuscola, una minuscola e un numero
             </mat-error>
           </mat-form-field>
@@ -105,13 +123,16 @@
             >
               <mat-icon>{{ nascondiConfermaPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
-            <mat-error *ngIf="confermaPassword?.hasError('required')">
+            <mat-error *ngIf="confermaPassword.hasError('required')">
               La conferma password è obbligatoria
             </mat-error>
           </mat-form-field>
         </div>
 
-        <div class="errore-form" *ngIf="formRegistrazione.hasError('passwordNonCoincidenti') && confermaPassword?.touched">
+        <div
+          class="errore-form"
+          *ngIf="formRegistrazione.hasError('passwordNonCoincidenti') && confermaPassword.touched"
+        >
           Le password non coincidono.
         </div>
 

@@ -20,6 +20,8 @@ export class RegistrazioneUtenteComponent {
 
   formRegistrazione: FormGroup;
 
+  elencoRuoli: string[] = ['Admin', 'Gest'];
+
   constructor(private costruttoreForm: FormBuilder) {
     this.formRegistrazione = this.costruttoreForm.group(
       {
@@ -34,6 +36,7 @@ export class RegistrazioneUtenteComponent {
           '',
           [Validators.required, Validators.pattern(/^\+?[0-9\s]{8,15}$/)],
         ],
+        ruolo: ['', [Validators.required]],
         password: [
           '',
           [
@@ -45,12 +48,12 @@ export class RegistrazioneUtenteComponent {
         confermaPassword: ['', [Validators.required]],
       },
       {
-        validators: this.qvalidatorePasswordCoincidenti(),
-      },
+        validators: this.validatorePasswordCoincidenti(),
+      }
     );
   }
 
-  qvalidatorePasswordCoincidenti(): ValidatorFn {
+  validatorePasswordCoincidenti(): ValidatorFn {
     return (controllo: AbstractControl): ValidationErrors | null => {
       const password = controllo.get('password')?.value;
       const confermaPassword = controllo.get('confermaPassword')?.value;
@@ -87,6 +90,10 @@ export class RegistrazioneUtenteComponent {
     return this.formRegistrazione.get('numeroTelefono') as FormControl;
   }
 
+  get ruolo(): FormControl {
+    return this.formRegistrazione.get('ruolo') as FormControl;
+  }
+
   get password(): FormControl {
     return this.formRegistrazione.get('password') as FormControl;
   }
@@ -107,6 +114,7 @@ export class RegistrazioneUtenteComponent {
       codiceFiscale: this.codiceFiscale.value,
       email: this.email.value,
       numeroTelefono: this.numeroTelefono.value,
+      ruolo: this.ruolo.value,
       password: this.password.value,
     };
 
