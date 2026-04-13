@@ -1,0 +1,14 @@
+button {
+  margin: 5px;
+}
+
+th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
+  background-color: var(--app-bg);
+}
+
+.configurazioni {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  padding: 10px;
+}

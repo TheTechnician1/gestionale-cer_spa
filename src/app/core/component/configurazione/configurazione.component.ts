@@ -8,16 +8,15 @@ import { Configurazione } from '../../interfaces/configurazione.model';
   styleUrls: ['./configurazione.component.scss']
 })
 export class ConfigurazioneComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  tableConf: string[] = ['id_configurazione', 'codice_cabina', 'anno_attivazione', 'azioni'];
 
-  ELEMENT_DATA: Configurazione[] = [
+  configurazione: Configurazione[] = [
     { id_configurazione: "", id_cer: "", codice_cabina: "", anno_attivazione: "" }
   ];
 
-  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSource = this.configurazione;
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  deleteConf() {
+
   }
 }

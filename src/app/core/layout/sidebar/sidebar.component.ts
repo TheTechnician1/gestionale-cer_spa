@@ -21,6 +21,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { label: "Comunità Energetiche", icon: "factory" , route: "/cer"},
+  { label: "Configurazioni", icon: "cabin", route: "/configurazioni"},
   {
     label: "Impianti",
     icon: "bolt",

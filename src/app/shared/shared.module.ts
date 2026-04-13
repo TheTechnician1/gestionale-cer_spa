@@ -28,6 +28,7 @@ import { MatTreeModule } from "@angular/material/tree";
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableDataSource } from "@angular/material/table";
 import {MatBadgeModule} from '@angular/material/badge';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -52,7 +53,8 @@ export const MATERIAL_MODULES = [
   MatTabsModule,
   MatTreeModule,
   MatGridListModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatButtonToggleModule
 ];
 
 @NgModule({

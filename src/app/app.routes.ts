@@ -5,6 +5,7 @@ import { RegistrazioneUtenteComponent } from "./core/component/login/registrazio
 import { LoginComponent } from "./core/component/login/login/login.component";
 import { CERComponent } from "./core/component/cer/cer.component";
 import { DettaglioCerComponent } from "./core/component/dettaglio-cer/dettaglio-cer.component";
+import { ConfigurazioneComponent } from "./core/component/configurazione/configurazione.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "registrazione", component: RegistrazioneUtenteComponent },
@@ -13,7 +14,8 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     children: [
       { path: "dettaglio-cer", component: DettaglioCerComponent }
     ]
-  }
+  },
+  { path: "configurazioni", component: ConfigurazioneComponent }
 ];
 
 export const routes: Routes = [{ path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ }];
