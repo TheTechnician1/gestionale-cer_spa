@@ -7,8 +7,10 @@ import { CERComponent } from "./core/component/cer/cer.component";
 import { DettaglioCerComponent } from "./core/component/dettaglio-cer/dettaglio-cer.component";
 import { ConfigurazioneComponent } from "./core/component/configurazione/configurazione.component";
 import { ModificaCerComponent } from "./core/component/modifica-cer/modifica-cer.component";
+import { DashboardComponent } from "./core/component/dashboard/dashboard.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
+  { path: "dashboard", component: DashboardComponent, pathMatch: 'full' },
   { path: "registrazione", component: RegistrazioneUtenteComponent },
   { path: "login", component: LoginComponent },
   { path: "cer", component: CERComponent,
