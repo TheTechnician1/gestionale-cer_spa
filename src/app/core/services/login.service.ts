@@ -23,12 +23,12 @@ export class LoginService {
     let utente = [
       {
         email: 'peppe@gmail.com',
-        password: 'Peppe',
+        password: 'polpolpo',
         ruolo: 'ADMIN',
       },
       {
         email: 'danielefatso@gmail.com',
-        password: 'Dani345',
+        password: 'Dani3459',
         ruolo: 'GEST',
       },
       {

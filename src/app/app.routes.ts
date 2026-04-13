@@ -2,18 +2,31 @@ import { Routes } from '@angular/router';
 import { FullLayoutComponent } from './core/layout/full-layout.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { Role } from './core/services/auth.service';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
-  /* { path: "pagina1", component: Component1 }, */
+   { path: "pagina1", component: LoginComponent }, 
+    { path: "pagina2", component: LoginComponent },
 ];
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  {
-    path: '',
-    component: FullLayoutComponent,
-    data: { title: 'content Views' },
-    children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */,
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: FullLayoutComponent, data: { title: 'content Views', roles: [Role.ADMIN, Role.GEST, Role.GUEST] }, 
+    children: FULL_LAYOUT_ROUTES, canActivate: [AuthGuard] ,
   },
+  { path: 'login', component: LoginComponent},
+
+//   {
+//   path: 'admin',
+//   component: AdminComponent,
+//   canActivate: [AuthGuard],
+//   data: { roles: [Role.ADMIN] }
+// },
+// {
+//   path: 'gestore',
+//   component: GestoreComponent,
+//   canActivate: [AuthGuard],
+//   data: { roles: [Role.ADMIN, Role.GEST] }
+// },
+
 ];
