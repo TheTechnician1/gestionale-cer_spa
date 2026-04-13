@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +11,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 export class LoginComponent {
   loginForm!: FormGroup;
-  constructor(private fb: FormBuilder) {}
+  loginError = false;
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: ActivatedRoute, private route: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -19,8 +22,22 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.loginForm.valid) {
+
+      const { email, password } = this.loginForm.value;
+
+      const isLogged = await this.authService.login(email, password);
+
+      if(isLogged) {
+        console.log('Login riuscito');
+        this.loginError = false;
+        this.route.navigate(['/dashboard']);
+
+      } else {
+        console.log('Credenziali errate');
+        this.loginError = true;
+      }
       console.log(this.loginForm.value);
     }
   }

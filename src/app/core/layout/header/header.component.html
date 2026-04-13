@@ -13,9 +13,9 @@
   <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
     <mat-menu #menu="matMenu">
-      <button *ngIf="isLog" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="!isLog" mat-menu-item>Home</button>
-      <button *ngIf="!isLog" mat-menu-item>Logout</button>
+      <button *ngIf="!isLog" mat-menu-item routerLink="login">Login</button>
+      <button *ngIf="isLog" mat-menu-item routerLink="/">Home</button>
+      <button *ngIf="isLog" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
     </mat-menu>
   </button>
 </mat-toolbar>

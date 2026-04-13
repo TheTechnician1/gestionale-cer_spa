@@ -13,6 +13,9 @@
         <mat-label>Password</mat-label>
         <input matInput type="password" formControlName="password" aria-label="password" required>
       </mat-form-field>
+      <div class="error" *ngIf="loginError">
+          Email o password errati
+      </div>
       <mat-checkbox formControlName="rememberMe" style="margin-bottom: 15px;">Ricordami</mat-checkbox>
         <div style="display: flex; justify-content: center; margin-top: 10px">
           <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
