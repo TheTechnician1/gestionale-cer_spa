@@ -1,0 +1,47 @@
+.flex-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+.flex-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-box {
+  position: relative;
+  border: 1px solid #d0d0d0;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.section-title {
+  position: absolute;
+  top: -10px;
+  left: 14px;
+  background: #fff;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-form-field {
+  margin: 0;
+}

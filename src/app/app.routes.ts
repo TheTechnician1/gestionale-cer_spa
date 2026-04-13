@@ -6,13 +6,15 @@ import { LoginComponent } from "./core/component/login/login/login.component";
 import { CERComponent } from "./core/component/cer/cer.component";
 import { DettaglioCerComponent } from "./core/component/dettaglio-cer/dettaglio-cer.component";
 import { ConfigurazioneComponent } from "./core/component/configurazione/configurazione.component";
+import { ModificaCerComponent } from "./core/component/modifica-cer/modifica-cer.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "registrazione", component: RegistrazioneUtenteComponent },
   { path: "login", component: LoginComponent },
   { path: "cer", component: CERComponent,
     children: [
-      { path: "dettaglio-cer", component: DettaglioCerComponent }
+      { path: "dettaglio-cer", component: DettaglioCerComponent },
+      { path: "modifica-cer", component: ModificaCerComponent }
     ]
   },
   { path: "configurazioni", component: ConfigurazioneComponent }

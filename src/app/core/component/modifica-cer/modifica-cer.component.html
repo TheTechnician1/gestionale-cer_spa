@@ -1,0 +1,197 @@
+<h4>Dettaglio Comunità Energetica</h4>
+
+<form [formGroup]="cerForm">
+
+    <div class="flex-container">
+
+        <!-- Colonna sinistra -->
+        <div class="flex-col">
+            
+            <mat-card>
+
+                <div class="section-box">
+                <div class="section-title">ANAGRAFICA</div>
+
+                    <div class="field-group">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Regione Sociale</mat-label>
+                            <input matInput formControlName="regioneSociale" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Partita IVA</mat-label> <!-- {{ }} -->
+                            <input matInput formControlName="partitaIva" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Codice Fiscale</mat-label> <!-- {{ }} -->
+                            <input matInput formControlName="codiceFiscale" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Froma giuridica CER</mat-label>
+                            <input matInput formControlName="formaGiuridica" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title">CONTATTI</div>
+                
+                    <div class="field-group">
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Telefono</mat-label>
+                            <input matInput formControlName="telefono" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>PEC</mat-label>
+                            <input matInput formControlName="pec" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Sito Web</mat-label>
+                            <input matInput formControlName="sitoWeb" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title">REFERENTE</div>
+
+                    <div class="field-group">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Nome e Cognome Referente</mat-label>
+                            <input matInput formControlName="nomeCognomeReferente" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title">CABINE PRIMARIE</div>
+
+                    <div class="field-group">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Numero Cabine</mat-label>
+                            <input matInput formControlName="numeroCabine" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+            
+                <div class="section-box">
+                    <div class="section-title">STATO ATTUALE</div>
+
+                    <div class="field-group">
+                        <mat-form-field appearance="fill" class="mb-15">
+                            <mat-label>Stato CER</mat-label>
+                                <mat-select formControlName="statoCer">
+                                    <mat-option>
+                                         <!-- *ngFor="let stato of stati" [value]="stato.value">
+                                        {{stato.viewValue}} -->
+                                    </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+            </mat-card>
+        </div>
+
+        <!-- Colonna destra -->
+        <div class="flex-col">
+
+            <mat-card>
+
+                <div class="section-box">
+                    <div class="section-title">SEDE LEGALE</div>
+
+                    <div class="field-group">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Via sede legale</mat-label>
+                            <input matInput formControlName="viaSedeLegale" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Cap</mat-label>
+                            <input matInput formControlName="cap" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Comune sede legale</mat-label>
+                                <mat-select formControlName="comuneSedeLegale">
+                                    <mat-option>
+                                    </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Provincia sede legale</mat-label>
+                                <mat-select formControlName="provinciaSedeLegale">
+                                    <mat-option>
+                                    </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+    
+                <!--<div class="section-box">
+                    <div class="section-title">DOCUMENTI</div>
+
+                    <div class="field-group">
+
+                        <div class="doc.row"
+                            <div class="doc-label">
+                                <mat.icon>description</mat.icon>
+                                <span>Atto Costitutivo</span>
+                            </div>
+
+                            <button mat-stroked-button type="button" (click)="file1.click">
+                                <mat-icon>Carica file</mat-icon>
+                            </button>
+                        </div>    
+                    
+                    <p>Atto Costitutivo {{  }}</p> 
+                     <p>Statuto Stipulato {{  }}</p> 
+                    <p>Regolamento CER {{  }}</p> 
+                </mat-card-content> 
+            </mat-form-field>
+            </mat-card>-->
+
+            <!-- <mat-card>
+            <mat-card-title>CABINE PRIMARIE</mat-card-title>
+                <mat-card-content>
+                    <mat-checkbox formControlName="iscrizioneRunts" style="margin-bottom: 15px;">Iscrizione RUNTS</mat-checkbox>
+                    <mat-checkbox formControlName="terzoSettore" style="margin-bottom: 15px;">Terzo Settore</mat-checkbox>
+                    <mat-checkbox formControlName="progettiInclusioneSociale" style="margin-bottom: 15px;">Progetti inclusione sociale</mat-checkbox>
+                    <mat-checkbox formControlName="areeMontaneOInterne" style="margin-bottom: 15px;">Aree montane o interne</mat-checkbox>
+                    <mat-checkbox formControlName="progettiCambiamentiClimatici" style="margin-bottom: 15px;">Progetti cambiamenti climatici</mat-checkbox>
+                </mat-card-content>-->
+            </mat-card> 
+        </div>
+    </div>
+
+    <!-- Bottoni -->
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
+        <button mat-raised-button color="primary" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
+            <mat-icon>edit</mat-icon> Modifica
+        </button>
+
+        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Cancella
+        </button>
+
+        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Ripristina Cancellazione
+        </button>
+
+        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+            Conferma Dati
+        </button>
+    </div>
+</form>
