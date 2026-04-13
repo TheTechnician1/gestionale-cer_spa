@@ -45,3 +45,38 @@
 mat-form-field {
   margin: 0;
 }
+
+.section-box .section-title {
+  margin-bottom: 18px; /* spazio tra titolo e contenuto */
+}
+
+.doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // padding: 8px 0;
+  // padding: 12px 0;   /* più spazio verticale */
+  padding: 16px 0px;
+  margin-bottom: 12px; /* spazio tra le righe */
+  // border: 1px solid #eee; /* linea di separazione leggera */
+  border-radius: 8px; /* angoli arrotondati */
+  border-bottom: 1px solid #eee; /* opzionale ma pulito */
+  // background-color: #fafafa; /* colore di sfondo leggermente diverso */
+}
+
+.doc-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doc-label mat-icon {
+  color: #6bb7ff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doc-row:last-child {
+  border-bottom: none; /* rimuove la linea di separazione dall'ultima riga */
+}

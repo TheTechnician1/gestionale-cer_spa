@@ -140,39 +140,61 @@
                     </div>
                 </div>
     
-                <!--<div class="section-box">
+                <div class="section-box">
                     <div class="section-title">DOCUMENTI</div>
 
                     <div class="field-group">
 
-                        <div class="doc.row"
+                        <div class="doc-row">
                             <div class="doc-label">
-                                <mat.icon>description</mat.icon>
+                                <mat-icon>description</mat-icon>
                                 <span>Atto Costitutivo</span>
                             </div>
 
-                            <button mat-stroked-button type="button" (click)="file1.click">
-                                <mat-icon>Carica file</mat-icon>
-                            </button>
-                        </div>    
-                    
-                    <p>Atto Costitutivo {{  }}</p> 
-                     <p>Statuto Stipulato {{  }}</p> 
-                    <p>Regolamento CER {{  }}</p> 
-                </mat-card-content> 
-            </mat-form-field>
-            </mat-card>-->
+                            <!-- <input type="file" 
+                            (change)="onFileSelected($event, 'attoCostitutivo')"
+                            accept=".pdf,.doc,.docx"
+                            /> -->
+                        </div> 
+                        
+                        <div class="doc-row">
+                            <div class="doc-label">
+                                <mat-icon>description</mat-icon>
+                                <span>Statuto Stipulato</span>
+                            </div>
 
-            <!-- <mat-card>
-            <mat-card-title>CABINE PRIMARIE</mat-card-title>
-                <mat-card-content>
-                    <mat-checkbox formControlName="iscrizioneRunts" style="margin-bottom: 15px;">Iscrizione RUNTS</mat-checkbox>
-                    <mat-checkbox formControlName="terzoSettore" style="margin-bottom: 15px;">Terzo Settore</mat-checkbox>
-                    <mat-checkbox formControlName="progettiInclusioneSociale" style="margin-bottom: 15px;">Progetti inclusione sociale</mat-checkbox>
-                    <mat-checkbox formControlName="areeMontaneOInterne" style="margin-bottom: 15px;">Aree montane o interne</mat-checkbox>
-                    <mat-checkbox formControlName="progettiCambiamentiClimatici" style="margin-bottom: 15px;">Progetti cambiamenti climatici</mat-checkbox>
-                </mat-card-content>-->
-            </mat-card> 
+                            <!-- <input type="file" 
+                            (change)="onFileSelected($event, 'statutoStipulato')"
+                            accept=".pdf,.doc,.docx"
+                            /> -->
+                        </div> 
+
+                        <div class="doc-row">
+                            <div class="doc-label">
+                                <mat-icon>description</mat-icon>
+                                <span>Regolamento CER</span>
+                            </div>
+
+                            <!-- <input type="file" 
+                            (change)="onFileSelected($event, 'regolamentoCer')"
+                            accept=".pdf,.doc,.docx"
+                            /> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-title">CABINE PRIMARIE</div>
+
+                    <div class="field-group">
+                        <mat-checkbox formControlName="iscrizioneRunts">Iscrizione RUNTS</mat-checkbox>
+                        <mat-checkbox formControlName="terzoSettore">Terzo Settore</mat-checkbox>
+                        <mat-checkbox formControlName="progettiInclusioneSociale">Progetti inclusione   sociale</mat-checkbox>
+                        <mat-checkbox formControlName="areeMontaneOInterne">Aree montane o interne</mat-checkbox>
+                        <mat-checkbox formControlName="progettiCambiamentiClimatici">Progetti cambiamenti climatici</mat-checkbox>
+                    </div>
+                </div>
+            </mat-card>
         </div>
     </div>
 

@@ -9,34 +9,35 @@ import { Stato } from '../../interfaces/stato.model';
   styleUrls: ['./modifica-cer.component.scss']
 })
 export class ModificaCerComponent {
-cerForm!:FormGroup;
+  
+  cerForm!:FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {}
     
+    ngOnInit(): void {
     this.cerForm =this.fb.group({
       regioneSociale: ['', Validators.required],
       partitaIva: ['', Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")],
       codiceFiscale: ['', Validators.required], 
       formaGiuridica: ['', Validators.required],
-      telefono: ['', Validators.required],
+      telefono: ['', Validators.required, Validators.minLength(10), Validators.maxLength(10)],
       email: ['', [Validators.required, Validators.email]],
       pec: ['', [Validators.required, Validators.email]],
       sitoWeb: ['', Validators.required],
       nomeCognomeReferente: ['', Validators.required],
       numeroCabine: ['', Validators.required],
       viaSedeLegale: ['', Validators.required],
-      cap: ['', Validators.required],
+      cap: ['', Validators.required, Validators.minLength(5), Validators.maxLength(5)],
       comuneSedeLegale: ['', Validators.required],
-      provinciaSedeLegale: ['', Validators.required],
+      provinciaSedeLegale: ['', Validators.required, Validators.minLength(2), Validators.maxLength(2)],
       regioneSedeLegale: ['', Validators.required],
-
-      statoCer: ['', Validators.required]
+      statoCer: ['', Validators.required],
+      iscrizioneRunts: [false],
+      terzoSettore: [false],
+      progettiIncluisoneSociale: [false],
+      areeMontaneOInterne: [false],
+      progettiCambiamentiClimatici: [false]
     });
+    this.cerForm.enable();
   }
-
-  hide = true;
-  stati: Stato[] = [
-    { value: 'attivo', viewValue: 'Attivo'},
-    { value: 'non attivo', viewValue: 'Non attivo'}
-  ]
 }

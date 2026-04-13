@@ -2,26 +2,27 @@
   <div [formGroup]="form">
     <div rows="2">
       <mat-form-field appearance="fill">
-        <mat-label >Nome</mat-label>
+        <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="nome" aria-label="nome" required>
         <mat-icon matSuffix>id_card</mat-icon>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label >Cognome</mat-label>
+        <mat-label>Cognome</mat-label>
         <input type="text" matInput formControlName="cognome" aria-label="cognome" required>
         <mat-icon matSuffix>id_card</mat-icon>
       </mat-form-field>
     </div>
     <div rows="2">
       <mat-form-field appearance="fill">
-        <mat-label >Email</mat-label>
+        <mat-label>Email</mat-label>
         <input type="text" matInput formControlName="email" aria-label="email" required>
         <mat-icon matSuffix>mail</mat-icon>
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
         <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" aria-label="password" required>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         <mat-hint>Minimo 8 caratteri</mat-hint>
@@ -29,12 +30,12 @@
     </div>
     <div rows="2">
       <mat-form-field appearance="fill">
-        <mat-label >Codice Fiscale</mat-label>
+        <mat-label>Codice Fiscale</mat-label>
         <input type="text" matInput formControlName="codice_fiscale" aria-label="codice_fiscale" required>
         <mat-icon matSuffix>id_card</mat-icon>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label >Telefono</mat-label>
+        <mat-label>Telefono</mat-label>
         <input type="text" matInput formControlName="telefono" aria-label="telefono" required>
         <mat-icon matSuffix>phone</mat-icon>
         <mat-hint>Includi il prefisso</mat-hint>
