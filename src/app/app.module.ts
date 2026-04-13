@@ -24,9 +24,10 @@ import { LoginComponent } from './core/component/login/login/login.component';
 import { DettaglioCerComponent } from './core/component/dettaglio-cer/dettaglio-cer.component';
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+import { DashboardComponent } from './core/component/dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
