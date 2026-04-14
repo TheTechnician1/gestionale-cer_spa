@@ -11,7 +11,10 @@ import {
 } from '@angular/forms';
 import { ControlloErroriService } from '../core/services/controllo-errori.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LoginService } from '../core/services/login.service';
+import { Login, LoginService } from '../core/services/login.service';
+import { HttpClient } from '@angular/common/http';
+import { Route, Router } from '@angular/router';
+import { AuthService, Role } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -37,10 +40,22 @@ export class LoginComponent {
   });
   hide = false;
 
+
+  
+  
+
+
+
+
+
+
   constructor(
     private controlloErroriService: ControlloErroriService,
     private fb: FormBuilder,
     private login: LoginService,
+    private http: HttpClient,
+    private router: Router,
+    private auth: AuthService,
   ) {}
 
   get email(): any {
@@ -65,11 +80,25 @@ export class LoginComponent {
     if (this.form.valid) {
       let email: string = this.email.value;
       let passw = this.password.value;
-      let response: boolean = this.login.login(email, passw);
+      this.login.login(email, passw);
+      let response: Login = this.login.getL();
 
-      if (response) {
+      if (response.isLoginOK === true) {
         //redirect
-        console.log("TUTTO OK L'UTENZA");
+        console.log("TUTTO OK L'UTENZA ------------- " + response.ruolo);
+
+        if(response.ruolo === Role.ADMIN.toUpperCase()){
+          this.auth.loginAsAdmin();
+          this.router.navigate(['']);
+        }
+        else if(response.ruolo === Role.GEST.toUpperCase()){
+          this.auth.loginAsGest();
+          this.router.navigate(['']);
+        }else{
+          this.auth.loginAsGuest();
+          this.router.navigate(['']);
+        }
+
       } else {
         //faccio altro...
         console.log("NON E' ok L'utenza");
@@ -78,12 +107,33 @@ export class LoginComponent {
 
     // JSON finale mappato
     const json = this.form.value;
-    console.log(JSON.stringify(json, null, 2));
+    const jsonCreato = JSON.stringify(json, null, 2)
+    console.log(jsonCreato);
+    
+
+    
+    
+ 
   }
 
   submitOspite() {
-    const json = this.user;
-    console.log(JSON.stringify(json, null, 2));
+    this.login.login(this.user.email, this.user.password);
+    let response: Login = this.login.getL();
+    if (response.isLoginOK === true) {
+      console.log("TUTTO OK L'UTENZA ------------- " + response.ruolo);
+      const json = this.user;
+      console.log(JSON.stringify(json, null, 2));
+      this.auth.loginAsGuest();
+      this.router.navigate(['']);
+    } else {
+      //faccio altro...
+      console.log("NON E' ok L'utenza");
+    }
+  }
+
+  sendData() {
+    // this.http.post('http://localhost:3000/api/endpoint', jsonCreato)
+    // .subscribe(response => console.log(response));
   }
 
   getErrorMessageE() {
