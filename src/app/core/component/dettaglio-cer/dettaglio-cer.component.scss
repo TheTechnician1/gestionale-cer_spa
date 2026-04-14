@@ -80,3 +80,17 @@ mat-form-field {
 .doc-row:last-child {
   border-bottom: none; /* rimuove la linea di separazione dall'ultima riga */
 }
+
+.button {
+  border-radius: 8px;
+  min-width: 130px;
+  height: 42px;
+}
+
+.conteiner-button {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px
+}
+

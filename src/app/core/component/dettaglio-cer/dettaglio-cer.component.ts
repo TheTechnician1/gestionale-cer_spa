@@ -13,7 +13,7 @@ export class DettaglioCerComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.cerForm =this.fb.group({
+    this.cerForm = this.fb.group({
       ragioneSociale: ['', [Validators.required]],
       partitaIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
       codiceFiscale: ['', [Validators.required]],
