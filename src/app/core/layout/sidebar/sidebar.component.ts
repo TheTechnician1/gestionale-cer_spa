@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
-import { NestedTreeControl } from "@angular/cdk/tree";
-import { MatTreeNestedDataSource } from "@angular/material/tree";
+import { Component } from '@angular/core';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 
 interface NavItem {
   label: string;
@@ -10,30 +10,38 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
+  { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
   {
-    label: "Anagrafiche",
-    icon: "badge",
+    label: 'Anagrafiche',
+    icon: 'badge',
     children: [
-      { label: "Clienti", icon: "groups", route: "/anagrafiche/clienti" },
-      { label: "Fornitori", icon: "local_shipping", route: "/anagrafiche/fornitori" },
+      { label: 'Clienti', icon: 'groups', route: '/anagrafiche/clienti' },
+      {
+        label: 'Fornitori',
+        icon: 'local_shipping',
+        route: '/anagrafiche/fornitori',
+      },
     ],
   },
   {
-    label: "Impianti",
-    icon: "bolt",
+    label: 'Impianti',
+    icon: 'bolt',
     children: [
-      { label: "Monitoraggio", icon: "monitor_heart", route: "/impianti/monitoraggio" },
-      { label: "Manutenzioni", icon: "build", route: "/impianti/manutenzioni" },
+      {
+        label: 'Monitoraggio',
+        icon: 'monitor_heart',
+        route: '/impianti/monitoraggio',
+      },
+      { label: 'Manutenzioni', icon: 'build', route: '/impianti/manutenzioni' },
     ],
   },
-  { label: "Impostazioni", icon: "settings", route: "/impostazioni" },
+  { label: 'Impostazioni', icon: 'settings', route: '/impostazioni' },
 ];
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.scss"],
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
   treeControl = new NestedTreeControl<NavItem>((node) => node.children);
@@ -43,5 +51,6 @@ export class SidebarComponent {
     this.dataSource.data = NAV_ITEMS;
   }
 
-  hasChild = (_: number, node: NavItem) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: NavItem) =>
+    !!node.children && node.children.length > 0;
 }
