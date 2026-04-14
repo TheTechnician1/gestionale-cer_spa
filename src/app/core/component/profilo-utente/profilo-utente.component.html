@@ -1,0 +1,48 @@
+<h2>Profilo Utente</h2>
+<div class="profile-container">
+  <div class="profile-header">
+    <img src="../assets/img/user-avatar.png" alt="User Avatar" class="avatar">
+    <div class="user-info">
+      <h4 class="title"> Benvenuto!  {{ utente.nome_utente }} {{ utente.cognome_utente }}</h4>
+        <p>
+            <span class="label">ID Utente:    </span> 
+            <span class="value">{{ utente.id_utente }}</span>
+        </p>
+        <p>
+            <span class="label">Nome:    </span>
+            <span class="value">{{ utente.nome_utente }}</span>
+        </p>
+        <p>
+            <span class="label">Cognome:    </span>
+            <span class="value">{{ utente.cognome_utente }}</span>
+        </p>
+        <p>
+            <span class="label">Codice fiscale:    </span>
+            <span class="value">{{ utente.codice_fiscale }}</span>
+        </p>
+        <p>
+            <span class="label">e-mail:    </span>
+            <span class="value">{{ utente.email }}</span>
+        </p>
+        <p>
+            <span class="label">Password:    </span>
+            <span class="value">{{ utente.password }}</span>
+        </p>
+        <p>
+            <span class="label">Numero di telefono:    </span>
+            <span class="value">{{ utente.numero_telefono }}</span>
+        </p>
+        
+
+
+        
+        
+
+       
+        <p>Ruolo: {{ utente.ruolo }}</p>
+        <div rows="2" class="button"></div>
+            <button  mat-raised-button color="primary">Modifica e-mail</button>
+            <button  mat-raised-button color="primary">Modifica password</button>
+        </div>
+    </div>
+  </div>

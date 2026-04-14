@@ -9,6 +9,7 @@ import { ConfigurazioneComponent } from "./core/component/configurazione/configu
 import { ModificaCerComponent } from "./core/component/modifica-cer/modifica-cer.component";
 import { DashboardComponent } from "./core/component/dashboard/dashboard.component";
 import { UtenteComponent } from "./core/component/utente/utente.component";
+import { ProfiloUtenteComponent } from "./core/component/profilo-utente/profilo-utente.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: UtenteComponent, pathMatch: 'full' },
@@ -21,7 +22,8 @@ export const FULL_LAYOUT_ROUTES: Routes = [
       { path: "modifica-cer", component: ModificaCerComponent }
     ]
   },
-  { path: "configurazioni", component: ConfigurazioneComponent }
+  { path: "configurazioni", component: ConfigurazioneComponent },
+  { path: "profilo-utente", component: ProfiloUtenteComponent }
 ];
 
 export const routes: Routes = [{ path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ }];
