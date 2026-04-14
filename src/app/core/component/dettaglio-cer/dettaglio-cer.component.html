@@ -10,14 +10,16 @@
               <mat-label>Ragione Sociale</mat-label>
               <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale" required>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Partita IVA</mat-label> <!-- {{ }} -->
-              <input matInput formControlName="partitaIva" aria-label="partitaIva" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Codice Fiscale</mat-label> <!-- {{ }} -->
-              <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale" required>
-            </mat-form-field>
+            <div class="row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Partita IVA</mat-label>
+                <input matInput formControlName="partitaIva" aria-label="partitaIva" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Codice Fiscale</mat-label>
+                <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale" required>
+              </mat-form-field>
+            </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Forma giuridica CER</mat-label>
               <input matInput formControlName="formaGiuridica" aria-label="formaGiuridica" required>
@@ -27,22 +29,26 @@
         <div class="section-box">
           <div class="section-title">CONTATTI</div>
           <div class="field-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Telefono</mat-label>
-              <input matInput formControlName="telefono" aria-label="telefono" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email" aria-label="email" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>PEC</mat-label>
-              <input matInput formControlName="pec" aria-label="pec" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Sito Web</mat-label>
-              <input matInput formControlName="sitoWeb" aria-label="sitoWeb" required>
-            </mat-form-field>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Telefono</mat-label>
+                <input matInput formControlName="telefono" aria-label="telefono" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" aria-label="email" required>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>PEC</mat-label>
+                <input matInput formControlName="pec" aria-label="pec" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Sito Web</mat-label>
+                <input matInput formControlName="sitoWeb" aria-label="sitoWeb" required>
+              </mat-form-field>
+            </div>
           </div>
         </div>
         <div class="section-box">
@@ -114,6 +120,9 @@
               <div class="doc-label">
                 <mat-icon>description</mat-icon>
                 <span>Atto Costitutivo</span>
+                <button mat-icon-button>
+                  <mat-icon>download</mat-icon>
+                </button>
               </div>
               <!-- <input type="file" (change)="onFileSelected($event, 'attoCostitutivo')" accept=".pdf,.doc,.docx"/> -->
             </div>
@@ -121,6 +130,9 @@
               <div class="doc-label">
                 <mat-icon>description</mat-icon>
                 <span>Statuto Stipulato</span>
+                <button mat-icon-button>
+                  <mat-icon>download</mat-icon>
+                </button>
               </div>
               <!-- <input type="file" (change)="onFileSelected($event, 'statutoStipulato')" accept=".pdf,.doc,.docx"/> -->
             </div>
@@ -128,6 +140,9 @@
               <div class="doc-label">
                 <mat-icon>description</mat-icon>
                 <span>Regolamento CER</span>
+                <button mat-icon-button>
+                  <mat-icon>download</mat-icon>
+                </button>
               </div>
               <!-- <input type="file" (change)="onFileSelected($event, 'regolamentoCer')" accept=".pdf,.doc,.docx"/> -->
             </div>
@@ -145,19 +160,5 @@
         </div>
       </mat-card>
     </div>
-  </div>
-  <div class="conteiner-button">
-    <button mat-raised-button color="primary" type="button" class="button" routerLink="modifica-cer">
-      <mat-icon>edit</mat-icon> Modifica
-    </button>
-    <button mat-flat-button color="accent" type="button" class="button" routerLink="cer">
-      Cancella
-    </button>
-    <button mat-raised-button type="button" class="button" disabled="">
-      Ripristina Cancellazione
-    </button>
-    <button mat-raised-button type="button" class="button" disabled="">
-      Conferma Dati
-    </button>
   </div>
 </form>

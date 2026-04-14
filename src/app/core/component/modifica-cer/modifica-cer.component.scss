@@ -54,14 +54,10 @@ mat-form-field {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding: 8px 0;
-  // padding: 12px 0;   /* più spazio verticale */
-  padding: 16px 0px;
-  margin-bottom: 12px; /* spazio tra le righe */
-  // border: 1px solid #eee; /* linea di separazione leggera */
+  padding: 4px 0px; /* spazio verticale */
+  margin-bottom: 2px; /* spazio tra le righe */
   border-radius: 8px; /* angoli arrotondati */
-  border-bottom: 1px solid #eee; /* opzionale ma pulito */
-  // background-color: #fafafa; /* colore di sfondo leggermente diverso */
+  border-bottom: 1px solid #eee;
 }
 
 .doc-label {
@@ -78,5 +74,26 @@ mat-form-field {
 }
 
 .doc-row:last-child {
-  border-bottom: none; /* rimuove la linea di separazione dall'ultima riga */
+  border-bottom: none; /* rimuove linea di separazione dall'ultima riga */
+}
+
+.row {
+  display: flex;
+  gap: 0px;
+}
+
+.row mat-form-field {
+  flex: 1;
+  width: auto;
+  margin: 0;
+}
+
+.half-width {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
 }

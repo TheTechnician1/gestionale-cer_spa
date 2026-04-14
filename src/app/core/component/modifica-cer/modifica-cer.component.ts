@@ -2,16 +2,18 @@ import { Component } from '@angular/core';
 import { getTreeControlFunctionsMissingError } from '@angular/cdk/tree';
 import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
+import { CERService } from '../../services/cer.service';
 
 @Component({
   selector: 'app-modifica-cer',
   templateUrl: './modifica-cer.component.html',
   styleUrls: ['./modifica-cer.component.scss']
 })
+
 export class ModificaCerComponent {
   cerForm!:FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private cerService: CERService ) {}
 
   ngOnInit(): void {
     this.cerForm =this.fb.group({
@@ -31,6 +33,9 @@ export class ModificaCerComponent {
       provinciaSedeLegale: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       regioneSedeLegale: ['', [Validators.required]],
       statoCer: ['', [Validators.required]],
+      attoCosttutivo: [null],
+      statutoStipulato: [null],
+      regolamentoCer: [null],
       iscrizioneRunts: [false],
       terzoSettore: [false],
       progettiInclusioneSociale: [false],
@@ -44,4 +49,5 @@ export class ModificaCerComponent {
     { value: 'attivo', viewValue: 'Attivo'},
     { value: 'noattivo', viewValue: 'Non Attivo'}
   ]
+
 }
