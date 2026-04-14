@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GestioneCERComponent } from './gestione-cer.component';
+import { FormRicercaCerComponent } from './form-ricerca-cer.component';
 
-describe('GestioneCERComponent', () => {
-  let component: GestioneCERComponent;
-  let fixture: ComponentFixture<GestioneCERComponent>;
+describe('FormRicercaCerComponent', () => {
+  let component: FormRicercaCerComponent;
+  let fixture: ComponentFixture<FormRicercaCerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GestioneCERComponent ]
+      declarations: [ FormRicercaCerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GestioneCERComponent);
+    fixture = TestBed.createComponent(FormRicercaCerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
