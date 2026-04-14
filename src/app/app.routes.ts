@@ -10,6 +10,7 @@ import { ModificaCerComponent } from "./core/component/modifica-cer/modifica-cer
 import { DashboardComponent } from "./core/component/dashboard/dashboard.component";
 import { UtenteComponent } from "./core/component/utente/utente.component";
 import { ProfiloUtenteComponent } from "./core/component/profilo-utente/profilo-utente.component";
+import { InserimentoCerComponent } from "./core/component/inserimento-cer/inserimento-cer.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: UtenteComponent, pathMatch: 'full' },
@@ -18,6 +19,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "login", component: LoginComponent },
   { path: "cer", component: CERComponent,
     children: [
+      { path: "inserimento-cer", component: InserimentoCerComponent },
       { path: "dettaglio-cer", component: DettaglioCerComponent },
       { path: "modifica-cer", component: ModificaCerComponent }
     ]
@@ -26,4 +28,6 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "profilo-utente", component: ProfiloUtenteComponent }
 ];
 
-export const routes: Routes = [{ path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ }];
+export const routes: Routes = [
+  { path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ }
+];
