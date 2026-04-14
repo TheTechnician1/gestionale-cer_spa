@@ -20,7 +20,7 @@ export class RegistrazioneUtenteComponent {
 
   formRegistrazione: FormGroup;
 
-  elencoRuoli: string[] = ['Admin', 'Gest'];
+  elencoRuoli: string[] = ['ADMIN', 'GEST'];
 
   constructor(private costruttoreForm: FormBuilder) {
     this.formRegistrazione = this.costruttoreForm.group(
@@ -29,9 +29,9 @@ export class RegistrazioneUtenteComponent {
         cognome: ['', [Validators.required, Validators.minLength(2)]],
         codiceFiscale: [
           '',
-          [Validators.required, Validators.pattern(/^[A-Z0-9]{16}$/)],
+          [Validators.required, Validators.pattern(/^[A-Z\s0-9]{16}$/)],
         ],
-        email: ['', [Validators.required, Validators.email]],
+        email: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
         numeroTelefono: [
           '',
           [Validators.required, Validators.pattern(/^\+?[0-9\s]{8,15}$/)],

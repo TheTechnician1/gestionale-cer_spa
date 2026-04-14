@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-gestione-cer',
-  templateUrl: './gestione-cer.component.html',
-  styleUrls: ['./gestione-cer.component.scss']
+  selector: 'app-form-ricerca-cer',
+  templateUrl: './form-ricerca-cer.component.html',
+  styleUrls: ['./form-ricerca-cer.component.scss']
 })
-export class GestioneCERComponent {
-
+export class FormRicercaCerComponent {
  formRicerca: FormGroup;
 
  elencoFormaGiuridica: string[] = ['Associazione non riconosciuta', 'Associazione riconosciuta', 'Società di capitali', 'Cooperativa', 'Fondazione di partecipazione'];
@@ -24,12 +23,14 @@ export class GestioneCERComponent {
 
  constructor(private costruttoreForm: FormBuilder) {
      this.formRicerca = this.costruttoreForm.group(
+    {
      ragioneSociale: [''],
      partitaIVA: [''],
      formaGiuridica: [''],
-     stato: ['']
+     stato: [''],
      flag: ['']
-     );
+    }
+  );
    }  
 
 

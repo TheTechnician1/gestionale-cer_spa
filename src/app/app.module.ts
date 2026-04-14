@@ -16,12 +16,13 @@ import { FullLayoutComponent } from './core/layout/full-layout.component';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
 import { HomeComponent } from './home/home.component';
-import { GestioneCERComponent } from './gestione-cer/gestione-cer.component';
+import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
 
 
 
@@ -36,7 +37,7 @@ import { GestioneCERComponent } from './gestione-cer/gestione-cer.component';
     LoginComponent,
     RegistrazioneUtenteComponent,
     HomeComponent,
-    //GestioneCERComponent,
+    FormRicercaCerComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +45,7 @@ import { GestioneCERComponent } from './gestione-cer/gestione-cer.component';
     AppRoutingModule,
     SharedModule,
     TranslateRootModule,
+    MatToolbarModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
