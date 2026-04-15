@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StorageService } from './storage.service';
 export interface Login {
   ruolo: string;
   isLoginOK?: boolean;
@@ -8,12 +9,16 @@ export interface Login {
   providedIn: 'root',
 })
 export class LoginService {
-  constructor() {}
+  private readonly ruolo = 'response_ruolo';
+
+  constructor(private storage: StorageService) {}
 
   l: Login = {
     ruolo: 'ruolo non trovato',
     isLoginOK: false,
   };
+
+  id = 0;
 
   login(email: string, password: string): void {
     console.log('email = ', email);
@@ -56,12 +61,22 @@ export class LoginService {
         password: 'guest',
         ruolo: 'GUEST',
       },
+      {
+        email: 'simone@gmail.com',
+        password: 'simone77',
+        ruolo: 'GUEST',
+      },
     ];
 
     for (let u of utente) {
       if (u.email === email && u.password === password) {
         this.l.ruolo = u.ruolo;
         this.l.isLoginOK = true;
+        console.log('utente trovato: può accedere come ' + this.l.ruolo);
+        // if(u.email === 'simone@gmail.com'){
+        // this.id = 77
+        // console.log('id cambiato')
+        // }
         break;
       } else {
         this.l.ruolo = 'ruolo non trovato';
@@ -72,5 +87,17 @@ export class LoginService {
 
   getL(): Login {
     return this.l;
+  }
+
+  getLruolo(): string {
+    return this.l.ruolo;
+  }
+
+  setResponse(response: string): void {
+    this.storage.setLocal(this.ruolo, response);
+  }
+
+  isGranted() {
+    return this.storage.getLocal<string>(this.ruolo);
   }
 }

@@ -1,39 +1,38 @@
-import { Injectable } from "@angular/core";
-import { StorageService } from "./storage.service";
+import { Injectable } from '@angular/core';
+import { StorageService } from './storage.service';
 export interface isAuthenticated {
   controllo: Boolean;
   validUser: boolean;
 }
 export enum Role {
   ADMIN = 'admin',
-  GEST = 'gestore',
-  GUEST = 'guest'
+  GEST = 'gest', //Attenzione potrebbe spaccarsi qui: prima era gestore, adesso è gest (controllare in caso di rottura delle rotte)
+  GUEST = 'guest',
 }
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly tokenKey = "auth_token";
+  private readonly tokenKey = 'auth_token';
   private user: { role: Role } | null = null;
-
 
   constructor(private storage: StorageService) {}
 
-  
-
   isAuth: isAuthenticated = {
     controllo: false,
-    validUser: false
-  }
+    validUser: false,
+  };
 
-  isAuthenticated(): void{
-
-    this.isAuth.controllo = Boolean(this.storage.getLocal<string>(this.tokenKey) || this.storage.getSession<string>(this.tokenKey) || this.getRole());
+  isAuthenticated(): void {
+    this.isAuth.controllo = Boolean(
+      this.storage.getLocal<string>(this.tokenKey) ||
+      this.storage.getSession<string>(this.tokenKey) ||
+      this.getRole(),
+    );
     this.isAuth.validUser = this.user !== null;
-
   }
 
-  getIsAuthenticated(){
-    return this.isAuth
+  getIsAuthenticated() {
+    return this.isAuth;
   }
 
   // Example hooks to implement later
@@ -56,32 +55,21 @@ export class AuthService {
 
   loginAsGuest() {
     this.user = { role: Role.GUEST };
-    this.setToken("token_test_guest", true);
+    this.setToken('token_test_guest', true);
   }
 
   loginAsAdmin() {
     this.user = { role: Role.ADMIN };
-    this.setToken("token_test_admin", true);
+    this.setToken('token_test_admin', true);
   }
 
   loginAsGest() {
     this.user = { role: Role.GEST };
-    this.setToken("token_test_gest", true);
+    this.setToken('token_test_gest', true);
   }
 
   logout() {
     this.clearToken();
     this.user = null;
   }
-
-  
-
-  
-
-  
 }
-
-
-
-
-

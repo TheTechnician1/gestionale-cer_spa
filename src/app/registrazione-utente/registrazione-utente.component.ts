@@ -109,6 +109,7 @@ export class RegistrazioneUtenteComponent {
     }
 
     const datiUtente = {
+      x: this.formRegistrazione.getRawValue(),
       nome: this.nome.value,
       cognome: this.cognome.value,
       codiceFiscale: this.codiceFiscale.value,

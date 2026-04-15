@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -15,6 +15,11 @@ import { Login, LoginService } from '../core/services/login.service';
 import { HttpClient } from '@angular/common/http';
 import { Route, Router } from '@angular/router';
 import { AuthService, Role } from '../core/services/auth.service';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -39,15 +44,11 @@ export class LoginComponent {
     ]),
   });
   hide = false;
+  // id = 0
 
-
-  
-  
-
-
-
-
-
+  // getid(){
+  //   return this.id
+  // }
 
   constructor(
     private controlloErroriService: ControlloErroriService,
@@ -56,6 +57,7 @@ export class LoginComponent {
     private http: HttpClient,
     private router: Router,
     private auth: AuthService,
+    private snackBar: MatSnackBar = inject(MatSnackBar),
   ) {}
 
   get email(): any {
@@ -82,38 +84,40 @@ export class LoginComponent {
       let passw = this.password.value;
       this.login.login(email, passw);
       let response: Login = this.login.getL();
+      this.login.setResponse(response.ruolo);
 
       if (response.isLoginOK === true) {
         //redirect
         console.log("TUTTO OK L'UTENZA ------------- " + response.ruolo);
 
-        if(response.ruolo === Role.ADMIN.toUpperCase()){
+        if (response.ruolo === Role.ADMIN.toUpperCase()) {
           this.auth.loginAsAdmin();
           this.router.navigate(['']);
-        }
-        else if(response.ruolo === Role.GEST.toUpperCase()){
+        } else if (response.ruolo === Role.GEST.toUpperCase()) {
           this.auth.loginAsGest();
           this.router.navigate(['']);
-        }else{
+        } else {
           this.auth.loginAsGuest();
           this.router.navigate(['']);
         }
-
       } else {
         //faccio altro...
+        let verticalPosition: MatSnackBarVerticalPosition = 'bottom';
+        let horizontalPosition: MatSnackBarHorizontalPosition = 'end';
+        this.snackBar.open('User not found', 'Undo', {
+          duration: 3000,
+          horizontalPosition: horizontalPosition,
+          verticalPosition: verticalPosition,
+        });
+
         console.log("NON E' ok L'utenza");
       }
     }
 
     // JSON finale mappato
     const json = this.form.value;
-    const jsonCreato = JSON.stringify(json, null, 2)
+    const jsonCreato = JSON.stringify(json, null, 2);
     console.log(jsonCreato);
-    
-
-    
-    
- 
   }
 
   submitOspite() {
