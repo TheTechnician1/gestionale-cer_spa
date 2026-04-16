@@ -9,18 +9,19 @@ interface NavItem {
   icon: string;
   route?: string;
   children?: NavItem[];
+  roles?: string[];
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
-  { label: "Anagrafiche", icon: "badge", children: [
+  { label: "Dashboard", icon: "dashboard", route: "/dashboard", roles: ["ADMIN", "GEST", "GUEST"] },
+  { label: "Anagrafiche", icon: "badge", roles: ["ADMIN", "GEST"], children: [
     { label: "Profilo", icon: "account_box", route: "/profilo-utente"},
-    { label: "Registrazione", icon: "person_add", route: "/registrazione" },
+    { label: "Registrazione", icon: "person_add", route: "/registrazione", roles: ["ADMIN"] },
   ]},
-  { label: "Comunità Energetiche", icon: "factory" , route: "/cer"},
-  { label: "Configurazioni", icon: "cabin", route: "/configurazioni"},
-  { label: "Impianto", icon: "bolt", route: "/impianto" },
-  { label: "Dati Energetici", icon: "settings", route:"/dati-energetici" }
+  { label: "Comunità Energetiche", icon: "factory" , route: "/cer", roles: ["ADMIN", "GEST", "GUEST"]},
+  { label: "Configurazioni", icon: "cabin", route: "/configurazioni", roles: ["ADMIN", "GEST", "GUEST"]},
+  { label: "Impianto", icon: "bolt", route: "/impianto", roles: ["ADMIN", "GEST", "GUEST"] },
+  { label: "Dati Energetici", icon: "settings", route:"/dati-energetici", roles: ["ADMIN", "GEST", "GUEST"] }
 ];
 
 
@@ -39,7 +40,7 @@ export class SidebarComponent implements OnInit{
 
   ngOnInit() {
     this.authService.isLogged$.subscribe(status => {
-      this.dataSource.data = status ? NAV_ITEMS: [];
+      this.dataSource.data = status ? this.filterNavItems(NAV_ITEMS, this.authService.getRole()): [];
     });
   }
 
@@ -51,13 +52,14 @@ export class SidebarComponent implements OnInit{
     }
 
     return items
-      .map((item) => {
-        const children = item.children ? this.filterNavItems(item.children, role) : undefined;
-        return { ...item, children };
-      })
-      .filter((item) => {
-        const roleAllowed = !item.roles || item.roles.includes(role);
-        const hasChildren = !!item.children && item.children.length > 0;
-        return roleAllowed && (item.route || hasChildren);
-      });
+    .map((item) => {
+      const children = item.children ? this.filterNavItems(item.children, role) : undefined;
+      return { ...item, children };
+    })
+    .filter((item) => {
+      const roleAllowed = !item.roles || item.roles.includes(role);
+      const hasChildren = !!item.children && item.children.length > 0;
+      return roleAllowed && (item.route || hasChildren);
+    });
+  }
 }
