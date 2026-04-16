@@ -15,6 +15,7 @@
     <mat-menu #menu="matMenu">
       <button *ngIf="!isLog" mat-menu-item routerLink="login">Login</button>
       <button *ngIf="isLog" mat-menu-item routerLink="/">Home</button>
+      <button *ngIf="isLog" mat-menu-item routerLink="profilo-utente">Profilo</button>
       <button *ngIf="isLog" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
     </mat-menu>
   </button>

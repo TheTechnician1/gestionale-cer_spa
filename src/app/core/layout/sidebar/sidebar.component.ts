@@ -14,7 +14,8 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Registrazione", icon: "person_add", route: "/registrazione" },
   { label: "Comunità Energetiche", icon: "factory" , route: "/cer"},
   { label: "Configurazioni", icon: "cabin", route: "/configurazioni"},
-  { label: "Impianti", icon: "bolt", route: "/impianti" },
+  { label: "Impianto", icon: "bolt", route: "/impianto" },
+  { label: "Dati Energetici", icon: "settings", route:"/dati-energetici" }
 ];
 
 @Component({

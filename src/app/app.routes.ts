@@ -11,6 +11,9 @@ import { DashboardComponent } from "./core/component/dashboard/dashboard.compone
 import { UtenteComponent } from "./core/component/utente/utente.component";
 import { ProfiloUtenteComponent } from "./core/component/profilo-utente/profilo-utente.component";
 import { InserimentoCerComponent } from "./core/component/inserimento-cer/inserimento-cer.component";
+import { ImpiantoComponent } from "./core/component/impianto/impianto.component";
+import { InserimentoImpiantoComponent } from "./core/component/inserimento-impianto/inserimento-impianto.component";
+import { DatiEnergeticiComponent } from "./core/component/dati-energetici/dati-energetici.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: UtenteComponent, pathMatch: 'full' },
@@ -24,8 +27,14 @@ export const FULL_LAYOUT_ROUTES: Routes = [
       { path: "modifica-cer", component: ModificaCerComponent }
     ]
   },
-  { path: "configurazioni", component: ConfigurazioneComponent },
-  { path: "profilo-utente", component: ProfiloUtenteComponent }
+  { path: "configurazione", component: ConfigurazioneComponent },
+  { path: "profilo-utente", component: ProfiloUtenteComponent },
+  { path: "impianto", component: ImpiantoComponent,
+    children: [
+      { path: "inserimento-impianto", component: InserimentoImpiantoComponent }
+    ]
+   },
+   { path: "dati-energetici", component: DatiEnergeticiComponent }
 ];
 
 export const routes: Routes = [
