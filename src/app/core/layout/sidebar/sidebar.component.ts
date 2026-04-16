@@ -13,7 +13,10 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
-  { label: "Registrazione", icon: "person_add", route: "/registrazione" },
+  { label: "Anagrafiche", icon: "badge", children: [
+    { label: "Profilo", icon: "account_box", route: "/profilo-utente"},
+    { label: "Registrazione", icon: "person_add", route: "/registrazione" },
+  ]},
   { label: "Comunità Energetiche", icon: "factory" , route: "/cer"},
   { label: "Configurazioni", icon: "cabin", route: "/configurazioni"},
   { label: "Impianti", icon: "bolt", route: "/impianti" },
@@ -40,4 +43,20 @@ export class SidebarComponent implements OnInit{
   }
 
   hasChild = (_: number, node: NavItem) => !!node.children && node.children.length > 0;
+
+  private filterNavItems(items: NavItem[], role: string | null): NavItem[] {
+    if (!role) {
+      return [];
+    }
+
+    return items
+      .map((item) => {
+        const children = item.children ? this.filterNavItems(item.children, role) : undefined;
+        return { ...item, children };
+      })
+      .filter((item) => {
+        const roleAllowed = !item.roles || item.roles.includes(role);
+        const hasChildren = !!item.children && item.children.length > 0;
+        return roleAllowed && (item.route || hasChildren);
+      });
 }
