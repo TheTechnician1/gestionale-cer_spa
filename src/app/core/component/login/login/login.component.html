@@ -9,14 +9,9 @@
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" aria-label="email" required>
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px;">
         <mat-label>Password</mat-label>
-        <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" aria-label="password" required>
-        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hide">
-          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-hint>Minimo 8 caratteri</mat-hint>
+        <input matInput type="password" formControlName="password" aria-label="password" required>
       </mat-form-field>
       <div class="error" *ngIf="loginError">
           Email o password errati
