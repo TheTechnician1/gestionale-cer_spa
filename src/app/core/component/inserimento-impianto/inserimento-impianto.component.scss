@@ -2,7 +2,7 @@
   display: flex;
   gap: 20px;
   margin-top: 20px;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .flex-col {
@@ -96,4 +96,10 @@ mat-form-field {
   .row {
     flex-direction: column;
   }
+}
+
+mat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

@@ -22,7 +22,9 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  hide = true;
+
+  async onSubmit() {
     if (this.loginForm.valid) {
 
       const { email, password } = this.loginForm.value;

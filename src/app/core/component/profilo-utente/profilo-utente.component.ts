@@ -14,7 +14,7 @@ export class ProfiloUtenteComponent {
     cognome_utente: 'Rossi',
     codice_fiscale: 'RSSMRA80A01H501U',
     email: 'mario@mail.com',
-    password: '1234',
+    password: '********',
     numero_telefono: '3331234567',
     ruolo: 'Admin'
     };

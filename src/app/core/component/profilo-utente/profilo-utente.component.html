@@ -1,9 +1,10 @@
 <h2>Profilo Utente</h2>
+<br>
 <div class="profile-container">
   <div class="profile-header">
-    <img src="../assets/img/user-avatar.png" alt="User Avatar" class="avatar">
     <div class="user-info">
       <h4 class="title"> Benvenuto!  {{ utente.nome_utente }} {{ utente.cognome_utente }}</h4>
+        <br>
         <p>
             <span class="label">ID Utente:    </span> 
             <span class="value">{{ utente.id_utente }}</span>
@@ -32,14 +33,11 @@
             <span class="label">Numero di telefono:    </span>
             <span class="value">{{ utente.numero_telefono }}</span>
         </p>
-        
-
-
-        
-        
-
-       
-        <p>Ruolo: {{ utente.ruolo }}</p>
+        <p>
+            <span class="label">Ruolo:    </span>
+            <span class="value">{{ utente.ruolo }}</span>
+        </p>
+        <br>
         <div rows="2" class="button"></div>
             <button  mat-raised-button color="primary">Modifica e-mail</button>
             <button  mat-raised-button color="primary">Modifica password</button>
