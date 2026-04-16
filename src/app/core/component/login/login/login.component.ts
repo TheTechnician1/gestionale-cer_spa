@@ -24,7 +24,7 @@ export class LoginComponent {
 
   hide = true;
 
-  async onSubmit() {
+  onSubmit() {
     if (this.loginForm.valid) {
 
       const { email, password } = this.loginForm.value;
