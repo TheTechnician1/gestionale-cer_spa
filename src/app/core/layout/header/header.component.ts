@@ -13,9 +13,9 @@ export class HeaderComponent {
   isLog = false;
 
   ngOnInit() {
-    this.authService.isLogged$.subscribe(status => {
-      this.isLog = status;
-    });
+     this.authService.isLogged$.subscribe(status => {
+       this.isLog = status;
+     });
   }
 
   logout() {

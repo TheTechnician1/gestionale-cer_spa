@@ -22,23 +22,46 @@ export class LoginComponent {
     });
   }
 
-  async onSubmit() {
+  onSubmit() {
     if (this.loginForm.valid) {
 
       const { email, password } = this.loginForm.value;
 
-      const isLogged = await this.authService.login(email, password);
+      this.authService.login(email, password).subscribe(user => {
+        console.log(user, "sono qui");
 
-      if(isLogged) {
+        this.authService.isAuthenticated(user)
+
+        if(user) {
+          console.log('Login riuscito');
+          this.loginError = false;
+          console.log('Ruolo:', user.role);
+          this.route.navigate(['/dashboard']);
+        } else {
+          console.log('Credenziali errate');
+          this.loginError = true;
+        }
+      });
+      console.log(this.loginForm.value);
+    }
+  }
+
+  guestIn() {
+    this.authService.login("guest@guest.guest", "guest").subscribe(user => {
+      console.log(user, "sono qui");
+
+      this.authService.isAuthenticated(user)
+
+      if(user) {
         console.log('Login riuscito');
         this.loginError = false;
+        console.log('Ruolo:', user.role);
         this.route.navigate(['/dashboard']);
-
       } else {
         console.log('Credenziali errate');
         this.loginError = true;
       }
-      console.log(this.loginForm.value);
-    }
+    });
+    console.log(this.loginForm.value);
   }
 }
