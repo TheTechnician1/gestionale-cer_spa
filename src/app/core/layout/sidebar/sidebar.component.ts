@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
+import { AuthService } from "../../services/auth.service";
+import { isEmptyArray } from '../../util/collection.util';
 
 interface NavItem {
   label: string;
@@ -18,17 +20,24 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Dati Energetici", icon: "settings", route:"/dati-energetici" }
 ];
 
+
 @Component({
   selector: "app-sidebar",
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit{
+
   treeControl = new NestedTreeControl<NavItem>((node) => node.children);
   dataSource = new MatTreeNestedDataSource<NavItem>();
 
-  constructor() {
-    this.dataSource.data = NAV_ITEMS;
+  constructor(private authService: AuthService) {
+  }
+
+  ngOnInit() {
+    this.authService.isLogged$.subscribe(status => {
+      this.dataSource.data = status ? NAV_ITEMS: [];
+    });
   }
 
   hasChild = (_: number, node: NavItem) => !!node.children && node.children.length > 0;
