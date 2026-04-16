@@ -1,1 +1,48 @@
-<p>dati-energetici works!</p>
+<div class="datiEnerg">
+  <h3>Dati energetici</h3>
+  <div>
+    <button mat-raised-button color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
+    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
+    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
+  </div>
+</div>
+<div class="table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="id_dati">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let element"> {{element.id_dati}} </td>
+    </ng-container>
+    <ng-container matColumnDef="energia_prodotta">
+      <th mat-header-cell *matHeaderCellDef> Energia Prodotta </th>
+      <td mat-cell *matCellDef="let element"> {{element.energia_prodotta}} </td>
+    </ng-container>
+    <ng-container matColumnDef="energia_prelevata">
+      <th mat-header-cell *matHeaderCellDef>Energia Prelevata</th>
+      <td mat-cell *matCellDef="let element"> {{element.energia_prelevata}} </td>
+    </ng-container>
+    <ng-container matColumnDef="azioni">
+      <th mat-header-cell *matHeaderCellDef> Azioni </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-button-toggle-group name="butt" aria-label="butt">
+          <mat-button-toggle>
+            <mat-icon color="primary">search</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle>
+            <mat-icon color="primary">settings</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="deleteDat()">
+            <mat-icon color="primary">delete</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="tableDat"></tr>
+    <tr mat-row *matRowDef="let row; columns: tableDat;"></tr>
+  </table>
+    <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+    </mat-paginator>
+</div>
+<router-outlet></router-outlet>

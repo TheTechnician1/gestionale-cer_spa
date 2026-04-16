@@ -2,7 +2,7 @@
   <h3>Configurazioni</h3>
   <div>
     <button mat-raised-button color="primary"><mat-icon>add</mat-icon> Aggiungi Configurazione</button>
-    <button mat-raised-button><mat-icon>bolt</mat-icon> Impianti</button>
+    <button mat-raised-button routerLink="/impianto" routerLinkActive="router-link-active" ><mat-icon>bolt</mat-icon> Impianti</button>
   </div>
 </div>
 <div class="table">
@@ -38,4 +38,9 @@
     <tr mat-header-row *matHeaderRowDef="tableConf"></tr>
     <tr mat-row *matRowDef="let row; columns: tableConf;"></tr>
   </table>
+    <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+    </mat-paginator>
 </div>

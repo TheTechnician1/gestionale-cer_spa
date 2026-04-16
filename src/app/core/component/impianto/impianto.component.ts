@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Impianto } from '../../interfaces/impianto.model';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-impianto',
