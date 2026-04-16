@@ -28,9 +28,10 @@ import { DashboardComponent } from './core/component/dashboard/dashboard.compone
 import { ModificaCerComponent } from './core/component/modifica-cer/modifica-cer.component';
 import { ProfiloUtenteComponent } from './core/component/profilo-utente/profilo-utente.component';
 import { InserimentoCerComponent } from './core/component/inserimento-cer/inserimento-cer.component';
+import { HomeComponent } from './core/component/home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, ProfiloUtenteComponent, InserimentoCerComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, ProfiloUtenteComponent, InserimentoCerComponent, HomeComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
