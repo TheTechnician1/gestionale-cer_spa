@@ -22,6 +22,8 @@ export class LoginComponent {
     });
   }
 
+  hide = true;
+
   async onSubmit() {
     if (this.loginForm.valid) {
 
