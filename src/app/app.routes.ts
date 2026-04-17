@@ -8,12 +8,12 @@ import { DettaglioCerComponent } from "./core/component/dettaglio-cer/dettaglio-
 import { ConfigurazioneComponent } from "./core/component/configurazione/configurazione.component";
 import { ModificaCerComponent } from "./core/component/modifica-cer/modifica-cer.component";
 import { DashboardComponent } from "./core/component/dashboard/dashboard.component";
-import { ProfiloUtenteComponent } from "./core/component/profilo-utente/profilo-utente.component";
 import { InserimentoCerComponent } from "./core/component/inserimento-cer/inserimento-cer.component";
 import { HomeComponent } from "./core/component/home/home.component";
 import { ImpiantoComponent } from "./core/component/impianto/impianto.component";
 import { InserimentoImpiantoComponent } from "./core/component/inserimento-impianto/inserimento-impianto.component";
 import { DatiEnergeticiComponent } from "./core/component/dati-energetici/dati-energetici.component";
+import { UtenteComponent } from "./core/component/utente/utente.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", redirectTo: "home", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
@@ -40,7 +40,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     ]
   },
   { path: "dati-energetici", component: DatiEnergeticiComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "profilo-utente", component: ProfiloUtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+  { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "**",redirectTo: "login" },
 

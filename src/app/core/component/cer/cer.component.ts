@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CER } from '../../interfaces/cer.model';
 import { CERService } from '../../services/cer.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-cer',
@@ -9,7 +13,7 @@ import { CERService } from '../../services/cer.service';
 })
 
 export class CERComponent {
-  constructor(private cerService: CERService) {}
+  constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
   tableCER: string[] = ['id_cer', 'ragione_sociale', 'partita_iva', 'forma_giuridica', 'azioni'];
 
   cers: CER[] = [];
@@ -101,7 +105,11 @@ cer: CER =
     }
 */
 
-  dataSource = this.cer;
+  dataSource = new MatTableDataSource(this.cer);
+  sortedData: CER[] | undefined;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   filtro = {
     ragione_sociale: '',
@@ -114,6 +122,11 @@ cer: CER =
 
   ngOnInit() {
     this.loadCERS();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
   loadCERS() {
@@ -151,5 +164,13 @@ cer: CER =
     };
 
     this.listaFiltrata = [...this.cer];
+  }
+
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

@@ -1,7 +1,7 @@
 <nav class="sidebar">
   <div class="sidebar-title">Sezioni</div>
 
-  <mat-tree class="sidebar-tree" [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree class="sidebar-tree" *ngIf="dataSource$ | async as dataSource" [dataSource]="dataSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <button mat-icon-button class="toggle-placeholder" disabled></button>
       <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
@@ -18,7 +18,6 @@
         <mat-icon class="node-icon">{{ node.icon }}</mat-icon>
         <span class="node-label">{{ node.label }}</span>
       </div>
-
       <div class="tree-inset" *ngIf="treeControl.isExpanded(node)">
         <ng-container matTreeNodeOutlet></ng-container>
       </div>

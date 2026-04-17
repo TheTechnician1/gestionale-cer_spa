@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { NestedTreeControl } from "@angular/cdk/tree";
 import { MatTreeNestedDataSource } from "@angular/material/tree";
-import { AuthService } from "../../services/auth.service";
 import { isEmptyArray } from '../../util/collection.util';
+import { UtenteService } from "../../services/utente.service";
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 interface NavItem {
   label: string;
@@ -15,7 +16,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", icon: "dashboard", route: "/dashboard", roles: ["ADMIN", "GEST", "GUEST"] },
   { label: "Anagrafiche", icon: "badge", roles: ["ADMIN", "GEST"], children: [
-    { label: "Profilo", icon: "account_box", route: "/profilo-utente"},
+    { label: "Profilo", icon: "account_box", route: "/profilo/:id"},
     { label: "Registrazione", icon: "person_add", route: "/registrazione", roles: ["ADMIN"] },
   ]},
   { label: "Comunità Energetiche", icon: "factory" , route: "/cer", roles: ["ADMIN", "GEST", "GUEST"]},
@@ -34,15 +35,17 @@ export class SidebarComponent implements OnInit{
 
   treeControl = new NestedTreeControl<NavItem>((node) => node.children);
   dataSource = new MatTreeNestedDataSource<NavItem>();
+  dataSource$ = this.authService.user$.pipe(
+    map(user => {
+      const role = user?.ruolo ?? null;
+      const ds = new MatTreeNestedDataSource<NavItem>();
+      ds.data = this.filterNavItems(NAV_ITEMS, role);
+      return ds;
+    })
+  );
+  constructor(private authService: UtenteService) {}
 
-  constructor(private authService: AuthService) {
-  }
-
-  ngOnInit() {
-    this.authService.isLogged$.subscribe(status => {
-      this.dataSource.data = status ? this.filterNavItems(NAV_ITEMS, this.authService.getRole()): [];
-    });
-  }
+  ngOnInit() {}
 
   hasChild = (_: number, node: NavItem) => !!node.children && node.children.length > 0;
 

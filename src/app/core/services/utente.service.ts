@@ -1,62 +1,114 @@
 import { Injectable } from '@angular/core';
-import { Utente } from '../interfaces/utente.model';
+import { Utente, UtenteLogin, UtenteLoginModel } from '../interfaces/utente.model';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { Ruolo, RoleType } from '../enum/role.enum';
+import { isAuthenticated } from '../interfaces/auth.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtenteService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private apiService: ApiService) { }
+  utente?: UtenteLogin;
 
-  private utenti: Utente[] = [];
+  private readonly storageKey = "utente";
+  private readonly userSubject = new BehaviorSubject<UtenteLoginModel | null>(this.loadFromStorage());
+  readonly user$ = this.userSubject.asObservable();
+  readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
+  private user: {role: Ruolo} | null = null;
+  private loggedIn$ = new BehaviorSubject<boolean>(false);
 
-  utente: Utente = {
-    id_utente: 0,
-    nome_utente: '',
-    cognome_utente: '',
-    codice_fiscale: '',
-    email: '',
-    password: '',
-    numero_telefono: '',
-    ruolo: ''
+  isAuth: isAuthenticated = {
+    check: false,
+    validUser: false
   }
 
-  getRisultati(): any {
-    let risultato;
-
-    this.http.get('www.url').subscribe((res: any) => {
-      risultato = res;
-      
-      console.log(res);
-    });
-    return risultato;
+  isAuthenticated(user: any): void {
+    this.user = user;
+    this.isAuth.validUser = this.user !== null;
+    this.loggedIn$.next(this.isAuth.validUser);
   }
 
-  getUtenti() {
-    return this.utenti;
+  get isLogged$() {
+    return this.loggedIn$.asObservable();
+  }
+
+  getIsAuthenticated() {
+    return this.isAuth
+  }
+
+  getRole(): RoleType | null {
+    return this.currentUser?.ruolo ?? null;
+  }
+
+  get currentUser(): UtenteLoginModel | null {
+    return this.userSubject.value;
+  }
+
+  loginMock(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
+    const endpoint = "/login";
+    return this.apiService.post<UtenteLogin>(endpoint, payload).pipe(
+      map((utente) => new UtenteLoginModel({ ...utente })),
+      tap((utente) => this.persistUser(utente)),
+    );
+  }
+
+  loginGuest(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
+    const endpoint = "/login"
+    return this.apiService.post<UtenteLogin>(endpoint, payload).pipe(
+      map((utente) => new UtenteLoginModel({ ...utente })),
+      tap((utente) => this.persistUser(utente)),
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.storageKey);
+    this.userSubject.next(null);
+  }
+
+  private persistUser(utente: UtenteLogin): void {
+    this.isAuthenticated(utente);
+    localStorage.setItem(this.storageKey, JSON.stringify(utente));
+    this.userSubject.next(utente);
+  }
+
+  private loadFromStorage(): UtenteLoginModel | null {
+    const raw = localStorage.getItem(this.storageKey);
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as Partial<UtenteLogin>;
+      return new UtenteLoginModel(parsed);
+    } catch {
+      localStorage.removeItem(this.storageKey);
+      return null;
+    }
   }
 
   getUtente(id: number) {
-    this.utente = this.utenti.filter(p => p.id_utente === id)[0];
-    return this.utente;
+    return this.http.get<Utente>(`/profilo/${id}`);
   }
 
   createUtente(user: Utente){
-    this.utenti.push(user);
-    return console.log("Utente inserito con successo");
+    const path = '/registrazioneUtente';
+    console.log("Utente inserito con successo");
+    return this.apiService.post<any>(path, user);
   }
 
-  editUtente(user: Utente) {
-    this.utenti = this.utenti.map(p => {
-      if(p.id_utente === user.id_utente) {
-        return user;
-      }
-      return p;
-    });
+  editUtente(user: UtenteLogin) {
+    if (this.utente?.idUtente === user?.idUtente) {
+      this.utente = { ...user };
+    }
   }
 
   deleteUtente(id: number) {
-    this.utenti = this.utenti.filter(p => p.id_utente !== id);
-    return console.log('Utente eliminato con successo');
+    if (this.utente?.idUtente === id) {
+      this.utente = {} as UtenteLogin;
+      console.log('Utente eliminato con successo');
+    }
   }
 }
