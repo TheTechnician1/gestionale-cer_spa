@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
 import { Utente, UtenteModel } from "../interfaces/utente.model";
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: "root",
@@ -27,24 +28,26 @@ export class AuthService {
     return this.userSubject.value;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
   // Login mock: simula una chiamata al backend e salva l'utente in memoria + localStorage.
   // È usato durante lo sviluppo per testare il flusso di autenticazione.
-  loginMock(email: string, forceError: boolean = false): Observable<UtenteModel> {
-    const endpoint = forceError ? "assets/mock/utente-error.json" : "assets/mock/utente.json";
-    return this.http.get<Utente>(endpoint).pipe(
-      map((utente) => new UtenteModel({ ...utente, mail: email })),
+  loginMock(payload: { utente_email: string; password: string }, forceError: boolean = false): Observable<UtenteModel> {
+    //const endpoint = forceError ? "assets/mock/utente-error.json" : "assets/mock/utente.json";
+    const endpoint = "/login"
+    return this.apiService.post<Utente>(endpoint, payload).pipe(
+      map((utente) => new UtenteModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
   }
 
   // Login guest: simula l'accesso come ospite (ruolo GUEST).
   // Serve per permettere l'accesso rapido senza credenziali reali.
-  loginGuest(payload: { email: string; password: string }): Observable<UtenteModel> {
-    const endpoint = "assets/mock/utente-guest.json";
-    return this.http.get<Utente>(endpoint).pipe(
-      map((utente) => new UtenteModel({ ...utente, mail: payload.email })),
+  loginGuest(payload: { utente_email: string; password: string }): Observable<UtenteModel> {
+    //const endpoint = "assets/mock/utente-guest.json";
+    const endpoint = "/login"
+    return this.apiService.post<Utente>(endpoint, payload).pipe(
+      map((utente) => new UtenteModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
   }

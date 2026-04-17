@@ -6,9 +6,9 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
       <mat-form-field appearance="outline">
         <mat-label>{{ "auth.login.fields.email" | translate }}</mat-label>
-        <input matInput formControlName="email" />
-        <mat-error *ngIf="form.get('email')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
-        <mat-error *ngIf="form.get('email')?.hasError('email')">{{ "common.invalid_email" | translate }}</mat-error>
+        <input matInput formControlName="utente_email" />
+        <mat-error *ngIf="form.get('utente_email')?.hasError('required')">{{ "common.required" | translate }}</mat-error>
+        <mat-error *ngIf="form.get('utente_email')?.hasError('email')">{{ "common.invalid_email" | translate }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">

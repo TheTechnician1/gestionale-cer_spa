@@ -40,7 +40,7 @@ export class HttpStatusInterceptor implements HttpInterceptor {
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
-    const backendMessage = (error.error && (error.error.message || error.error.msg || error.error.error)) || error.message || "Errore imprevisto";
+    const backendMessage = (error.error && (error.error.message || error.error.msg || error.error.error)) || error.error || error.message || "Errore imprevisto";
     return typeof backendMessage === "string" ? backendMessage : "Errore imprevisto";
   }
 }

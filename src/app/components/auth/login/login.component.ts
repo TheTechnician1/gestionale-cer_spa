@@ -23,7 +23,7 @@ export class LoginComponent {
   showPassword = true;
   form = this.fb.group(
     {
-      email: [null, [Validators.required, Validators.email]],
+      utente_email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
     },
     { validators: [passwordMatchValidator] },
@@ -41,7 +41,7 @@ export class LoginComponent {
       return;
     }
 
-    const email = this.form.get("email")?.value as string | null;
+    const email = this.form.get("utente_email")?.value as string | null;
     if (!email) {
       return;
     }
@@ -49,8 +49,11 @@ export class LoginComponent {
     const password = this.form.get("password")?.value as string | null;
     const forceError = password === "errore";
 
-    this.authService.loginMock(email, forceError).subscribe({
-      next: () => {
+    const payload = { utente_email: email ?? "", password: password ?? "" };
+
+    this.authService.loginMock(payload, false).subscribe({
+      next: (res) => {
+        console.log(res);
         this.router.navigateByUrl("/dashboard");
       },
       error: (error) => {
@@ -60,10 +63,11 @@ export class LoginComponent {
   }
 
   onGuestLogin(): void {
-    const payload = { email: "guest@guest.guest", password: "guest" };
+    const payload = { utente_email: "guest@guest.guest", password: "guest" };
 
     this.authService.loginGuest(payload).subscribe({
-      next: () => {
+      next: (res) => {
+        console.log(res);
         this.router.navigateByUrl("/dashboard");
       },
       error: (error) => {

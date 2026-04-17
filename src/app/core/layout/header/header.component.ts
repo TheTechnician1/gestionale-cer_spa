@@ -29,9 +29,9 @@ export class HeaderComponent {
         if (!user) return "";
 
         return [
-          `ID Utente: ${user.id_utente ?? "-"}`,
-          `Nome: ${user.nome_utente ?? "-"}`,
-          `Cognome: ${user.cognome_utente ?? "-"}`,
+          `ID Utente: ${user.idUtente ?? "-"}`,
+          `Nome: ${user.nomeUtente ?? "-"}`,
+          `Cognome: ${user.cognomeUtente ?? "-"}`,
           `Ruolo: ${user.ruolo ?? "-"}`
         ].join("\n");
       })
