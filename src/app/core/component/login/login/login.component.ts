@@ -14,6 +14,8 @@ export class LoginComponent {
   loginError = false;
   constructor(private fb: FormBuilder, private authService: UtenteService, private router: ActivatedRoute, private route: Router) {}
 
+  hide = true;
+
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       utente_email: ['', [Validators.required, Validators.email]],
@@ -21,8 +23,6 @@ export class LoginComponent {
       rememberMe: [false]
     });
   }
-
-  hide = true;
 
   onSubmit() {
     if (this.loginForm.valid) {
