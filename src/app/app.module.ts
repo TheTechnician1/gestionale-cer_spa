@@ -36,10 +36,11 @@ import { ModificaDatiEnergeticiComponent } from './core/component/modifica-dati-
 import { DettaglioConfigurazioneComponent } from './core/component/dettaglio-configurazione/dettaglio-configurazione.component';
 import { DettaglioImpiantoComponent } from './core/component/dettaglio-impianto/dettaglio-impianto.component';
 import { DettaglioDatiEnergeticiComponent } from './core/component/dettaglio-dati-energetici/dettaglio-dati-energetici.component';
+import { NotAuthorizedComponent } from './core/component/not-authorized/not-authorized.component';
 
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, InserimentoCerComponent, InserimentoImpiantoComponent, InserimentoDatiEnergeticiComponent, InserimentoConfigurazioneComponent, ModificaConfigurazioneComponent, ModificaImpiantoComponent, ModificaDatiEnergeticiComponent, DettaglioConfigurazioneComponent, DettaglioImpiantoComponent, DettaglioDatiEnergeticiComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, InserimentoCerComponent, InserimentoImpiantoComponent, InserimentoDatiEnergeticiComponent, InserimentoConfigurazioneComponent, ModificaConfigurazioneComponent, ModificaImpiantoComponent, ModificaDatiEnergeticiComponent, DettaglioConfigurazioneComponent, DettaglioImpiantoComponent, DettaglioDatiEnergeticiComponent, NotAuthorizedComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
