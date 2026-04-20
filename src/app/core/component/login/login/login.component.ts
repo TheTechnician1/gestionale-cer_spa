@@ -27,7 +27,7 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const payload = this.loginForm.value;
-      this.authService.loginMock(payload).subscribe(user => {
+      this.authService.login(payload).subscribe(user => {
         this.authService.isAuthenticated(user);
 
         if(user) {

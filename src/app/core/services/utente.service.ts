@@ -47,7 +47,7 @@ export class UtenteService {
     return this.userSubject.value;
   }
 
-  loginMock(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
+  login(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
     const endpoint = "/login";
     return this.apiService.post<UtenteLogin>(endpoint, payload).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
