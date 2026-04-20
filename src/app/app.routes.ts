@@ -16,6 +16,12 @@ import { DatiEnergeticiComponent } from "./core/component/dati-energetici/dati-e
 import { InserimentoDatiEnergeticiComponent } from "./core/component/inserimento-dati-energetici/inserimento-dati-energetici.component";
 import { InserimentoConfigurazioneComponent } from "./core/component/inserimento-configurazione/inserimento-configurazione.component";
 import { UtenteComponent } from "./core/component/utente/utente.component";
+import { ModificaImpiantoComponent } from "./core/component/modifica-impianto/modifica-impianto.component";
+import { DettaglioImpiantoComponent } from "./core/component/dettaglio-impianto/dettaglio-impianto.component";
+import { DettaglioConfigurazioneComponent } from "./core/component/dettaglio-configurazione/dettaglio-configurazione.component";
+import { ModificaConfigurazioneComponent } from "./core/component/modifica-configurazione/modifica-configurazione.component";
+import { ModificaDatiEnergeticiComponent } from "./core/component/modifica-dati-energetici/modifica-dati-energetici.component";
+import { DettaglioDatiEnergeticiComponent } from "./core/component/dettaglio-dati-energetici/dettaglio-dati-energetici.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", redirectTo: "home", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
@@ -32,18 +38,22 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "configurazione", component: ConfigurazioneComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-configurazione", component: InserimentoConfigurazioneComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
-      { path: "modifica-configurazioni/:id", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-configurazione/:id", component: ModificaConfigurazioneComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "dettaglio-configurazione/:id", component: DettaglioConfigurazioneComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] }
     ]
   },
   { path: "impianto", component: ImpiantoComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-impianto", component: InserimentoImpiantoComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
-      { path: "modifica-impianto/:id", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-impianto/:id", component: ModificaImpiantoComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "dettaglio-impianto/:id", component: DettaglioImpiantoComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] }
     ]
   },
   { path: "dati-energetici", component: DatiEnergeticiComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-dati-energetici", component: InserimentoDatiEnergeticiComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-dati-energetici", component: ModificaDatiEnergeticiComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "dettaglio-dati-energetici", component: DettaglioDatiEnergeticiComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] }
     ]
   },
   { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },

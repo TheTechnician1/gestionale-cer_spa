@@ -30,10 +30,16 @@ import { InserimentoCerComponent } from './core/component/inserimento-cer/inseri
 import { InserimentoImpiantoComponent } from './core/component/inserimento-impianto/inserimento-impianto.component';
 import { InserimentoDatiEnergeticiComponent } from './core/component/inserimento-dati-energetici/inserimento-dati-energetici.component';
 import { InserimentoConfigurazioneComponent } from './core/component/inserimento-configurazione/inserimento-configurazione.component';
+import { ModificaConfigurazioneComponent } from './core/component/modifica-configurazione/modifica-configurazione.component';
+import { ModificaImpiantoComponent } from './core/component/modifica-impianto/modifica-impianto.component';
+import { ModificaDatiEnergeticiComponent } from './core/component/modifica-dati-energetici/modifica-dati-energetici.component';
+import { DettaglioConfigurazioneComponent } from './core/component/dettaglio-configurazione/dettaglio-configurazione.component';
+import { DettaglioImpiantoComponent } from './core/component/dettaglio-impianto/dettaglio-impianto.component';
+import { DettaglioDatiEnergeticiComponent } from './core/component/dettaglio-dati-energetici/dettaglio-dati-energetici.component';
 
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, InserimentoCerComponent, InserimentoImpiantoComponent, InserimentoDatiEnergeticiComponent, InserimentoConfigurazioneComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, InserimentoCerComponent, InserimentoImpiantoComponent, InserimentoDatiEnergeticiComponent, InserimentoConfigurazioneComponent, ModificaConfigurazioneComponent, ModificaImpiantoComponent, ModificaDatiEnergeticiComponent, DettaglioConfigurazioneComponent, DettaglioImpiantoComponent, DettaglioDatiEnergeticiComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
