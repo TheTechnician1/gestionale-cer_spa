@@ -1,65 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Impianto } from '../interfaces/impianto.model';
+import { ApiService } from './api.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImpiantoService {
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) { }
 
-  private impianti: Impianto[] = [];
-
-  impianto: Impianto = {
-    id_impianto: '',
-    id_configurazione: '',
-    codice_cabina: '',
-    flag_impianto: false,
-    data_entrata_esercizio: '',
-    tipologia_impianto: '',
-    potenza_nominale: '',
-    presenza_accumulo: '',
-    capacita_accumulo: '',
-    tipologia_produttore: '',
-    categoria_produttore: '',
-    ubicazione_impianto: [
-      {
-        regione: '',
-        provincia: '',
-        comune: '',
-        indirizzo: '',
-        numero_civico: '',
-        cap: '',
-        tipologia_sito: ''
-      }
-    ]
+  getImpianti(): Observable<Impianto[]> {
+    return this.api.get<Impianto[]>("ricercaImpianto");
   }
 
-  getImpianti() {
-    return this.impianti;
+  getImpianto(params?: Partial<Impianto>): Observable<Impianto[]> {
+    return this.api.get<Impianto[]>("impianto", params as Record<string, string | number | boolean> | undefined);
   }
 
-  getImpianto(id: string) {
-    this.impianto = this.impianti.filter(p => p.id_impianto === id)[0];
-    return this.impianto;
+  createImpianto(payload: Impianto): Observable<Impianto> {
+    console.log("Impianto creato con successo");
+    return this.api.post<Impianto>("impianto", payload);
   }
 
-  createImpianto(imp: Impianto){
-    this.impianti.push(imp);
-    return console.log("Impianto inserito con successo");
+  editImpianto(payload: Impianto) {
+    console.log("Impianto modificato con successo");
+    return this.api.put<Impianto>(`modificaImpianto`, payload);
   }
 
-  editImpianto(imp: Impianto) {
-    this.impianti = this.impianti.map(p => {
-      if(p.id_impianto === imp.id_impianto) {
-        return imp;
-      }
-      return p;
-    });
-  }
-
-  deleteImpianto(id: string) {
-    this.impianti = this.impianti.filter(p => p.id_impianto !== id);
-    return console.log('Impianto eliminato con successo');
+  deleteImpianto(payload: Impianto): Observable<Impianto> {
+    console.log('Impianto eliminato con successo')
+    return this.api.put<Impianto>(`cancellazioneImpianto`, payload);
   }
 }

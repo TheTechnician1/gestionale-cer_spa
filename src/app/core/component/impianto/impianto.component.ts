@@ -15,47 +15,42 @@ export class ImpiantoComponent {
   constructor(private impiantoService: ImpiantoService, private _liveAnnouncer: LiveAnnouncer) {}
   tableImp: string[] = ['id_impianto', 'codice_cabina', 'data_entrata_esercizio', 'azioni'];
 
-  impianto: Impianto[] = [
-    { id_impianto: '37',
-      id_configurazione: "",
-      codice_cabina: "7d8h2",
-      data_entrata_esercizio: "12/3/26",
-      flag_impianto: false,
-      tipologia_impianto: "",
-      potenza_nominale: "",
-      presenza_accumulo: "",
-      capacita_accumulo: "",
-      tipologia_produttore: "",
-      categoria_produttore: "",
-      ubicazione_impianto: [
-        {
-          regione: "",
-          provincia: "",
-          comune: "",
-          indirizzo: "",
-          numero_civico: "",
-          cap: "",
-          tipologia_sito: ""
-        }
-      ]
-    }
-  ]
+  impianti: Impianto[] = [];
 
-  dataSource = new MatTableDataSource(this.impianto);
+  dataSource = new MatTableDataSource(this.impianti);
   
-    sortedData: Impianto[] | undefined;
-  
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
-  
-    ngAfterViewInit() {
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    }
+  sortedData: Impianto[] | undefined;
 
+  filtro = {
+    tipologia_impianto: "",
+    potenza_nominale: "",
+    presenza_accumulo: "",
+  }
 
-  deleteImp() {
+  listaFiltrata = [...this.impianti];
+  isFiltering = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngOnInit() {
+    this.loadImpianti();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  loadImpianti() {
+    this.impiantoService.getImpianti().subscribe({
+      next: (impianti) => {
+        this.impianti = impianti;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
   }
 
   sortData(sortState: Sort) {
@@ -66,19 +61,9 @@ export class ImpiantoComponent {
     }
   }
 
-  filtro = {
-    tipologia_impianto: "",
-    potenza_nominale: "",
-    presenza_accumulo: "",
-  }
-
-  listaFiltrata = [...this.impianto];
-  isFiltering = false;
-
-
   filtraImpianto() {
     console.log(this.filtro);
-    this.listaFiltrata = this.impianto.filter(p => {
+    this.listaFiltrata = this.impianti.filter(p => {
       return (
         (this.filtro.tipologia_impianto ? p.tipologia_impianto?.toLowerCase().includes(this.filtro.tipologia_impianto.toLowerCase()) : true) &&
         (this.filtro.potenza_nominale ? p.potenza_nominale?.toLowerCase().includes(this.filtro.potenza_nominale.toLowerCase()) : true) &&
@@ -102,6 +87,6 @@ export class ImpiantoComponent {
       presenza_accumulo: ""
     };
 
-    this.listaFiltrata = [...this.impianto];
+    this.listaFiltrata = [...this.impianti];
   }
 }
