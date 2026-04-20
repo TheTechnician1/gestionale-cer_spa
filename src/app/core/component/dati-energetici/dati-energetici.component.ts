@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DatiEnergetici } from '../../interfaces/dati-energetici.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { DatiEnergeticiService } from '../../services/dati-energetici.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-dati-energetici',
@@ -7,27 +12,46 @@ import { DatiEnergetici } from '../../interfaces/dati-energetici.model';
   styleUrls: ['./dati-energetici.component.scss']
 })
 export class DatiEnergeticiComponent {
+  constructor(private datiService: DatiEnergeticiService, private _liveAnnouncer: LiveAnnouncer) {}
   tableDat: string[] = ['id_dati', 'energia_prodotta', 'energia_prelevata', 'azioni'];
 
   datiEnergetici: DatiEnergetici[] = [
-   { id_dati: "14",
-     id_cer: "",
-     id_config: "",
-     anno: "",
-     energia_prodotta: 45,
-     energia_prelevata: 67,
-     energia_immessa: 32,
-     energia_condivisa: 57,
-     energia_autoconsumata: 23,
-     tariffa_premio: 56,
-     corrispettivo_premio: 32,
-     riduzione_emissione: ""
+    { id_dati: "14",
+      id_cer: "",
+      id_config: "",
+      anno: "",
+      energia_prodotta: 45,
+      energia_prelevata: 67,
+      energia_immessa: 32,
+      energia_condivisa: 57,
+      energia_autoconsumata: 23,
+      tariffa_premio: 56,
+      corrispettivo_premio: 32,
+      riduzione_emissione: ""
     }
   ]
 
-  dataSource = this.datiEnergetici;
+  dataSource = new MatTableDataSource(this.datiEnergetici);
+
+  sortedData: DatiEnergetici[] | undefined;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
 
   deleteDat() {
 
+  }
+
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

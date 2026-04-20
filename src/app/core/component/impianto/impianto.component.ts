@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Impianto } from '../../interfaces/impianto.model';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ImpiantoService } from '../../services/impianto.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-impianto',
@@ -8,12 +12,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
   styleUrls: ['./impianto.component.scss']
 })
 export class ImpiantoComponent {
+  constructor(private impiantoService: ImpiantoService, private _liveAnnouncer: LiveAnnouncer) {}
   tableImp: string[] = ['id_impianto', 'codice_cabina', 'data_entrata_esercizio', 'azioni'];
-  
+
   impianto: Impianto[] = [
-    { id_impianto: '37', 
-      id_configurazione: "", 
-      codice_cabina: "7d8h2", 
+    { id_impianto: '37',
+      id_configurazione: "",
+      codice_cabina: "7d8h2",
       data_entrata_esercizio: "12/3/26",
       flag_impianto: false,
       tipologia_impianto: "",
@@ -36,10 +41,28 @@ export class ImpiantoComponent {
     }
   ]
 
-  dataSource = this.impianto;
+  dataSource = new MatTableDataSource(this.impianto);
   
+    sortedData: Impianto[] | undefined;
+  
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
+  
+    ngAfterViewInit() {
+      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator;
+    }
+
 
   deleteImp() {
-  
+
+  }
+
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }

@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Configurazione } from '../../interfaces/configurazione.model';
+import { ConfigurazioneService } from '../../services/configurazione.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-configurazione',
@@ -8,15 +12,32 @@ import { Configurazione } from '../../interfaces/configurazione.model';
   styleUrls: ['./configurazione.component.scss']
 })
 export class ConfigurazioneComponent {
+  constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
   tableConf: string[] = ['id_configurazione', 'codice_cabina', 'anno_attivazione', 'azioni'];
 
-  configurazione: Configurazione[] = [
-    { id_configurazione: "", id_cer: "", codice_cabina: "", anno_attivazione: "" }
-  ];
+  configurazione: Configurazione[] = [];
 
-  dataSource = this.configurazione;
+  dataSource = new MatTableDataSource(this.configurazione);
+
+  sortedData: Configurazione[] | undefined;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
 
   deleteConf() {
 
+  }
+
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 }
