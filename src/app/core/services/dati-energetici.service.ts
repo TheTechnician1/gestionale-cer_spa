@@ -1,37 +1,34 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DatiEnergetici } from '../interfaces/dati-energetici.model';
+import { ApiService } from './api.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatiEnergeticiService {
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) {}
 
-  dati: DatiEnergetici[] = [];
-
-  dato: DatiEnergetici = 
-  {
-    id_dati: '',
-    id_cer: '',
-    id_config: '',
-    anno: '',
-    energia_prodotta: 0,
-    energia_prelevata: 0,
-    energia_immessa: 0,
-    energia_condivisa: 0,
-    energia_autoconsumata: 0,
-    tariffa_premio: 0,
-    corrispettivo_premio: 0,
-    riduzione_emissione: ''
+  getDati(): Observable<DatiEnergetici[]> {
+    return this.api.get<DatiEnergetici[]>("ricercaDatiEnergetici");
   }
 
-  getDati() {
-      return this.dati;
-    }
-  
-  getDato(id: string) {
-    this.dato = this.dati.filter(p => p.id_dati === id)[0];
-    return this.dato;
+  getDato(params?: Partial<DatiEnergetici>): Observable<DatiEnergetici[]> {
+    return this.api.get<DatiEnergetici[]>("datiEnergetici", params as Record<string, string | number | boolean> | undefined);
+  }
+
+  createDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
+    console.log("Dati Energetici inseriti con successo");
+    return this.api.post<DatiEnergetici>("datiEnergetici", payload);
+  }
+
+  editDatiEnergetici(payload: DatiEnergetici) {
+    console.log("Dati Energetici modificati con successo");
+    return this.api.put<DatiEnergetici>(`modificaDatiEnergetici`, payload);
+  }
+
+  deleteDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
+    console.log('Dati Energetici eliminati con successo')
+    return this.api.put<DatiEnergetici>(`cancellazioneDatiEnergetici`, payload);
   }
 }

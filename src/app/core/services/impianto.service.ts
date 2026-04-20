@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Impianto } from '../interfaces/impianto.model';
 import { ApiService } from './api.service';
