@@ -25,20 +25,20 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "cer", component: CERComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-cer", component: InserimentoCerComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] },
-      { path: "dettaglio-cer", component: DettaglioCerComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-      { path: "modifica-cer", component: ModificaCerComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] }
+      { path: "dettaglio-cer/:id", component: DettaglioCerComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-cer/:id", component: ModificaCerComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] }
     ]
   },
   { path: "configurazione", component: ConfigurazioneComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-configurazione", component: InserimentoConfigurazioneComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
-      { path: "modifica-configurazioni", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-configurazioni/:id", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
     ]
   },
   { path: "impianto", component: ImpiantoComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
       { path: "inserimento-impianto", component: InserimentoImpiantoComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
-      { path: "modifica-impianto", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "modifica-impianto/:id", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
     ]
   },
   { path: "dati-energetici", component: DatiEnergeticiComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],

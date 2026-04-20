@@ -10,7 +10,7 @@ import { isAuthenticated } from '../interfaces/auth.model';
   providedIn: 'root'
 })
 export class UtenteService {
-  constructor(private http: HttpClient, private apiService: ApiService) { }
+  constructor(private http: HttpClient, private apiService: ApiService) {}
   utente?: UtenteLogin;
 
   private readonly storageKey = "utente";
