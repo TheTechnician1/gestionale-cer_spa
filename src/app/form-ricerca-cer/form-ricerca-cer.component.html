@@ -1,1 +1,98 @@
-<p>form-ricerca-cer works!</p>
+<div class="pagina-ricerca-cer">
+  <mat-card class="scheda-ricerca-cer">
+    <mat-card-header>
+      <mat-card-title>Filtro Ricerca CER</mat-card-title>
+      <mat-card-subtitle>
+        Inserisci uno o più criteri per filtrare le comunità energetiche
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formRicerca" (ngSubmit)="inviaModulo()" class="form-ricerca">
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Ragione Sociale</mat-label>
+            <input matInput formControlName="ragioneSociale" type="text" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA</mat-label>
+            <input matInput formControlName="partitaIVA" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Scegli Forma Giuridica</mat-label>
+            <mat-select formControlName="formaGiuridica">
+              <mat-option value="">Tutte</mat-option>
+              <mat-option
+                *ngFor="let formaGiuridicaDisponibile of elencoFormaGiuridica"
+                [value]="formaGiuridicaDisponibile"
+              >
+                {{ formaGiuridicaDisponibile }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Scegli Stato della CER</mat-label>
+            <mat-select formControlName="stato">
+              <mat-option value="">Tutti</mat-option>
+              <mat-option
+                *ngFor="let statoDisponibile of elencoStato"
+                [value]="statoDisponibile"
+              >
+                {{ statoDisponibile }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline" class="campo-largo">
+            <mat-label>Scegli Flag</mat-label>
+            <mat-select formControlName="flag">
+              <mat-option value="">Tutti</mat-option>
+              <mat-option
+                *ngFor="let flagDisponibile of elencoFlag"
+                [value]="flagDisponibile"
+              >
+                {{ flagDisponibile }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" (click)="resetFiltri()">
+            Pulisci filtri
+          </button>
+
+          <button mat-raised-button color="primary" type="submit">
+            Cerca
+          </button>
+        </div>
+      </form>
+
+      <div class="risultati-ricerca">
+        <h3>Risultati</h3>
+
+        <div *ngIf="risultatiFiltrati.length === 0" class="stato-vuoto">
+          Nessun elemento trovato con i filtri selezionati.
+        </div>
+
+        <mat-card class="risultato-item" *ngFor="let elemento of risultatiFiltrati">
+          <mat-card-content>
+            <p><strong>Ragione Sociale:</strong> {{ elemento.ragioneSociale }}</p>
+            <p><strong>Partita IVA:</strong> {{ elemento.partitaIVA }}</p>
+            <p><strong>Forma Giuridica:</strong> {{ elemento.formaGiuridica }}</p>
+            <p><strong>Stato:</strong> {{ elemento.stato }}</p>
+            <p><strong>Flag:</strong> {{ elemento.flag }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

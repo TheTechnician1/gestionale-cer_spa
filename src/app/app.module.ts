@@ -21,6 +21,8 @@ import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
 import { HomeComponent } from './home/home.component';
 import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+
 import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -51,6 +53,8 @@ import { MatTableModule } from '@angular/material/table';
     SharedModule,
     TranslateRootModule,
     MatToolbarModule,
+    MatSnackBarModule,
+    HttpClientModule,
     MatIconModule,
     MatButtonModule,
     MatTableModule,
