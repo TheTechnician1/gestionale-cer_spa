@@ -1,8 +1,8 @@
 <div class="configurazioni">
   <h3>Configurazioni</h3>
   <div>
-    <button mat-raised-button color="primary"><mat-icon>add</mat-icon> Aggiungi Configurazione</button>
-    <button mat-raised-button routerLink="/impianto" routerLinkActive="router-link-active" ><mat-icon>bolt</mat-icon> Impianti</button>
+    <button mat-raised-button color="primary" routerLink="inserimento-configurazione"><mat-icon>add</mat-icon> Aggiungi Configurazione</button>
+    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon> Impianti</button>
   </div>
 </div>
 <div class="table">
@@ -44,3 +44,4 @@
               aria-label="Select page">
     </mat-paginator>
 </div>
+<router-outlet></router-outlet>

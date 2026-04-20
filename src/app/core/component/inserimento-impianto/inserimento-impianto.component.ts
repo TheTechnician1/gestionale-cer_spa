@@ -14,8 +14,6 @@ export class InserimentoImpiantoComponent implements OnInit {
   
   ngOnInit(): void {
     this.impiantiForm = this.fb.group({
-    id_impianto: ['', [Validators.required]],
-    id_configurazione: ['', [Validators.required]],
     codice_cabina: ['', [Validators.required]],
     data_entrata_esercizio: ['', [Validators.required]],
     tipologia_impianto: ['', [Validators.required]],
