@@ -46,10 +46,10 @@
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button routerLink="dettaglio-cer">
+        <button mat-button routerLink="dettaglio-cer/:id">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-button routerLink="modifica-cer">
+        <button mat-button routerLink="modifica-cer/:id">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
