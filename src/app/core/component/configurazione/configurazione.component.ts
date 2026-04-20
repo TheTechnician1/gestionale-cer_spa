@@ -34,8 +34,8 @@ export class ConfigurazioneComponent {
   }
 
   filtro = {
-    codice_cabina: "", 
-    anno_attivazione: "" 
+    codice_cabina: "",
+    anno_attivazione: ""
   }
 
   listaFiltrata = [...this.configurazione];
@@ -45,8 +45,8 @@ export class ConfigurazioneComponent {
     console.log(this.filtro);
     this.listaFiltrata = this.configurazione.filter(p => {
       return (
-      (this.filtro.codice_cabina ? p.codice_cabina.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
-      (this.filtro.anno_attivazione ? p.anno_attivazione.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true)
+      (this.filtro.codice_cabina ? p.codice_cabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
+      (this.filtro.anno_attivazione ? p.anno_attivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true)
       );
     });
 
@@ -61,18 +61,18 @@ export class ConfigurazioneComponent {
     this.isFiltering = false;
 
     this.filtro = {
-      codice_cabina: "", 
-      anno_attivazione: "" 
+      codice_cabina: "",
+      anno_attivazione: ""
     };
 
     this.listaFiltrata = [...this.configurazione];
+  }
 
-    sortData(sortState: Sort) {
-      if(sortState.direction) {
-        this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-      } else {
-        this._liveAnnouncer.announce('Sorting cleared');
-      }
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
     }
   }
 }

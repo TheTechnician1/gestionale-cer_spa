@@ -80,9 +80,9 @@ export class ImpiantoComponent {
     console.log(this.filtro);
     this.listaFiltrata = this.impianto.filter(p => {
       return (
-        (this.filtro.tipologia_impianto ? p.tipologia_impianto.toLowerCase().includes(this.filtro.tipologia_impianto.toLowerCase()) : true) &&
-        (this.filtro.potenza_nominale ? p.potenza_nominale.toLowerCase().includes(this.filtro.potenza_nominale.toLowerCase()) : true) &&
-        (this.filtro.presenza_accumulo ? p.presenza_accumulo.toLowerCase().includes(this.filtro.presenza_accumulo.toLowerCase()) : true)
+        (this.filtro.tipologia_impianto ? p.tipologia_impianto?.toLowerCase().includes(this.filtro.tipologia_impianto.toLowerCase()) : true) &&
+        (this.filtro.potenza_nominale ? p.potenza_nominale?.toLowerCase().includes(this.filtro.potenza_nominale.toLowerCase()) : true) &&
+        (this.filtro.presenza_accumulo ? p.presenza_accumulo?.toLowerCase().includes(this.filtro.presenza_accumulo.toLowerCase()) : true)
       );
     });
 

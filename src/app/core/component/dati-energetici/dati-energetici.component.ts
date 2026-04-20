@@ -60,9 +60,9 @@ export class DatiEnergeticiComponent {
     console.log(this.filtro);
     this.listaFiltrata = this.datiEnergetici.filter(p => {
       return (
-        (this.filtro.energia_prodotta ? p.energia_prodotta >= this.filtro.energia_prodotta : true) &&
-        (this.filtro.energia_prelevata ? p.energia_prelevata >= this.filtro.energia_prelevata : true) &&
-        (this.filtro.energia_immessa ? p.energia_immessa >= this.filtro.energia_immessa : true)
+        (this.filtro.energia_prodotta ? p.energia_prodotta! >= this.filtro.energia_prodotta : true) &&
+        (this.filtro.energia_prelevata ? p.energia_prelevata! >= this.filtro.energia_prelevata : true) &&
+        (this.filtro.energia_immessa ? p.energia_immessa! >= this.filtro.energia_immessa : true)
       );
     });
 
@@ -83,13 +83,13 @@ export class DatiEnergeticiComponent {
     };
 
     this.listaFiltrata = [...this.datiEnergetici];
-    
-    sortData(sortState: Sort) {
-      if(sortState.direction) {
-        this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-      } else {
-        this._liveAnnouncer.announce('Sorting cleared');
-      }
+  }
+
+  sortData(sortState: Sort) {
+    if(sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
     }
   }
 }
