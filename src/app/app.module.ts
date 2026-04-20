@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -16,8 +15,7 @@ import { FullLayoutComponent } from './core/layout/full-layout.component';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
 import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
@@ -25,6 +23,15 @@ import { HomeComponent } from './home/home.component';
 import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 
+import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -37,6 +44,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     RegistrazioneUtenteComponent,
     HomeComponent,
     FormRicercaCerComponent,
+    TabellaCERComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +55,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatToolbarModule,
     MatSnackBarModule,
     HttpClientModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
