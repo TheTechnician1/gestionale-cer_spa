@@ -30,4 +30,42 @@ export class DatiEnergeticiComponent {
   deleteDat() {
 
   }
+
+  filtro = {
+    energia_prodotta: 0,
+    energia_prelevata: 0,
+    energia_immessa: 0
+  };
+
+  listaFiltrata = [...this.datiEnergetici];
+  isFiltering = false;
+
+  filtraDatiEnergetici() {
+    console.log(this.filtro);
+    this.listaFiltrata = this.datiEnergetici.filter(p => {
+      return (
+        (this.filtro.energia_prodotta ? p.energia_prodotta >= this.filtro.energia_prodotta : true) &&
+        (this.filtro.energia_prelevata ? p.energia_prelevata >= this.filtro.energia_prelevata : true) &&
+        (this.filtro.energia_immessa ? p.energia_immessa >= this.filtro.energia_immessa : true)
+      );
+    });
+
+    console.log(this.listaFiltrata);
+
+    this.isFiltering = true;
+
+    return this.listaFiltrata;
+  }
+
+  resetFiltro() {
+    this.isFiltering = false;
+
+    this.filtro = {
+      energia_prodotta: 0,
+      energia_prelevata: 0,
+      energia_immessa: 0
+    };
+
+    this.listaFiltrata = [...this.datiEnergetici];
+  }
 }

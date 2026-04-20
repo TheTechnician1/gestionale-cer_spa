@@ -1,5 +1,27 @@
 <div class="impianti">
   <h3>Impianti</h3>
+  <div class="filtro" rows="3">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Tipologia Impianto</mat-label>
+      <input [(ngModel)]="filtro.tipologia_impianto" matInput type="text" aria-label="tipologia_impianto">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Potenza Nominale</mat-label>
+      <input [(ngModel)]="filtro.potenza_nominale" matInput type="text" aria-label="potenza_nominale">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Presenza Accumulo</mat-label>
+      <input [(ngModel)]="filtro.presenza_accumulo" matInput type="text" aria-label="presenza_accumulo">
+    </mat-form-field>
+    <div class="button-filtro">
+      <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraImpianto()">
+        <mat-icon>search</mat-icon> Ricerca
+      </button>
+      <button mat-raised-button type="button" (click)="resetFiltro()">
+        <mat-icon>close</mat-icon> Reset
+      </button>
+    </div>
+  </div>
   <div>
     <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon> Configurazione</button>
