@@ -22,6 +22,7 @@ import { DettaglioConfigurazioneComponent } from "./core/component/dettaglio-con
 import { ModificaConfigurazioneComponent } from "./core/component/modifica-configurazione/modifica-configurazione.component";
 import { ModificaDatiEnergeticiComponent } from "./core/component/modifica-dati-energetici/modifica-dati-energetici.component";
 import { DettaglioDatiEnergeticiComponent } from "./core/component/dettaglio-dati-energetici/dettaglio-dati-energetici.component";
+import { NotAuthorizedComponent } from "./core/component/not-authorized/not-authorized.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", redirectTo: "home", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
@@ -59,6 +60,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "**",redirectTo: "login" },
+  { path: '**', component: NotAuthorizedComponent }
 
 ];
 
