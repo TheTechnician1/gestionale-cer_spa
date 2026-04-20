@@ -18,17 +18,17 @@ export class ConfigurazioneService {
   }
 
   createConfigurazione(payload: Configurazione): Observable<Configurazione> {
-    console.log("CER creato con successo");
+    console.log("Configurazione creato con successo");
     return this.api.post<Configurazione>("configurazione", payload);
   }
 
   editConfigurazione(payload: Configurazione) {
-    console.log("CER modificato con successo");
+    console.log("Configurazione modificato con successo");
     return this.api.put<Configurazione>(`modificaConfigurazione`, payload);
   }
 
   deleteConfigurazione(payload: Configurazione): Observable<Configurazione> {
-    console.log('CER eliminato con successo')
+    console.log('Configurazione eliminato con successo')
     return this.api.put<Configurazione>(`cancellazioneConfigurazione`, payload);
   }
 }
