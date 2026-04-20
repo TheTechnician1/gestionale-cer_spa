@@ -1,62 +1,34 @@
 import { Injectable } from '@angular/core';
 import { CER } from '../interfaces/cer.model';
-import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CERService {
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
-  private cers: CER[] = [];
-
-  cer: CER = {
-    id_cer: 0,
-    ragione_sociale: '',
-    codice_fiscale: '',
-    partita_iva: '',
-    comune_sede_legale: '',
-    provincia_sede_legale: '',
-    regione_legale: '',
-    forma_giuridica: '',
-    flag_cancellato: false,
-    contatti:
-    [
-      {
-        telefono: '',
-        email: '',
-        pec: '',
-        sito_web: '',
-        referente: ''
-      }
-    ]
+  getCERS(): Observable<CER[]> {
+    return this.apiService.get<CER[]>("ricercaCer");
   }
 
-  getCERS() {
-    return this.cers;
+  getCER(params?: Partial<CER>): Observable<CER[]> {
+    return this.apiService.get<CER[]>("cer", params as Record<string, string | number | boolean> | undefined);
   }
 
-  getCER(id: number) {
-    this.cer = this.cers.filter(p => p.id_cer === id)[0];
-    return this.cer;
+  createCER(payload: CER): Observable<CER> {
+    console.log("CER creato con successo");
+    return this.apiService.post<CER>("cer", payload);
   }
 
-  createCER(cer: CER) {
-    this.cers.push(cer);
-    return console.log("CER creato con successo");
+  editCER(payload: CER) {
+    console.log("CER modificato con successo");
+    return this.apiService.put<CER>(`modificaCer`, payload);
   }
 
-  editCER(cer: CER) {
-    this.cers = this.cers.map(p => {
-      if(p.id_cer == cer.id_cer) {
-        return cer;
-      }
-      return p;
-    });
-  }
-
-  deleteCER(id: number) {
-    this.cers = this.cers.filter(p => p.id_cer !== id);
-    return console.log('CER eliminato con successo');
+  deleteCER(payload: CER): Observable<CER> {
+    console.log('CER eliminato con successo')
+    return this.apiService.put<CER>(`cancellazioneCer`, payload);
   }
 }
