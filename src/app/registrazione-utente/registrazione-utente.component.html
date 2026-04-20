@@ -6,7 +6,12 @@
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="formRegistrazione" (ngSubmit)="inviaModulo()" class="form-registrazione">
+      <form
+        [formGroup]="formRegistrazione"
+        #formDirective="ngForm"
+        (ngSubmit)="inviaModulo(formDirective)"
+        class="form-registrazione"
+      >
 
         <div class="riga-form">
           <mat-form-field appearance="outline">
@@ -51,7 +56,7 @@
             <input matInput formControlName="email" type="email" />
             <mat-error *ngIf="email.hasError('required')">L'email è obbligatoria</mat-error>
             <mat-error *ngIf="email.hasError('email')">Inserisci un'email valida</mat-error>
-            <mat-error *ngIf="password.hasError('pattern')">Inserisci un'email valida</mat-error>
+            <mat-error *ngIf="email.hasError('pattern')">Inserisci un'email valida</mat-error>
 
           </mat-form-field>
         </div>
@@ -143,6 +148,8 @@
             Registra Utente
           </button>
         </div>
+
+        
 
       </form>
     </mat-card-content>

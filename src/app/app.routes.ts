@@ -5,6 +5,7 @@ import { AuthGuard } from "./core/guard/auth.guard";
 import { LoginComponent } from "./login/login.component";
 import { RegistrazioneUtenteComponent } from "./registrazione-utente/registrazione-utente.component";
 import { Role } from './core/services/auth.service';
+import { FormRicercaCerComponent } from "./form-ricerca-cer/form-ricerca-cer.component";
 
 
 export const FULL_LAYOUT_ROUTES: Routes = [
@@ -22,6 +23,7 @@ export const routes: Routes = [
   },
   { path: "user/new", component: RegistrazioneUtenteComponent },
   { path: 'login', component: LoginComponent},
+   { path: 'filtro', component: FormRicercaCerComponent},
 
 //   {
 //   path: 'admin',

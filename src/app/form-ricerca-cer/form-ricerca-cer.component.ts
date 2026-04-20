@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { CerElemento, CerFiltro, FiltroService } from '../core/services/filtro.service';
 
 @Component({
   selector: 'app-form-ricerca-cer',
@@ -8,6 +9,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class FormRicercaCerComponent {
  formRicerca: FormGroup;
+ risultatiFiltrati: CerElemento[] = [];
 
  elencoFormaGiuridica: string[] = ['Associazione non riconosciuta', 'Associazione riconosciuta', 'Società di capitali', 'Cooperativa', 'Fondazione di partecipazione'];
 
@@ -21,6 +23,8 @@ export class FormRicercaCerComponent {
 "Flag cambiamenti climatici"
 ];
 
+ private filtroService = inject(FiltroService);
+
  constructor(private costruttoreForm: FormBuilder) {
      this.formRicerca = this.costruttoreForm.group(
     {
@@ -31,6 +35,8 @@ export class FormRicercaCerComponent {
      flag: ['']
     }
   );
+
+    this.risultatiFiltrati = this.filtroService.getListaElementi();
    }  
 
 
@@ -60,7 +66,7 @@ export class FormRicercaCerComponent {
       return;
     }
 
-    const datiRicerca = {
+    const datiRicerca: CerFiltro = {
       ragioneSociale: this.ragioneSociale.value,
       partitaIVA: this.partitaIVA.value,
       formaGiuridica: this.formaGiuridica.value,
@@ -70,6 +76,11 @@ export class FormRicercaCerComponent {
 
     console.log('Dati di ricerca:', datiRicerca);
 
+    this.risultatiFiltrati = this.filtroService.filtraElementi(datiRicerca);
+  }
+
+  resetFiltri(): void {
     this.formRicerca.reset();
+    this.risultatiFiltrati = this.filtroService.getListaElementi();
   }
 }

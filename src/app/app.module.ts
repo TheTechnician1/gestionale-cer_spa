@@ -23,8 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
 import { HomeComponent } from './home/home.component';
 import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
-
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -46,6 +45,8 @@ import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.com
     SharedModule,
     TranslateRootModule,
     MatToolbarModule,
+    MatSnackBarModule,
+    HttpClientModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

@@ -4,6 +4,6 @@ export interface AppSettings {
 }
 
 export const APP_SETTINGS: AppSettings = {
-  apiBaseUrl: "https://api.example.com",
+  apiBaseUrl: "http://localhost:8080",
   i18nBasePath: "/assets/i18n",
 };
