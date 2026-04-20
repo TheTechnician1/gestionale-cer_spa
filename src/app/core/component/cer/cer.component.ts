@@ -107,22 +107,14 @@ export class CERComponent {
     // this.cers = this.cerService.getCERS();
   }
 
-  loadCER(id: number) {
-    // cer = this.cerService.getCER(id);
-  }
-
   filtraCER() {
-    console.log(this.filtro);
     this.listaFiltrata = this.cer.filter(p => {
       return (
-        (this.filtro.ragione_sociale ? p.ragione_sociale.toLowerCase().includes(this.filtro.ragione_sociale.toLowerCase()) : true) &&
-        (this.filtro.partita_iva ? p.partita_iva.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true) &&
-        (this.filtro.forma_giuridica ? p.partita_iva.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true)
+        (this.filtro.ragione_sociale ? p.ragione_sociale?.toLowerCase().includes(this.filtro.ragione_sociale.toLowerCase()) : true) &&
+        (this.filtro.partita_iva ? p.partita_iva?.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true) &&
+        (this.filtro.forma_giuridica ? p.partita_iva?.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true)
       );
     });
-
-    console.log(this.listaFiltrata);
-
     this.isFiltering = true;
 
     return this.listaFiltrata;
