@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from "@angular/core";
-import { AuthService } from "../../services/auth.service";
+import { UtenteService } from "../../services/utente.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-header",
@@ -8,14 +9,11 @@ import { AuthService } from "../../services/auth.service";
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
-  constructor(private authService: AuthService) {}
+  constructor(private authService: UtenteService) {this.isLoggedIn$ = this.authService.isLoggedIn$;}
 
-  isLog = false;
+  isLoggedIn$: Observable<boolean>;
 
   ngOnInit() {
-     this.authService.isLogged$.subscribe(status => {
-       this.isLog = status;
-     });
   }
 
   logout() {

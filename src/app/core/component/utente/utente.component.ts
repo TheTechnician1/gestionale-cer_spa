@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UtenteService } from '../../services/utente.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Utente } from '../../interfaces/utente.model';
 
 @Component({
   selector: 'app-utente',
@@ -10,17 +11,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class UtenteComponent {
   constructor(private utenteService: UtenteService, private router: ActivatedRoute, private route: Router) { }
 
-  utenti: any[] = [];
-
-  utente: any = {
+  utente: Utente = {
     id_utente: 0,
-    nome_utente: '',
-    cognome_utente: '',
-    codice_fiscale: '',
-    email: '',
+    nome: '',
+    cognome: '',
+    codiceFiscale: '',
+    mail: '',
     password: '',
-    numero_telefono: '',
-    ruolo: ''
+    numTelefono: '',
+    ruolo: null
   }
 
   ngOnInit() {
@@ -29,35 +28,14 @@ export class UtenteComponent {
   }
 
   loadUtente(id: number) {
-    this.utenteService.getUtente(id);
-  }
-
-  loadUtenti() {
-    this.utenti = this.utenteService.getUtenti();
-  }
-
-  getUtenti() {
-    return this.utenti;
-  }
-
-  getUtente(id: number) {
-    this.utente = this.utenti.filter(p => p.id_utente === id)[0];
-    return this.utente;
-  }
-
-  createUtente(user: any){
-    this.utente = this.utenteService.createUtente(user);
-    this.route.navigate(['/']);
+    this.utenteService.getUtente(id).subscribe((data: Utente) => {
+      this.utente = data;
+    });
   }
 
   editUtente(user: any) {
     this.utente = { ...user };
     this.route.navigate(['/']);
-  }
-
-  updatePersonaggio() {
-    this.utenteService.editUtente(this.utente);
-    this.loadUtente(this.utente.id);
   }
 
   deleteUtente(id: number) {

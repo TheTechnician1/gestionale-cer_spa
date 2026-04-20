@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { UtenteService } from 'src/app/core/services/utente.service';
 
 @Component({
   selector: 'app-login',
@@ -12,32 +12,27 @@ import { AuthService } from 'src/app/core/services/auth.service';
 export class LoginComponent {
   loginForm!: FormGroup;
   loginError = false;
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: ActivatedRoute, private route: Router) {}
+  constructor(private fb: FormBuilder, private authService: UtenteService, private router: ActivatedRoute, private route: Router) {}
+
+  hide = true;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      utente_email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
       rememberMe: [false]
     });
   }
 
-  hide = true;
-
   onSubmit() {
     if (this.loginForm.valid) {
-
-      const { email, password } = this.loginForm.value;
-
-      this.authService.login(email, password).subscribe(user => {
-        console.log(user, "sono qui");
-
-        this.authService.isAuthenticated(user)
+      const payload = this.loginForm.value;
+      this.authService.loginMock(payload).subscribe(user => {
+        this.authService.isAuthenticated(user);
 
         if(user) {
           console.log('Login riuscito');
           this.loginError = false;
-          console.log('Ruolo:', user.role);
           this.route.navigate(['/dashboard']);
         } else {
           console.log('Credenziali errate');
@@ -49,21 +44,19 @@ export class LoginComponent {
   }
 
   guestIn() {
-    this.authService.login("guest@guest.guest", "guest").subscribe(user => {
-      console.log(user, "sono qui");
+    const payload = { utente_email: "guest@guest.guest", password: "guest" }
+    this.authService.loginGuest(payload).subscribe(user => {
 
       this.authService.isAuthenticated(user)
 
       if(user) {
-        console.log('Login riuscito');
+        console.log('Login riuscito, come guest');
         this.loginError = false;
-        console.log('Ruolo:', user.role);
         this.route.navigate(['/dashboard']);
       } else {
         console.log('Credenziali errate');
         this.loginError = true;
       }
     });
-    console.log(this.loginForm.value);
   }
 }

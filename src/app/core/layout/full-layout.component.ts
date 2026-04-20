@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
-import { AuthService } from "../services/auth.service";
+import { UtenteService } from "../services/utente.service";
+import { Observable } from "rxjs";
+
 
 @Component({
   selector: "app-full-layout",
@@ -7,13 +9,9 @@ import { AuthService } from "../services/auth.service";
   styleUrls: ["./full-layout.component.scss"],
 })
 export class FullLayoutComponent {
-  isLogged: any;
-  constructor(private authService: AuthService) {
-    }
+    constructor(private authService: UtenteService) {this.isLoggedIn$ = this.authService.isLoggedIn$;}
 
-    ngOnInit() {
-      this.authService.isLogged$.subscribe(status => {
-        this.isLogged = status;
-      });
-    }
+    isLoggedIn$: Observable<boolean>;
+
+    ngOnInit() {}
 }
