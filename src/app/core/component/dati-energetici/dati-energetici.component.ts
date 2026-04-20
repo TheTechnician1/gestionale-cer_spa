@@ -15,21 +15,7 @@ export class DatiEnergeticiComponent {
   constructor(private datiService: DatiEnergeticiService, private _liveAnnouncer: LiveAnnouncer) {}
   tableDat: string[] = ['id_dati', 'energia_prodotta', 'energia_prelevata', 'azioni'];
 
-  datiEnergetici: DatiEnergetici[] = [
-    { id_dati: "14",
-      id_cer: "",
-      id_config: "",
-      anno: "",
-      energia_prodotta: 45,
-      energia_prelevata: 67,
-      energia_immessa: 32,
-      energia_condivisa: 57,
-      energia_autoconsumata: 23,
-      tariffa_premio: 56,
-      corrispettivo_premio: 32,
-      riduzione_emissione: ""
-    }
-  ]
+  datiEnergetici: DatiEnergetici[] = [];
 
   dataSource = new MatTableDataSource(this.datiEnergetici);
 
@@ -38,14 +24,7 @@ export class DatiEnergeticiComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
 
-  deleteDat() {
-
-  }
 
   filtro = {
     energia_prodotta: 0,
@@ -55,6 +34,26 @@ export class DatiEnergeticiComponent {
 
   listaFiltrata = [...this.datiEnergetici];
   isFiltering = false;
+
+  ngOnInit() {
+    this.loadDati();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  loadDati() {
+    this.datiService.getDati().subscribe({
+      next: (dati) => {
+        this.datiEnergetici = dati;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
+  }
 
   filtraDatiEnergetici() {
     console.log(this.filtro);
