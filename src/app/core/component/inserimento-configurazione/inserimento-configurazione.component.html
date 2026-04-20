@@ -1,0 +1,38 @@
+<h4>Inserimento Configurazione</h4>
+  <form>
+      <div class="flex-container">
+        <div class="flex-col">
+          <mat-card>
+            <div class="section-box">
+              <div class="section-title">DATI CONFIGURAZIONE</div>
+              <div class="field-group">
+                <div class="row">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Codice Cabina</mat-label>
+                    <input matInput formControlName="codice_cabina" required>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Anno Attivazione</mat-label>
+                    <input matInput formControlName="anno_attivazione" required>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
+        <button mat-raised-button color="primary" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
+          <mat-icon>edit</mat-icon>Aggiungi
+        </button>
+        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+          Cancella
+        </button>
+        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+          Ripristina
+        </button>
+        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+          Conferma
+        </button>
+      </div>
+</form>

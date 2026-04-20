@@ -19,7 +19,7 @@ const NAV_ITEMS: NavItem[] = [
     { label: "Registrazione", icon: "person_add", route: "/registrazione", roles: ["ADMIN"] },
   ]},
   { label: "Comunità Energetiche", icon: "factory" , route: "/cer", roles: ["ADMIN", "GEST", "GUEST"]},
-  { label: "Configurazioni", icon: "cabin", route: "/configurazioni", roles: ["ADMIN", "GEST", "GUEST"]},
+  { label: "Configurazioni", icon: "cabin", route: "/configurazione", roles: ["ADMIN", "GEST", "GUEST"]},
   { label: "Impianto", icon: "bolt", route: "/impianto", roles: ["ADMIN", "GEST", "GUEST"] },
   { label: "Dati Energetici", icon: "settings", route:"/dati-energetici", roles: ["ADMIN", "GEST", "GUEST"] }
 ];

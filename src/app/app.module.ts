@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from "@angular/core";
+import { NgModule, ErrorHandler, Component } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -29,10 +29,13 @@ import { ModificaCerComponent } from './core/component/modifica-cer/modifica-cer
 import { ProfiloUtenteComponent } from './core/component/profilo-utente/profilo-utente.component';
 import { InserimentoCerComponent } from './core/component/inserimento-cer/inserimento-cer.component';
 import { InserimentoImpiantoComponent } from './core/component/inserimento-impianto/inserimento-impianto.component';
+import { InserimentoDatiEnergeticiComponent } from './core/component/inserimento-dati-energetici/inserimento-dati-energetici.component';
+import { InserimentoConfigurazioneComponent } from './core/component/inserimento-configurazione/inserimento-configurazione.component';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, ProfiloUtenteComponent, InserimentoCerComponent, InserimentoImpiantoComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, ConfigurazioneComponent, ImpiantoComponent, CERComponent, DatiEnergeticiComponent, RegistrazioneUtenteComponent, LoginComponent, DettaglioCerComponent, DashboardComponent, ModificaCerComponent, ProfiloUtenteComponent, InserimentoCerComponent, InserimentoImpiantoComponent, InserimentoDatiEnergeticiComponent, InserimentoConfigurazioneComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

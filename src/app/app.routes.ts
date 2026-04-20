@@ -14,6 +14,8 @@ import { HomeComponent } from "./core/component/home/home.component";
 import { ImpiantoComponent } from "./core/component/impianto/impianto.component";
 import { InserimentoImpiantoComponent } from "./core/component/inserimento-impianto/inserimento-impianto.component";
 import { DatiEnergeticiComponent } from "./core/component/dati-energetici/dati-energetici.component";
+import { InserimentoDatiEnergeticiComponent } from "./core/component/inserimento-dati-energetici/inserimento-dati-energetici.component";
+import { InserimentoConfigurazioneComponent } from "./core/component/inserimento-configurazione/inserimento-configurazione.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", redirectTo: "home", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
@@ -27,9 +29,9 @@ export const FULL_LAYOUT_ROUTES: Routes = [
       { path: "modifica-cer", component: ModificaCerComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] }
     ]
   },
-  { path: "configurazioni", component: ConfigurazioneComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
+  { path: "configurazione", component: ConfigurazioneComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
     children: [
-      { path: "inserimento-configurazioni", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+      { path: "inserimento-configurazione", component: InserimentoConfigurazioneComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
       { path: "modifica-configurazioni", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
     ]
   },
@@ -39,7 +41,11 @@ export const FULL_LAYOUT_ROUTES: Routes = [
       { path: "modifica-impianto", component: HomeComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
     ]
   },
-  { path: "dati-energetici", component: DatiEnergeticiComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
+  { path: "dati-energetici", component: DatiEnergeticiComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard],
+    children: [
+      { path: "inserimento-dati-energetici", component: InserimentoDatiEnergeticiComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+    ]
+  },
   { path: "profilo-utente", component: ProfiloUtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "**",redirectTo: "login" },
