@@ -70,56 +70,15 @@ export class RegistrazioneUtenteComponent {
     };
   }
 
-  get nome(): FormControl {
-    return this.formRegistrazione.get('nome') as FormControl;
-  }
-
-  get cognome(): FormControl {
-    return this.formRegistrazione.get('cognome') as FormControl;
-  }
-
-  get codiceFiscale(): FormControl {
-    return this.formRegistrazione.get('codiceFiscale') as FormControl;
-  }
-
-  get email(): FormControl {
-    return this.formRegistrazione.get('email') as FormControl;
-  }
-
-  get numeroTelefono(): FormControl {
-    return this.formRegistrazione.get('numeroTelefono') as FormControl;
-  }
-
-  get ruolo(): FormControl {
-    return this.formRegistrazione.get('ruolo') as FormControl;
-  }
-
-  get password(): FormControl {
-    return this.formRegistrazione.get('password') as FormControl;
-  }
-
-  get confermaPassword(): FormControl {
-    return this.formRegistrazione.get('confermaPassword') as FormControl;
-  }
-
   inviaModulo(): void {
     if (this.formRegistrazione.invalid) {
       this.formRegistrazione.markAllAsTouched();
       return;
     }
 
-    const datiUtente = {
-      x: this.formRegistrazione.getRawValue(),
-      nome: this.nome.value,
-      cognome: this.cognome.value,
-      codiceFiscale: this.codiceFiscale.value,
-      email: this.email.value,
-      numeroTelefono: this.numeroTelefono.value,
-      ruolo: this.ruolo.value,
-      password: this.password.value,
-    };
+    const payload = this.formRegistrazione.getRawValue();
 
-    console.log('Utente registrato:', datiUtente);
+    console.log('Utente registrato:', payload);
 
     this.formRegistrazione.reset();
 
