@@ -1,0 +1,107 @@
+<h4>Dettaglio Impianto</h4>
+<form [formGroup]="impiantiForm">
+  <div class="flex-container">
+    <div class="flex-col">
+      <mat-card>
+        <div class="section-box">
+          <div class="section-title">DATI IMPIANTO</div>
+          <div class="field-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Codice Cabina</mat-label>
+              <input matInput formControlName="codice_cabina" aria-label="codice_cabina" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Data Entrata Esercizio</mat-label>
+              <input matInput formControlName="data_entrata_esercizio" aria-label="data_entrata_esercizio" required>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="section-box">
+          <div class="section-title">CARATTERISTICHE TECNICHE</div>
+          <div class="field-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tipologia Impianto</mat-label>
+              <input matInput formControlName="tipologia_impianto" aria-label="tipologia_impianto" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Potenza Nominale(KW)</mat-label>
+              <input matInput type="number" formControlName="potenza_nominale" aria-label="potenza_nominale" required>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Presenza Accumulo</mat-label>
+                <mat-select formControlName="presenza_accumulo">
+                  <mat-option value="SI">SI</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Capacità Accumulo (KWh)</mat-label>
+              <input matInput type="number" formControlName="capacita_accumulo" required>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+    <div class="flex-col">
+      <mat-card>
+        <div class="section-box">
+          <div class="section-title">PRODUTTORE</div>
+          <div class="field-group">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Tipologia Produttore</mat-label>
+                <input matInput formControlName="tipologia_produttore" aria-label="tipologia_produttore" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Categoria Produttore</mat-label>
+                <input matInput formControlName="categoria_produttore" aria-label="categoria_produttore" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="section-box" formGroupName="ubicazione_impianto">
+          <div class="section-title">UBICAZIONE IMPIANTO</div>
+          <div class="field-group">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Regione</mat-label>
+                <mat-select formControlName="regione" required>
+                  <mat-option value="campania">Abruzzo</mat-option>
+                  <mat-option value="campania">Campania</mat-option>
+                  <mat-option value="campania">Lazio</mat-option>
+                  <mat-option value="campania">Veneto</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Provincia</mat-label>
+                <input matInput formControlName="provincia" required>
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Comune</mat-label>
+              <input matInput formControlName="comune" required>
+            </mat-form-field>
+             <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Indirizzo</mat-label>
+              <input matInput formControlName="indirizzo" required>
+            </mat-form-field>
+            <div class="row">
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>Numero Civico</mat-label>
+                <input matInput formControlName="numero_civico" required>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="half-width">
+                <mat-label>CAP</mat-label>
+                <input matInput formControlName="cap" required>
+              </mat-form-field>
+            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tipologia Sito</mat-label>
+              <input matInput formControlName="tipologia_sito" required>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</form>
