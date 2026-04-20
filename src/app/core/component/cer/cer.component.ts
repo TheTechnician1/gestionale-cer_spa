@@ -16,8 +16,6 @@ export class CERComponent {
   constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
   tableCER: string[] = ['id_cer', 'ragione_sociale', 'partita_iva', 'forma_giuridica', 'azioni'];
 
-  cers: CER[] = [];
-
   cer: CER[] = [
     {
       id_cer: 1,
@@ -80,30 +78,6 @@ export class CERComponent {
       ],
     }
 ];
-
-/*
-cer: CER =
-    {
-      id_cer: 0,
-      ragione_sociale: "",
-      codice_fiscale: "",
-      partita_iva: "",
-      comune_sede_legale: "",
-      provincia_sede_legale: "",
-      regione_legale: "",
-      forma_giuridica: "",
-      flag_cancellato: false,
-      contatti: [
-        {
-          telefono: "",
-          email: "",
-          pec: "",
-          sito_web: "",
-          referente: ""
-        }
-      ],
-    }
-*/
 
   dataSource = new MatTableDataSource(this.cer);
   sortedData: CER[] | undefined;
