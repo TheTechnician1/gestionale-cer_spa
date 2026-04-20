@@ -10,6 +10,7 @@ import { Utente } from '../../interfaces/utente.model';
 })
 export class UtenteComponent {
   constructor(private utenteService: UtenteService, private router: ActivatedRoute, private route: Router) { }
+  utenti: Utente[] = [];
 
   utente: Utente = {
     id_utente: 0,
@@ -23,13 +24,17 @@ export class UtenteComponent {
   }
 
   ngOnInit() {
-    const id = this.router.snapshot.paramMap.get('id');
-    this.loadUtente(parseInt(id!));
+    this.loadUtente;
   }
 
-  loadUtente(id: number) {
-    this.utenteService.getUtente(id).subscribe((data: Utente) => {
-      this.utente = data;
+  loadUtente() {
+    this.utenteService.getUtente().subscribe({
+      next: (utente) => {
+        this.utenti = utente;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
     });
   }
 

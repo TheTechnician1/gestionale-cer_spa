@@ -19,7 +19,7 @@ export class DatiEnergeticiService {
 
   createDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
     console.log("Dati Energetici inseriti con successo");
-    return this.api.post<DatiEnergetici>("datiEnergetici", payload);
+    return this.api.post<DatiEnergetici>("inserimentoDatiEnergetici", payload);
   }
 
   editDatiEnergetici(payload: DatiEnergetici) {

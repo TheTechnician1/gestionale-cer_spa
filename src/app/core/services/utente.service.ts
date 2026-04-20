@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Utente, UtenteLogin, UtenteLoginModel } from '../interfaces/utente.model';
-import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Ruolo, RoleType } from '../enum/role.enum';
@@ -10,7 +9,7 @@ import { isAuthenticated } from '../interfaces/auth.model';
   providedIn: 'root'
 })
 export class UtenteService {
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {}
   utente?: UtenteLogin;
 
   private readonly storageKey = "utente";
@@ -89,8 +88,8 @@ export class UtenteService {
     }
   }
 
-  getUtente(id: number) {
-    return this.http.get<Utente>(`/profilo/${id}`);
+  getUtente(params?: Partial<Utente>): Observable<Utente[]> {
+    return this.apiService.get<Utente[]>("utente", params as Record<string, string | number | boolean> | undefined);
   }
 
   createUtente(user: Utente){
