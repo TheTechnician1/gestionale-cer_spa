@@ -1,5 +1,27 @@
 <div class="datiEnerg">
   <h3>Dati energetici</h3>
+  <div class="filtro" rows="3">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Energia Prodotta</mat-label>
+      <input [(ngModel)]="filtro.energia_prodotta" matInput type="text" aria-label="energia_prodotta">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Energia Prelevata</mat-label>
+      <input [(ngModel)]="filtro.energia_prelevata" matInput type="text" aria-label="energia_prelevata">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Energia Immessa</mat-label>
+      <input [(ngModel)]="filtro.energia_immessa" matInput type="text" aria-label="energia_immessa">
+    </mat-form-field>
+    <div class="button-filtro">
+      <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraDatiEnergetici()">
+        <mat-icon>search</mat-icon> Ricerca
+      </button>
+      <button mat-raised-button type="button" (click)="resetFiltro()">
+        <mat-icon>close</mat-icon> Reset
+      </button>
+    </div>
+  </div>
   <div>
     <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>

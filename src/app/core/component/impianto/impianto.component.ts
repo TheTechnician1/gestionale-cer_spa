@@ -65,4 +65,43 @@ export class ImpiantoComponent {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
+
+  filtro = {
+    tipologia_impianto: "",
+    potenza_nominale: "",
+    presenza_accumulo: "",
+  }
+
+  listaFiltrata = [...this.impianto];
+  isFiltering = false;
+
+
+  filtraImpianto() {
+    console.log(this.filtro);
+    this.listaFiltrata = this.impianto.filter(p => {
+      return (
+        (this.filtro.tipologia_impianto ? p.tipologia_impianto.toLowerCase().includes(this.filtro.tipologia_impianto.toLowerCase()) : true) &&
+        (this.filtro.potenza_nominale ? p.potenza_nominale.toLowerCase().includes(this.filtro.potenza_nominale.toLowerCase()) : true) &&
+        (this.filtro.presenza_accumulo ? p.presenza_accumulo.toLowerCase().includes(this.filtro.presenza_accumulo.toLowerCase()) : true)
+      );
+    });
+
+    console.log(this.listaFiltrata);
+
+    this.isFiltering = true;
+
+    return this.listaFiltrata;
+  }
+
+  resetFiltro() {
+    this.isFiltering = false;
+
+    this.filtro = {
+      tipologia_impianto: "",
+      potenza_nominale: "",
+      presenza_accumulo: ""
+    };
+
+    this.listaFiltrata = [...this.impianto];
+  }
 }

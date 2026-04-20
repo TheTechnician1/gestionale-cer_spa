@@ -1,5 +1,23 @@
 <div class="configurazioni">
   <h3>Configurazioni</h3>
+  <div class="filtro" rows="3">
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Codice Cabina</mat-label>
+      <input [(ngModel)]="filtro.codice_cabina" matInput type="text" aria-label="codice_cabina">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Anno Attivazione</mat-label>
+      <input [(ngModel)]="filtro.anno_attivazione" matInput type="text" aria-label="anno_attivazione">
+    </mat-form-field>
+    <div class="button-filtro">
+      <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraConfigurazione()">
+        <mat-icon>search</mat-icon> Ricerca
+      </button>
+      <button mat-raised-button type="button" (click)="resetFiltro()">
+        <mat-icon>close</mat-icon> Reset
+      </button>
+    </div>
+  </div>
   <div>
     <button mat-raised-button color="primary" routerLink="inserimento-configurazione"><mat-icon>add</mat-icon> Aggiungi Configurazione</button>
     <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon> Impianti</button>
