@@ -15,57 +15,61 @@ export class ConfigurazioneComponent {
   constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
   tableConf: string[] = ['id_configurazione', 'codice_cabina', 'anno_attivazione', 'azioni'];
 
-  configurazione: Configurazione[] = [];
+  configurazioni: Configurazione[] = [];
 
-  dataSource = new MatTableDataSource(this.configurazione);
+  dataSource = new MatTableDataSource(this.configurazioni);
 
   sortedData: Configurazione[] | undefined;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
-
-  deleteConf() {
-
-  }
 
   filtro = {
     codice_cabina: "",
     anno_attivazione: ""
   }
 
-  listaFiltrata = [...this.configurazione];
+  listaFiltrata = [...this.configurazioni];
   isFiltering = false;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  ngOnInit() {
+    this.loadConfig();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  loadConfig() {
+    this.confService.getConfigurazioni().subscribe({
+      next: (config) => {
+        this.configurazioni = config;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
+  }
+
   filtraConfigurazione() {
-    console.log(this.filtro);
-    this.listaFiltrata = this.configurazione.filter(p => {
+    this.listaFiltrata = this.configurazioni.filter(p => {
       return (
       (this.filtro.codice_cabina ? p.codice_cabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
       (this.filtro.anno_attivazione ? p.anno_attivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true)
       );
     });
-
-    console.log(this.listaFiltrata);
-
     this.isFiltering = true;
-
     return this.listaFiltrata;
   }
 
   resetFiltro() {
     this.isFiltering = false;
-
     this.filtro = {
       codice_cabina: "",
       anno_attivazione: ""
     };
-
-    this.listaFiltrata = [...this.configurazione];
+    this.listaFiltrata = [...this.configurazioni];
   }
 
   sortData(sortState: Sort) {

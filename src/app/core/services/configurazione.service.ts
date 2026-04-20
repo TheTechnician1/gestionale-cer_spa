@@ -1,47 +1,34 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Configurazione } from '../interfaces/configurazione.model';
+import { ApiService } from './api.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurazioneService {
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) { }
 
-  private configurazioni: Configurazione[] = [];
-
-  configurazione: Configurazione= {
-    id_configurazione: '',
-    id_cer: '',
-    codice_cabina: '',
-    anno_attivazione: ''
+  getConfigurazioni(): Observable<Configurazione[]> {
+    return this.api.get<Configurazione[]>("ricercaConfigurazione");
   }
 
-  getConfigurazioni() {
-    return this.configurazioni;
+  getConfigurazione(params?: Partial<Configurazione>): Observable<Configurazione[]> {
+    return this.api.get<Configurazione[]>("configurazione", params as Record<string, string | number | boolean> | undefined);
   }
 
-  getConfigurazione(id: string) {
-    this.configurazione = this.configurazioni.filter(p => p.id_configurazione === id)[0];
-    return this.configurazione;
+  createConfigurazione(payload: Configurazione): Observable<Configurazione> {
+    console.log("CER creato con successo");
+    return this.api.post<Configurazione>("configurazione", payload);
   }
 
-  createConfigurazione(config: Configurazione){
-    this.configurazioni.push(config);
-    return console.log("Configurazione creata con successo");
+  editConfigurazione(payload: Configurazione) {
+    console.log("CER modificato con successo");
+    return this.api.put<Configurazione>(`modificaConfigurazione`, payload);
   }
 
-  editConfigurazione(config: Configurazione) {
-    this.configurazioni = this.configurazioni.map(p => {
-      if(p.id_configurazione === config.id_configurazione) {
-        return config;
-      }
-      return p;
-    });
-  }
-
-  deleteConfigurazione(id: string) {
-    this.configurazioni = this.configurazioni.filter(p => p.id_configurazione !== id);
-    return console.log('Utente eliminato con successo');
+  deleteConfigurazione(payload: Configurazione): Observable<Configurazione> {
+    console.log('CER eliminato con successo')
+    return this.api.put<Configurazione>(`cancellazioneConfigurazione`, payload);
   }
 }
