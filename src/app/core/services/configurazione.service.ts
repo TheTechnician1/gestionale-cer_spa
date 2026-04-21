@@ -9,8 +9,9 @@ import { Observable } from 'rxjs';
 export class ConfigurazioneService {
   constructor(private api: ApiService) { }
 
-  getConfigurazioni(): Observable<Configurazione[]> {
-    return this.api.get<Configurazione[]>("ricercaConfigurazione");
+  getConfigurazioni(payload: any): Observable<Configurazione[]> {
+    const endpoint = "Configurazione/ricerca";
+    return this.api.post<Configurazione[]>(endpoint, payload);
   }
 
   getConfigurazione(params?: Partial<Configurazione>): Observable<Configurazione[]> {
@@ -19,16 +20,19 @@ export class ConfigurazioneService {
 
   createConfigurazione(payload: Configurazione): Observable<Configurazione> {
     console.log("Configurazione creato con successo");
-    return this.api.post<Configurazione>("configurazione", payload);
+    const endpoint = "Configurazione/inserimento";
+    return this.api.post<Configurazione>(endpoint, payload);
   }
 
   editConfigurazione(payload: Configurazione) {
     console.log("Configurazione modificato con successo");
-    return this.api.put<Configurazione>(`modificaConfigurazione`, payload);
+    const endpoint = "Configurazione/modifica";
+    return this.api.put<Configurazione>(endpoint, payload);
   }
 
   deleteConfigurazione(payload: Configurazione): Observable<Configurazione> {
-    console.log('Configurazione eliminato con successo')
-    return this.api.put<Configurazione>(`cancellazioneConfigurazione`, payload);
+    console.log('Configurazione eliminato con successo');
+    const endpoint = "Configurazione/disattiva";
+    return this.api.put<Configurazione>(endpoint, payload);
   }
 }

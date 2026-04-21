@@ -29,17 +29,17 @@
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
-    <ng-container matColumnDef="id_configurazione">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="id_configurazione"> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id_configurazione}} </td>
-    </ng-container>
     <ng-container matColumnDef="codice_cabina">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="codice_cabina"> COD.Cabina </th>
-      <td mat-cell *matCellDef="let element"> {{element.codice_cabina}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.codice_cabina }} </td>
     </ng-container>
     <ng-container matColumnDef="anno_attivazione">
       <th mat-header-cell  mat-sort-header="anno_attivazione" *matHeaderCellDef> Anno Attivazione</th>
-      <td mat-cell *matCellDef="let element"> {{element.anno_attivazione}} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.anno_attivazione }} </td>
+    </ng-container>
+    <ng-container matColumnDef="partitaIva">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva"> No. </th>
+      <td mat-cell *matCellDef="let element"> {{ element.partitaIva }} </td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>

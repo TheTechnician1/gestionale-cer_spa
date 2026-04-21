@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class ConfigurazioneComponent {
   constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'azioni'];
+  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'partitaIva', 'azioni'];
 
   configurazioni: Configurazione[] = [];
 
@@ -43,7 +43,7 @@ export class ConfigurazioneComponent {
   }
 
   loadConfig() {
-    this.confService.getConfigurazioni().subscribe({
+    this.confService.getConfigurazioni(this.filtro).subscribe({
       next: (config) => {
         this.configurazioni = config;
       },
@@ -56,9 +56,9 @@ export class ConfigurazioneComponent {
   filtraConfigurazione() {
     this.listaFiltrata = this.configurazioni.filter(p => {
       return (
-      (this.filtro.codice_cabina ? p.codice_cabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
-      (this.filtro.anno_attivazione ? p.anno_attivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true) &&
-      (this.filtro.partitaIva ? p.partitaIva?.toLowerCase().includes(this.filtro.partitaIva.toLowerCase()) : true)
+      (this.filtro.codice_cabina ? p.codiceCabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
+      (this.filtro.anno_attivazione ? p.annoAttivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true) &&
+      (this.filtro.partitaIva ? p.cer?.partitaIva?.toLowerCase().includes(this.filtro.partitaIva.toLowerCase()) : true)
       );
     });
     this.isFiltering = true;
