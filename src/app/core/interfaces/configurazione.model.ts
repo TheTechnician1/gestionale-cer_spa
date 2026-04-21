@@ -1,23 +1,31 @@
+import { CER } from "./cer.model";
+
 export interface Configurazione {
-  id_configurazione: string | null;
-  id_cer: string | null;
-  codice_cabina: string | null;
-  anno_attivazione: string | null;
-  partitaIva: string | null;
+  idConfigurazione: number | null,
+  cer: CER | null,
+  idCer: number | null,
+  codiceCabina: string | null,
+  annoAttivazione: string | null,
+  emailUtenteLoggato: string | null,
+  flg_cancellazione: string | null
 }
 
 export class ConfigurazioneModel implements Configurazione {
-  id_configurazione: string | null;
-  id_cer: string | null;
-  codice_cabina: string | null;
-  anno_attivazione: string | null;
-  partitaIva: string | null;
+  idConfigurazione: number | null;
+  cer: CER | null;
+  idCer: number | null;
+  codiceCabina: string | null;
+  annoAttivazione: string | null;
+  emailUtenteLoggato: string | null;
+  flg_cancellazione: string | null;
 
   constructor(data?: Partial<Configurazione>) {
-    this.id_configurazione = data?.id_configurazione ?? null;
-    this.id_cer = data?.id_cer ?? null;
-    this.codice_cabina = data?.codice_cabina ?? null;
-    this.anno_attivazione = data?.anno_attivazione ?? null;
-    this.partitaIva = data?.partitaIva ?? null;
+    this.idConfigurazione = data?.idConfigurazione ?? null;
+    this.cer = data?.cer ?? null;
+    this.idCer = data?.idCer ?? null;
+    this.codiceCabina = data?.codiceCabina ?? null;
+    this.annoAttivazione = data?.annoAttivazione ?? null;
+    this.emailUtenteLoggato = data?.emailUtenteLoggato ?? null;
+    this.flg_cancellazione = data?.flg_cancellazione ?? null;
   }
 }

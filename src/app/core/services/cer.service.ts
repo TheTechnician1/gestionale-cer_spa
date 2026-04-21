@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CER } from '../interfaces/cer.model';
 import { ApiService } from './api.service';
 import { Observable, of } from 'rxjs';
+import { StringMappingType } from 'typescript';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Observable, of } from 'rxjs';
 export class CERService {
   constructor(private apiService: ApiService) {}
 
-  getCERS(payload: CER): Observable<CER[]> {
+  getCERS(payload: any): Observable<CER[]> {
     const endpoint = "cer/ricerca";
     return this.apiService.post<CER[]>(endpoint, payload);
   }

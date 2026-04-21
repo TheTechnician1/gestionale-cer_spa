@@ -11,7 +11,8 @@ export interface CER {
   sitoWeb: string | null,
   referente: string | null,
   partitaIva: string | null,
-  telefono: string | null
+  telefono: string | null,
+  flgCancellazione: boolean | null
 }
 
 export interface ComuneLegale {
@@ -52,6 +53,7 @@ export class CERModel implements CER {
   referente: string | null;
   partitaIva: string | null;
   telefono: string | null;
+  flgCancellazione: boolean | null;
 
   constructor(data?: Partial<CER>) {
     this.idCer = data?.idCer ?? null;
@@ -67,6 +69,7 @@ export class CERModel implements CER {
     this.referente = data?.referente ?? null;
     this.partitaIva = data?.partitaIva ?? null;
     this.telefono = data?.telefono ?? null;
+    this.flgCancellazione = data?.flgCancellazione ?? null;
   }
 }
 

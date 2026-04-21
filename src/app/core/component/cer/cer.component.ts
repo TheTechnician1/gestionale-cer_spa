@@ -45,24 +45,24 @@ export class CERComponent {
   }
 
   loadCERS() {
-    // this.cerService.getCERS().subscribe({
-    //   next: (cer) => {
-    //     this.cer = cer;
-    //   },
-    //   error: (error) => {
-    //     console.error("Login error", error);
-    //   }
-    // });
+    this.cerService.getCERS(this.filtro).subscribe({
+      next: (cer) => {
+      this.cer = cer;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
   }
 
   filtraCER() {
     this.listaFiltrata = this.cer.filter(p => {
       return (
         (this.filtro.ragioneSociale ? p.ragioneSociale?.toLowerCase().includes(this.filtro.ragioneSociale.toLowerCase()) : true) &&
-        (this.filtro.codiceFiscale ? p.codiceFiscale?.toLowerCase().includes(this.filtro.codiceFiscale.toLowerCase()) : true)
-        // && (this.filtro.comuneLegale ? p.comuneLegale?.toLowerCase().includes(this.filtro.comuneLegale.toLowerCase()) : true) &&
-        // (this.filtro.provinciaLegale ? p.provinciaLegale?.toLowerCase().includes(this.filtro.provinciaLegale.toLowerCase()) : true) &&
-        // (this.filtro.regioneLegale ? p.regioneLegale?.toLowerCase().includes(this.filtro.regioneLegale.toLowerCase()) : true)
+        (this.filtro.codiceFiscale ? p.codiceFiscale?.toLowerCase().includes(this.filtro.codiceFiscale.toLowerCase()) : true) &&
+        (this.filtro.comuneLegale ? p.comuneLegale?.descrizione?.toLowerCase().includes(this.filtro.comuneLegale.toLowerCase()) : true) &&
+        (this.filtro.provinciaLegale ? p.provinciaLegale?.descrizione?.toLowerCase().includes(this.filtro.provinciaLegale.toLowerCase()) : true) &&
+        (this.filtro.regioneLegale ? p.regioneLegale?.descrizione?.toLowerCase().includes(this.filtro.regioneLegale.toLowerCase()) : true)
       );
     });
     this.isFiltering = true;
