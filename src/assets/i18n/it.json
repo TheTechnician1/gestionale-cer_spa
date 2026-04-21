@@ -1,6 +1,14 @@
 {
   "app": {
-    "main-title": "CER SPA Manager",
-    "hello": "Hello"
+    "main-title": "Gestionale CER SPA",
+    "sections": "Sezioni",
+    "title": "Gestionale CER",
+    "registries": "Anagrafiche",
+    "profile": "Profilo",
+    "registration": "Registrazione",
+    "energy_communities": "Comunità Energetiche",
+    "cabin": "Configurazioni",
+    "plant": "Impianto",
+    "energy_data": "Dati Energetici"
   }
 }
