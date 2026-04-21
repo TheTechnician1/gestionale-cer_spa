@@ -1,7 +1,8 @@
+import { UtenteLogin } from './../../interfaces/utente.model';
 import { Component } from '@angular/core';
 import { UtenteService } from '../../services/utente.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Utente } from '../../interfaces/utente.model';
+import { Router } from '@angular/router';
+import { Utente, UtenteLoginModel } from '../../interfaces/utente.model';
 
 @Component({
   selector: 'app-utente',
@@ -9,33 +10,16 @@ import { Utente } from '../../interfaces/utente.model';
   styleUrls: ['./utente.component.scss']
 })
 export class UtenteComponent {
-  constructor(private utenteService: UtenteService, private router: ActivatedRoute, private route: Router) { }
-  utenti: Utente[] = [];
+  constructor(private utenteService: UtenteService, private route: Router) {}
 
-  utente: Utente = {
-    id_utente: 0,
-    nome: '',
-    cognome: '',
-    codiceFiscale: '',
-    mail: '',
-    password: '',
-    numTelefono: '',
-    ruolo: null
-  }
+  utente: UtenteLogin | null = new UtenteLoginModel();
 
   ngOnInit() {
-    this.loadUtente;
+    this.loadUtente();
   }
 
   loadUtente() {
-    this.utenteService.getUtente().subscribe({
-      next: (utente) => {
-        this.utenti = utente;
-      },
-      error: (error) => {
-        console.error("Login error", error);
-      }
-    });
+    this.utente = this.utenteService.currentUser;
   }
 
   editUtente(user: any) {
