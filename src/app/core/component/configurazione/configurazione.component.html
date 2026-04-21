@@ -33,8 +33,8 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="codice_cabina"> COD.Cabina </th>
       <td mat-cell *matCellDef="let element"> {{element.codice_cabina}} </td>
     </ng-container>
-    <ng-container matColumnDef="anno_attivazione" mat-sort-header="anno_attivazione">
-      <th mat-header-cell *matHeaderCellDef> Anno Attivazione</th>
+    <ng-container matColumnDef="anno_attivazione">
+      <th mat-header-cell  mat-sort-header="anno_attivazione" *matHeaderCellDef> Anno Attivazione</th>
       <td mat-cell *matCellDef="let element"> {{element.anno_attivazione}} </td>
     </ng-container>
     <ng-container matColumnDef="azioni">
