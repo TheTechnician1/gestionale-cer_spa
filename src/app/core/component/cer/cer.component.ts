@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 export class CERComponent {
   constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableCER: string[] = ['ragioneSociale', 'codiceFiscale', 'comuneLegale', ' provinciaLegale', 'regioneLegale', 'azioni'];
+  tableCER: string[] = ['ragioneSociale', 'codiceFiscale', 'comuneLegale', 'provinciaLegale', 'regioneLegale', 'azioni'];
 
   cer: CER[] = [];
 
