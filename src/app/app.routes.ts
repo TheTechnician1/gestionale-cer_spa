@@ -59,8 +59,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   },
   { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
-  { path: "**",redirectTo: "login" },
-  { path: '**', component: NotAuthorizedComponent }
+  { path: '**', redirectTo: "", component: NotAuthorizedComponent }
 
 ];
 
