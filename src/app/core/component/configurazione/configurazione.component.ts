@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class ConfigurazioneComponent {
   constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'partitaIva', 'azioni'];
+  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'azioni'];
 
   configurazioni: Configurazione[] = [];
 
