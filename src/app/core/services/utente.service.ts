@@ -48,7 +48,7 @@ export class UtenteService {
 
   login(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
     const endpoint = "/Autenticazione/inserisci";
-    return this.apiService.post<UtenteLogin>(endpoint, payload).pipe(
+    return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
@@ -56,7 +56,7 @@ export class UtenteService {
 
   loginGuest(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
     const endpoint = "/Autenticazione/inserisci";
-    return this.apiService.post<UtenteLogin>(endpoint, payload).pipe(
+    return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
@@ -88,10 +88,10 @@ export class UtenteService {
     }
   }
 
-  createUtente(user: Utente){
+  createUtente(payload: any){
     const path = '/Utente/inserisci';
     console.log("Utente inserito con successo");
-    return this.apiService.post<any>(path, user);
+    return this.apiService.post<any>(path, payload);
   }
 
   editUtente(user: UtenteLogin) {
