@@ -9,8 +9,9 @@ import { Observable, of } from 'rxjs';
 export class CERService {
   constructor(private apiService: ApiService) {}
 
-  getCERS(): Observable<CER[]> {
-    return this.apiService.get<CER[]>("ricercaCer");
+  getCERS(payload: CER): Observable<CER[]> {
+    const endpoint = "cer/ricerca";
+    return this.apiService.post<CER[]>(endpoint, payload);
   }
 
   getCER(params?: Partial<CER>): Observable<CER[]> {
@@ -19,16 +20,19 @@ export class CERService {
 
   createCER(payload: CER): Observable<CER> {
     console.log("CER creato con successo");
-    return this.apiService.post<CER>("cer", payload);
+    const endpoint = "cer/inserimento";
+    return this.apiService.post<CER>(endpoint, payload);
   }
 
   editCER(payload: CER) {
     console.log("CER modificato con successo");
-    return this.apiService.put<CER>(`modificaCer`, payload);
+    const endpoint = "cer/modifica";
+    return this.apiService.put<CER>(endpoint, payload);
   }
 
   deleteCER(payload: CER): Observable<CER> {
     console.log('CER eliminato con successo')
-    return this.apiService.put<CER>(`cancellazioneCer`, payload);
+    const endpoint = "cer/cancellazione";
+    return this.apiService.put<CER>(endpoint, payload);
   }
 }
