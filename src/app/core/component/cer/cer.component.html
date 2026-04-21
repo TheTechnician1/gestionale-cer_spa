@@ -5,15 +5,23 @@
   <div class="filtro" rows="3">
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Ragione Sociale</mat-label>
-      <input [(ngModel)]="filtro.ragione_sociale" matInput type="text" aria-label="ragione_sociale">
+      <input [(ngModel)]="filtro.ragioneSociale" matInput type="text" aria-label="ragioneSociale">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Partita IVA</mat-label>
-      <input [(ngModel)]="filtro.partita_iva" matInput type="text" aria-label="partita_iva">
+      <mat-label>Codice Fiscale</mat-label>
+      <input [(ngModel)]="filtro.codiceFiscale" matInput type="text" aria-label="codiceFiscale">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Forma Giuridica</mat-label>
-      <input [(ngModel)]="filtro.forma_giuridica" matInput type="text" aria-label="forma_giuridica">
+      <mat-label>Comune Legale</mat-label>
+      <input [(ngModel)]="filtro.comuneLegale" matInput type="text" aria-label="comuneLegale">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Provincia Legale</mat-label>
+      <input [(ngModel)]="filtro.provinciaLegale" matInput type="text" aria-label="provinciaLegale">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Regione Legale</mat-label>
+      <input [(ngModel)]="filtro.regioneLegale" matInput type="text" aria-label="regioneLegale">
     </mat-form-field>
     <div class="button-filtro">
       <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraCER()">

@@ -9,6 +9,10 @@
       <mat-label>Anno Attivazione</mat-label>
       <input [(ngModel)]="filtro.anno_attivazione" matInput type="text" aria-label="anno_attivazione">
     </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Partita IVA</mat-label>
+      <input [(ngModel)]="filtro.partitaIva" matInput type="text" aria-label="partitaIva">
+    </mat-form-field>
     <div class="button-filtro">
       <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraConfigurazione()">
         <mat-icon>search</mat-icon> Ricerca

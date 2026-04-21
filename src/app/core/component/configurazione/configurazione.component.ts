@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class ConfigurazioneComponent {
   constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableConf: string[] = ['id_configurazione', 'codice_cabina', 'anno_attivazione', 'azioni'];
+  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'partitaIva', 'azioni'];
 
   configurazioni: Configurazione[] = [];
 
@@ -23,7 +23,8 @@ export class ConfigurazioneComponent {
 
   filtro = {
     codice_cabina: "",
-    anno_attivazione: ""
+    anno_attivazione: "",
+    partitaIva: ""
   }
 
   listaFiltrata = [...this.configurazioni];
@@ -56,7 +57,8 @@ export class ConfigurazioneComponent {
     this.listaFiltrata = this.configurazioni.filter(p => {
       return (
       (this.filtro.codice_cabina ? p.codice_cabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
-      (this.filtro.anno_attivazione ? p.anno_attivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true)
+      (this.filtro.anno_attivazione ? p.anno_attivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true) &&
+      (this.filtro.partitaIva ? p.partitaIva?.toLowerCase().includes(this.filtro.partitaIva.toLowerCase()) : true)
       );
     });
     this.isFiltering = true;
@@ -67,7 +69,8 @@ export class ConfigurazioneComponent {
     this.isFiltering = false;
     this.filtro = {
       codice_cabina: "",
-      anno_attivazione: ""
+      anno_attivazione: "",
+      partitaIva: ""
     };
     this.listaFiltrata = [...this.configurazioni];
   }
