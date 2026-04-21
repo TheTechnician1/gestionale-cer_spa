@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 export class CERComponent {
   constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableCER: string[] = ['id_cer', 'ragione_sociale', 'partita_iva', 'forma_giuridica', 'azioni'];
+  tableCER: string[] = ['ragioneSociale', 'codiceFiscale', 'comuneLegale', ' provinciaLegale', 'regioneLegale', 'azioni'];
 
   cer: CER[] = [];
 
@@ -25,9 +25,11 @@ export class CERComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   filtro = {
-    ragione_sociale: '',
-    partita_iva: '',
-    forma_giuridica: ''
+    ragioneSociale: '',
+    codiceFiscale: '',
+    comuneLegale: '',
+    provinciaLegale: '',
+    regioneLegale: ''
   };
 
   listaFiltrata = [...this.cer];
@@ -56,9 +58,11 @@ export class CERComponent {
   filtraCER() {
     this.listaFiltrata = this.cer.filter(p => {
       return (
-        (this.filtro.ragione_sociale ? p.ragioneSociale?.toLowerCase().includes(this.filtro.ragione_sociale.toLowerCase()) : true) &&
-        (this.filtro.partita_iva ? p.partitaIva?.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true) &&
-        (this.filtro.forma_giuridica ? p.formaGiuridica?.toLowerCase().includes(this.filtro.partita_iva.toLowerCase()) : true)
+        (this.filtro.ragioneSociale ? p.ragioneSociale?.toLowerCase().includes(this.filtro.ragioneSociale.toLowerCase()) : true) &&
+        (this.filtro.codiceFiscale ? p.codiceFiscale?.toLowerCase().includes(this.filtro.codiceFiscale.toLowerCase()) : true) &&
+        (this.filtro.comuneLegale ? p.comuneLegale?.toLowerCase().includes(this.filtro.comuneLegale.toLowerCase()) : true) &&
+        (this.filtro.provinciaLegale ? p.provinciaLegale?.toLowerCase().includes(this.filtro.provinciaLegale.toLowerCase()) : true) &&
+        (this.filtro.regioneLegale ? p.regioneLegale?.toLowerCase().includes(this.filtro.regioneLegale.toLowerCase()) : true)
       );
     });
     this.isFiltering = true;
@@ -70,9 +74,11 @@ export class CERComponent {
     this.isFiltering = false;
 
     this.filtro = {
-      ragione_sociale: '',
-      partita_iva: '',
-      forma_giuridica: ''
+      ragioneSociale: '',
+      codiceFiscale: '',
+      comuneLegale: '',
+      provinciaLegale: '',
+      regioneLegale: ''
     };
 
     this.listaFiltrata = [...this.cer];
