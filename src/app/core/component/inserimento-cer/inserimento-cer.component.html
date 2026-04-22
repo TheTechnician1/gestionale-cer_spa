@@ -133,7 +133,10 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Sito Web</mat-label>
-                <input matInput formControlName="sitoWeb" aria-label="sitoWeb" required>
+                <input matInput formControlName="sitoWeb" aria-label="sitoWeb">
+                  <mat-error *ngif="cerForm.get('pec')?.touched && cerForm.get('pec')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -155,6 +158,9 @@
                 <mat-option>
                 </mat-option>
               </mat-select>
+              <mat-error *ngif="cerForm.get('comuneSedeLegale')?.touched && cerForm.get('comuneSedeLegale')?.hasError('required')">
+                  Selezione obbligatoria
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
@@ -162,6 +168,9 @@
                 <mat-option>
                 </mat-option>
               </mat-select>
+              <mat-error *ngif="cerForm.get('provinciaSedeLegale')?.touched && cerForm.get('provinciaSedeLegale')?.hasError('required')">
+                  Selezione obbligatoria
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Regione sede legale</mat-label>
@@ -169,6 +178,9 @@
                 <mat-option>
                 </mat-option>
               </mat-select>
+              <mat-error *ngif="cerForm.get('regioneSedeLegale')?.touched && cerForm.get('regioneSedeLegale')?.hasError('required')">
+                  Selezione obbligatoria
+                </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -230,8 +242,8 @@
     <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
       Ripristina Cancellazione
     </button>
-    <button mat-raised-button [routerLink]="['/modifica-cer']" style="border-radius: 8px; min-width: 130px; height: 42px;">
-      Conferma Dati
+    <button mat-raised-button routerLink="/cer" style="border-radius: 8px; min-width: 130px; height: 42px;">
+      Indietro
     </button>
   </div>
 </form>
