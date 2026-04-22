@@ -2,8 +2,20 @@ button {
   margin: 5px;
 }
 
+th {
+  font-weight: bold;
+}
+
 th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   background-color: var(--app-bg);
+}
+
+table.mat-table {
+  width: 100%;
+}
+
+.button-filtro, button {
+  margin: 5px;
 }
 
 .configurazioni {
@@ -28,7 +40,6 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   flex: 1;
   min-width: 200px;
   margin: 0 6px;
-//   width: 250px;
   margin-left: 6px;
   margin-right: 6px;
   width:32%;
@@ -39,33 +50,12 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   margin: 0;
 }
 
-// .form-field {
-//   flex: 1;
-//   margin-left: 6px;
-//   margin-right: 6px;
-//   width:32%;
-// }
-
 .table {
   margin-top: 20px;
-  // width: 100%;
-  // overflow-x: auto;
-}
-
-table.mat-table {
-  width: 100%;
-}
-
-.button-filtro, button {
-  margin: 5px;
 }
 
 .button-filtro {
-  justify-self: center;
-}
-
-th {
-  font-weight: bold;
+  margin-left: 38%;
 }
 
 .h3-header {
