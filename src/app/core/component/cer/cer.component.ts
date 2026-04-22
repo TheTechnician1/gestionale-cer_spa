@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CER } from '../../interfaces/cer.model';
 import { CERService } from '../../services/cer.service';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -12,7 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./cer.component.scss']
 })
 
-export class CERComponent {
+export class CERComponent implements OnInit {
   constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
   tableCER: string[] = ['ragSociale', 'codFisc', 'pIva' ,'comune', 'provincia', 'regione', 'azioni'];
 
@@ -36,7 +36,7 @@ export class CERComponent {
   listaFiltrata = [...this.cer];
   isFiltering = false;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadCERS();
   }
 

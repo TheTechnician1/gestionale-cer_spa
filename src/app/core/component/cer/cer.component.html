@@ -66,10 +66,10 @@
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button routerLink="dettaglio-cer/:id">
+        <button mat-button [routerLink]="['/cer', 'dettaglio-cer', element.idCer]" [disabled]="!element.idCer">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-button routerLink="modifica-cer/:id">
+        <button mat-button [routerLink]="['/cer', 'modifica-cer', element.idCer]" [disabled]="!element.idCer">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -77,13 +77,12 @@
     <tr mat-header-row *matHeaderRowDef="tableCER"></tr>
     <tr mat-row *matRowDef="let row; columns: tableCER;"></tr>
   </table>
-  <mat-paginator class="b-shadow" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
 </div>
 <div>
   <br>
-  <button mat-raised-button color="primary" routerLink="inserimento-cer">
+  <button mat-raised-button color="primary" [routerLink]="['/cer', 'inserimento-cer']">
     <mat-icon>add</mat-icon>
     Aggiungi una nuova CER
   </button>
 </div>
-<router-outlet></router-outlet>

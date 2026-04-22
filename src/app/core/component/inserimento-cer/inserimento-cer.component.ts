@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
-import { CERService } from '../../services/cer.service';
 
 @Component({
   selector: 'app-inserimento-cer',
@@ -11,7 +10,7 @@ import { CERService } from '../../services/cer.service';
 export class InserimentoCerComponent {
   cerForm!:FormGroup;
   
-  constructor(private fb: FormBuilder, private cerService: CERService ) {}
+  constructor(private fb: FormBuilder) {}
   
   ngOnInit(): void {
     this.cerForm =this.fb.group({

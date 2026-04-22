@@ -54,14 +54,6 @@ export class UtenteService {
     );
   }
 
-  loginGuest(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
-    const endpoint = "/Autenticazione/inserisci";
-    return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
-      map((utente) => new UtenteLoginModel({ ...utente })),
-      tap((utente) => this.persistUser(utente)),
-    );
-  }
-
   logout(): void {
     localStorage.removeItem(this.storageKey);
     this.userSubject.next(null);
@@ -88,10 +80,9 @@ export class UtenteService {
     }
   }
 
-  createUtente(payload: any){
+  createUtente(payload: any) {
     const path = '/Utente/inserisci';
-    console.log("Utente inserito con successo");
-    return this.apiService.post<any>(path, payload);
+    return this.apiService.postText(path, payload);
   }
 
   editUtente(user: UtenteLogin) {
