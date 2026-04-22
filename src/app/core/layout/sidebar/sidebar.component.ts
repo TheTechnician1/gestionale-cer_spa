@@ -10,12 +10,13 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+  { label: 'Dashboard', icon: 'dashboard', route: '/home' },
   {
     label: 'Anagrafiche',
     icon: 'badge',
     children: [
-      { label: 'Clienti', icon: 'groups', route: '/anagrafiche/clienti' },
+      { label: 'Clienti', icon: 'groups', route: '/user' },
+      { label: 'Crea Nuovo Utente', icon: 'groups', route: '/user/new' },
       {
         label: 'Fornitori',
         icon: 'local_shipping',

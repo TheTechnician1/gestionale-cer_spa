@@ -32,6 +32,8 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { DialogLogoutComponent } from './dialog-logout/dialog-logout.component';
+import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import { MatTableModule } from '@angular/material/table';
     HomeComponent,
     FormRicercaCerComponent,
     TabellaCERComponent,
+    DialogLogoutComponent,
+    TabellaUtentiComponent,
   ],
   imports: [
     BrowserModule,

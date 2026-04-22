@@ -7,11 +7,18 @@ import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
 import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
 import { Role } from './core/util/role.enum';
 import { HomeComponent } from './home/home.component';
+import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
   { path: "", redirectTo: "home", pathMatch: "full" },
-  
+  { path: 'user',
+    component: TabellaUtentiComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
   {
     path: 'user/new',
     component: RegistrazioneUtenteComponent,

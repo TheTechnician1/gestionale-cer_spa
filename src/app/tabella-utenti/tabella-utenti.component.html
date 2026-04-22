@@ -1,27 +1,27 @@
 <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
     <!-- Position Column -->
-    <ng-container matColumnDef="ragioneSociale">
-      <th mat-header-cell *matHeaderCellDef>Ragione Sociale</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.ragioneSociale }}</td>
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.nome }}</td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="partitaIVA">
-      <th mat-header-cell *matHeaderCellDef>Partita IVA</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.partitaIVA }}</td>
+    <ng-container matColumnDef="cognome">
+      <th mat-header-cell *matHeaderCellDef>Cognome</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.cognome }}</td>
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container matColumnDef="formaGiuridica">
-      <th mat-header-cell *matHeaderCellDef>Forma Giuridica</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.formaGiuridica }}</td>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.email }}</td>
     </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="regioneLegale">
-      <th mat-header-cell *matHeaderCellDef>Regione Legale</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.regioneLegale }}</td>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="ruolo">
+      <th mat-header-cell *matHeaderCellDef>Ruolo</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.ruolo }}</td>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -33,12 +33,12 @@
         <!-- <button  mat-icon-button ><mat-icon>add_shopping_cart</mat-icon>
         </button> -->
 
-        <button
+        <!-- <button
           mat-icon-button
           *ngIf="getRuolo() === 'ADMIN' || getRuolo() === 'GEST'"
         >
           <mat-icon>edit</mat-icon>
-        </button>
+        </button> -->
 
         <button
           mat-icon-button
@@ -69,3 +69,4 @@
   >
   </mat-paginator>
 </div>
+

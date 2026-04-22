@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
+import { GetListaCER, RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { Router } from '@angular/router';
 export interface Login {
   ruolo: string;
   isLoginOK?: boolean;
@@ -33,7 +34,7 @@ export class LoginService {
     return this.userSubject.value;
   }
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  constructor(private http: HttpClient, private apiService: ApiService, private router: Router) {}
 
   // Login mock: simula una chiamata al backend e salva l'utente in memoria + localStorage.
   // È usato durante lo sviluppo per testare il flusso di autenticazione.
@@ -52,11 +53,21 @@ export class LoginService {
     return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
   }
 
+  getTabellaCER(): Observable<GetListaCER[]>{
+    const endpoint = "/cer/visualizza-lista-completa"
+    return this.apiService.get<GetListaCER[]>(endpoint)
+  }
+
+  
+
+
   // Logout: rimuove l'utente sia dalla memoria reattiva che dal localStorage,
   // così l'app torna allo stato "non autenticato".
   logout(): void {
     localStorage.removeItem(this.storageKey);
     this.userSubject.next(null);
+    this.router.navigate(['/login']);
+    
   }
 
   // Salva l'utente e notifica tutti gli iscritti (sidebar, header, guard, ecc.).
