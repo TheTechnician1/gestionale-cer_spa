@@ -47,11 +47,9 @@ export class LoginComponent {
     }
 
     const password = this.form.get("password")?.value as string | null;
-    const forceError = password === "errore";
-
     const payload = { utente_email: email ?? "", password: password ?? "" };
 
-    this.authService.loginMock(payload, false).subscribe({
+    this.authService.loginMock(payload).subscribe({
       next: (res) => {
         console.log(res);
         this.router.navigateByUrl("/dashboard");

@@ -32,8 +32,7 @@ export class AuthService {
 
   // Login mock: simula una chiamata al backend e salva l'utente in memoria + localStorage.
   // È usato durante lo sviluppo per testare il flusso di autenticazione.
-  loginMock(payload: { utente_email: string; password: string }, forceError: boolean = false): Observable<UtenteModel> {
-    //const endpoint = forceError ? "assets/mock/utente-error.json" : "assets/mock/utente.json";
+  loginMock(payload: { utente_email: string; password: string }): Observable<UtenteModel> {
     const endpoint = "/login"
     return this.apiService.post<Utente>(endpoint, payload).pipe(
       map((utente) => new UtenteModel({ ...utente })),
@@ -44,7 +43,6 @@ export class AuthService {
   // Login guest: simula l'accesso come ospite (ruolo GUEST).
   // Serve per permettere l'accesso rapido senza credenziali reali.
   loginGuest(payload: { utente_email: string; password: string }): Observable<UtenteModel> {
-    //const endpoint = "assets/mock/utente-guest.json";
     const endpoint = "/login"
     return this.apiService.post<Utente>(endpoint, payload).pipe(
       map((utente) => new UtenteModel({ ...utente })),
