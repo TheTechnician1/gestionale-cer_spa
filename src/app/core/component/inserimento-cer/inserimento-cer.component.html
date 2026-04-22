@@ -8,25 +8,37 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Ragione Sociale</mat-label>
-              <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale" required>
+              <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale">
+                <mat-error *ngif="cerForm.get('ragioneSociale')?.touched && cerForm.get('ragioneSociale')?.hasError('required')">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Partita IVA</mat-label>
-                <input matInput formControlName="partitaIva" aria-label="partitaIva" required>
+                <input matInput formControlName="partitaIva" aria-label="partitaIva">
+                  <mat-error *ngif="cerForm.get('partitaIva')?.touched && cerForm.get('partitaIva')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Codice Fiscale</mat-label>
-                <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale" required>
+                <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale">
+                  <mat-error *ngif="cerForm.get('codiceFiscale')?.touched && cerForm.get('codiceFiscale')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Forma giuridica CER</mat-label>
-              <input matInput formControlName="formaGiuridica" aria-label="formaGiuridica" required>
+              <input matInput formControlName="formaGiuridica" aria-label="formaGiuridica">
+                 <mat-error *ngif="cerForm.get('formaGiuridica')?.touched && cerForm.get('formaGiuridica')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
             </mat-form-field>
           </div>
         </div>
-        <div class="section-box">
+        <!-- <div class="section-box">
           <div class="section-title">CONTATTI</div>
           <div class="field-group">
             <div class="row">
@@ -50,13 +62,16 @@
               </mat-form-field>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="section-box">
           <div class="section-title">REFERENTE</div>
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Nome e Cognome Referente</mat-label>
-              <input matInput formControlName="nomeCognomeReferente" aria-label="nomeCognomeReferente" required>
+              <input matInput formControlName="nomeCognomeReferente" aria-label="nomeCognomeReferente">
+                <mat-error *ngif="cerForm.get('formaGiuridica')?.touched && cerForm.get('formaGiuridica')?.hasError('required')">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -79,6 +94,9 @@
                   {{stato.viewValue}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngif="cerForm.get('statoCer')?.touched && cerForm.get('statoCer')?.hasError('required')">
+                  Selezione obbligatoria
+                </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -87,26 +105,67 @@
     <div class="flex-col">
       <mat-card>
         <div class="section-box">
+          <div class="section-title">CONTATTI</div>
+          <div class="field-group">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Telefono</mat-label>
+                <input matInput formControlName="telefono" aria-label="telefono">
+                  <mat-error *ngif="cerForm.get('telefono')?.touched && cerForm.get('telefono')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" aria-label="email">
+                  <mat-error *ngif="cerForm.get('email')?.touched && cerForm.get('email')?.hasError('email')">
+                    Email non valida
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>PEC</mat-label>
+                <input matInput formControlName="pec" aria-label="pec">
+                  <mat-error *ngif="cerForm.get('pec')?.touched && cerForm.get('pec')?.hasError('required')">
+                    Campo obbligatorio
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Sito Web</mat-label>
+                <input matInput formControlName="sitoWeb" aria-label="sitoWeb" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="section-box">
           <div class="section-title">SEDE LEGALE</div>
           <div class="field-group">
-            <mat-form-field appearance="outline" class="full-width">
+            <!-- <mat-form-field appearance="outline" class="full-width">
               <mat-label>Via sede legale</mat-label>
               <input matInput formControlName="viaSedeLegale" aria-label="viaSedeLegale" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Cap</mat-label>
               <input matInput formControlName="cap" aria-label="cap" required>
-            </mat-form-field>
+            </mat-form-field> -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune sede legale</mat-label>
-              <mat-select formControlName="comuneSedeLegale">
+              <mat-select formControlName="comuneSedeLegale" aria-label="comuneSedeLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
-              <mat-select formControlName="provinciaSedeLegale">
+              <mat-select formControlName="provinciaSedeLegale" aria-label="provinciaSedeLegale" required>
+                <mat-option>
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Regione sede legale</mat-label>
+              <mat-select formControlName="regioneSedeLegale" aria-label="regioneSedeLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>

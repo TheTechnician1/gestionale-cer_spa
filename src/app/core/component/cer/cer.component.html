@@ -1,7 +1,14 @@
 <div>
+  <div class="h3-header">
   <h3 class="demo-section">
     <span [matBadge]="cer.length" matBadgeOverlap="true" style="padding-right: 10px;">Gestione Comunità Energetiche</span>
   </h3>
+    <button mat-raised-button color="primary" routerLink="inserimento-cer">
+    <mat-icon>add</mat-icon>
+    Aggiungi una nuova CER
+  </button>
+  </div>
+  <br>
   <div class="filtro" rows="3">
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Ragione Sociale</mat-label>
@@ -81,9 +88,9 @@
 </div>
 <div>
   <br>
-  <button mat-raised-button color="primary" routerLink="inserimento-cer">
+  <!-- <button mat-raised-button color="primary" routerLink="inserimento-cer">
     <mat-icon>add</mat-icon>
     Aggiungi una nuova CER
-  </button>
+  </button> -->
 </div>
 <router-outlet></router-outlet>
