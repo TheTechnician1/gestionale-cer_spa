@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { getTreeControlFunctionsMissingError } from '@angular/cdk/tree';
-import { EmailValidator, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
-import { CERService } from '../../services/cer.service';
 
 @Component({
   selector: 'app-modifica-cer',
@@ -13,7 +11,7 @@ import { CERService } from '../../services/cer.service';
 export class ModificaCerComponent {
   cerForm!:FormGroup;
 
-  constructor(private fb: FormBuilder, private cerService: CERService ) {}
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.cerForm =this.fb.group({

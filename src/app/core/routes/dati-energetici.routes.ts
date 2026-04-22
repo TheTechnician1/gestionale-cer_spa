@@ -1,0 +1,33 @@
+import { Routes } from "@angular/router";
+import { AuthGuard } from "../guard/auth.guard";
+import { DatiEnergeticiComponent } from "../component/dati-energetici/dati-energetici.component";
+import { DettaglioDatiEnergeticiComponent } from "../component/dettaglio-dati-energetici/dettaglio-dati-energetici.component";
+import { InserimentoDatiEnergeticiComponent } from "../component/inserimento-dati-energetici/inserimento-dati-energetici.component";
+import { ModificaDatiEnergeticiComponent } from "../component/modifica-dati-energetici/modifica-dati-energetici.component";
+
+export const DATI_ENERGETICI_ROUTES: Routes = [
+  {
+    path: "",
+    component: DatiEnergeticiComponent,
+    data: { role: ["ADMIN", "GEST", "GUEST"] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "inserimento-dati-energetici",
+    component: InserimentoDatiEnergeticiComponent,
+    data: { role: ["ADMIN", "GEST"] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "modifica-dati-energetici",
+    component: ModificaDatiEnergeticiComponent,
+    data: { role: ["ADMIN", "GEST"] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "dettaglio-dati-energetici",
+    component: DettaglioDatiEnergeticiComponent,
+    data: { role: ["ADMIN", "GEST"] },
+    canActivate: [AuthGuard],
+  },
+];

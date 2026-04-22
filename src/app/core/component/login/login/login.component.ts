@@ -27,10 +27,27 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const payload = this.loginForm.value;
-      this.authService.login(payload).subscribe(user => {
+      this.doLogin(payload);
+
+      console.log(this.loginForm.value);
+    }
+  }
+
+  guestIn() {
+    const payload = {
+      utente_email: "guest@guest.guest",
+      password: "guest"
+    };
+
+    this.doLogin(payload);
+  }
+
+  private doLogin(payload: any) {
+    this.authService.login(payload).subscribe({
+      next: (user) => {
         this.authService.isAuthenticated(user);
 
-        if(user) {
+        if (user) {
           console.log('Login riuscito');
           this.loginError = false;
           this.route.navigate(['/dashboard']);
@@ -38,23 +55,9 @@ export class LoginComponent {
           console.log('Credenziali errate');
           this.loginError = true;
         }
-      });
-      console.log(this.loginForm.value);
-    }
-  }
-
-  guestIn() {
-    const payload = { utente_email: "guest@guest.guest", password: "guest" }
-    this.authService.loginGuest(payload).subscribe(user => {
-
-      this.authService.isAuthenticated(user)
-
-      if(user) {
-        console.log('Login riuscito, come guest');
-        this.loginError = false;
-        this.route.navigate(['/dashboard']);
-      } else {
-        console.log('Credenziali errate');
+      },
+      error: (err) => {
+        console.error('Errore login:', err);
         this.loginError = true;
       }
     });
