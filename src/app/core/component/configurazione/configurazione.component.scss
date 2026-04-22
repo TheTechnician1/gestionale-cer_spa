@@ -22,11 +22,16 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   background-color: white;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
   padding:10px;
-  flex-wrap: wrap;
 }
 
 .form-field {
-  width: 250px; /* oppure 100% se vuoi full width */
+  flex: 1;
+  min-width: 200px;
+  margin: 0 6px;
+//   width: 250px;
+  margin-left: 6px;
+  margin-right: 6px;
+  width:32%;
 }
 
 .filtro h6 {
@@ -34,15 +39,21 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   margin: 0;
 }
 
-.form-field {
-  flex: 1;
-  margin-left: 6px;
-  margin-right: 6px;
-  width:32%;
-}
+// .form-field {
+//   flex: 1;
+//   margin-left: 6px;
+//   margin-right: 6px;
+//   width:32%;
+// }
 
 .table {
   margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+table.mat-table {
+  width: 100%;
 }
 
 .button-filtro, button {
@@ -51,4 +62,8 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
 
 .button-filtro {
   justify-self: center;
+}
+
+th {
+  font-weight: bold;
 }
