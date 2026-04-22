@@ -1,9 +1,11 @@
 <div class="datiEnerg">
-  <h3>Dati energetici</h3>
-  <div>
-    <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
-    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
-    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
+  <div class="h3-header">
+   <h3>Dati energetici</h3>
+    <div>
+     <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
+     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
+     <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
+    </div>
   </div>
 </div>
 <div>
@@ -30,11 +32,6 @@
       </button>
     </div>
   </div>
-  <!-- <div>
-    <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
-    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
-    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
-  </div> -->
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
@@ -64,6 +61,6 @@
     <tr mat-header-row *matHeaderRowDef="tableDat"></tr>
     <tr mat-row *matRowDef="let row; columns: tableDat;"></tr>
   </table>
-  <mat-paginator class="b-shadow" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
 </div>
 <router-outlet></router-outlet>

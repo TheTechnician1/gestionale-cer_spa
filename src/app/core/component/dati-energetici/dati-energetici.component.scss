@@ -48,8 +48,8 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
 
 .table {
   margin-top: 20px;
-  width: 100%;
-  overflow-x: auto;
+  // width: 100%;
+  // overflow-x: auto;
 }
 
 table.mat-table {
@@ -66,4 +66,9 @@ table.mat-table {
 
 th {
   font-weight: bold;
+}
+
+.h3-header {
+  display: flex;
+  justify-content: space-between;
 }
