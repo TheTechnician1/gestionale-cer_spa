@@ -4,6 +4,7 @@ import { AuthGuard } from './core/guard/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
 import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
+import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
 import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
 import { Role } from './core/util/role.enum';
 import { HomeComponent } from './home/home.component';
@@ -28,8 +29,18 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     },
   },
   {
-    path: 'home',
-    component: HomeComponent,
+    path: 'tabella-cer',
+    component: FormRicercaCerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tabella-cer/:id/impianti/:impiantoId',
+    component: DettagliTabellaCerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tabella-cer/:id',
+    component: DettagliTabellaCerComponent,
     canActivate: [AuthGuard],
     data: {
       roles: [Role.ADMIN, Role.GEST, Role.GUEST],
@@ -48,4 +59,32 @@ export const routes: Routes = [
     canActivateChild: [AuthGuard], 
     children: FULL_LAYOUT_ROUTES,
   },
+  { path: "user/new", component: RegistrazioneUtenteComponent },
+  { path: 'login', component: LoginComponent},
+
+//   {
+//   path: 'admin',
+//   component: AdminComponent,
+//   canActivate: [AuthGuard],
+//   data: { roles: [Role.ADMIN] }
+// },
+// {
+//   path: 'gestore',
+//   component: GestoreComponent,
+//   canActivate: [AuthGuard],
+//   data: { roles: [Role.ADMIN, Role.GEST] }
+// },
+
+  //   {
+  //   path: 'admin',
+  //   component: AdminComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { roles: [Role.ADMIN] }
+  // },
+  // {
+  //   path: 'gestore',
+  //   component: GestoreComponent,
+  //   canActivate: [AuthGuard],
+  //   data: { roles: [Role.ADMIN, Role.GEST] }
+  // },
 ];

@@ -1,13 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CerElemento, CerFiltro, FiltroService } from '../core/services/filtro.service';
+import { LoginService } from '../core/services/login.service';
 
 @Component({
   selector: 'app-form-ricerca-cer',
   templateUrl: './form-ricerca-cer.component.html',
   styleUrls: ['./form-ricerca-cer.component.scss']
 })
-export class FormRicercaCerComponent {
+export class FormRicercaCerComponent implements OnInit {
+ @Output() risultatiFiltratiChange = new EventEmitter<CerElemento[]>();
+
  formRicerca: FormGroup;
  risultatiFiltrati: CerElemento[] = [];
 
@@ -25,7 +28,10 @@ export class FormRicercaCerComponent {
 
  private filtroService = inject(FiltroService);
 
- constructor(private costruttoreForm: FormBuilder) {
+  constructor(
+    private costruttoreForm: FormBuilder,
+    private login: LoginService
+  ) {
      this.formRicerca = this.costruttoreForm.group(
     {
      ragioneSociale: [''],
@@ -35,9 +41,12 @@ export class FormRicercaCerComponent {
      flag: ['']
     }
   );
-
     this.risultatiFiltrati = this.filtroService.getListaElementi();
    }  
+
+  ngOnInit(): void {
+    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
+  }
 
 
     get ragioneSociale(): FormControl {
@@ -60,6 +69,10 @@ export class FormRicercaCerComponent {
     return this.formRicerca.get('flag') as FormControl;
  }
 
+ isAdmin(): boolean {
+    return this.login.isGranted() === 'ADMIN';
+ }
+
  inviaModulo(): void {
     if (this.formRicerca.invalid) {
       this.formRicerca.markAllAsTouched();
@@ -70,17 +83,19 @@ export class FormRicercaCerComponent {
       ragioneSociale: this.ragioneSociale.value,
       partitaIVA: this.partitaIVA.value,
       formaGiuridica: this.formaGiuridica.value,
-      stato: this.stato.value,
+      stato: this.isAdmin() ? this.stato.value : '',
       flag: this.flag.value
     };
 
     console.log('Dati di ricerca:', datiRicerca);
 
     this.risultatiFiltrati = this.filtroService.filtraElementi(datiRicerca);
+    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
   }
 
   resetFiltri(): void {
     this.formRicerca.reset();
     this.risultatiFiltrati = this.filtroService.getListaElementi();
+    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
   }
 }
