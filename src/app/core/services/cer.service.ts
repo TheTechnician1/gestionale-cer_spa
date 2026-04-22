@@ -11,7 +11,7 @@ export class CERService {
 
   getCERS(payload: any): Observable<CER[]> {
     const endpoint = "cer/ricerca";
-    return this.apiService.post<CER[]>(endpoint, payload);
+    return this.apiService.postLogin<CER[]>(endpoint, payload);
   }
 
   getCER(payload: any): Observable<CER[]> {

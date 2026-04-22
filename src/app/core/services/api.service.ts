@@ -54,11 +54,6 @@ export class ApiService {
 
     const url = this.buildUrl(path);
 
-    if (body) {
-      body.emailUtenteLoggato =
-        this.api.getLocal<UtenteLogin>("utente")?.mail;
-    }
-
     const options: any = {
       body,
       params: this.buildParams(params),
