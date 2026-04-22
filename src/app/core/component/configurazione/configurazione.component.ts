@@ -46,6 +46,7 @@ export class ConfigurazioneComponent {
     this.confService.getConfigurazioni(this.filtro).subscribe({
       next: (config) => {
         this.configurazioni = config;
+        this.dataSource.data = [...this.configurazioni];
       },
       error: (error) => {
         console.error("Login error", error);

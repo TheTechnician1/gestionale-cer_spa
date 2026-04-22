@@ -36,7 +36,7 @@
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="codice_cabina">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="codice_cabina"> COD.Cabina </th>
-      <td mat-cell *matCellDef="let element"> {{ element.codice_cabina }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.codiceCabina }} </td>
     </ng-container>
     <ng-container matColumnDef="anno_attivazione">
       <th mat-header-cell  mat-sort-header="anno_attivazione" *matHeaderCellDef> Anno Attivazione</th>
