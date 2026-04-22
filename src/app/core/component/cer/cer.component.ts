@@ -14,7 +14,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 export class CERComponent {
   constructor(private cerService: CERService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableCER: string[] = ['ragioneSociale', 'codiceFiscale', 'comuneLegale', 'provinciaLegale', 'regioneLegale', 'azioni'];
+  tableCER: string[] = ['ragioneSociale', 'codiceFiscale', 'partitaIva' ,'comuneLegale', 'provinciaLegale', 'regioneLegale', 'azioni'];
 
   cer: CER[] = [];
 
@@ -27,6 +27,7 @@ export class CERComponent {
   filtro = {
     ragioneSociale: '',
     codiceFiscale: '',
+    partitaIva: '',
     comuneLegale: '',
     provinciaLegale: '',
     regioneLegale: ''
@@ -60,9 +61,10 @@ export class CERComponent {
     this.listaFiltrata = this.cer.filter(p => {
       return (
         (this.filtro.ragioneSociale ? p.ragioneSociale?.toLowerCase().includes(this.filtro.ragioneSociale.toLowerCase()) : true) &&
-        (this.filtro.codiceFiscale ? p.codiceFiscale?.toLowerCase().includes(this.filtro.codiceFiscale.toLowerCase()) : true) &&
+        (this.filtro.codiceFiscale ? p.codiceFiscale?.toUpperCase().includes(this.filtro.codiceFiscale.toUpperCase()) : true) &&
+        (this.filtro.partitaIva ? p.partitaIva?.toLowerCase().includes(this.filtro.partitaIva.toLowerCase()) : true) &&
         (this.filtro.comuneLegale ? p.comuneLegale?.descrizione?.toLowerCase().includes(this.filtro.comuneLegale.toLowerCase()) : true) &&
-        (this.filtro.provinciaLegale ? p.provinciaLegale?.descrizione?.toLowerCase().includes(this.filtro.provinciaLegale.toLowerCase()) : true) &&
+        (this.filtro.provinciaLegale ? p.provinciaLegale?.descrizione?.toUpperCase().includes(this.filtro.provinciaLegale.toUpperCase()) : true) &&
         (this.filtro.regioneLegale ? p.regioneLegale?.descrizione?.toLowerCase().includes(this.filtro.regioneLegale.toLowerCase()) : true)
       );
     });
@@ -77,6 +79,7 @@ export class CERComponent {
     this.filtro = {
       ragioneSociale: '',
       codiceFiscale: '',
+      partitaIva: '',
       comuneLegale: '',
       provinciaLegale: '',
       regioneLegale: ''
