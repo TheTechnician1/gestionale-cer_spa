@@ -17,7 +17,7 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
 
 .filtro {
   display: flex;
-  flex-wrap: wrap; /* va a capo automaticamente */
+  flex-wrap: wrap;
   gap: 10px;
   background-color: white;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -26,7 +26,7 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
 }
 
 .form-field {
-  width: 250px; /* oppure 100% se vuoi full width */
+  width: 250px;
 }
 
 .filtro h6 {
