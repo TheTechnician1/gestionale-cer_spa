@@ -12,6 +12,10 @@
       <input [(ngModel)]="filtro.codiceFiscale" matInput type="text" aria-label="codiceFiscale">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Partita IVA</mat-label>
+      <input [(ngModel)]="filtro.partitaIva" matInput type="text" aria-label="partitaIva">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
       <mat-label>Comune Legale</mat-label>
       <input [(ngModel)]="filtro.comuneLegale" matInput type="text" aria-label="comuneLegale">
     </mat-form-field>
@@ -36,24 +40,28 @@
 <div class="table">
   <table mat-table [dataSource]="isFiltering ? listaFiltrata : dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="ragioneSociale">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="ragioneSociale"> Ragione Sociale </th>
-      <td mat-cell *matCellDef="let element"> {{element.ragioneSociale}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="ragioneSociale">Ragione Sociale</th>
+      <td mat-cell *matCellDef="let element"> {{ element.ragSociale }} </td>
     </ng-container>
     <ng-container matColumnDef="codiceFiscale">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceFiscale"> Codice Fiscale </th>
-      <td mat-cell *matCellDef="let element"> {{element.codiceFiscale}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceFiscale">Codice Fiscale</th>
+      <td mat-cell *matCellDef="let element"> {{ element.codFisc }} </td>
+    </ng-container>
+    <ng-container matColumnDef="partitaIva">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva">Partita IVA</th>
+      <td mat-cell *matCellDef="let element"> {{ element.pIva }} </td>
     </ng-container>
     <ng-container matColumnDef="comuneLegale">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="comuneLegale"> Comune Legale </th>
-      <td mat-cell *matCellDef="let element"> {{element.comuneLegale}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="comuneLegale">Comune Legale</th>
+      <td mat-cell *matCellDef="let element"> {{ element.comune }} </td>
     </ng-container>
     <ng-container matColumnDef="provinciaLegale">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaLegale"> Provincia legale </th>
-      <td mat-cell *matCellDef="let element"> {{element.provinciaLegale}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="provinciaLegale">Provincia Legale</th>
+      <td mat-cell *matCellDef="let element"> {{ element.provincia }} </td>
     </ng-container>
     <ng-container matColumnDef="regioneLegale">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="regioneLegale"> Regione Legale </th>
-      <td mat-cell *matCellDef="let element"> {{element.regioneLegale}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="regioneLegale">Regione Legale</th>
+      <td mat-cell *matCellDef="let element"> {{ element.regione }} </td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
