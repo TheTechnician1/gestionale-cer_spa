@@ -1,6 +1,13 @@
 <div class="impianti">
   <h3>Impianti</h3>
+  <div>
+    <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
+    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon> Configurazione</button>
+  </div>
+</div>
+<div>
   <div class="filtro" rows="3">
+    <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Tipologia Impianto</mat-label>
       <input [(ngModel)]="filtro.tipologia_impianto" matInput type="text" aria-label="tipologia_impianto">
@@ -22,10 +29,10 @@
       </button>
     </div>
   </div>
-  <div>
+  <!-- <div>
     <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon> Configurazione</button>
-  </div>
+  </div> -->
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
