@@ -6,21 +6,17 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 import { FULL_LAYOUT_ROUTES } from '../../app.routes';
 import { Observable } from 'rxjs';
-import { Role } from '../services/auth.service';
+import { LoginService } from '../services/login.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(
-    private auth: AuthService,
     private router: Router,
+    private loginService: LoginService
   ) {}
-  canActivateError(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ):
+  canActivateError():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
@@ -29,34 +25,29 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
-    // Placeholder: replace with real auth flow.
-
-    console.log('FACCIO LA MIA BELLA VERIFICA!');
-
-    this.auth.isAuthenticated();
-    const isAuth = this.auth.getIsAuthenticated().validUser;
-    const userRole = this.auth.getRole();
-
-    if (this.auth.getIsAuthenticated().controllo) {
+    const isPublic = !!route.data?.["public"];
+    if (isPublic) {
       return true;
     }
 
-    console.log("NON E' autenticato");
-
-    // 🚫 Non autenticato
-    if (!isAuth) {
-      return this.router.createUrlTree(['/login']);
+    const user = this.loginService.currentUser;
+    if (!user) {
+      return this.router.parseUrl("/login");
     }
 
-    // 🎯 Ruoli richiesti dalla route
-    const allowedRoles = route.data?.['roles'] as Role[];
-
-    if (allowedRoles && !allowedRoles.includes(userRole!)) {
-      return this.router.createUrlTree(['/unauthorized']);
+    const allowedRoles = route.data?.["roles"] as string[] | undefined;
+    if (!allowedRoles || allowedRoles.length === 0) {
+      return true;
     }
 
-    return true;
+    if (user.ruolo && allowedRoles.includes(user.ruolo)) {
+      return true;
+    }
 
-    //return this.router.navigate("/login");
+    return this.router.parseUrl("/unauthorized");
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return this.canActivate(route);
   }
 }

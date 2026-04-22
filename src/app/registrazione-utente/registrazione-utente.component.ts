@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,27 +10,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiService } from '../core/services/api.service';
-
-interface RegistrazioneUtentePayload {
-  nome: string;
-  cognome: string;
-  codiceFiscale: string;
-  email: string;
-  numeroTelefono: string;
-  ruolo: string;
-  password: string;
-}
+import { LoginService } from '../core/services/login.service';
 
 @Component({
   selector: 'app-registrazione-utente',
   templateUrl: './registrazione-utente.component.html',
   styleUrls: ['./registrazione-utente.component.scss'],
 })
-export class RegistrazioneUtenteComponent {
-  public ultimoPayloadInviato: RegistrazioneUtentePayload | null = null;
-  public rispostaBackend: string | null = null;
-
+export class RegistrazioneUtenteComponent implements OnInit {
   nascondiPassword: boolean = true;
   nascondiConfermaPassword: boolean = true;
   formRegistrazione: FormGroup;
@@ -40,20 +27,20 @@ export class RegistrazioneUtenteComponent {
 
   constructor(
     private costruttoreForm: FormBuilder,
-    private apiService: ApiService
+    private loginService: LoginService
   ) {
     this.formRegistrazione = this.costruttoreForm.group(
       {
-        nome: ['', [Validators.required, Validators.minLength(2)]],
-        cognome: ['', [Validators.required, Validators.minLength(2)]],
+        nomeUtente: ['', [Validators.required, Validators.minLength(2)]],
+        cognomeUtente: ['', [Validators.required, Validators.minLength(2)]],
         codiceFiscale: [
           '',
-          [Validators.required, Validators.pattern(/^[A-Z,a-z,0-9]{16}$/)],
+          [Validators.required, Validators.pattern(/^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1}$/)],  //implementare il pattern del codice fiscale italiano
         ],
-        email: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
-        numeroTelefono: [
+        mail: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
+        telefono: [
           '',
-          [Validators.required, Validators.pattern(/^\+?[0-9\s]{8,15}$/)],
+          [Validators.required, Validators.pattern(/^(0|3)[0-9]{8,9}$/)],  //implementare riconoscimento numeri italiani? \+?[0-9\s]{8,15} 
         ],
         ruolo: ['', [Validators.required]],
         password: [
@@ -61,7 +48,7 @@ export class RegistrazioneUtenteComponent {
           [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/),
+            Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[*!$?^°#@%&£§]).+$/), //implementare i caratteri speciali?
           ],
         ],
         confermaPassword: ['', [Validators.required]],
@@ -70,6 +57,17 @@ export class RegistrazioneUtenteComponent {
         validators: this.validatorePasswordCoincidenti(),
       }
     );
+  }
+
+  ngOnInit(): void {
+    this.formRegistrazione.get('codiceFiscale')?.valueChanges.subscribe(val => {
+      if (val) {
+        this.formRegistrazione.get('codiceFiscale')?.setValue(
+          val.toUpperCase(),
+          { emitEvent: false } // evita loop infinito
+        );
+      }
+    });
   }
 
   validatorePasswordCoincidenti(): ValidatorFn {
@@ -89,91 +87,51 @@ export class RegistrazioneUtenteComponent {
     };
   }
 
-  get nome(): FormControl {
-    return this.formRegistrazione.get('nome') as FormControl;
-  }
-
-  get cognome(): FormControl {
-    return this.formRegistrazione.get('cognome') as FormControl;
-  }
-
-  get codiceFiscale(): FormControl {
-    return this.formRegistrazione.get('codiceFiscale') as FormControl;
-  }
-
-  get email(): FormControl {
-    return this.formRegistrazione.get('email') as FormControl;
-  }
-
-  get numeroTelefono(): FormControl {
-    return this.formRegistrazione.get('numeroTelefono') as FormControl;
-  }
-
-  get ruolo(): FormControl {
-    return this.formRegistrazione.get('ruolo') as FormControl;
-  }
-
-  get password(): FormControl {
-    return this.formRegistrazione.get('password') as FormControl;
-  }
-
-  get confermaPassword(): FormControl {
-    return this.formRegistrazione.get('confermaPassword') as FormControl;
-  }
+  // reset(){
+  //   this.formRegistrazione.reset()
+  //   console.log(this.formRegistrazione.getRawValue())
+  // }
   
-  inviaModulo(formDirective: FormGroupDirective): void {
+
+  inviaModulo(): void {
     if (this.formRegistrazione.invalid) {
       this.formRegistrazione.markAllAsTouched();
       return;
     }
 
-    const datiUtente: RegistrazioneUtentePayload = {
-      nome: this.nome.value?.trim() ?? '',
-      cognome: this.cognome.value?.trim() ?? '',
-      codiceFiscale: this.codiceFiscale.value?.trim().toUpperCase() ?? '',
-      email: this.email.value?.trim() ?? '',
-      numeroTelefono: this.numeroTelefono.value?.trim() ?? '',
-      ruolo: this.ruolo.value ?? '',
-      password: this.password.value ?? '',
-    };
+    const { confermaPassword, ...payload } = this.formRegistrazione.getRawValue();
 
-    this.ultimoPayloadInviato = datiUtente;
-    console.log('Payload registrazione utente:', datiUtente);
+    console.log('Utente registrato:', payload);
 
-    this.apiService.post<string>('Utente/crea-utente', datiUtente).subscribe({
+    this.loginService.registraUtente(payload).subscribe({
       next: (risposta) => {
-        this.rispostaBackend = risposta;
+        console.log(risposta);
 
         this.snackBar.open(
-          risposta || 'Utente registrato con successo',
-          'Chiudi',
+          'User registered successfully',
+          'Close',
           {
-            duration: 3000,
+            duration: 4000,
             horizontalPosition: 'end',
             verticalPosition: 'top',
           }
         );
 
-        formDirective.resetForm();
+        
         this.formRegistrazione.reset();
 
         this.nascondiPassword = true;
         this.nascondiConfermaPassword = true;
       },
       error: (errore) => {
-        const messaggioErrore =
-          errore?.error ||
-          'Errore durante l\'invio della registrazione al backend';
 
-        console.error('Errore registrazione utente:', errore);
-        this.rispostaBackend = messaggioErrore;
+        console.error('Errore registrazione utente: ', errore);
+        
 
-        this.snackBar.open(messaggioErrore, 'Chiudi', {
-          duration: 4000,
-          horizontalPosition: 'end',
-          verticalPosition: 'top',
-        });
       },
     });
   }
+
+
+
 }

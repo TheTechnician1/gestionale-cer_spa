@@ -50,7 +50,7 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges {
   // ruolo: string = ''
 
   getRuolo(): string {
-    let ruolo = this.login.isGranted();
+    let ruolo = this.login.currentUser?.ruolo;
     console.log(ruolo);
     return ruolo!;
   }

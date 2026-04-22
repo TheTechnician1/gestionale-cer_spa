@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
 export interface Login {
   ruolo: string;
   isLoginOK?: boolean;
@@ -9,95 +13,73 @@ export interface Login {
   providedIn: 'root',
 })
 export class LoginService {
-  private readonly ruolo = 'response_ruolo';
 
-  constructor(private storage: StorageService) {}
+  // Chiave usata per salvare l'utente autenticato nel localStorage.
+  // Serve per ricordare il login anche dopo refresh o riapertura del browser.
+  private readonly storageKey = "utente";
+  // Stato reattivo dell'utente corrente. È il punto centrale da cui
+  // il resto dell'app capisce se l'utente è loggato o meno.
+  private readonly userSubject = new BehaviorSubject<UtenteModel | null>(this.loadFromStorage());
 
-  l: Login = {
-    ruolo: 'ruolo non trovato',
-    isLoginOK: false,
-  };
+  // Stream pubblico dell'utente: i componenti si iscrivono qui per
+  // reagire ai cambi di login (sidebar, header, permessi, ecc.).
+  readonly user$ = this.userSubject.asObservable();
+  // Stream booleano comodo per sapere se l'utente è autenticato.
+  readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
 
-  id = 0;
+  // Getter sincrono per recuperare velocemente l'utente corrente
+  // (usato ad esempio nelle guardie delle route).
+  get currentUser(): UtenteModel | null {
+    return this.userSubject.value;
+  }
 
-  login(email: string, password: string): void {
-    console.log('email = ', email);
+  constructor(private http: HttpClient, private apiService: ApiService) {}
 
-    //qua dovrebbe poi chiamare endpoint. Ma per ora non lo fa... facciamo un controllo a secco
+  // Login mock: simula una chiamata al backend e salva l'utente in memoria + localStorage.
+  // È usato durante lo sviluppo per testare il flusso di autenticazione.
+  login(payload: { email: string |null; password: string | null }): Observable<UtenteModel> {
+    
+    const endpoint = "/utente/accedi"
+    
+    return this.apiService.post<Utente>(endpoint, payload).pipe(
+      map((utente) => new UtenteModel({ ...utente })),
+      tap((utente) => this.persistUser(utente)),
+    );
+  }
 
-    let utente = [
-      {
-        email: 'peppe@gmail.com',
-        password: 'polpolpo',
-        ruolo: 'ADMIN',
-      },
-      {
-        email: 'danielefatso@gmail.com',
-        password: 'Dani3459',
-        ruolo: 'GEST',
-      },
-      {
-        email: 'franco978@gmail.com',
-        password: 'FrancoTiGuarda',
-        ruolo: 'GUEST',
-      },
-      {
-        email: 'heisenberg@gmail.com',
-        password: 'cucinare',
-        ruolo: 'GUEST',
-      },
-      {
-        email: 'lucio.dalla@gmail.com',
-        password: '4ttent1.4l.lup0',
-        ruolo: 'GEST',
-      },
-      {
-        email: 'rene.ferretti@gmail.com',
-        password: 'Fiano.Romano',
-        ruolo: 'ADMIN',
-      },
-      {
-        email: 'guest@guest.guest',
-        password: 'guest',
-        ruolo: 'GUEST',
-      },
-      {
-        email: 'simone@gmail.com',
-        password: 'simone77',
-        ruolo: 'GUEST',
-      },
-    ];
+  registraUtente(payload: RegistrazioneUtente): Observable<RegistrazioneUtente> {
+    const endpoint = "/utente/inserisci"
+    return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
+  }
 
-    for (let u of utente) {
-      if (u.email === email && u.password === password) {
-        this.l.ruolo = u.ruolo;
-        this.l.isLoginOK = true;
-        console.log('utente trovato: può accedere come ' + this.l.ruolo);
-        // if(u.email === 'simone@gmail.com'){
-        // this.id = 77
-        // console.log('id cambiato')
-        // }
-        break;
-      } else {
-        this.l.ruolo = 'ruolo non trovato';
-        this.l.isLoginOK = false;
-      }
+  // Logout: rimuove l'utente sia dalla memoria reattiva che dal localStorage,
+  // così l'app torna allo stato "non autenticato".
+  logout(): void {
+    localStorage.removeItem(this.storageKey);
+    this.userSubject.next(null);
+  }
+
+  // Salva l'utente e notifica tutti gli iscritti (sidebar, header, guard, ecc.).
+  private persistUser(utente: UtenteModel): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(utente));
+    this.userSubject.next(utente);
+  }
+
+  // Recupera l'utente dal localStorage all'avvio dell'app.
+  // Serve per ripristinare la sessione dopo un refresh.
+  private loadFromStorage(): UtenteModel | null {
+    const raw = localStorage.getItem(this.storageKey);
+    if (!raw) {
+      return null;
     }
-  }
 
-  getL(): Login {
-    return this.l;
-  }
-
-  getLruolo(): string {
-    return this.l.ruolo;
-  }
-
-  setResponse(response: string): void {
-    this.storage.setLocal(this.ruolo, response);
-  }
-
-  isGranted() {
-    return this.storage.getLocal<string>(this.ruolo);
+    try {
+      const parsed = JSON.parse(raw) as Partial<Utente>;
+      return new UtenteModel(parsed);
+    } catch {
+      // Se i dati sono corrotti, puliamo lo storage per evitare errori futuri.
+      localStorage.removeItem(this.storageKey);
+      return null;
+    }
   }
 }
