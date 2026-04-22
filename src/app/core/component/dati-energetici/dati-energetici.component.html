@@ -1,6 +1,16 @@
 <div class="datiEnerg">
-  <h3>Dati energetici</h3>
+  <div class="h3-header">
+   <h3>Dati energetici</h3>
+    <div>
+     <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
+     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
+     <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
+    </div>
+  </div>
+</div>
+<div>
   <div class="filtro" rows="3">
+    <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Energia Prodotta</mat-label>
       <input [(ngModel)]="filtro.energia_prodotta" matInput type="text" aria-label="energia_prodotta">
@@ -21,11 +31,6 @@
         <mat-icon>close</mat-icon> Reset
       </button>
     </div>
-  </div>
-  <div>
-    <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
-    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
-    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
   </div>
 </div>
 <div class="table">
@@ -56,6 +61,6 @@
     <tr mat-header-row *matHeaderRowDef="tableDat"></tr>
     <tr mat-row *matRowDef="let row; columns: tableDat;"></tr>
   </table>
-  <mat-paginator class="b-shadow" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
 </div>
 <router-outlet></router-outlet>
