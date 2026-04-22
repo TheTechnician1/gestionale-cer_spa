@@ -47,9 +47,14 @@ export class RegistrazioneUtenteComponent {
       console.log(this.form.value);
     }
     const { confermaPassword, ...payload } = this.form.getRawValue();
-    this.authService.createUtente(payload).subscribe(user => {
+    this.authService.createUtente(payload).subscribe({
+      next: () => {
       this.form.reset();
       this.route.navigateByUrl('/home');
+      },
+      error: (error) => {
+        console.error("Register error", error);
+      }
     });
   }
 
