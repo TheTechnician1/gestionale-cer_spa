@@ -48,8 +48,8 @@ export class RegistrazioneUtenteComponent {
     }
     const { confermaPassword, ...payload } = this.form.getRawValue();
     this.authService.createUtente(payload).subscribe(user => {
-      this.form.clearValidators;
-      return user.this.route.navigate[('/home')];
+      this.form.reset();
+      this.route.navigateByUrl('/home');
     });
   }
 
