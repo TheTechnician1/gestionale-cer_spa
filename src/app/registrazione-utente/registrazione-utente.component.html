@@ -55,7 +55,6 @@
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" type="email" />
             <mat-error *ngIf="email.hasError('required')">L'email è obbligatoria</mat-error>
-            <mat-error *ngIf="email.hasError('email')">Inserisci un'email valida</mat-error>
             <mat-error *ngIf="email.hasError('pattern')">Inserisci un'email valida</mat-error>
 
           </mat-form-field>

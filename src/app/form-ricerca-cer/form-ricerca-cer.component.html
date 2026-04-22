@@ -36,7 +36,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" *ngIf="isAdmin()">
             <mat-label>Scegli Stato della CER</mat-label>
             <mat-select formControlName="stato">
               <mat-option value="">Tutti</mat-option>
@@ -82,16 +82,11 @@
         <div *ngIf="risultatiFiltrati.length === 0" class="stato-vuoto">
           Nessun elemento trovato con i filtri selezionati.
         </div>
-
-        <mat-card class="risultato-item" *ngFor="let elemento of risultatiFiltrati">
-          <mat-card-content>
-            <p><strong>Ragione Sociale:</strong> {{ elemento.ragioneSociale }}</p>
-            <p><strong>Partita IVA:</strong> {{ elemento.partitaIVA }}</p>
-            <p><strong>Forma Giuridica:</strong> {{ elemento.formaGiuridica }}</p>
-            <p><strong>Stato:</strong> {{ elemento.stato }}</p>
-            <p><strong>Flag:</strong> {{ elemento.flag }}</p>
-          </mat-card-content>
-        </mat-card>
+        <app-tabella-cer
+          class="risultato-item"
+          [risultatiFiltrati]="risultatiFiltrati"
+        >
+        </app-tabella-cer>
       </div>
     </mat-card-content>
   </mat-card>

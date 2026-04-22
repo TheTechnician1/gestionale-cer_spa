@@ -1,0 +1,227 @@
+<section class="pagina-dettaglio-cer" *ngIf="cer; else cerNonTrovata">
+  <div class="intestazione-dettaglio">
+    <button mat-stroked-button routerLink="/tabella-cer">
+      <mat-icon>arrow_back</mat-icon>
+      Torna alla tabella
+    </button>
+
+    <div>
+      <p class="sovratitolo">Dettaglio CER</p>
+      <h1>{{ cer.ragioneSociale }}</h1>
+      <span class="badge-stato" *ngIf="isAdmin()">{{ cer.stato }}</span>
+    </div>
+  </div>
+
+  <div class="griglia-dettaglio">
+    <mat-card class="scheda-dettaglio">
+      <mat-card-header>
+        <mat-card-title>Dati anagrafici</mat-card-title>
+        <mat-card-subtitle>Informazioni identificative della comunita energetica</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <dl class="lista-dati">
+          <div>
+            <dt>Ragione sociale</dt>
+            <dd>{{ cer.ragioneSociale }}</dd>
+          </div>
+          <div>
+            <dt>Partita IVA</dt>
+            <dd>{{ cer.p_iva }}</dd>
+          </div>
+          <div>
+            <dt>Codice fiscale</dt>
+            <dd>{{ cer.codiceFiscale }}</dd>
+          </div>
+          <div>
+            <dt>Forma giuridica</dt>
+            <dd>{{ cer.formaGiuridica }}</dd>
+          </div>
+          <div>
+            <dt>Specifiche forma giuridica</dt>
+            <dd>{{ cer.specificheFormaGiuridica }}</dd>
+          </div>
+          <div>
+            <dt>Referente</dt>
+            <dd>{{ cer.referente }}</dd>
+          </div>
+        </dl>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="scheda-dettaglio">
+      <mat-card-header>
+        <mat-card-title>Indirizzo e contatti</mat-card-title>
+        <mat-card-subtitle>Recapiti operativi e sede principale</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <dl class="lista-dati">
+          <div>
+            <dt>Comune</dt>
+            <dd>{{ cer.comune }}</dd>
+          </div>
+          <div>
+            <dt>Provincia</dt>
+            <dd>{{ cer.provincia }}</dd>
+          </div>
+          <div>
+            <dt>Regione</dt>
+            <dd>{{ cer.regione }}</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd>{{ cer.email }}</dd>
+          </div>
+          <div>
+            <dt>PEC</dt>
+            <dd>{{ cer.pec }}</dd>
+          </div>
+          <div>
+            <dt>Sito web</dt>
+            <dd>
+              <a [href]="cer.sitoWeb" target="_blank" rel="noopener">
+                {{ cer.sitoWeb }}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt>Telefono</dt>
+            <dd>{{ cer.telefono }}</dd>
+          </div>
+        </dl>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="scheda-dettaglio scheda-note">
+    <mat-card-header>
+      <mat-card-title>Informazioni gestionali</mat-card-title>
+      <mat-card-subtitle>Note e dati aggiuntivi rilevanti per la gestione</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ cer.noteGestionali }}</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="scheda-dettaglio">
+    <mat-card-header>
+      <mat-card-title>Impianti associati</mat-card-title>
+      <mat-card-subtitle>Seleziona un impianto per visualizzarne il dettaglio</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="tabella-impianti" *ngIf="cer.impianti.length > 0; else nessunImpianto">
+        <table mat-table [dataSource]="cer.impianti">
+          <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.nome }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipologia">
+            <th mat-header-cell *matHeaderCellDef>Tipologia</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.tipologia }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="potenza">
+            <th mat-header-cell *matHeaderCellDef>Potenza</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.potenza }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="comune">
+            <th mat-header-cell *matHeaderCellDef>Comune</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.comune }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="stato">
+            <th mat-header-cell *matHeaderCellDef>Stato</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.stato }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th mat-header-cell *matHeaderCellDef>Azioni</th>
+            <td mat-cell *matCellDef="let impianto">
+              <button
+                mat-icon-button
+                type="button"
+                (click)="apriDettaglioImpianto(impianto, dettaglioImpiantoDialog)"
+                aria-label="Visualizza dettaglio impianto"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [class.riga-selezionata]="row.id === impiantoSelezionato?.id"
+          ></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #dettaglioImpiantoDialog>
+  <ng-container *ngIf="impiantoSelezionato">
+    <h2 mat-dialog-title>{{ impiantoSelezionato.nome }}</h2>
+
+    <mat-dialog-content>
+      <p class="sottotitolo-dialog">Dettaglio impianto associato alla CER</p>
+
+      <dl class="lista-dati lista-dati-impianto">
+        <div>
+          <dt>Tipologia</dt>
+          <dd>{{ impiantoSelezionato.tipologia }}</dd>
+        </div>
+        <div>
+          <dt>Potenza</dt>
+          <dd>{{ impiantoSelezionato.potenza }}</dd>
+        </div>
+        <div>
+          <dt>Comune</dt>
+          <dd>{{ impiantoSelezionato.comune }}</dd>
+        </div>
+        <div>
+          <dt>Indirizzo</dt>
+          <dd>{{ impiantoSelezionato.indirizzo }}</dd>
+        </div>
+        <div>
+          <dt>Stato</dt>
+          <dd>{{ impiantoSelezionato.stato }}</dd>
+        </div>
+        <div>
+          <dt>Data attivazione</dt>
+          <dd>{{ impiantoSelezionato.dataAttivazione }}</dd>
+        </div>
+      </dl>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+  </ng-container>
+</ng-template>
+
+<ng-template #nessunImpianto>
+  <div class="stato-vuoto">Nessun impianto associato alla CER selezionata.</div>
+</ng-template>
+
+<ng-template #cerNonTrovata>
+  <section class="pagina-dettaglio-cer">
+    <mat-card class="scheda-dettaglio">
+      <mat-card-header>
+        <mat-card-title>CER non trovata</mat-card-title>
+        <mat-card-subtitle>La CER selezionata non e presente nell'elenco disponibile.</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-stroked-button routerLink="/tabella-cer">
+          <mat-icon>arrow_back</mat-icon>
+          Torna alla tabella
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+</ng-template>

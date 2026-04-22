@@ -7,6 +7,7 @@ import { Role } from './core/services/auth.service';
 import { FormRicercaCerComponent } from "./form-ricerca-cer/form-ricerca-cer.component";
 
 import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
+import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
@@ -18,7 +19,17 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   },
   {
     path: 'tabella-cer',
-    component: TabellaCERComponent,
+    component: FormRicercaCerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tabella-cer/:id/impianti/:impiantoId',
+    component: DettagliTabellaCerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tabella-cer/:id',
+    component: DettagliTabellaCerComponent,
     canActivate: [AuthGuard],
   },
 ];
@@ -39,7 +50,6 @@ export const routes: Routes = [
   },
   { path: "user/new", component: RegistrazioneUtenteComponent },
   { path: 'login', component: LoginComponent},
-   { path: 'filtro', component: FormRicercaCerComponent},
 
 //   {
 //   path: 'admin',

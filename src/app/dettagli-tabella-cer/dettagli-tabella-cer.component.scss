@@ -1,0 +1,155 @@
+.pagina-dettaglio-cer {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  background: #f5f8fb;
+  box-sizing: border-box;
+}
+
+.intestazione-dettaglio {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.intestazione-dettaglio h1 {
+  margin: 0;
+  color: #14324a;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.sovratitolo {
+  margin: 0 0 4px;
+  color: #607d8b;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-stato {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  margin-top: 10px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #e8f5e9;
+  color: #256029;
+  font-weight: 700;
+}
+
+.griglia-dettaglio {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.scheda-dettaglio {
+  border: 1px solid #d8e3ea;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(20, 50, 74, 0.08);
+}
+
+mat-card-title {
+  color: #14324a;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+mat-card-subtitle {
+  color: #607d8b;
+}
+
+.lista-dati {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin: 0;
+}
+
+.lista-dati div {
+  min-width: 0;
+}
+
+.lista-dati dt {
+  margin-bottom: 4px;
+  color: #607d8b;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lista-dati dd {
+  margin: 0;
+  color: #263238;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.scheda-note p {
+  margin: 0;
+  color: #263238;
+  line-height: 1.55;
+}
+
+.tabella-impianti {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.riga-selezionata {
+  background: #e3f2fd;
+}
+
+.lista-dati-impianto {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sottotitolo-dialog {
+  margin: 0 0 18px;
+  color: #607d8b;
+}
+
+.stato-vuoto {
+  padding: 16px;
+  border-radius: 8px;
+  background: #eef4f7;
+  color: #455a64;
+}
+
+button mat-icon {
+  margin-right: 6px;
+}
+
+button[mat-icon-button] mat-icon {
+  margin-right: 0;
+}
+
+@media (max-width: 900px) {
+  .griglia-dettaglio,
+  .lista-dati,
+  .lista-dati-impianto {
+    grid-template-columns: 1fr;
+  }
+
+  .intestazione-dettaglio {
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 600px) {
+  .pagina-dettaglio-cer {
+    padding: 16px;
+  }
+
+  .intestazione-dettaglio h1 {
+    font-size: 24px;
+  }
+}

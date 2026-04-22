@@ -32,6 +32,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MatTableModule } from '@angular/material/table';
     HomeComponent,
     FormRicercaCerComponent,
     TabellaCERComponent,
+    DettagliTabellaCerComponent,
   ],
   imports: [
     BrowserModule,
