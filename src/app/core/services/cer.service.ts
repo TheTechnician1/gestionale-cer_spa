@@ -11,11 +11,12 @@ export class CERService {
 
   getCERS(payload: any): Observable<CER[]> {
     const endpoint = "cer/ricerca";
-    return this.apiService.post<CER[]>(endpoint, payload);
+    return this.apiService.postLogin<CER[]>(endpoint, payload);
   }
 
-  getCER(params?: Partial<CER>): Observable<CER[]> {
-    return this.apiService.get<CER[]>("cer", params as Record<string, string | number | boolean> | undefined);
+  getCER(payload: any): Observable<CER[]> {
+    const endpoint = "cer/visualizzazione/{id}";
+    return this.apiService.get<CER[]>(endpoint, payload);
   }
 
   createCER(payload: CER): Observable<CER> {

@@ -1,16 +1,16 @@
 export interface CER {
   idCer: number | null,
-  ragioneSociale: string | null,
-  codiceFiscale: string | null,
-  comuneLegale: ComuneLegale | null,
-  provinciaLegale: ProvinciaLegale | null,
-  regioneLegale: RegioneLegale | null,
+  ragSociale: string | null,
+  codFisc: string | null,
+  comune: ComuneLegale | null,
+  provincia: ProvinciaLegale | null,
+  regione: RegioneLegale | null,
   formaGiuridica: FormaGiuridica | null,
   email: string | null,
   pec: string | null,
   sitoWeb: string | null,
   referente: string | null,
-  partitaIva: string | null,
+  pIva: string | null,
   telefono: string | null,
   flgCancellazione: boolean | null
 }
@@ -41,33 +41,33 @@ export interface FormaGiuridica {
 
 export class CERModel implements CER {
   idCer: number | null;
-  ragioneSociale: string | null;
-  codiceFiscale: string | null;
-  comuneLegale: ComuneLegale | null;
-  provinciaLegale: ProvinciaLegale | null;
-  regioneLegale: RegioneLegale | null;
+  ragSociale: string | null;
+  codFisc: string | null;
+  comune: ComuneLegale | null;
+  provincia: ProvinciaLegale | null;
+  regione: RegioneLegale | null;
   formaGiuridica: FormaGiuridica | null;
   email: string | null;
   pec: string | null;
   sitoWeb: string | null;
   referente: string | null;
-  partitaIva: string | null;
+  pIva: string | null;
   telefono: string | null;
   flgCancellazione: boolean | null;
 
   constructor(data?: Partial<CER>) {
     this.idCer = data?.idCer ?? null;
-    this.ragioneSociale = data?.ragioneSociale ?? null;
-    this.codiceFiscale = data?.codiceFiscale ?? null;
-    this.comuneLegale = data?.comuneLegale ?? null;
-    this.provinciaLegale = data?.provinciaLegale ?? null;
-    this.regioneLegale = data?.regioneLegale ?? null;
+    this.ragSociale = data?.ragSociale ?? null;
+    this.codFisc = data?.codFisc ?? null;
+    this.comune = data?.comune ?? null;
+    this.provincia = data?.provincia ?? null;
+    this.regione = data?.regione ?? null;
     this.formaGiuridica = data?.formaGiuridica ?? null;
     this.email = data?.email ?? null;
     this.pec = data?.pec ?? null;
     this.sitoWeb = data?.sitoWeb ?? null;
     this.referente = data?.referente ?? null;
-    this.partitaIva = data?.partitaIva ?? null;
+    this.pIva = data?.pIva ?? null;
     this.telefono = data?.telefono ?? null;
     this.flgCancellazione = data?.flgCancellazione ?? null;
   }

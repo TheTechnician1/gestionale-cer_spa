@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class ConfigurazioneComponent {
   constructor(private confService: ConfigurazioneService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableConf: string[] = ['codice_cabina', 'anno_attivazione', 'partitaIva', 'azioni'];
+  tableConf: string[] = ['codiceCabina', 'annoAttivazione', 'pIva', 'regioneLegale', 'azioni'];
 
   configurazioni: Configurazione[] = [];
 
@@ -22,9 +22,10 @@ export class ConfigurazioneComponent {
   sortedData: Configurazione[] | undefined;
 
   filtro = {
-    codice_cabina: "",
-    anno_attivazione: "",
-    partitaIva: ""
+    codiceCabina: "",
+    annoAttivazione: "",
+    pIva: "",
+    regioneLegale: ""
   }
 
   listaFiltrata = [...this.configurazioni];
@@ -47,6 +48,7 @@ export class ConfigurazioneComponent {
       next: (config) => {
         this.configurazioni = config;
         this.dataSource.data = [...this.configurazioni];
+        this.listaFiltrata = [...this.configurazioni];
       },
       error: (error) => {
         console.error("Login error", error);
@@ -55,23 +57,17 @@ export class ConfigurazioneComponent {
   }
 
   filtraConfigurazione() {
-    this.listaFiltrata = this.configurazioni.filter(p => {
-      return (
-      (this.filtro.codice_cabina ? p.codiceCabina?.toLowerCase().includes(this.filtro.codice_cabina.toLowerCase()) : true) &&
-      (this.filtro.anno_attivazione ? p.annoAttivazione?.toLowerCase().includes(this.filtro.anno_attivazione.toLowerCase()) : true) &&
-      (this.filtro.partitaIva ? p.cer?.partitaIva?.toLowerCase().includes(this.filtro.partitaIva.toLowerCase()) : true)
-      );
-    });
     this.isFiltering = true;
-    return this.listaFiltrata;
+    this.loadConfig();
   }
 
   resetFiltro() {
     this.isFiltering = false;
     this.filtro = {
-      codice_cabina: "",
-      anno_attivazione: "",
-      partitaIva: ""
+      codiceCabina: "",
+      annoAttivazione: "",
+      pIva: "",
+      regioneLegale: ""
     };
     this.listaFiltrata = [...this.configurazioni];
   }

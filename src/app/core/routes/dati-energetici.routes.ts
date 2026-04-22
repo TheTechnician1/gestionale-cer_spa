@@ -19,13 +19,13 @@ export const DATI_ENERGETICI_ROUTES: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: "modifica-dati-energetici",
+    path: "modifica-dati-energetici/:id",
     component: ModificaDatiEnergeticiComponent,
     data: { role: ["ADMIN", "GEST"] },
     canActivate: [AuthGuard],
   },
   {
-    path: "dettaglio-dati-energetici",
+    path: "dettaglio-dati-energetici/:id",
     component: DettaglioDatiEnergeticiComponent,
     data: { role: ["ADMIN", "GEST"] },
     canActivate: [AuthGuard],
