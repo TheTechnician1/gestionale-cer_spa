@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { CER } from '../interfaces/cer.model';
 import { ApiService } from './api.service';
 import { Observable, of } from 'rxjs';
-import { StringMappingType } from 'typescript';
 
 @Injectable({
   providedIn: 'root'

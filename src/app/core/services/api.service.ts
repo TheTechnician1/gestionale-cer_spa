@@ -2,22 +2,31 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { APP_SETTINGS } from "../config/app-settings";
+import { UtenteService } from "./utente.service";
+import { StorageService } from "./storage.service";
+import { UtenteLogin } from "../interfaces/utente.model";
 
 @Injectable({ providedIn: "root" })
 export class ApiService {
   private readonly baseUrl = APP_SETTINGS.apiBaseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private api: StorageService) {}
 
   get<T>(path: string, params?: Record<string, string | number | boolean>): Observable<T> {
     return this.http.get<T>(this.buildUrl(path), { params: this.buildParams(params) });
   }
 
-  post<T>(path: string, body: unknown): Observable<T> {
+  postLogin<T>(path: string, body: any): Observable<T> {
     return this.http.post<T>(this.buildUrl(path), body);
   }
 
-  put<T>(path: string, body: unknown): Observable<T> {
+  post<T>(path: string, body: any): Observable<T> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
+    return this.http.post<T>(this.buildUrl(path), body);
+  }
+
+  put<T>(path: string, body: any): Observable<T> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
     return this.http.put<T>(this.buildUrl(path), body);
   }
 
