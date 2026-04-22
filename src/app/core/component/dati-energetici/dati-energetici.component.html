@@ -1,6 +1,14 @@
 <div class="datiEnerg">
   <h3>Dati energetici</h3>
+  <div>
+    <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
+    <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
+    <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
+  </div>
+</div>
+<div>
   <div class="filtro" rows="3">
+    <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Energia Prodotta</mat-label>
       <input [(ngModel)]="filtro.energia_prodotta" matInput type="text" aria-label="energia_prodotta">
@@ -22,11 +30,11 @@
       </button>
     </div>
   </div>
-  <div>
+  <!-- <div>
     <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
     <button mat-raised-button routerLink="/configurazione"><mat-icon>cabin</mat-icon>Configurazione</button>
     <button mat-raised-button routerLink="/impianto"><mat-icon>bolt</mat-icon>Impianto</button>
-  </div>
+  </div> -->
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
