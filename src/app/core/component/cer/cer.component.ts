@@ -48,6 +48,7 @@ export class CERComponent {
     this.cerService.getCERS(this.filtro).subscribe({
       next: (cer) => {
       this.cer = cer;
+      this.dataSource.data = [...this.cer];
       },
       error: (error) => {
         console.error("Login error", error);
