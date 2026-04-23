@@ -14,9 +14,20 @@ export class ModificaConfigurazioneComponent implements OnInit {
 
   ngOnInit(): void {
     this.configForm = this.fb.group({
-      codice_cabina: ['', [Validators.required]],
-      anno_attivazione: ['', [Validators.required]]
+      codiceCabina: ['', [Validators.required]],
+      annoAttivazione: ['', [Validators.required]]
     });
     this.configForm.enable();
+  }
+
+  submitted = false;
+
+  submit() {
+    this.submitted = true;
+
+    if (this.configForm.invalid) {
+      return;
+    }
+    console.log(this.configForm.value);
   }
 }
