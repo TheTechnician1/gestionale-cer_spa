@@ -60,23 +60,23 @@
     </ng-container>
     <ng-container matColumnDef="comune">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="comune">Comune Legale</th>
-      <td mat-cell *matCellDef="let element"> {{ element.comune }} </td>
+      <td mat-cell *matCellDef="let element" class="comune"> {{ element.comune }} </td>
     </ng-container>
     <ng-container matColumnDef="provincia">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="provincia">Provincia Legale</th>
-      <td mat-cell *matCellDef="let element"> {{ element.provincia }} </td>
+      <td mat-cell *matCellDef="let element" class="provincia"> {{ element.provincia }} </td>
     </ng-container>
     <ng-container matColumnDef="regione">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="regione">Regione Legale</th>
-      <td mat-cell *matCellDef="let element"> {{ element.regione }} </td>
+      <td mat-cell *matCellDef="let element" class="regione"> {{ element.regione }} </td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button [routerLink]="['/cer', 'dettaglio-cer', element.idCer]" [disabled]="!element.idCer">
+      <td mat-cell *matCellDef="let element" class="button-td">
+        <button mat-button [routerLink]="['/cer', 'dettaglio-cer', element.idCer]">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-button [routerLink]="['/cer', 'modifica-cer', element.idCer]" [disabled]="!element.idCer">
+        <button mat-button [routerLink]="['/cer', 'modifica-cer', element.idCer]">
           <mat-icon>edit</mat-icon>
         </button>
       </td>

@@ -2,6 +2,10 @@ th {
   font-weight: bold;
 }
 
+td {
+  padding-right: 0px;
+}
+
 table {
   width: 100%;
 }
@@ -33,4 +37,21 @@ table {
 .h3-header {
   display: flex;
   justify-content: space-between;
+}
+
+.button-td {
+  width: 15%;
+  padding-left: 0px;
+}
+
+.regione {
+  padding-left: 4.5%;
+}
+
+.provincia {
+  padding-left: 4.5%;
+}
+
+.comune {
+  padding-left: 4.5%;
 }
