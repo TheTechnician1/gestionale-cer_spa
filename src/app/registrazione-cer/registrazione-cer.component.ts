@@ -1,4 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  RegistrazioneCerPayload,
+  RegistrazioneCerService,
+} from '../core/services/registrazione-cer.service';
 
 @Component({
   selector: 'app-registrazione-cer',
@@ -6,5 +12,141 @@ import { Component } from '@angular/core';
   styleUrls: ['./registrazione-cer.component.scss']
 })
 export class RegistrazioneCerComponent {
+  formRegistrazioneCer: FormGroup;
+  ultimoPayloadInviato: RegistrazioneCerPayload | null = null;
+  rispostaBackend: string | null = null;
+  salvataggioInCorso = false;
+
+  elencoFormaGiuridica: string[] = [
+    'Associazione',
+    'Associazione riconosciuta',
+    'Cooperativa',
+    'Consorzio',
+    'Fondazione di partecipazione',
+  ];
+
+  elencoRegioni: string[] = [
+    'Abruzzo',
+    'Basilicata',
+    'Calabria',
+    'Campania',
+    'Emilia-Romagna',
+    'Friuli-Venezia Giulia',
+    'Lazio',
+    'Liguria',
+    'Lombardia',
+    'Marche',
+    'Molise',
+    'Piemonte',
+    'Puglia',
+    'Sardegna',
+    'Sicilia',
+    'Toscana',
+    'Trentino-Alto Adige',
+    'Umbria',
+    'Valle d Aosta',
+    'Veneto',
+  ];
+
+  private snackBar = inject(MatSnackBar);
+
+  constructor(private registrazioneCerService: RegistrazioneCerService) {
+    this.formRegistrazioneCer =
+      this.registrazioneCerService.creaFormRegistrazioneCer();
+  }
+
+  get ragioneSociale(): FormControl {
+    return this.formRegistrazioneCer.get('ragioneSociale') as FormControl;
+  }
+
+  get codiceFiscale(): FormControl {
+    return this.formRegistrazioneCer.get('codiceFiscale') as FormControl;
+  }
+
+  get partitaIVA(): FormControl {
+    return this.formRegistrazioneCer.get('partitaIVA') as FormControl;
+  }
+
+  get formaGiuridica(): FormControl {
+    return this.formRegistrazioneCer.get('formaGiuridica') as FormControl;
+  }
+
+  get referente(): FormControl {
+    return this.formRegistrazioneCer.get('referente') as FormControl;
+  }
+
+  get comuneSedeLegale(): FormControl {
+    return this.formRegistrazioneCer.get('comuneSedeLegale') as FormControl;
+  }
+
+  get provinciaSedeLegale(): FormControl {
+    return this.formRegistrazioneCer.get('provinciaSedeLegale') as FormControl;
+  }
+
+  get regioneLegale(): FormControl {
+    return this.formRegistrazioneCer.get('regioneLegale') as FormControl;
+  }
+
+  get telefono(): FormControl {
+    return this.formRegistrazioneCer.get('telefono') as FormControl;
+  }
+
+  get email(): FormControl {
+    return this.formRegistrazioneCer.get('email') as FormControl;
+  }
+
+  get pec(): FormControl {
+    return this.formRegistrazioneCer.get('pec') as FormControl;
+  }
+
+  get sitoWeb(): FormControl {
+    return this.formRegistrazioneCer.get('sitoWeb') as FormControl;
+  }
+
+  inviaModulo(formDirective: FormGroupDirective): void {
+    if (this.formRegistrazioneCer.pending) {
+      return;
+    }
+
+    if (this.formRegistrazioneCer.invalid) {
+      this.formRegistrazioneCer.markAllAsTouched();
+      this.mostraMessaggio('Correggi i campi evidenziati prima di salvare.', 4000);
+      return;
+    }
+
+    const payload =
+      this.registrazioneCerService.normalizzaPayload(this.formRegistrazioneCer);
+
+    this.salvataggioInCorso = true;
+    this.ultimoPayloadInviato = payload;
+
+    this.registrazioneCerService.registraCer(payload).subscribe({
+      next: (risposta) => {
+        this.rispostaBackend = risposta;
+        this.mostraMessaggio(risposta || 'CER registrata con successo.', 3000);
+
+        formDirective.resetForm();
+        this.formRegistrazioneCer.reset();
+        this.salvataggioInCorso = false;
+      },
+      error: (errore) => {
+        const messaggioErrore =
+          errore?.error ||
+          'Errore durante la registrazione della CER.';
+
+        this.rispostaBackend = messaggioErrore;
+        this.salvataggioInCorso = false;
+        this.mostraMessaggio(messaggioErrore, 5000);
+      },
+    });
+  }
+
+  private mostraMessaggio(messaggio: string, durata: number): void {
+    this.snackBar.open(messaggio, 'Chiudi', {
+      duration: durata,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+    });
+  }
 
 }

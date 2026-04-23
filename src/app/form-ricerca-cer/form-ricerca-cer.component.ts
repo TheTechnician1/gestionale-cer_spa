@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CerElemento, CerFiltro, FiltroService } from '../core/services/filtro.service';
-import { LoginService } from '../core/services/login.service';
 
 @Component({
   selector: 'app-form-ricerca-cer',
@@ -14,63 +13,58 @@ export class FormRicercaCerComponent implements OnInit {
  formRicerca: FormGroup;
  risultatiFiltrati: CerElemento[] = [];
 
- elencoFormaGiuridica: string[] = ['Associazione non riconosciuta', 'Associazione riconosciuta', 'Società di capitali', 'Cooperativa', 'Fondazione di partecipazione'];
-
- elencoStato: string[] = ["NO-AUT-NO-GSE", "NO-AUT-SI-GSE", "SI-AUT"];
-
- elencoFlag: string[] = ["Flag Iscrizione RUNTS",
-"Flag accesso soggetti svantaggiati",
-"Flag montane o interne",
-"Flag Progetti di inclusione",
-"Flag terzo settore",
-"Flag cambiamenti climatici"
-];
+ elencoFormaGiuridica: string[] = [
+  'Associazione',
+  'Associazione non riconosciuta',
+  'Associazione riconosciuta',
+  'Cooperativa',
+  'Consorzio',
+  'Fondazione di partecipazione',
+  'Societa di capitali'
+ ];
 
  private filtroService = inject(FiltroService);
 
-  constructor(
-    private costruttoreForm: FormBuilder,
-    private login: LoginService
-  ) {
+  constructor(private costruttoreForm: FormBuilder) {
      this.formRicerca = this.costruttoreForm.group(
     {
      ragioneSociale: [''],
      partitaIVA: [''],
      formaGiuridica: [''],
-     stato: [''],
-     flag: ['']
+     comune: [''],
+     provincia: [''],
+     regione: ['']
     }
   );
     this.risultatiFiltrati = this.filtroService.getListaElementi();
-   }  
+   }
 
   ngOnInit(): void {
     this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
   }
 
-
-    get ragioneSociale(): FormControl {
+  get ragioneSociale(): FormControl {
     return this.formRicerca.get('ragioneSociale') as FormControl;
  }
 
-    get partitaIVA(): FormControl {
+  get partitaIVA(): FormControl {
     return this.formRicerca.get('partitaIVA') as FormControl;
  }
 
-    get formaGiuridica(): FormControl {
+  get formaGiuridica(): FormControl {
     return this.formRicerca.get('formaGiuridica') as FormControl;
  }
 
-    get stato(): FormControl {
-    return this.formRicerca.get('stato') as FormControl;
+  get comune(): FormControl {
+    return this.formRicerca.get('comune') as FormControl;
  }
 
-    get flag(): FormControl {
-    return this.formRicerca.get('flag') as FormControl;
+  get provincia(): FormControl {
+    return this.formRicerca.get('provincia') as FormControl;
  }
 
- isAdmin(): boolean {
-    return this.login.isGranted() === 'ADMIN';
+  get regione(): FormControl {
+    return this.formRicerca.get('regione') as FormControl;
  }
 
  inviaModulo(): void {
@@ -80,11 +74,12 @@ export class FormRicercaCerComponent implements OnInit {
     }
 
     const datiRicerca: CerFiltro = {
-      ragioneSociale: this.ragioneSociale.value,
-      partitaIVA: this.partitaIVA.value,
-      formaGiuridica: this.formaGiuridica.value,
-      stato: this.isAdmin() ? this.stato.value : '',
-      flag: this.flag.value
+      ragioneSociale: this.ragioneSociale.value ?? '',
+      partitaIVA: this.partitaIVA.value ?? '',
+      formaGiuridica: this.formaGiuridica.value ?? '',
+      comune: this.comune.value ?? '',
+      provincia: this.provincia.value ?? '',
+      regione: this.regione.value ?? ''
     };
 
     console.log('Dati di ricerca:', datiRicerca);
@@ -94,7 +89,14 @@ export class FormRicercaCerComponent implements OnInit {
   }
 
   resetFiltri(): void {
-    this.formRicerca.reset();
+    this.formRicerca.reset({
+      ragioneSociale: '',
+      partitaIVA: '',
+      formaGiuridica: '',
+      comune: '',
+      provincia: '',
+      regione: '',
+    });
     this.risultatiFiltrati = this.filtroService.getListaElementi();
     this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
   }

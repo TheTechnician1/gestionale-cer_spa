@@ -23,18 +23,13 @@ import { CerElemento, FiltroService } from '../core/services/filtro.service';
   styleUrls: ['./tabella-cer.component.scss'],
 })
 export class TabellaCERComponent implements AfterViewInit, OnChanges {
-  private readonly displayedColumnsConStato: string[] = [
+  readonly displayedColumns: string[] = [
     'ragioneSociale',
     'partitaIVA',
     'formaGiuridica',
-    'stato',
-    'azioni',
-  ];
-
-  private readonly displayedColumnsSenzaStato: string[] = [
-    'ragioneSociale',
-    'partitaIVA',
-    'formaGiuridica',
+    'comune',
+    'provincia',
+    'regione',
     'azioni',
   ];
 
@@ -53,16 +48,6 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges {
     let ruolo = this.login.isGranted();
     console.log(ruolo);
     return ruolo!;
-  }
-
-  isAdmin(): boolean {
-    return this.login.isGranted() === 'ADMIN';
-  }
-
-  get displayedColumns(): string[] {
-    return this.isAdmin()
-      ? this.displayedColumnsConStato
-      : this.displayedColumnsSenzaStato;
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

@@ -19,9 +19,19 @@
     </ng-container>
 
     <!-- Symbol Column -->
-    <ng-container matColumnDef="stato">
-      <th mat-header-cell *matHeaderCellDef>Stato</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.stato }}</td>
+    <ng-container matColumnDef="comune">
+      <th mat-header-cell *matHeaderCellDef>Comune</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.comune }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="provincia">
+      <th mat-header-cell *matHeaderCellDef>Provincia</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.provincia }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="regione">
+      <th mat-header-cell *matHeaderCellDef>Regione</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.regione }}</td>
     </ng-container>
 
     <!-- Symbol Column -->

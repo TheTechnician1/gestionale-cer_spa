@@ -3,7 +3,7 @@
     <mat-card-header>
       <mat-card-title>Filtro Ricerca CER</mat-card-title>
       <mat-card-subtitle>
-        Inserisci uno o più criteri per filtrare le comunità energetiche
+        Inserisci uno o piu criteri per filtrare le comunita energetiche
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -36,32 +36,21 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" *ngIf="isAdmin()">
-            <mat-label>Scegli Stato della CER</mat-label>
-            <mat-select formControlName="stato">
-              <mat-option value="">Tutti</mat-option>
-              <mat-option
-                *ngFor="let statoDisponibile of elencoStato"
-                [value]="statoDisponibile"
-              >
-                {{ statoDisponibile }}
-              </mat-option>
-            </mat-select>
+          <mat-form-field appearance="outline">
+            <mat-label>Comune</mat-label>
+            <input matInput formControlName="comune" type="text" />
           </mat-form-field>
         </div>
 
         <div class="riga-form">
-          <mat-form-field appearance="outline" class="campo-largo">
-            <mat-label>Scegli Flag</mat-label>
-            <mat-select formControlName="flag">
-              <mat-option value="">Tutti</mat-option>
-              <mat-option
-                *ngFor="let flagDisponibile of elencoFlag"
-                [value]="flagDisponibile"
-              >
-                {{ flagDisponibile }}
-              </mat-option>
-            </mat-select>
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" type="text" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="regione" type="text" />
           </mat-form-field>
         </div>
 

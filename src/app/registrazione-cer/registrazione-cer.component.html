@@ -1,1 +1,209 @@
-<p>registrazione-cer works!</p>
+<div class="pagina-registrazione-cer">
+  <mat-card class="scheda-registrazione-cer">
+    <mat-card-header>
+      <mat-card-title>Registrazione CER</mat-card-title>
+      <mat-card-subtitle>
+        Inserisci i dati anagrafici della nuova Comunita Energetica Rinnovabile
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form
+        [formGroup]="formRegistrazioneCer"
+        #formDirective="ngForm"
+        (ngSubmit)="inviaModulo(formDirective)"
+        class="form-registrazione-cer"
+      >
+        <div class="sezione-form">
+          <h2>Dati anagrafici</h2>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Ragione sociale</mat-label>
+              <input matInput formControlName="ragioneSociale" type="text" />
+              <mat-error *ngIf="ragioneSociale.hasError('required')">
+                La ragione sociale e obbligatoria
+              </mat-error>
+              <mat-error *ngIf="ragioneSociale.hasError('minlength')">
+                La ragione sociale deve contenere almeno 2 caratteri
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Codice fiscale</mat-label>
+              <input
+                matInput
+                formControlName="codiceFiscale"
+                type="text"
+                maxlength="16"
+                class="testo-maiuscolo"
+              />
+              <mat-hint *ngIf="codiceFiscale.pending">
+                Verifica unicita in corso...
+              </mat-hint>
+              <mat-error *ngIf="codiceFiscale.hasError('required')">
+                Il codice fiscale e obbligatorio
+              </mat-error>
+              <mat-error *ngIf="codiceFiscale.hasError('pattern')">
+                Inserisci 11 cifre oppure un codice fiscale valido di 16 caratteri
+              </mat-error>
+              <mat-error *ngIf="codiceFiscale.hasError('codiceFiscaleDuplicato')">
+                Il codice fiscale e gia presente nel sistema
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Partita IVA</mat-label>
+              <input matInput formControlName="partitaIVA" type="text" maxlength="11" />
+              <mat-error *ngIf="partitaIVA.hasError('pattern')">
+                La partita IVA deve contenere 11 cifre
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Forma giuridica</mat-label>
+              <mat-select formControlName="formaGiuridica">
+                <mat-option
+                  *ngFor="let formaGiuridicaDisponibile of elencoFormaGiuridica"
+                  [value]="formaGiuridicaDisponibile"
+                >
+                  {{ formaGiuridicaDisponibile }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="formaGiuridica.hasError('required')">
+                La forma giuridica e obbligatoria
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Referente</mat-label>
+              <input matInput formControlName="referente" type="text" />
+              <mat-error *ngIf="referente.hasError('required')">
+                Il referente e obbligatorio
+              </mat-error>
+              <mat-error *ngIf="referente.hasError('minlength')">
+                Il referente deve contenere almeno 2 caratteri
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Specifiche forma giuridica</mat-label>
+              <input matInput formControlName="specFormaGiuridica" type="text" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="sezione-form">
+          <h2>Sede legale e contatti</h2>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Comune sede legale</mat-label>
+              <input matInput formControlName="comuneSedeLegale" type="text" />
+              <mat-error *ngIf="comuneSedeLegale.hasError('required')">
+                Il comune della sede legale e obbligatorio
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Provincia</mat-label>
+              <input
+                matInput
+                formControlName="provinciaSedeLegale"
+                type="text"
+                maxlength="2"
+                class="testo-maiuscolo"
+              />
+              <mat-error *ngIf="provinciaSedeLegale.hasError('required')">
+                La provincia e obbligatoria
+              </mat-error>
+              <mat-error *ngIf="provinciaSedeLegale.hasError('pattern')">
+                Inserisci la sigla provincia di 2 lettere
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Regione</mat-label>
+              <mat-select formControlName="regioneLegale">
+                <mat-option
+                  *ngFor="let regioneDisponibile of elencoRegioni"
+                  [value]="regioneDisponibile"
+                >
+                  {{ regioneDisponibile }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="regioneLegale.hasError('required')">
+                La regione e obbligatoria
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Telefono</mat-label>
+              <input matInput formControlName="telefono" type="tel" />
+              <mat-error *ngIf="telefono.hasError('required')">
+                Il telefono e obbligatorio
+              </mat-error>
+              <mat-error *ngIf="telefono.hasError('pattern')">
+                Inserisci un numero italiano valido, es. 061234567 o 3331234567
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" />
+              <mat-error *ngIf="email.hasError('required')">
+                L'email e obbligatoria
+              </mat-error>
+              <mat-error *ngIf="email.hasError('email') || email.hasError('pattern')">
+                Inserisci un'email valida
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>PEC</mat-label>
+              <input matInput formControlName="pec" type="email" />
+              <mat-error *ngIf="pec.hasError('email') || pec.hasError('pattern')">
+                Inserisci una PEC valida
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="riga-form">
+            <mat-form-field appearance="outline" class="campo-largo">
+              <mat-label>Sito web</mat-label>
+              <input matInput formControlName="sitoWeb" type="url" />
+              <mat-error *ngIf="sitoWeb.hasError('pattern')">
+                Inserisci un sito web valido
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" routerLink="/tabella-cer">
+            <mat-icon>arrow_back</mat-icon>
+            Annulla
+          </button>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="salvataggioInCorso || formRegistrazioneCer.pending"
+          >
+            <mat-icon>save</mat-icon>
+            Registra CER
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

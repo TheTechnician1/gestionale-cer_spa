@@ -5,16 +5,18 @@ export interface CerElemento {
   ragioneSociale: string;
   partitaIVA: string;
   formaGiuridica: string;
-  stato: string;
-  flag: string;
+  comune: string;
+  provincia: string;
+  regione: string;
 }
 
 export interface CerFiltro {
   ragioneSociale: string;
   partitaIVA: string;
   formaGiuridica: string;
-  stato: string;
-  flag: string;
+  comune: string;
+  provincia: string;
+  regione: string;
 }
 
 @Injectable({
@@ -27,17 +29,46 @@ export class FiltroService {
       ragioneSociale: 'CER Energia Pulita',
       partitaIVA: '12345678901',
       formaGiuridica: 'Associazione riconosciuta',
-      stato: 'SI-AUT',
-      flag: 'Flag terzo settore',
+      comune: 'Milano',
+      provincia: 'MI',
+      regione: 'Lombardia',
     },
     {
       id: 2,
-      ragioneSociale: 'Comunità Sole Futuro',
+      ragioneSociale: 'Comunita Sole Futuro',
       partitaIVA: '10987654321',
       formaGiuridica: 'Cooperativa',
-      stato: 'NO-AUT-SI-GSE',
-      flag: 'Flag cambiamenti climatici',
-    }
+      comune: 'Varese',
+      provincia: 'VA',
+      regione: 'Lombardia',
+    },
+    {
+      id: 3,
+      ragioneSociale: 'CER Energia Brianza',
+      partitaIVA: '11987450968',
+      formaGiuridica: 'Fondazione di partecipazione',
+      comune: 'Monza',
+      provincia: 'MB',
+      regione: 'Lombardia',
+    },
+    {
+      id: 4,
+      ragioneSociale: 'CER Lago Pulito',
+      partitaIVA: '02745140135',
+      formaGiuridica: 'Associazione',
+      comune: 'Como',
+      provincia: 'CO',
+      regione: 'Lombardia',
+    },
+    {
+      id: 5,
+      ragioneSociale: 'Rete Energia Sud Milano',
+      partitaIVA: '06789120963',
+      formaGiuridica: 'Consorzio',
+      comune: 'Rozzano',
+      provincia: 'MI',
+      regione: 'Lombardia',
+    },
   ];
 
   getListaElementi(): CerElemento[] {
@@ -45,31 +76,40 @@ export class FiltroService {
   }
 
   filtraElementi(filtro: CerFiltro): CerElemento[] {
+    const ragioneSociale = filtro.ragioneSociale.trim().toLowerCase();
+    const partitaIVA = filtro.partitaIVA.trim();
+    const formaGiuridica = filtro.formaGiuridica.trim();
+    const comune = filtro.comune.trim().toLowerCase();
+    const provincia = filtro.provincia.trim().toLowerCase();
+    const regione = filtro.regione.trim().toLowerCase();
+
     return this.listaElementi.filter((elemento) => {
       const matchRagioneSociale =
-        !filtro.ragioneSociale ||
-        elemento.ragioneSociale
-          .toLowerCase()
-          .includes(filtro.ragioneSociale.toLowerCase());
+        !ragioneSociale ||
+        elemento.ragioneSociale.toLowerCase().includes(ragioneSociale);
 
       const matchPartitaIVA =
-        !filtro.partitaIVA || elemento.partitaIVA.includes(filtro.partitaIVA);
+        !partitaIVA || elemento.partitaIVA.includes(partitaIVA);
 
       const matchFormaGiuridica =
-        !filtro.formaGiuridica || elemento.formaGiuridica === filtro.formaGiuridica;
+        !formaGiuridica || elemento.formaGiuridica === formaGiuridica;
 
-      const matchStato =
-        !filtro.stato || elemento.stato === filtro.stato;
+      const matchComune =
+        !comune || elemento.comune.toLowerCase().includes(comune);
 
-      const matchFlag =
-        !filtro.flag || elemento.flag === filtro.flag;
+      const matchProvincia =
+        !provincia || elemento.provincia.toLowerCase().includes(provincia);
+
+      const matchRegione =
+        !regione || elemento.regione.toLowerCase().includes(regione);
 
       return (
         matchRagioneSociale &&
         matchPartitaIVA &&
         matchFormaGiuridica &&
-        matchStato &&
-        matchFlag
+        matchComune &&
+        matchProvincia &&
+        matchRegione
       );
     });
   }

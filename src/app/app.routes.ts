@@ -8,6 +8,7 @@ import { FormRicercaCerComponent } from "./form-ricerca-cer/form-ricerca-cer.com
 
 import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
 import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
+import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
@@ -20,6 +21,11 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   {
     path: 'tabella-cer',
     component: FormRicercaCerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cer/new',
+    component: RegistrazioneCerComponent,
     canActivate: [AuthGuard],
   },
   {
@@ -49,6 +55,7 @@ export const routes: Routes = [
     children: FULL_LAYOUT_ROUTES,
   },
   { path: "user/new", component: RegistrazioneUtenteComponent },
+  { path: 'cer/new', component: RegistrazioneCerComponent },
   { path: 'login', component: LoginComponent},
 
 //   {

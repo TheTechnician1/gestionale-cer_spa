@@ -12,15 +12,11 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
   {
-    label: 'Anagrafiche',
+    label: 'CER',
     icon: 'badge',
     children: [
-      { label: 'Clienti', icon: 'groups', route: '/anagrafiche/clienti' },
-      {
-        label: 'Fornitori',
-        icon: 'local_shipping',
-        route: '/anagrafiche/fornitori',
-      },
+      { label: 'Ricerca CER', icon: 'search', route: '/tabella-cer' },
+      { label: 'Nuova CER', icon: 'add_circle', route: '/cer/new' },
     ],
   },
   {
