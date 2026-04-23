@@ -14,8 +14,8 @@ export class DettaglioConfigurazioneComponent implements OnInit {
   
   ngOnInit(): void {
     this.configForm = this.fb.group({
-      codice_cabina: ['', [Validators.required]],
-      anno_attivazione: ['', [Validators.required]]
+      codiceCabina: ['', [Validators.required]],
+      annoAttivazione: ['', [Validators.required]]
     });
     this.configForm.disable();
   }
