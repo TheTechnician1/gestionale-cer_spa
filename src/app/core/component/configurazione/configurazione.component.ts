@@ -70,6 +70,7 @@ export class ConfigurazioneComponent {
       regioneLegale: ""
     };
     this.listaFiltrata = [...this.configurazioni];
+    this.loadConfig();
   }
 
   sortData(sortState: Sort) {

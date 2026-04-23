@@ -47,7 +47,7 @@ export class UtenteService {
   }
 
   login(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
-    const endpoint = "/Autenticazione/inserisci";
+    const endpoint = "autenticazione/logIn";
     return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
@@ -81,20 +81,7 @@ export class UtenteService {
   }
 
   createUtente(payload: any) {
-    const path = '/Utente/inserisci';
+    const path = '/utente/inserisci';
     return this.apiService.postText(path, payload);
-  }
-
-  editUtente(user: UtenteLogin) {
-    if (this.utente?.idUtente === user?.idUtente) {
-      this.utente = { ...user };
-    }
-  }
-
-  deleteUtente(id: number) {
-    if (this.utente?.idUtente === id) {
-      this.utente = {} as UtenteLogin;
-      console.log('Utente eliminato con successo');
-    }
   }
 }

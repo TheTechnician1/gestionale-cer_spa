@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class DatiEnergeticiComponent {
   constructor(private datiService: DatiEnergeticiService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableDat: string[] = ['id_dati', 'energia_prodotta', 'energia_prelevata', 'azioni'];
+  tableDat: string[] = ['anno', 'flg_cancellazione', 'azioni'];
 
   datiEnergetici: DatiEnergetici[] = [];
 
@@ -27,9 +27,8 @@ export class DatiEnergeticiComponent {
 
 
   filtro = {
-    energia_prodotta: 0,
-    energia_prelevata: 0,
-    energia_immessa: 0
+    anno: '',
+    flg_cancellazione: ''
   };
 
   listaFiltrata = [...this.datiEnergetici];
@@ -45,9 +44,11 @@ export class DatiEnergeticiComponent {
   }
 
   loadDati() {
-    this.datiService.getDati().subscribe({
+    this.datiService.getDati(this.filtro).subscribe({
       next: (dati) => {
         this.datiEnergetici = dati;
+        this.dataSource.data = [...this.datiEnergetici];
+        this.listaFiltrata = [...this.datiEnergetici];
       },
       error: (error) => {
         console.error("Login error", error);
@@ -56,29 +57,16 @@ export class DatiEnergeticiComponent {
   }
 
   filtraDatiEnergetici() {
-    console.log(this.filtro);
-    this.listaFiltrata = this.datiEnergetici.filter(p => {
-      return (
-        (this.filtro.energia_prodotta ? p.energia_prodotta! >= this.filtro.energia_prodotta : true) &&
-        (this.filtro.energia_prelevata ? p.energia_prelevata! >= this.filtro.energia_prelevata : true) &&
-        (this.filtro.energia_immessa ? p.energia_immessa! >= this.filtro.energia_immessa : true)
-      );
-    });
-
-    console.log(this.listaFiltrata);
-
     this.isFiltering = true;
-
-    return this.listaFiltrata;
+    this.loadDati();
   }
 
   resetFiltro() {
     this.isFiltering = false;
 
     this.filtro = {
-      energia_prodotta: 0,
-      energia_prelevata: 0,
-      energia_immessa: 0
+      anno: '',
+      flg_cancellazione: ''
     };
 
     this.listaFiltrata = [...this.datiEnergetici];

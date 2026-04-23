@@ -9,26 +9,31 @@ import { Observable } from 'rxjs';
 export class DatiEnergeticiService {
   constructor(private api: ApiService) {}
 
-  getDati(): Observable<DatiEnergetici[]> {
-    return this.api.get<DatiEnergetici[]>("ricercaDatiEnergetici");
+  getDati(payload: any): Observable<DatiEnergetici[]> {
+    const endpoint = "dati-energetici/ricerca";
+    return this.api.postLogin<DatiEnergetici[]>(endpoint, payload);
   }
 
-  getDato(params?: Partial<DatiEnergetici>): Observable<DatiEnergetici[]> {
-    return this.api.get<DatiEnergetici[]>("datiEnergetici", params as Record<string, string | number | boolean> | undefined);
+  getDato(payload: any): Observable<DatiEnergetici> {
+    const endpoint = "dati-energetici/visualizzazione/{id}";
+    return this.api.get<DatiEnergetici>(endpoint, payload);
   }
 
   createDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
-    console.log("Dati Energetici inseriti con successo");
-    return this.api.post<DatiEnergetici>("inserimentoDatiEnergetici", payload);
+    console.log("Dati Energetici creati con successo");
+    const endpoint = "dati-energetici/inserimento";
+    return this.api.post<DatiEnergetici>(endpoint, payload);
   }
 
   editDatiEnergetici(payload: DatiEnergetici) {
     console.log("Dati Energetici modificati con successo");
-    return this.api.put<DatiEnergetici>(`modificaDatiEnergetici`, payload);
+    const endpoint = "dati-energetici/modifica";
+    return this.api.put<DatiEnergetici>(endpoint, payload);
   }
 
   deleteDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
     console.log('Dati Energetici eliminati con successo')
-    return this.api.put<DatiEnergetici>(`cancellazioneDatiEnergetici`, payload);
+    const endpoint = "dati-energetici/cancellazione";
+    return this.api.put<DatiEnergetici>(endpoint, payload);
   }
 }

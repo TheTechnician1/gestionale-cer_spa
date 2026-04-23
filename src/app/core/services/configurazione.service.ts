@@ -10,29 +10,30 @@ export class ConfigurazioneService {
   constructor(private api: ApiService) { }
 
   getConfigurazioni(payload: any): Observable<Configurazione[]> {
-    const endpoint = "Configurazione/ricerca";
-    return this.api.post<Configurazione[]>(endpoint, payload);
+    const endpoint = "configurazione/ricerca";
+    return this.api.postLogin<Configurazione[]>(endpoint, payload);
   }
 
-  getConfigurazione(params?: Partial<Configurazione>): Observable<Configurazione[]> {
-    return this.api.get<Configurazione[]>("configurazione", params as Record<string, string | number | boolean> | undefined);
+  getConfigurazione(payload: any): Observable<Configurazione> {
+    const endpoint = "configurazione/visualizza/{id}";
+    return this.api.post<Configurazione>(endpoint, payload);
   }
 
   createConfigurazione(payload: Configurazione): Observable<Configurazione> {
     console.log("Configurazione creato con successo");
-    const endpoint = "Configurazione/inserimento";
+    const endpoint = "configurazione/inserimento";
     return this.api.post<Configurazione>(endpoint, payload);
   }
 
   editConfigurazione(payload: Configurazione) {
     console.log("Configurazione modificato con successo");
-    const endpoint = "Configurazione/modifica";
+    const endpoint = "configurazione/modifica";
     return this.api.put<Configurazione>(endpoint, payload);
   }
 
   deleteConfigurazione(payload: Configurazione): Observable<Configurazione> {
     console.log('Configurazione eliminato con successo');
-    const endpoint = "Configurazione/disattiva";
+    const endpoint = "configurazione/disattiva";
     return this.api.put<Configurazione>(endpoint, payload);
   }
 }

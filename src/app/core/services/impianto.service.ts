@@ -9,26 +9,31 @@ import { Observable } from 'rxjs';
 export class ImpiantoService {
   constructor(private api: ApiService) { }
 
-  getImpianti(): Observable<Impianto[]> {
-    return this.api.get<Impianto[]>("ricercaImpianto");
-  }
+  getImpianti(payload: any): Observable<Impianto[]> {
+      const endpoint = "impianto/ricerca";
+      return this.api.postLogin<Impianto[]>(endpoint, payload);
+    }
 
-  getImpianto(params?: Partial<Impianto>): Observable<Impianto[]> {
-    return this.api.get<Impianto[]>("impianto", params as Record<string, string | number | boolean> | undefined);
-  }
+    getImpianto(payload: any): Observable<Impianto> {
+      const endpoint = "impianto/visualizzazione/{id}";
+      return this.api.get<Impianto>(endpoint, payload);
+    }
 
-  createImpianto(payload: Impianto): Observable<Impianto> {
-    console.log("Impianto creato con successo");
-    return this.api.post<Impianto>("impianto", payload);
-  }
+    createImpianto(payload: Impianto): Observable<Impianto> {
+      console.log("Impianto creato con successo");
+      const endpoint = "impianto/inserimento";
+      return this.api.post<Impianto>(endpoint, payload);
+    }
 
-  editImpianto(payload: Impianto) {
-    console.log("Impianto modificato con successo");
-    return this.api.put<Impianto>(`modificaImpianto`, payload);
-  }
+    editImpianto(payload: Impianto) {
+      console.log("Impianto modificato con successo");
+      const endpoint = "impianto/modifica";
+      return this.api.put<Impianto>(endpoint, payload);
+    }
 
-  deleteImpianto(payload: Impianto): Observable<Impianto> {
-    console.log('Impianto eliminato con successo')
-    return this.api.put<Impianto>(`cancellazioneImpianto`, payload);
-  }
+    deleteImpianto(payload: Impianto): Observable<Impianto> {
+      console.log('Impianto eliminato con successo')
+      const endpoint = "impianto/cancellazione";
+      return this.api.put<Impianto>(endpoint, payload);
+    }
 }
