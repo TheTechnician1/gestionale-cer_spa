@@ -34,7 +34,6 @@ export class DettagliTabellaCerComponent implements OnInit {
   isAdmin(): boolean {
     return this.login.isGranted() === 'ADMIN';
   }
-
   apriDettaglioImpianto(
     impianto: ImpiantoCER,
     dettaglioImpiantoDialog: TemplateRef<unknown>

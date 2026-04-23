@@ -33,6 +33,7 @@ import {
 } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
+import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tab
     FormRicercaCerComponent,
     TabellaCERComponent,
     DettagliTabellaCerComponent,
+    RegistrazioneCerComponent,
   ],
   imports: [
     BrowserModule,
