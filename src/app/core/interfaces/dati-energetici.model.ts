@@ -1,45 +1,48 @@
 export interface DatiEnergetici {
-  id_dati: string | null,
-  id_cer: string | null,
-  id_config: string | null,
+  id_dati: number | null,
+  id_cer: number | null,
+  id_config: number | null,
   anno: string | null,
-  energia_prodotta: number | null,
-  energia_prelevata: number | null,
-  energia_immessa: number | null,
-  energia_condivisa: number | null,
-  energia_autoconsumata: number | null,
-  tariffa_premio: number | null,
-  corrispettivo_premio: number | null,
-  riduzione_emissione: string | null
+  e_prodotta: number | null,
+  e_prelevata: number | null,
+  e_immessa: number | null,
+  e_condivisa: number | null,
+  e_auto_cons: number | null,
+  tariffa_premium: number | null,
+  corr_premio_ott: number | null,
+  rid_em_co2: string | null,
+  flg_cancellazione: string | null
 }
 
 export class DatiEnergeticiModel implements DatiEnergetici {
-  id_dati: string | null;
-  id_cer: string | null;
-  id_config: string | null;
+  id_dati: number | null;
+  id_cer: number | null;
+  id_config: number | null;
   anno: string | null;
-  energia_prodotta: number | null;
-  energia_prelevata: number | null;
-  energia_immessa: number | null;
-  energia_condivisa: number | null;
-  energia_autoconsumata: number | null;
-  tariffa_premio: number | null;
-  corrispettivo_premio: number | null;
-  riduzione_emissione: string | null;
+  e_prodotta: number | null;
+  e_prelevata: number | null;
+  e_immessa: number | null;
+  e_condivisa: number | null;
+  e_auto_cons: number | null;
+  tariffa_premium: number | null;
+  corr_premio_ott: number | null;
+  rid_em_co2: string | null;
+  flg_cancellazione: string | null;
 
   constructor(data?: Partial<DatiEnergetici>) {
     this.id_dati = data?.id_dati ?? null;
     this.id_cer = data?.id_cer ?? null;
     this.id_config = data?.id_config ?? null;
     this.anno = data?.anno ?? null;
-    this.energia_prodotta = data?.energia_prodotta ?? null;
-    this.energia_prelevata = data?.energia_prelevata ?? null;
-    this.energia_immessa = data?.energia_immessa ?? null;
-    this.energia_condivisa = data?.energia_condivisa ?? null;
-    this.energia_autoconsumata = data?.energia_autoconsumata ?? null;
-    this.tariffa_premio = data?.tariffa_premio ?? null;
-    this.corrispettivo_premio = data?.corrispettivo_premio ?? null;
-    this.riduzione_emissione = data?.riduzione_emissione ?? null;
+    this.e_prodotta = data?.e_prodotta ?? null;
+    this.e_prelevata = data?.e_prelevata ?? null;
+    this.e_immessa = data?.e_immessa ?? null;
+    this.e_condivisa = data?.e_condivisa ?? null;
+    this.e_auto_cons = data?.e_auto_cons ?? null;
+    this.tariffa_premium = data?.tariffa_premium ?? null;
+    this.corr_premio_ott = data?.corr_premio_ott ?? null;
+    this.rid_em_co2 = data?.rid_em_co2 ?? null;
+    this.flg_cancellazione = data?.flg_cancellazione ?? null;
   }
 }
 

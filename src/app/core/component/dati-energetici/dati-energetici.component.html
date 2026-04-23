@@ -1,8 +1,8 @@
 <div class="datiEnerg">
   <div class="h3-header">
-   <h3>Dati energetici</h3>
+    <h3>Dati energetici</h3>
     <div>
-     <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
+      <button mat-raised-button routerLink="/dati-energetici/inserimento-dati-energetici" color="primary" ><mat-icon>add</mat-icon> Aggiungi Dati</button>
     </div>
   </div>
 </div>
@@ -11,15 +11,11 @@
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Energia Prodotta</mat-label>
-      <input [(ngModel)]="filtro.energia_prodotta" matInput type="text" aria-label="energia_prodotta">
+      <input [(ngModel)]="filtro.anno" matInput type="text" aria-label="anno">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Energia Prelevata</mat-label>
-      <input [(ngModel)]="filtro.energia_prelevata" matInput type="text" aria-label="energia_prelevata">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Energia Immessa</mat-label>
-      <input [(ngModel)]="filtro.energia_immessa" matInput type="text" aria-label="energia_immessa">
+      <mat-label>Stato</mat-label>
+      <input [(ngModel)]="filtro.flg_cancellazione" matInput type="text" aria-label="flg_cancellazione">
     </mat-form-field>
     <div class="button-filtro">
       <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraDatiEnergetici()">
@@ -33,17 +29,13 @@
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
-    <ng-container matColumnDef="id_dati">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="id_dati"> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id_dati}} </td>
+    <ng-container matColumnDef="anno">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="anno">Anno di Riferimento</th>
+      <td mat-cell *matCellDef="let element">{{ element.anno }}</td>
     </ng-container>
-    <ng-container matColumnDef="energia_prodotta">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="energia_prodotta"> Energia Prodotta </th>
-      <td mat-cell *matCellDef="let element"> {{element.energia_prodotta}} </td>
-    </ng-container>
-    <ng-container matColumnDef="energia_prelevata">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="energia_prelevata">Energia Prelevata</th>
-      <td mat-cell *matCellDef="let element"> {{element.energia_prelevata}} </td>
+    <ng-container matColumnDef="flg_cancellazione">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="flg_cancellazione">Stato</th>
+      <td mat-cell *matCellDef="let element">{{ element.flg_cancellazione }}</td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
