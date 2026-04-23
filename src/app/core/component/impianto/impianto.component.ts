@@ -18,7 +18,7 @@ export class ImpiantoComponent {
   impianti: Impianto[] = [];
 
   dataSource = new MatTableDataSource(this.impianti);
-  
+
   sortedData: Impianto[] | undefined;
 
   filtro = {
@@ -46,6 +46,8 @@ export class ImpiantoComponent {
     this.impiantoService.getImpianti().subscribe({
       next: (impianti) => {
         this.impianti = impianti;
+        this.dataSource.data = [...this.impianti];
+        this.listaFiltrata = [...this.impianti];
       },
       error: (error) => {
         console.error("Login error", error);
@@ -62,20 +64,8 @@ export class ImpiantoComponent {
   }
 
   filtraImpianto() {
-    console.log(this.filtro);
-    this.listaFiltrata = this.impianti.filter(p => {
-      return (
-        (this.filtro.tipologia_impianto ? p.tipologia_impianto?.toLowerCase().includes(this.filtro.tipologia_impianto.toLowerCase()) : true) &&
-        (this.filtro.potenza_nominale ? p.potenza_nominale?.toLowerCase().includes(this.filtro.potenza_nominale.toLowerCase()) : true) &&
-        (this.filtro.presenza_accumulo ? p.presenza_accumulo?.toLowerCase().includes(this.filtro.presenza_accumulo.toLowerCase()) : true)
-      );
-    });
-
-    console.log(this.listaFiltrata);
-
     this.isFiltering = true;
-
-    return this.listaFiltrata;
+    this.loadImpianti();
   }
 
   resetFiltro() {
