@@ -47,15 +47,15 @@
     </ng-container>
     <ng-container matColumnDef="pIva">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="pIva">Partita Iva</th>
-      <td mat-cell *matCellDef="let element">{{ element.cer.pIva }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.partitaIva }}</td>
     </ng-container>
     <ng-container matColumnDef="regioneLegale">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="regioneLegale">Regione Legale</th>
-      <td mat-cell *matCellDef="let element">{{ element.cer.regioneLegale }}</td>
+      <td mat-cell *matCellDef="let element">{{ element.regioneLegale }}</td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="button-td">
         <button mat-button routerLink="dettaglio-configurazioni/:id">
           <mat-icon>visibility</mat-icon>
         </button>
