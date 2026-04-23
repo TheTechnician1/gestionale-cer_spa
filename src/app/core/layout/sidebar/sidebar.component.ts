@@ -10,7 +10,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+  { label: 'Dashboard', icon: 'dashboard', route: '/home' },
   {
     label: 'CER',
     icon: 'badge',

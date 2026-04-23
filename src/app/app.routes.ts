@@ -3,20 +3,31 @@ import { FullLayoutComponent } from './core/layout/full-layout.component';
 import { AuthGuard } from './core/guard/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { RegistrazioneUtenteComponent } from './registrazione-utente/registrazione-utente.component';
-import { Role } from './core/services/auth.service';
-import { FormRicercaCerComponent } from "./form-ricerca-cer/form-ricerca-cer.component";
-
 import { TabellaCERComponent } from './tabella-cer/tabella-cer.component';
 import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
 import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
+import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.component';
+import { Role } from './core/util/role.enum';
+import { HomeComponent } from './home/home.component';
+import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
-
+  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: 'user',
+    component: TabellaUtentiComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
   {
     path: 'user/new',
     component: RegistrazioneUtenteComponent,
     canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
   },
   {
     path: 'tabella-cer',
@@ -37,21 +48,21 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     path: 'tabella-cer/:id',
     component: DettagliTabellaCerComponent,
     canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN, Role.GEST, Role.GUEST],
+    },
   },
+  { path: "**", redirectTo: "home" },
+  
 ];
 
 export const routes: Routes = [
-  // { path: "r", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES /* canActivate: [AuthGuard] */ },
+    { path: 'login', component: LoginComponent, data: { public: true } },
 
-  //{ path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: '',
     component: FullLayoutComponent,
-    data: {
-      title: 'content Views',
-      roles: [Role.ADMIN, Role.GEST, Role.GUEST],
-    },
-    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard], 
     children: FULL_LAYOUT_ROUTES,
   },
   { path: "user/new", component: RegistrazioneUtenteComponent },

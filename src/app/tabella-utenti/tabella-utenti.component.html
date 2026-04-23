@@ -1,0 +1,72 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+    <!-- Position Column -->
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef>Nome</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.nome }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="cognome">
+      <th mat-header-cell *matHeaderCellDef>Cognome</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.cognome }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.email }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="ruolo">
+      <th mat-header-cell *matHeaderCellDef>Ruolo</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.ruolo }}</td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="azioni">
+      <th mat-header-cell *matHeaderCellDef>Azioni</th>
+      <td mat-cell *matCellDef="let ele">
+        <button mat-icon-button><mat-icon>visibility</mat-icon></button>
+
+        <!-- <button  mat-icon-button ><mat-icon>add_shopping_cart</mat-icon>
+        </button> -->
+
+        <!-- <button
+          mat-icon-button
+          *ngIf="getRuolo() === 'ADMIN' || getRuolo() === 'GEST'"
+        >
+          <mat-icon>edit</mat-icon>
+        </button> -->
+
+        <button
+          mat-icon-button
+          *ngIf="getRuolo() === 'ADMIN'"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  
+  <button
+    *ngIf="getRuolo() === 'ADMIN'"
+  >
+  Inserisci
+  </button>
+  
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>
+

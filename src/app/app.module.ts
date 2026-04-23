@@ -34,6 +34,8 @@ import {
 import { MatTableModule } from '@angular/material/table';
 import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tabella-cer.component';
 import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
+import { DialogLogoutComponent } from './dialog-logout/dialog-logout.component';
+import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer
     TabellaCERComponent,
     DettagliTabellaCerComponent,
     RegistrazioneCerComponent,
+    DialogLogoutComponent,
+    TabellaUtentiComponent,
   ],
   imports: [
     BrowserModule,
