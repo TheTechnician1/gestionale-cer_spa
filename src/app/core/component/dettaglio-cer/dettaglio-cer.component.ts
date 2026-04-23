@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
+import { CERService } from '../../services/cer.service';
+import { CER } from '../../interfaces/cer.model';
 
 @Component({
   selector: 'app-dettaglio-cer',
@@ -8,9 +10,15 @@ import { Stato } from '../../interfaces/stato.model';
   styleUrls: ['./dettaglio-cer.component.scss']
 })
 export class DettaglioCerComponent implements OnInit {
+  constructor(private fb: FormBuilder, private cerService: CERService) {}
+  cer?: CER;
+
   cerForm!:FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  stati: Stato[] = [
+    { value: 'attivo', viewValue: 'Attivo'},
+    { value: 'noattivo', viewValue: 'Non Attivo'}
+  ]
 
   ngOnInit(): void {
     this.cerForm = this.fb.group({
@@ -39,8 +47,14 @@ export class DettaglioCerComponent implements OnInit {
     this.cerForm.disable();
   }
 
-  stati: Stato[] = [
-    { value: 'attivo', viewValue: 'Attivo'},
-    { value: 'noattivo', viewValue: 'Non Attivo'}
-  ]
+  loadCER() {
+    this.cerService.getCER(this.cerForm).subscribe({
+      next: (cer) => {
+      this.cer = cer;
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
+  }
 }
