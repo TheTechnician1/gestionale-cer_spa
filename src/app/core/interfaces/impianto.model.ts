@@ -1,15 +1,19 @@
 export interface Impianto {
-  id_impianto: string | null,
-  id_configurazione: string | null,
-  codice_cabina: string | null,
-  flag_impianto: boolean | null,
-  data_entrata_esercizio: string | null,
-  tipologia_impianto: string | null,
-  potenza_nominale: string | null,
-  presenza_accumulo: string | null,
-  capacita_accumulo: string | null,
-  tipologia_produttore: string | null,
-  categoria_produttore: string | null,
+  idImpianto: number | null,
+  idConfigurazione: number | null,
+  flgEsercizio: string | null,
+  dataEserc: Date | null,
+  codTipologia: string | null,
+  preNom: number | null,
+  flgAccumulo: string | null,
+  capAccumulo: number | null,
+  tipoProduttore: string | null,
+  codCatProd: string | null,
+  flg_cancellazione: string | null,
+  spec_tipologia: string | null,
+  spec_cat_produttore: string | null,
+  cod_sito_inst: string | null,
+  speSitoInst: string | null,
   ubicazione_impianto: UbicazioneImpianto[] | null
 }
 
@@ -24,31 +28,39 @@ export interface UbicazioneImpianto {
 }
 
 export class ImpiantoModel implements Impianto {
-  id_impianto: string | null;
-  id_configurazione: string | null;
-  codice_cabina: string | null;
-  flag_impianto: boolean | null;
-  data_entrata_esercizio: string | null;
-  tipologia_impianto: string | null;
-  potenza_nominale: string | null;
-  presenza_accumulo: string | null;
-  capacita_accumulo: string | null;
-  tipologia_produttore: string | null;
-  categoria_produttore: string | null;
+  idImpianto: number | null;
+  idConfigurazione: number | null;
+  flgEsercizio: string | null;
+  dataEserc: Date | null;
+  codTipologia: string | null;
+  preNom: number | null;
+  flgAccumulo: string | null;
+  capAccumulo: number | null;
+  tipoProduttore: string | null;
+  codCatProd: string | null;
+  flg_cancellazione: string | null;
+  spec_tipologia: string | null;
+  spec_cat_produttore: string | null;
+  cod_sito_inst: string | null;
+  speSitoInst: string | null;
   ubicazione_impianto: UbicazioneImpianto[] | null;
 
   constructor(data?: Partial<Impianto>) {
-    this.id_impianto = data?.id_impianto ?? null;
-    this.id_configurazione = data?.id_configurazione ?? null;
-    this.codice_cabina = data?.codice_cabina ?? null;
-    this.flag_impianto = data?.flag_impianto ?? null;
-    this.data_entrata_esercizio = data?.data_entrata_esercizio ?? null;
-    this.tipologia_impianto = data?.tipologia_impianto ?? null;
-    this.potenza_nominale = data?.potenza_nominale ?? null;
-    this.presenza_accumulo = data?.presenza_accumulo ?? null;
-    this.capacita_accumulo = data?.capacita_accumulo ?? null;
-    this.tipologia_produttore = data?.tipologia_produttore ?? null;
-    this.categoria_produttore = data?.categoria_produttore ?? null;
+    this.idImpianto = data?.idImpianto ?? null;
+    this.idConfigurazione = data?.idConfigurazione ?? null;
+    this.flgEsercizio = data?.flgEsercizio ?? null;
+    this.dataEserc = data?.dataEserc ?? null;
+    this.codTipologia = data?.codTipologia ?? null;
+    this.preNom = data?.preNom ?? null;
+    this.flgAccumulo = data?.flgAccumulo ?? null;
+    this.capAccumulo = data?.capAccumulo ?? null;
+    this.tipoProduttore = data?.tipoProduttore ?? null;
+    this.codCatProd = data?.codCatProd ?? null;
+    this.flg_cancellazione = data?.flg_cancellazione ?? null;
+    this.spec_tipologia = data?.spec_tipologia ?? null;
+    this.spec_cat_produttore = data?.spec_cat_produttore ?? null;
+    this.cod_sito_inst = data?.cod_sito_inst ?? null;
+    this.speSitoInst = data?.speSitoInst ?? null;
     this.ubicazione_impianto = data?.ubicazione_impianto ?? null;
   }
 }

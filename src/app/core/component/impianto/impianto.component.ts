@@ -43,7 +43,7 @@ export class ImpiantoComponent {
   }
 
   loadImpianti() {
-    this.impiantoService.getImpianti().subscribe({
+    this.impiantoService.getImpianti(this.filtro).subscribe({
       next: (impianti) => {
         this.impianti = impianti;
         this.dataSource.data = [...this.impianti];
