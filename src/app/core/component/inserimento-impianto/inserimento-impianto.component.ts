@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-inserimento-impianto',
@@ -10,7 +11,7 @@ export class InserimentoImpiantoComponent implements OnInit {
 
   impiantiForm!: FormGroup;
   
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
   
   ngOnInit(): void {
     this.impiantiForm = this.fb.group({
@@ -34,4 +35,25 @@ export class InserimentoImpiantoComponent implements OnInit {
     });
     this.impiantiForm.enable();
   }
+
+  submitted = false;
+
+  submit() {
+    this.submitted = true;
+
+    if (this.impiantiForm.invalid) {
+      this.impiantiForm.markAllAsTouched();
+
+      this.snackBar.open(
+        'Compila tutti i campi obbligatori correttamente'
+      )
+      return;
+    }
+
+    this.snackBar.open(
+      'Inserimento completato!'
+    );
+    console.log(this.impiantiForm.value);
+  }
+
 }

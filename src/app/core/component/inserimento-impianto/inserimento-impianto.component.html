@@ -1,5 +1,5 @@
 <h4>Inserimento Impianto</h4>
-<form [formGroup]="impiantiForm">
+<form [formGroup]="impiantiForm" (ngSubmit)="submit()">
   <div class="flex-container">
     <div class="flex-col">
       <mat-card>
@@ -9,10 +9,16 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Codice Cabina</mat-label>
               <input matInput formControlName="codice_cabina" aria-label="codice_cabina" required>
+                <mat-error *ngIf="impiantiForm.get('codice_cabina')?.invalid && (impiantiForm.get('codice_cabina')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Data Entrata Esercizio</mat-label>
               <input matInput formControlName="data_entrata_esercizio" aria-label="data_entrata_esercizio" required>
+                <mat-error *ngIf="impiantiForm.get('data_entrata_esercizio')?.invalid && (impiantiForm.get('data_entrata_esercizio')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -22,10 +28,16 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Impianto</mat-label>
               <input matInput formControlName="tipologia_impianto" aria-label="tipologia_impianto" required>
+                <mat-error *ngIf="impiantiForm.get('tipologia_impianto')?.invalid && (impiantiForm.get('tipologia_impianto')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Potenza Nominale(KW)</mat-label>
               <input matInput type="number" formControlName="potenza_nominale" aria-label="potenza_nominale" required>
+                <mat-error *ngIf="impiantiForm.get('potenza_nominale')?.invalid && (impiantiForm.get('potenza_nominale')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Presenza Accumulo</mat-label>
@@ -33,10 +45,16 @@
                   <mat-option value="SI">SI</mat-option>
                   <mat-option value="NO">NO</mat-option>
                 </mat-select>
+                <mat-error *ngIf="impiantiForm.get('presenza_accumulo')?.invalid && (impiantiForm.get('presenza_accumulo')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Capacità Accumulo (KWh)</mat-label>
               <input matInput type="number" formControlName="capacita_accumulo" required>
+                <mat-error *ngIf="impiantiForm.get('capacita_accumulo')?.invalid && (impiantiForm.get('capacita_accumulo')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -51,10 +69,16 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Tipologia Produttore</mat-label>
                 <input matInput formControlName="tipologia_produttore" aria-label="tipologia_produttore" required>
+                  <mat-error *ngIf="impiantiForm.get('tipologia_produttore')?.invalid && (impiantiForm.get('tipologia_produttore')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Categoria Produttore</mat-label>
                 <input matInput formControlName="categoria_produttore" aria-label="categoria_produttore" required>
+                  <mat-error *ngIf="impiantiForm.get('categoria_produttore')?.invalid && (impiantiForm.get('categoria_produttore')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
             </div>
           </div>
@@ -71,33 +95,54 @@
                   <mat-option value="campania">Lazio</mat-option>
                   <mat-option value="campania">Veneto</mat-option>
                 </mat-select>
+                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.regione')?.invalid && (impiantiForm.get('ubicazione_impianto.regione')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Provincia</mat-label>
                 <input matInput formControlName="provincia" required>
+                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.provincia')?.invalid && (impiantiForm.get('ubicazione_impianto.provincia')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune</mat-label>
               <input matInput formControlName="comune" required>
+                <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.comune')?.invalid && (impiantiForm.get('ubicazione_impianto.comune')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
-             <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
               <mat-label>Indirizzo</mat-label>
               <input matInput formControlName="indirizzo" required>
+                <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.indirizzo')?.invalid && (impiantiForm.get('ubicazione_impianto.indirizzo')?.touched || submitted)">
+                  Campo obbligatorio
+                </mat-error>
             </mat-form-field>
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Numero Civico</mat-label>
                 <input matInput formControlName="numero_civico" required>
+                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.numero_civico')?.invalid && (impiantiForm.get('ubicazione_impianto.numero_civico')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>CAP</mat-label>
                 <input matInput formControlName="cap" required>
+                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.cap')?.invalid && (impiantiForm.get('ubicazione_impianto.cap')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Sito</mat-label>
               <input matInput formControlName="tipologia_sito" required>
+                 <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.tipologia_sito')?.invalid && (impiantiForm.get('ubicazione_impianto.tipologia_sito')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -108,12 +153,12 @@
     <button mat-raised-button color="primary" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
       <mat-icon>edit</mat-icon> Aggiungi
     </button>
-    <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+    <!-- <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
       Cancella
     </button>
     <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
       Ripristina
-    </button>
+    </button> -->
     <button mat-raised-button routerLink="/impianto" style="border-radius: 8px; min-width: 130px; height: 42px;">
       Indietro
     </button>
