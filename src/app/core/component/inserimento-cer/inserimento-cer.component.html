@@ -1,5 +1,5 @@
 <h4>Inserimento CER</h4>
-<form [formGroup]="cerForm">
+<form [formGroup]="cerForm" (ngSubmit)="submit()">
   <div class="flex-container">
     <div class="flex-col">
       <mat-card>
@@ -8,23 +8,23 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Ragione Sociale</mat-label>
-              <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale">
-                <mat-error *ngif="cerForm.get('ragioneSociale')?.touched && cerForm.get('ragioneSociale')?.hasError('required')">
+              <input matInput formControlName="ragSociale" aria-label="ragSociale">
+                <mat-error *ngIf="cerForm.get('ragSociale')?.invalid && (cerForm.get('ragSociale')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Partita IVA</mat-label>
-                <input matInput formControlName="partitaIva" aria-label="partitaIva">
-                  <mat-error *ngif="cerForm.get('partitaIva')?.touched && cerForm.get('partitaIva')?.hasError('required')">
+                <input matInput formControlName="pIva" aria-label="pIva">
+                  <mat-error *ngIf="cerForm.get('pIva')?.invalid && (cerForm.get('pIva')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Codice Fiscale</mat-label>
-                <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale">
-                  <mat-error *ngif="cerForm.get('codiceFiscale')?.touched && cerForm.get('codiceFiscale')?.hasError('required')">
+                <input matInput formControlName="codFisc" aria-label="codFisc">
+                  <mat-error *ngIf="cerForm.get('codFisc')?.invalid && (cerForm.get('codFisc')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
@@ -32,7 +32,7 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Forma giuridica CER</mat-label>
               <input matInput formControlName="formaGiuridica" aria-label="formaGiuridica">
-                 <mat-error *ngif="cerForm.get('formaGiuridica')?.touched && cerForm.get('formaGiuridica')?.hasError('required')">
+                 <mat-error *ngIf="cerForm.get('formaGiuridica')?.invalid && (cerForm.get('formaGiuridica')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
             </mat-form-field>
@@ -68,8 +68,8 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Nome e Cognome Referente</mat-label>
-              <input matInput formControlName="nomeCognomeReferente" aria-label="nomeCognomeReferente">
-                <mat-error *ngif="cerForm.get('formaGiuridica')?.touched && cerForm.get('formaGiuridica')?.hasError('required')">
+              <input matInput formControlName="referente" aria-label="referente">
+                <mat-error *ngIf="cerForm.get('referente')?.invalid && (cerForm.get('referente')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
@@ -94,7 +94,7 @@
                   {{stato.viewValue}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngif="cerForm.get('statoCer')?.touched && cerForm.get('statoCer')?.hasError('required')">
+              <mat-error *ngIf="cerForm.get('statoCer')?.invalid && (cerForm.get('statoCer')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
@@ -111,15 +111,15 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Telefono</mat-label>
                 <input matInput formControlName="telefono" aria-label="telefono">
-                  <mat-error *ngif="cerForm.get('telefono')?.touched && cerForm.get('telefono')?.hasError('required')">
+                  <mat-error *ngIf="cerForm.get('telefono')?.invalid && (cerForm.get('telefono')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" aria-label="email">
-                  <mat-error *ngif="cerForm.get('email')?.touched && cerForm.get('email')?.hasError('email')">
-                    Email non valida
+                  <mat-error *ngIf="cerForm.get('email')?.invalid && (cerForm.get('email')?.touched || submitted)">
+                    Campo obbligatorio
                   </mat-error>
               </mat-form-field>
             </div>
@@ -127,14 +127,14 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>PEC</mat-label>
                 <input matInput formControlName="pec" aria-label="pec">
-                  <mat-error *ngif="cerForm.get('pec')?.touched && cerForm.get('pec')?.hasError('required')">
+                  <mat-error *ngIf="cerForm.get('pec')?.invalid && (cerForm.get('pec')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Sito Web</mat-label>
                 <input matInput formControlName="sitoWeb" aria-label="sitoWeb">
-                  <mat-error *ngif="cerForm.get('pec')?.touched && cerForm.get('pec')?.hasError('required')">
+                  <mat-error *ngIf="cerForm.get('sitoWeb')?.invalid && (cerForm.get('sitoWeb')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
@@ -154,31 +154,31 @@
             </mat-form-field> -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune sede legale</mat-label>
-              <mat-select formControlName="comuneSedeLegale" aria-label="comuneSedeLegale" required>
+              <mat-select formControlName="comune" aria-label="comune" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngif="cerForm.get('comuneSedeLegale')?.touched && cerForm.get('comuneSedeLegale')?.hasError('required')">
+              <mat-error *ngIf="cerForm.get('comune')?.invalid && (cerForm.get('comune')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
-              <mat-select formControlName="provinciaSedeLegale" aria-label="provinciaSedeLegale" required>
+              <mat-select formControlName="provincia" aria-label="provincia" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngif="cerForm.get('provinciaSedeLegale')?.touched && cerForm.get('provinciaSedeLegale')?.hasError('required')">
+              <mat-error *ngIf="cerForm.get('provincia')?.invalid && (cerForm.get('provincia')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Regione sede legale</mat-label>
-              <mat-select formControlName="regioneSedeLegale" aria-label="regioneSedeLegale" required>
+              <mat-select formControlName="regione" aria-label="regione" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngif="cerForm.get('regioneSedeLegale')?.touched && cerForm.get('regioneSedeLegale')?.hasError('required')">
+              <mat-error *ngIf="cerForm.get('regione')?.invalid && (cerForm.get('regione')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
@@ -233,15 +233,15 @@
     </div>
   </div>
   <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
-    <button mat-raised-button color="primary" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
+    <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
       <mat-icon>edit</mat-icon> Aggiungi
     </button>
-    <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+    <!-- <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
       Cancella
     </button>
     <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
       Ripristina Cancellazione
-    </button>
+    </button> -->
     <button mat-raised-button routerLink="/cer" style="border-radius: 8px; min-width: 130px; height: 42px;">
       Indietro
     </button>
