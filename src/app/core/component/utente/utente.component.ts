@@ -21,13 +21,4 @@ export class UtenteComponent {
   loadUtente() {
     this.utente = this.utenteService.currentUser;
   }
-
-  editUtente(user: any) {
-    this.utente = { ...user };
-    this.route.navigate(['/']);
-  }
-
-  deleteUtente(id: number) {
-    this.utenteService.deleteUtente(id);
-  }
 }
