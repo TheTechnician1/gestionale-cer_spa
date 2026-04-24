@@ -45,13 +45,22 @@ export class InserimentoImpiantoComponent implements OnInit {
       this.impiantiForm.markAllAsTouched();
 
       this.snackBar.open(
-        'Compila tutti i campi obbligatori correttamente'
-      )
+        'Compila tutti i campi obbligatori correttamente',
+        'Chiudi',
+        {
+          duration: 3000
+        }
+      );
+
       return;
-    }
+      }
 
     this.snackBar.open(
-      'Inserimento completato!'
+      'Inserimento completato!',
+      'OK',
+      {
+        duration: 2000
+      }
     );
     console.log(this.impiantiForm.value);
   }

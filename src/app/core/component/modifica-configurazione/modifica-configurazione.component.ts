@@ -30,13 +30,21 @@ export class ModificaConfigurazioneComponent implements OnInit {
       this.configForm.markAllAsTouched();
 
       this.snackBar.open(
-        'Compila tutti i campi obbligatori correttamente'
+        'Compila tutti i campi obbligatori correttamente',
+        'Chiudi',
+        {
+          duration: 3000
+        }
       );
       return;
     }
 
     this.snackBar.open(
-      'Inserimento completato!'
+      'Inserimento completato!',
+      'OK',
+      {
+        duration: 2000
+      }
     );
     console.log(this.configForm.value);
   }

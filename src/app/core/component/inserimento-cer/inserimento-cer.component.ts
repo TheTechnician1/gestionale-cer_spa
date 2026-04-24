@@ -43,27 +43,25 @@ export class InserimentoCerComponent {
     this.submitted = true;
     
     if (this.cerForm.invalid) {
-      // return;
       this.cerForm.markAllAsTouched();
 
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
-        // 'Chiudi',
-        // {
-        //   duration: 3000
-        // }
+        'Chiudi',
+        {
+          duration: 3000
+        }
       );
 
-    // console.log(this.cerForm.value);
     return;
     }
 
     this.snackBar.open(
       'Inserimento completato!',
-      // 'OK',
-      // {
-      //   duration: 2000
-      // }
+      'OK',
+      {
+        duration: 2000
+      }
     );
     console.log(this.cerForm.value);
   }
