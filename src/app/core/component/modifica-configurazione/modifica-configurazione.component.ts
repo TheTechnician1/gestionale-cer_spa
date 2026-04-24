@@ -55,7 +55,6 @@ export class ModificaConfigurazioneComponent implements OnInit {
     this.submitted = true;
     if (this.configForm.invalid) {
       this.configForm.markAllAsTouched();
-
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
@@ -65,7 +64,6 @@ export class ModificaConfigurazioneComponent implements OnInit {
       );
       return;
     }
-
     this.snackBar.open(
       'Inserimento completato!',
       'OK',
@@ -74,10 +72,6 @@ export class ModificaConfigurazioneComponent implements OnInit {
       }
     );
     console.log(this.configForm.value);
-      this.snackBar.open('Compila tutti i campi obbligatori correttamente');
-      console.log(this.configForm);
-      return;
-    }
     const payload = { ...this.configForm.value, id: this.config.idConfigurazione }
     this.editConfig(payload);
   }
