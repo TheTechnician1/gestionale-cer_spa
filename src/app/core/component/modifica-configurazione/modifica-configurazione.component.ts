@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-modifica-configurazione',
@@ -10,7 +11,7 @@ export class ModificaConfigurazioneComponent implements OnInit {
 
   configForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.configForm = this.fb.group({
@@ -26,8 +27,18 @@ export class ModificaConfigurazioneComponent implements OnInit {
     this.submitted = true;
 
     if (this.configForm.invalid) {
+      this.configForm.markAllAsTouched();
+
+      this.snackBar.open(
+        'Compila tutti i campi obbligatori correttamente'
+      );
       return;
     }
+
+    this.snackBar.open(
+      'Inserimento completato!'
+    );
     console.log(this.configForm.value);
   }
+  
 }
