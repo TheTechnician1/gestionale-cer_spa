@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-modifica-dati-energetici',
@@ -10,7 +11,7 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
 
   datiEnergeticiForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.datiEnergeticiForm = this.fb.group({
@@ -28,4 +29,25 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     });
     this.datiEnergeticiForm.enable();
   }
+
+  submitted = false;
+
+  submit() {
+    this.submitted = true;
+
+    if (this.datiEnergeticiForm.invalid) {
+      this.datiEnergeticiForm.markAllAsTouched();
+
+      this.snackBar.open(
+        'Compila tutti i campi obbligatori correttamente'
+      );
+      return;
+    }
+
+    this.snackBar.open(
+      'Inserimento completato!'
+    );
+    console.log(this.datiEnergeticiForm.value);
+  }
+
 }
