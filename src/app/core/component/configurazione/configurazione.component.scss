@@ -6,8 +6,8 @@ th {
   font-weight: bold;
 }
 
-th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
-  background-color: var(--app-bg);
+td {
+  padding-right: 0px;
 }
 
 table.mat-table {
@@ -50,12 +50,17 @@ table.mat-table {
   margin: 0;
 }
 
+table {
+  width: 100%;
+}
+
 .table {
   margin-top: 20px;
 }
 
 .button-filtro {
   margin-left: 38%;
+  justify-self: center;
 }
 
 .h3-header {

@@ -1,12 +1,14 @@
-<div class="impianti">
-  <div class="h3-header">
-   <h3>Impianti</h3>
-    <div>
-     <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
-    </div>
-  </div>
-</div>
 <div>
+  <div class="h3-header">
+  <h3 class="demo-section">
+    <span [matBadge]="impianti.length" matBadgeOverlap="true" style="padding-right: 10px;">Impianti</span>
+  </h3>
+    <button mat-raised-button color="primary" routerLink="inserimento-impianto">
+    <mat-icon>add</mat-icon>
+    Aggiungi Impianto 
+  </button>
+  </div>
+  <br>
   <div class="filtro" rows="3">
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">

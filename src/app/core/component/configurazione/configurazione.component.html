@@ -1,12 +1,14 @@
-<div class="configurazioni">
-  <div class="h3-header">
-    <h3>Configurazioni</h3>
-    <div>
-      <button mat-raised-button color="primary" routerLink="inserimento-configurazione"><mat-icon>add</mat-icon> Aggiungi Configurazione</button>
-    </div>
-  </div>
-</div>
 <div>
+  <div class="h3-header">
+  <h3 class="demo-section">
+    <span [matBadge]="configurazioni.length" matBadgeOverlap="true" style="padding-right: 10px;">Configurazioni</span>
+  </h3>
+    <button mat-raised-button color="primary" routerLink="inserimento-configurazione">
+    <mat-icon>add</mat-icon>
+    Aggiungi Configurazione 
+  </button>
+  </div>
+  <br>
   <div class="filtro" rows="3">
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">

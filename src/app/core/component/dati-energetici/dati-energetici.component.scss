@@ -2,11 +2,24 @@ button {
   margin: 5px;
 }
 
-th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
-  background-color: var(--app-bg);
+th {
+  font-weight: bold;
 }
 
-.datiEnerg {
+td {
+  padding-right: 0px;
+}
+
+
+table.mat-table {
+  width: 100%;
+}
+
+.button-filtro, button {
+  margin: 5px;
+}
+
+.configurazioni {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -17,7 +30,7 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
 
 .filtro {
   display: flex;
-  flex-wrap: wrap; /* va a capo automaticamente */
+  flex-wrap: wrap;
   gap: 10px;
   background-color: white;
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -28,7 +41,6 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   flex: 1;
   min-width: 200px;
   margin: 0 6px;
-//   width: 250px; /* oppure 100% se vuoi full width */
   margin-left: 6px;
   margin-right: 6px;
   width:32%;
@@ -39,33 +51,17 @@ th.mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-header-cell {
   margin: 0;
 }
 
-// .form-field {
-//   flex: 1;
-//   margin-left: 6px;
-//   margin-right: 6px;
-//   width:32%;
-// }
-
-.table {
-  margin-top: 20px;
-  // width: 100%;
-  // overflow-x: auto;
-}
-
-table.mat-table {
+table {
   width: 100%;
 }
 
-.button-filtro, button {
-  margin: 5px;
+.table {
+  margin-top: 20px;
 }
 
 .button-filtro {
+  margin-left: 38%;
   justify-self: center;
-}
-
-th {
-  font-weight: bold;
 }
 
 .h3-header {
@@ -75,4 +71,8 @@ th {
 
 .filtro h6 {
   margin-left: 8px;
+}
+
+.button-td {
+  padding-left: 0px;
 }
