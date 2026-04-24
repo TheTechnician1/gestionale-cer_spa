@@ -1,6 +1,7 @@
 import { CER, RegioneLegale } from './cer.model';
 
 export interface Configurazione {
+  idConfig: number | null,
   idConfigurazione: number | null,
   cer: CER | null,
   idCer: number | null,
@@ -14,6 +15,7 @@ export interface Configurazione {
 }
 
 export class ConfigurazioneModel implements Configurazione {
+  idConfig: number | null;
   idConfigurazione: number | null;
   cer: CER | null;
   idCer: number | null;
@@ -26,6 +28,7 @@ export class ConfigurazioneModel implements Configurazione {
   flg_cancellazione: string | null;
 
   constructor(data?: Partial<Configurazione>) {
+    this.idConfig = data?.idConfig ?? null;
     this.idConfigurazione = data?.idConfigurazione ?? null;
     this.cer = data?.cer ?? null;
     this.idCer = data?.idCer ?? null;

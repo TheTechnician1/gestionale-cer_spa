@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
 import { CERService } from '../../services/cer.service';
 import { CER } from '../../interfaces/cer.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dettaglio-cer',
@@ -10,7 +11,7 @@ import { CER } from '../../interfaces/cer.model';
   styleUrls: ['./dettaglio-cer.component.scss']
 })
 export class DettaglioCerComponent implements OnInit {
-  constructor(private fb: FormBuilder, private cerService: CERService) {}
+  constructor(private fb: FormBuilder, private cerService: CERService, private route: ActivatedRoute) {}
   cer?: CER;
 
   cerForm!:FormGroup;
@@ -21,6 +22,8 @@ export class DettaglioCerComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.loadCER(parseInt(id!));
     this.cerForm =this.fb.group({
       ragSociale: ['', [Validators.required]],
       pIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
@@ -39,8 +42,8 @@ export class DettaglioCerComponent implements OnInit {
     this.cerForm.disable();
   }
 
-  loadCER() {
-    this.cerService.getCER(this.cerForm).subscribe({
+  loadCER(id: number) {
+    this.cerService.getCER(id).subscribe({
       next: (cer) => {
       this.cer = cer;
       },

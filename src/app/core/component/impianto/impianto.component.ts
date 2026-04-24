@@ -13,7 +13,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 })
 export class ImpiantoComponent {
   constructor(private impiantoService: ImpiantoService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableImp: string[] = ['id_impianto', 'codice_cabina', 'data_entrata_esercizio', 'azioni'];
+  tableImp: string[] = ['annoAttivazione', 'partitaIva', 'regione', 'provincia', 'comune', 'codiceCabina', 'codiceTipologia', 'codCategoriaProduttore', 'codInstallazione', 'azioni'];
 
   impianti: Impianto[] = [];
 
@@ -22,9 +22,15 @@ export class ImpiantoComponent {
   sortedData: Impianto[] | undefined;
 
   filtro = {
-    tipologia_impianto: "",
-    potenza_nominale: "",
-    presenza_accumulo: "",
+    annoAttivazione: '',
+    partitaIva: '',
+    regione: '',
+    provincia: '',
+    comune: '',
+    codiceCabina: '',
+    codiceTipologia: '',
+    codCategoriaProduttore: '',
+    codInstallazione: ''
   }
 
   listaFiltrata = [...this.impianti];
@@ -72,11 +78,18 @@ export class ImpiantoComponent {
     this.isFiltering = false;
 
     this.filtro = {
-      tipologia_impianto: "",
-      potenza_nominale: "",
-      presenza_accumulo: ""
+      annoAttivazione: '',
+      partitaIva: '',
+      regione: '',
+      provincia: '',
+      comune: '',
+      codiceCabina: '',
+      codiceTipologia: '',
+      codCategoriaProduttore: '',
+      codInstallazione: ''
     };
 
     this.listaFiltrata = [...this.impianti];
+    this.loadImpianti();
   }
 }

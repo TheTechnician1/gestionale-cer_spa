@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConfigurazioneService } from '../../services/configurazione.service';
 import { Configurazione } from '../../interfaces/configurazione.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dettaglio-configurazione',
@@ -9,14 +10,15 @@ import { Configurazione } from '../../interfaces/configurazione.model';
   styleUrls: ['./dettaglio-configurazione.component.scss']
 })
 export class DettaglioConfigurazioneComponent implements OnInit {
-  constructor(private fb: FormBuilder, private configService: ConfigurazioneService) {}
+  constructor(private fb: FormBuilder, private configService: ConfigurazioneService, private route: ActivatedRoute) {}
 
   config?: Configurazione;
 
   configForm!: FormGroup;
 
   ngOnInit(): void {
-    this.loadConfig();
+    const id = this.route.snapshot.paramMap.get('id');
+    this.loadConfig(parseInt(id!));
     this.configForm = this.fb.group({
       codiceCabina: ['', [Validators.required]],
       annoAttivazione: ['', [Validators.required]]
@@ -24,9 +26,8 @@ export class DettaglioConfigurazioneComponent implements OnInit {
     this.configForm.disable();
   }
 
-  loadConfig() {
-    console.log(this.config);
-    this.configService.getConfigurazione(this.config!.idConfigurazione).subscribe({
+  loadConfig(id: number) {
+    this.configService.getConfigurazione(id).subscribe({
       next: (config) => {
       this.config = config;
       },

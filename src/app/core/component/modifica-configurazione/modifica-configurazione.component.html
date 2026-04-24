@@ -9,17 +9,17 @@
                 <div class="row">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Codice Cabina</mat-label>
-                    <input matInput formControlName="codiceCabina" required>
-                      <mat-error *ngIf="configForm.get('codiceCabina')?.invalid && (configForm.get('codiceCabina')?.touched || submitted)">
-                        Campo obbligatorio
-                      </mat-error>
+                    <input matInput formControlName="codiceCabina" aria-label="codiceCabina">
+                    <mat-error *ngIf="configForm.get('codiceCabina')?.invalid && (configForm.get('codiceCabina')?.touched || submitted)">
+                      Campo obbligatorio
+                    </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Anno Attivazione</mat-label>
-                    <input matInput formControlName="annoAttivazione" required>
-                      <mat-error *ngIf="configForm.get('annoAttivazione')?.invalid && (configForm.get('annoAttivazione')?.touched || submitted)">
-                        Campo obbligatorio
-                      </mat-error>
+                    <input matInput formControlName="annoAttivazione" aria-label="annoAttivazione">
+                    <mat-error *ngIf="configForm.get('annoAttivazione')?.invalid && (configForm.get('annoAttivazione')?.touched || submitted)">
+                      Campo obbligatorio
+                    </mat-error>
                   </mat-form-field>
                 </div>
               </div>
@@ -27,19 +27,13 @@
           </mat-card>
         </div>
       </div>
-      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
-        <!-- <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
-          <mat-icon>edit</mat-icon>Aggiungi
-        </button> -->
-        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Cancella
+      <div class="div-button">
+        <button mat-raised-button color="primary" type="submit" class="button button-edit">
+          <mat-icon>edit</mat-icon>Modifica
         </button>
-        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Ripristina
-        </button>
-        <button mat-raised-button routerLink="/configurazione" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Indietro
-        </button>
+        <button mat-flat-button color="accent" class="button">Cancella</button>
+        <button mat-raised-button class="button">Ripristina</button>
+        <button mat-raised-button routerLink="/configurazione" class="button">Indietro</button>
       </div>
 </form>
 

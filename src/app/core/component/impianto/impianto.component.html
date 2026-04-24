@@ -1,3 +1,11 @@
+<div class="impianti">
+  <div class="h3-header">
+    <h3>Impianti</h3>
+    <div>
+      <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
+    </div>
+  </div>
+</div>
 <div>
   <div class="h3-header">
   <h3 class="demo-section">
@@ -12,16 +20,40 @@
   <div class="filtro" rows="3">
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Anno di Attivazione</mat-label>
+      <input [(ngModel)]="filtro.annoAttivazione" matInput type="text" aria-label="annoAttivazione">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Partita IVA</mat-label>
+      <input [(ngModel)]="filtro.partitaIva" matInput type="text" aria-label="partitaIva">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Regione Legale</mat-label>
+      <input [(ngModel)]="filtro.regione" matInput type="text" aria-label="regione">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Provincia Legale</mat-label>
+      <input [(ngModel)]="filtro.provincia" matInput type="text" aria-label="provincia">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Comune Legale</mat-label>
+      <input [(ngModel)]="filtro.comune" matInput type="text" aria-label="comune">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Codice Cabina</mat-label>
+      <input [(ngModel)]="filtro.codiceCabina" matInput type="text" aria-label="codiceCabina">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
       <mat-label>Tipologia Impianto</mat-label>
-      <input [(ngModel)]="filtro.tipologia_impianto" matInput type="text" aria-label="tipologia_impianto">
+      <input [(ngModel)]="filtro.codiceTipologia" matInput type="text" aria-label="codiceTipologia">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Potenza Nominale</mat-label>
-      <input [(ngModel)]="filtro.potenza_nominale" matInput type="text" aria-label="potenza_nominale">
+      <mat-label>Categoria Produttore</mat-label>
+      <input [(ngModel)]="filtro.codCategoriaProduttore" matInput type="text" aria-label="codCategoriaProduttore">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Presenza Accumulo</mat-label>
-      <input [(ngModel)]="filtro.presenza_accumulo" matInput type="text" aria-label="presenza_accumulo">
+      <mat-label>Tipologia Installazione</mat-label>
+      <input [(ngModel)]="filtro.codInstallazione" matInput type="text" aria-label="codInstallazione">
     </mat-form-field>
     <div class="button-filtro">
       <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraImpianto()">
@@ -35,17 +67,41 @@
 </div>
 <div class="table">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
-    <ng-container matColumnDef="id_impianto">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="id_impianto"> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id_impianto}} </td>
+    <ng-container matColumnDef="annoAttivazione">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="annoAttivazione">Anno di Attivazione</th>
+      <td mat-cell *matCellDef="let element">{{ element.annoAttivazione }}</td>
     </ng-container>
-    <ng-container matColumnDef="codice_cabina">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codice_cabina"> COD.Cabina </th>
-      <td mat-cell *matCellDef="let element"> {{element.codice_cabina}} </td>
+    <ng-container matColumnDef="partitaIva">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva">Partita IVA</th>
+      <td mat-cell *matCellDef="let element">{{ element.partitaIva }}</td>
     </ng-container>
-    <ng-container matColumnDef="data_entrata_esercizio">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="data_entrata_esercizio">Data Entrata Esercizio</th>
-      <td mat-cell *matCellDef="let element"> {{element.data_entrata_esercizio}} </td>
+    <ng-container matColumnDef="regione">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="regione">Regione Legale</th>
+      <td mat-cell *matCellDef="let element">{{ element.regione }}</td>
+    </ng-container>
+    <ng-container matColumnDef="provincia">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="provincia">Provincia Legale</th>
+      <td mat-cell *matCellDef="let element">{{ element.provincia }}</td>
+    </ng-container>
+    <ng-container matColumnDef="comune">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="comune">Comune Legale</th>
+      <td mat-cell *matCellDef="let element">{{ element.comune }}</td>
+    </ng-container>
+    <ng-container matColumnDef="codiceCabina">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceCabina">COD.Cabina</th>
+      <td mat-cell *matCellDef="let element">{{ element.codiceCabina }}</td>
+    </ng-container>
+    <ng-container matColumnDef="codiceTipologia">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceTipologia">Tipologia Impianto</th>
+      <td mat-cell *matCellDef="let element">{{ element.codiceTipologia }}</td>
+    </ng-container>
+    <ng-container matColumnDef="codCategoriaProduttore">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codCategoriaProduttore">Categoria Produttore</th>
+      <td mat-cell *matCellDef="let element">{{ element.codCategoriaProduttore }}</td>
+    </ng-container>
+    <ng-container matColumnDef="codInstallazione">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codInstallazione">Tipologia Installazione</th>
+      <td mat-cell *matCellDef="let element">{{ element.codInstallazione }}</td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
