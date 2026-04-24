@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { GetListaCER, RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
+import { GetListaCER, GetListaCERModel, RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
@@ -53,10 +53,15 @@ export class LoginService {
     return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
   }
 
-  getTabellaCER(): Observable<GetListaCER[]>{
-    const endpoint = "/cer/visualizza-lista-completa"
-    return this.apiService.get<GetListaCER[]>(endpoint)
+  getTabellaCER(payload: GetListaCERModel): Observable<GetListaCERModel[]>{
+    const endpoint = "/cer/ricerca"
+    return this.apiService.post<GetListaCERModel[]>(endpoint, payload)
   }
+
+ // getTabellaCER(): Observable<GetListaCER[]>{
+    // const endpoint = "/cer/visualizza-lista-completa"
+  //   return this.apiService.get<GetListaCER[]>(endpoint)
+  // }
 
   
 
@@ -93,4 +98,6 @@ export class LoginService {
       return null;
     }
   }
+
+  
 }

@@ -23,16 +23,18 @@ import { CerElemento, FiltroService } from '../core/services/filtro.service';
   templateUrl: './tabella-cer.component.html',
   styleUrls: ['./tabella-cer.component.scss'],
 })
-export class TabellaCERComponent implements AfterViewInit, OnChanges {
-  readonly displayedColumns: string[] = [
+export class TabellaCERComponent implements AfterViewInit 
+  //, OnChanges 
+ {
+  private readonly displayedColumnsConStato: string[] = [
     'ragioneSociale',
     'partitaIVA',
     'formaGiuridica',
-    'comune',
-    'provincia',
-    'regione',
+    'regioneLegale',
     'azioni',
   ];
+  dataSource = new MatTableDataSource<GetListaCER>();
+
 
 
   constructor(private login: LoginService) {}
@@ -80,5 +82,16 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges {
     })
       
   }
+getTabellaCER(){
+    this.login.getTabellaCER().subscribe({
+      next: (res) => {
+        this.dataSource.data = res
+      },
+      error: (error) => {
 
+      }
+      
+    })
 }
+
+ }
