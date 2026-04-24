@@ -36,7 +36,7 @@ export class CERComponent implements OnInit {
   listaFiltrata = [...this.cer];
   isFiltering = false;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadCERS();
   }
 
@@ -65,7 +65,6 @@ export class CERComponent implements OnInit {
 
   resetFiltro() {
     this.isFiltering = false;
-
     this.filtro = {
       ragSociale: '',
       codFisc: '',
@@ -74,8 +73,8 @@ export class CERComponent implements OnInit {
       provincia: '',
       regione: ''
     };
-
     this.listaFiltrata = [...this.cer];
+    this.loadCERS();
   }
 
   sortData(sortState: Sort) {

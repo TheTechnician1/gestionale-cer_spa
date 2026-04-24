@@ -18,7 +18,6 @@ export class ConfigurazioneComponent {
   configurazioni: Configurazione[] = [];
 
   dataSource = new MatTableDataSource(this.configurazioni);
-
   sortedData: Configurazione[] | undefined;
 
   filtro = {
