@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-modifica-cer',
@@ -11,7 +12,7 @@ import { Stato } from '../../interfaces/stato.model';
 export class ModificaCerComponent {
   cerForm!:FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.cerForm =this.fb.group({
@@ -52,10 +53,19 @@ export class ModificaCerComponent {
 
   submit() {
     this.submitted = true;
-    
+
     if (this.cerForm.invalid) {
+      this.cerForm.markAllAsTouched();
+
+      this.snackBar.open(
+        'Compila tutti i campi obbligatori correttamente'
+      );
       return;
     }
+
+    this.snackBar.open(
+      'Inserimento completato!'
+    );
     console.log(this.cerForm.value);
   }
 
