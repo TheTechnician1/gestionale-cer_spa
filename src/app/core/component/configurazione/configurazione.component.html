@@ -56,10 +56,10 @@
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
       <td mat-cell *matCellDef="let element" class="button-td">
-        <button mat-button [routerLink]="['/configurazione', 'dettaglio-configurazione', element.idConfigurazione]">
+        <button mat-button [routerLink]="['/configurazione', 'dettaglio-configurazione', element.idConfig]">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-button [routerLink]="['/configurazione', 'modifica-configurazione', element.idConfigurazione]">
+        <button mat-button [routerLink]="['/configurazione', 'modifica-configurazione', element.idConfig]">
           <mat-icon>edit</mat-icon>
         </button>
       </td>
