@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { CerElemento, CerFiltro, FiltroService } from '../core/services/filtro.service';
+import { GetListaCER, RicercaCerRequest } from '../core/interfaces/user.model';
+import { LoginService } from '../core/services/login.service';
 
 @Component({
   selector: 'app-form-ricerca-cer',
@@ -8,10 +9,10 @@ import { CerElemento, CerFiltro, FiltroService } from '../core/services/filtro.s
   styleUrls: ['./form-ricerca-cer.component.scss']
 })
 export class FormRicercaCerComponent implements OnInit {
- @Output() risultatiFiltratiChange = new EventEmitter<CerElemento[]>();
+ @Output() risultatiFiltratiChange = new EventEmitter<GetListaCER[]>();
 
  formRicerca: FormGroup;
- risultatiFiltrati: CerElemento[] = [];
+ risultatiFiltrati: GetListaCER[] = [];
 
  elencoFormaGiuridica: string[] = [
   'Associazione',
@@ -23,7 +24,7 @@ export class FormRicercaCerComponent implements OnInit {
   'Societa di capitali'
  ];
 
- private filtroService = inject(FiltroService);
+ private loginService = inject(LoginService);
 
   constructor(private costruttoreForm: FormBuilder) {
      this.formRicerca = this.costruttoreForm.group(
@@ -36,11 +37,10 @@ export class FormRicercaCerComponent implements OnInit {
      regione: ['']
     }
   );
-    this.risultatiFiltrati = this.filtroService.getListaElementi();
    }
 
   ngOnInit(): void {
-    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
+    this.cercaCer({});
   }
 
   get ragioneSociale(): FormControl {
@@ -73,19 +73,17 @@ export class FormRicercaCerComponent implements OnInit {
       return;
     }
 
-    const datiRicerca: CerFiltro = {
+    const datiRicerca: RicercaCerRequest = {
       ragioneSociale: this.ragioneSociale.value ?? '',
-      partitaIVA: this.partitaIVA.value ?? '',
-      formaGiuridica: this.formaGiuridica.value ?? '',
-      comune: this.comune.value ?? '',
-      provincia: this.provincia.value ?? '',
-      regione: this.regione.value ?? ''
+      partitaIva: this.partitaIVA.value ?? '',
+      comuneSedeLegale: this.comune.value ?? '',
+      provinciaLegale: this.provincia.value ?? '',
+      regioneLegale: this.regione.value ?? ''
     };
 
     console.log('Dati di ricerca:', datiRicerca);
 
-    this.risultatiFiltrati = this.filtroService.filtraElementi(datiRicerca);
-    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
+    this.cercaCer(datiRicerca);
   }
 
   resetFiltri(): void {
@@ -97,7 +95,19 @@ export class FormRicercaCerComponent implements OnInit {
       provincia: '',
       regione: '',
     });
-    this.risultatiFiltrati = this.filtroService.getListaElementi();
-    this.risultatiFiltratiChange.emit(this.risultatiFiltrati);
+    this.cercaCer({});
+  }
+
+  private cercaCer(payload: RicercaCerRequest): void {
+    this.loginService.getTabellaCER(payload).subscribe({
+      next: (risultati) => {
+        this.risultatiFiltrati = risultati;
+        this.risultatiFiltratiChange.emit(risultati);
+      },
+      error: () => {
+        this.risultatiFiltrati = [];
+        this.risultatiFiltratiChange.emit([]);
+      },
+    });
   }
 }

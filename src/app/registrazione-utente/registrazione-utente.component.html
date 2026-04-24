@@ -14,18 +14,18 @@
         <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Nome</mat-label>
-            <input matInput formControlName="nomeUtente" type="text" />
-            <mat-error *ngIf="formRegistrazione.get('nomeUtente')?.hasError('required')">Il nome è obbligatorio</mat-error>
-            <mat-error *ngIf="formRegistrazione.get('nomeUtente')?.hasError('minlength')">
+            <input matInput formControlName="nome" type="text" />
+            <mat-error *ngIf="formRegistrazione.get('nome')?.hasError('required')">Il nome è obbligatorio</mat-error>
+            <mat-error *ngIf="formRegistrazione.get('nome')?.hasError('minlength')">
               Il nome deve contenere almeno 2 caratteri
             </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Cognome</mat-label>
-            <input matInput formControlName="cognomeUtente" type="text" />
-            <mat-error *ngIf="formRegistrazione.get('cognomeUtente')?.hasError('required')">Il cognome è obbligatorio</mat-error>
-            <mat-error *ngIf="formRegistrazione.get('cognomeUtente')?.hasError('minlength')">
+            <input matInput formControlName="cognome" type="text" />
+            <mat-error *ngIf="formRegistrazione.get('cognome')?.hasError('required')">Il cognome è obbligatorio</mat-error>
+            <mat-error *ngIf="formRegistrazione.get('cognome')?.hasError('minlength')">
               Il cognome deve contenere almeno 2 caratteri
             </mat-error>
           </mat-form-field>
@@ -61,11 +61,11 @@
         <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Numero di telefono</mat-label>
-            <input matInput formControlName="telefono" type="text" />
-            <mat-error *ngIf="formRegistrazione.get('telefono')?.hasError('required')">
+            <input matInput formControlName="numeroTelefono" type="text" />
+            <mat-error *ngIf="formRegistrazione.get('numeroTelefono')?.hasError('required')">
               Il numero di telefono è obbligatorio
             </mat-error>
-            <mat-error *ngIf="formRegistrazione.get('telefono')?.hasError('pattern')">
+            <mat-error *ngIf="formRegistrazione.get('numeroTelefono')?.hasError('pattern')">
               Inserisci un numero di telefono valido
             </mat-error>
           </mat-form-field>

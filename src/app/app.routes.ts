@@ -14,6 +14,11 @@ import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.componen
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
   { path: "", redirectTo: "home", pathMatch: "full" },
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'user',
     component: TabellaUtentiComponent,
     canActivate: [AuthGuard],
@@ -65,9 +70,6 @@ export const routes: Routes = [
     canActivateChild: [AuthGuard], 
     children: FULL_LAYOUT_ROUTES,
   },
-  { path: "user/new", component: RegistrazioneUtenteComponent },
-  { path: 'cer/new', component: RegistrazioneCerComponent },
-  { path: 'login', component: LoginComponent},
 
 //   {
 //   path: 'admin',

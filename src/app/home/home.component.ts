@@ -11,7 +11,6 @@ export class HomeComponent {
   constructor(private login : LoginService) { }
 
   ngOnInit(): void {
-    if()
     this.login.getTabellaCER({}).subscribe({
       next: (res) => {
         console.log(res);

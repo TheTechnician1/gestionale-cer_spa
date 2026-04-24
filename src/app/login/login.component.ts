@@ -84,7 +84,7 @@ export class LoginComponent {
     this.login.login(payload).subscribe({
       next: (res) => {
         console.log(res);
-        this.router.navigate(['/home']);
+        this.router.navigateByUrl('/');
       },
       error: (error) => {
         console.error("Login error", error);

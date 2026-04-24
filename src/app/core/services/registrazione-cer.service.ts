@@ -9,12 +9,12 @@ import {
 } from '@angular/forms';
 import { Observable, catchError, map, of } from 'rxjs';
 import { ApiService } from './api.service';
-import { AnagraficaCER, ELEMENT_DATA } from '../../tabella-cer/tabella-cer.component';
+import { AnagraficaCER } from '../interfaces/user.model';
 
 export interface RegistrazioneCerPayload {
   ragioneSociale: string;
   codiceFiscale: string;
-  PartitaIVA: string;
+  partitaIVA: string;
   comuneSedeLegale: string;
   provinciaSedeLegale: string;
   regioneLegale: string;
@@ -77,14 +77,14 @@ export class RegistrazioneCerService {
   }
 
   registraCer(payload: RegistrazioneCerPayload): Observable<string> {
-    return this.apiService.post<string>('cer/crea-CER', payload);
+    return this.apiService.post<string>('cer/inserisci', payload);
   }
 
   normalizzaPayload(form: FormGroup): RegistrazioneCerPayload {
     return {
       ragioneSociale: this.pulisci(form.get('ragioneSociale')?.value),
       codiceFiscale: this.pulisci(form.get('codiceFiscale')?.value).toUpperCase(),
-      PartitaIVA: this.pulisci(form.get('partitaIVA')?.value),
+      partitaIVA: this.pulisci(form.get('partitaIVA')?.value),
       comuneSedeLegale: this.pulisci(form.get('comuneSedeLegale')?.value),
       provinciaSedeLegale: this.pulisci(form.get('provinciaSedeLegale')?.value).toUpperCase(),
       regioneLegale: this.pulisci(form.get('regioneLegale')?.value),
@@ -118,14 +118,8 @@ export class RegistrazioneCerService {
       .post<AnagraficaCER[]>('cer/ricerca', { codiceFiscale })
       .pipe(
         map((risultati) => risultati.length === 0),
-        catchError(() => of(this.codiceFiscaleNonPresenteNeiDatiLocali(codiceFiscale)))
+        catchError(() => of(true))
       );
-  }
-
-  private codiceFiscaleNonPresenteNeiDatiLocali(codiceFiscale: string): boolean {
-    return !ELEMENT_DATA.some(
-      (cer) => cer.codiceFiscale.toUpperCase() === codiceFiscale
-    );
   }
 
   private normalizzaSitoWeb(value: unknown): string {

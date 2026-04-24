@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { GetListaCER, GetListaCERModel, RegistrazioneUtente, Utente, UtenteModel } from '../interfaces/user.model';
+import {
+  GetListaCER,
+  ImpiantoCER,
+  RegistrazioneUtente,
+  RicercaCerRequest,
+  Utente,
+  UtenteModel,
+} from '../interfaces/user.model';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { Router } from '@angular/router';
@@ -53,9 +59,27 @@ export class LoginService {
     return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
   }
 
-  getTabellaCER(payload: GetListaCERModel): Observable<GetListaCERModel[]>{
+  getTabellaCER(payload: RicercaCerRequest = {}): Observable<GetListaCER[]>{
     const endpoint = "/cer/ricerca"
-    return this.apiService.post<GetListaCERModel[]>(endpoint, payload)
+    return this.apiService.post<GetListaCER[]>(endpoint, payload)
+  }
+
+  visualizzaCer(idCer: number): Observable<GetListaCER> {
+    return this.apiService.get<GetListaCER>(`/cer/visualizza/${idCer}`);
+  }
+
+  ricercaImpianti(payload: {
+    partitaIva?: string;
+    regione?: string;
+    provincia?: string;
+    comune?: string;
+    codiceCabina?: string;
+  }): Observable<ImpiantoCER[]> {
+    return this.apiService.post<ImpiantoCER[]>('/impianti/ricerca-avanzata', payload);
+  }
+
+  isGranted(): string | null {
+    return this.currentUser?.ruolo ?? null;
   }
 
  // getTabellaCER(): Observable<GetListaCER[]>{

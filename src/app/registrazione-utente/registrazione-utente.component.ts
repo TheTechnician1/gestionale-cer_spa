@@ -21,6 +21,7 @@ export class RegistrazioneUtenteComponent implements OnInit {
   nascondiPassword: boolean = true;
   nascondiConfermaPassword: boolean = true;
   formRegistrazione: FormGroup;
+  elencoRuoli: string[] = ['ADMIN', 'GEST', 'GUEST'];
 
   private snackBar = inject(MatSnackBar);
 
@@ -30,14 +31,14 @@ export class RegistrazioneUtenteComponent implements OnInit {
   ) {
     this.formRegistrazione = this.costruttoreForm.group(
       {
-        nomeUtente: ['', [Validators.required, Validators.minLength(2)]],
-        cognomeUtente: ['', [Validators.required, Validators.minLength(2)]],
+        nome: ['', [Validators.required, Validators.minLength(2)]],
+        cognome: ['', [Validators.required, Validators.minLength(2)]],
         codiceFiscale: [
           '',
           [Validators.required, Validators.pattern(/^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST]{1}[0-9LMNPQRSTUV]{2}[A-Z]{1}[0-9LMNPQRSTUV]{3}[A-Z]{1}$/)],  //implementare il pattern del codice fiscale italiano
         ],
-        mail: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
-        telefono: [
+        email: ['', [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
+        numeroTelefono: [
           '',
           [Validators.required, Validators.pattern(/^(0|3)[0-9]{8,9}$/)],  //implementare riconoscimento numeri italiani? \+?[0-9\s]{8,15} 
         ],
@@ -67,6 +68,10 @@ export class RegistrazioneUtenteComponent implements OnInit {
         );
       }
     });
+  }
+
+  get email(): FormControl {
+    return this.formRegistrazione.get('email') as FormControl;
   }
 
   validatorePasswordCoincidenti(): ValidatorFn {

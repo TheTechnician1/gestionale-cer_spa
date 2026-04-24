@@ -1,36 +1,44 @@
 export interface Utente {
+  idUtente?: number | null;
+  nome?: string | null;
+  cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
 }
 
 export class UtenteModel implements Utente {
+  idUtente?: number | null;
+  nome?: string | null;
+  cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
 
   constructor(data?: Partial<Utente>) {
+    this.idUtente = data?.idUtente ?? null;
+    this.nome = data?.nome ?? null;
+    this.cognome = data?.cognome ?? null;
     this.ruolo = data?.ruolo ?? null;
     this.messaggio = data?.messaggio ?? null;
   }
 }
 
 export interface RegistrazioneUtente {
-  idUtente: number | null;
-  nomeUtente: string | null;
-  cognomeUtente: string | null;
-  codiceFiscale: string | null;
-  mail: string | null;
-  telefono: number | null;
-  ruolo: string | null;
-  flagCanc: string | null;
-  password: string | null;
+  nome: string;
+  cognome: string;
+  codiceFiscale: string;
+  email: string;
+  numeroTelefono: string;
+  ruolo: string;
+  password: string;
 }
 
-export interface AnagraficaCER {
-  ragioneSociale: string;
-  p_iva: number;
-  formaGiuridica: string;
-  stato: string;
-  azioni: any;
+export interface RicercaCerRequest {
+  partitaIva?: string;
+  regioneLegale?: string;
+  provinciaLegale?: string;
+  comuneSedeLegale?: string;
+  codiceFiscale?: string;
+  ragioneSociale?: string;
 }
 
 export interface AnagraficaUtenti{
@@ -59,6 +67,33 @@ email: string,
  partitaIVA: string,
  
 }
+
+export interface UbicazioneImpianto {
+  regione: string;
+  regioneNome: string;
+  provincia: string;
+  comune: string;
+  comuneNome: string;
+  codTipoInst: string;
+  sitoInstallazione: string;
+  idConfigurazione: number;
+  codTipologia: string;
+}
+
+export interface ImpiantoCER {
+  idImpianto: number;
+  idConfigurazione: number;
+  codiceCabina: string;
+  dataEsercizio: string;
+  codTipologia: string;
+  tipologia: string;
+  partitaIva: string;
+  codCatProd: string;
+  categoriaProduttore: string;
+  ubicazioni: UbicazioneImpianto[];
+}
+
+export type AnagraficaCER = GetListaCER;
 
 export class GetListaCERModel implements GetListaCER {
   idCer?: number;
