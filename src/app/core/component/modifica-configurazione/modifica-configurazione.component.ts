@@ -18,20 +18,26 @@ export class ModificaConfigurazioneComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.loadConfig(parseInt(id!));
     this.configForm = this.fb.group({
       codiceCabina: ['', [Validators.required]],
-      annoAttivazione: ['', [Validators.required]]
+      annoAttivazione: ['', [Validators.required]],
+      ragioneSociale: ['']
     });
-    this.loadConfig(parseInt(id!));
     this.configForm.enable();
+    this.loadConfig(parseInt(id!));
   }
 
   loadConfig(id: number) {
     this.configService.getConfigurazione(id).subscribe({
       next: (config) => {
       this.config = config[0];
-      this.configForm.patchValue(config);
+      if(this.configForm) {
+        this.configForm.patchValue({
+          codiceCabina: this.config.codiceCabina,
+          annoAttivazione: this.config.annoAttivazione,
+          ragioneSociale: this.config.cer?.ragioneSociale
+        })
+      }
       },
       error: (error) => {
         console.error("Login error", error);
