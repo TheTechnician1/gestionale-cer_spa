@@ -1,0 +1,171 @@
+<section class="pagina-form-dati-energetici">
+  <mat-card class="scheda-form-dati-energetici">
+    <mat-card-header>
+      <mat-card-title>{{ titolo }}</mat-card-title>
+      <mat-card-subtitle>
+        Valori energetici in MWh/anno e valori economici in euro
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="stato-caricamento" *ngIf="caricamento">
+        <mat-spinner diameter="34"></mat-spinner>
+        <span>Caricamento scheda energetica...</span>
+      </div>
+
+      <form
+        *ngIf="!caricamento"
+        [formGroup]="formDatiEnergetici"
+        (ngSubmit)="inviaModulo()"
+        class="form-dati-energetici"
+      >
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>ID CER</mat-label>
+            <input matInput type="number" formControlName="idCer" />
+            <mat-error *ngIf="campo('idCer').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('idCer').hasError('min')">
+              Inserire un valore maggiore di zero.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ID configurazione</mat-label>
+            <input matInput type="number" formControlName="idConfigurazione" />
+            <mat-error *ngIf="campo('idConfigurazione').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('idConfigurazione').hasError('min')">
+              Inserire un valore maggiore di zero.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codice cabina</mat-label>
+            <input matInput formControlName="codiceCabina" />
+            <mat-error *ngIf="campo('codiceCabina').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('codiceCabina').hasError('pattern')">
+              Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Anno di riferimento</mat-label>
+            <input matInput formControlName="anno" />
+            <mat-error *ngIf="campo('anno').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('anno').hasError('pattern')">
+              Inserire un anno nel formato AAAA.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Stato scheda</mat-label>
+            <mat-select formControlName="statoScheda">
+              <mat-option *ngFor="let stato of statiScheda" [value]="stato">
+                {{ stato }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Energia prodotta MWh/anno</mat-label>
+            <input matInput type="number" step="1" formControlName="geteProdotta" />
+            <mat-error *ngIf="campo('geteProdotta').invalid">
+              Inserire un numero intero non negativo.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Energia prelevata MWh/anno</mat-label>
+            <input matInput type="number" step="1" formControlName="getePrelevata" />
+            <mat-error *ngIf="campo('getePrelevata').invalid">
+              Inserire un numero intero non negativo.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Energia immessa MWh/anno</mat-label>
+            <input matInput type="number" step="1" formControlName="geteImmessa" />
+            <mat-error *ngIf="campo('geteImmessa').invalid">
+              Inserire un numero intero non negativo.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Energia condivisa MWh/anno</mat-label>
+            <input matInput type="number" step="1" formControlName="geteCondivisa" />
+            <mat-error *ngIf="campo('geteCondivisa').invalid">
+              Inserire un numero intero non negativo.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Autoconsumo MWh/anno</mat-label>
+            <input matInput type="number" step="1" formControlName="geteAutoCons" />
+            <mat-error *ngIf="campo('geteAutoCons').invalid">
+              Inserire un numero intero non negativo.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Tariffa premium euro</mat-label>
+            <input matInput type="number" step="0.01" formControlName="tariffaPremium" />
+            <mat-error *ngIf="campo('tariffaPremium').invalid">
+              Inserire un importo non negativo.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Corrispettivo premio euro</mat-label>
+            <input matInput type="number" step="0.01" formControlName="corrPremioOtt" />
+            <mat-error *ngIf="campo('corrPremioOtt').invalid">
+              Inserire un importo non negativo.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form riga-co2">
+          <mat-checkbox formControlName="calcoloCo2Automatico">
+            Calcolo automatico riduzione CO2
+          </mat-checkbox>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fattore emissione CO2</mat-label>
+            <input matInput type="number" step="0.01" formControlName="fattoreEmissioneCo2" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Riduzione emissioni CO2</mat-label>
+            <input matInput formControlName="ridEmCo2" />
+            <mat-error *ngIf="campo('ridEmCo2').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" routerLink="/dati-energetici">
+            Annulla
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="salvataggioInCorso">
+            Salva
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

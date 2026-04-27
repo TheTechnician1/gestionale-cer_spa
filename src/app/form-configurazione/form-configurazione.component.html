@@ -1,0 +1,86 @@
+<section class="pagina-form-configurazione">
+  <mat-card class="scheda-form-configurazione">
+    <mat-card-header>
+      <mat-card-title>{{ titolo }}</mat-card-title>
+      <mat-card-subtitle>
+        La configurazione deve appartenere a una CER esistente e valida
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="stato-caricamento" *ngIf="caricamento">
+        <mat-spinner diameter="34"></mat-spinner>
+        <span>Caricamento configurazione...</span>
+      </div>
+
+      <form
+        *ngIf="!caricamento"
+        [formGroup]="formConfigurazione"
+        (ngSubmit)="inviaModulo()"
+        class="form-configurazione"
+      >
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>ID configurazione</mat-label>
+            <input matInput type="number" formControlName="idConfig" />
+            <mat-error *ngIf="campo('idConfig').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('idConfig').hasError('min')">
+              Inserire un valore non negativo.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ID CER</mat-label>
+            <input matInput type="number" formControlName="idCer" />
+            <mat-error *ngIf="campo('idCer').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('idCer').hasError('min')">
+              Inserire un valore maggiore di zero.
+            </mat-error>
+            <mat-error *ngIf="campo('idCer').hasError('cerNonTrovata')">
+              CER non trovata o non valida.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Codice cabina</mat-label>
+            <input matInput formControlName="codiceCabina" maxlength="11" class="testo-maiuscolo" />
+            <mat-error *ngIf="campo('codiceCabina').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('codiceCabina').hasError('pattern')">
+              Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Anno di attivazione</mat-label>
+            <input matInput type="number" formControlName="annoAttivazione" />
+            <mat-error *ngIf="campo('annoAttivazione').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('annoAttivazione').hasError('min')">
+              Inserire un anno valido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" routerLink="/configurazioni">
+            <mat-icon>arrow_back</mat-icon>
+            Annulla
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="salvataggioInCorso">
+            <mat-icon>save</mat-icon>
+            Salva
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

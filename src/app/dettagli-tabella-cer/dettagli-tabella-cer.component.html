@@ -8,7 +8,14 @@
     <div>
       <p class="sovratitolo">Dettaglio CER</p>
       <h1>{{ cer.ragioneSociale }}</h1>
-      <span class="badge-stato" *ngIf="isAdmin()">{{ cer.flgCanc }}</span>
+      <span
+        class="badge-stato stato-lampeggiante"
+        [class.badge-stato-disattiva]="cerDisattiva()"
+        [class.stato-attivo]="!cerDisattiva()"
+        [class.stato-disattivo]="cerDisattiva()"
+      >
+        {{ statoCer() }}
+      </span>
     </div>
   </div>
 
@@ -94,23 +101,108 @@
     </mat-card>
   </div>
 
-  <mat-card class="scheda-dettaglio scheda-note">
+  <mat-card class="scheda-dettaglio">
     <mat-card-header>
-      <mat-card-title>Informazioni gestionali</mat-card-title>
-      <mat-card-subtitle>Note e dati aggiuntivi rilevanti per la gestione</mat-card-subtitle>
+      <mat-card-title>Configurazioni cabina energetica</mat-card-title>
+      <mat-card-subtitle>Configurazioni associate alla presente CER</mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
-      <p>Stato cancellazione: {{ cer.flgCanc || 'N' }}</p>
+      <div class="azioni-sezione" *ngIf="puoInserireConfigurazione()">
+        <button
+          mat-raised-button
+          color="primary"
+          [routerLink]="['/configurazioni/new']"
+          [queryParams]="{ idCer: cer.idCer }"
+        >
+          <mat-icon>add</mat-icon>
+          Nuova configurazione
+        </button>
+      </div>
+
+      <div class="tabella-impianti" *ngIf="configurazioni.length > 0; else nessunaConfigurazione">
+        <table mat-table [dataSource]="configurazioni">
+          <ng-container matColumnDef="idConfig">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let configurazione">
+              {{ idConfigurazione(configurazione) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="codiceCabina">
+            <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
+            <td mat-cell *matCellDef="let configurazione">
+              {{ codiceCabinaConfigurazione(configurazione) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="annoAttivazione">
+            <th mat-header-cell *matHeaderCellDef>Anno attivazione</th>
+            <td mat-cell *matCellDef="let configurazione">
+              {{ configurazione.annoAttivazione }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="impianti">
+            <th mat-header-cell *matHeaderCellDef>Impianti</th>
+            <td mat-cell *matCellDef="let configurazione">
+              {{ impiantiConfigurazione(configurazione).length }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th mat-header-cell *matHeaderCellDef>Azioni</th>
+            <td mat-cell *matCellDef="let configurazione">
+              <button
+                mat-icon-button
+                type="button"
+                (click)="apriDettaglioConfigurazione(configurazione, dettaglioConfigurazioneDialog)"
+                aria-label="Visualizza configurazione"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                [routerLink]="['/configurazioni', idConfigurazione(configurazione), 'edit']"
+                *ngIf="puoModificareConfigurazione() && idConfigurazione(configurazione)"
+                aria-label="Modifica configurazione"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="cancellaConfigurazione(configurazione)"
+                *ngIf="puoCancellareConfigurazione() && idConfigurazione(configurazione)"
+                aria-label="Cancella configurazione"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsConfigurazioni"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsConfigurazioni"></tr>
+        </table>
+      </div>
     </mat-card-content>
   </mat-card>
 
   <mat-card class="scheda-dettaglio">
     <mat-card-header>
       <mat-card-title>Impianti associati</mat-card-title>
-      <mat-card-subtitle>Seleziona un impianto per visualizzarne il dettaglio</mat-card-subtitle>
+      <mat-card-subtitle>Impianti collegati alle configurazioni della CER</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
+      <div class="azioni-sezione" *ngIf="puoInserireImpianto()">
+        <button mat-raised-button color="primary" routerLink="/impianti/new">
+          <mat-icon>add</mat-icon>
+          Nuovo impianto
+        </button>
+      </div>
+
       <div class="tabella-impianti" *ngIf="impianti.length > 0; else nessunImpianto">
         <table mat-table [dataSource]="impianti">
           <ng-container matColumnDef="codiceCabina">
@@ -144,13 +236,31 @@
               >
                 <mat-icon>visibility</mat-icon>
               </button>
+              <button
+                mat-icon-button
+                type="button"
+                [routerLink]="['/impianti', impianto.idImpianto, 'edit']"
+                *ngIf="puoModificareImpianto() && impianto.idImpianto"
+                aria-label="Modifica impianto"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="cancellaImpianto(impianto)"
+                *ngIf="puoCancellareImpianto() && impianto.idImpianto"
+                aria-label="Cancella impianto"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
             </td>
           </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsImpianti"></tr>
           <tr
             mat-row
-            *matRowDef="let row; columns: displayedColumns"
+            *matRowDef="let row; columns: displayedColumnsImpianti"
             [class.riga-selezionata]="row.idImpianto === impiantoSelezionato?.idImpianto"
           ></tr>
         </table>
@@ -158,6 +268,62 @@
     </mat-card-content>
   </mat-card>
 </section>
+
+<ng-template #dettaglioConfigurazioneDialog>
+  <ng-container *ngIf="configurazioneSelezionata">
+    <h2 mat-dialog-title>{{ codiceCabinaConfigurazione(configurazioneSelezionata) }}</h2>
+
+    <mat-dialog-content>
+      <p class="sottotitolo-dialog">Dettaglio configurazione della CER</p>
+
+      <dl class="lista-dati">
+        <div>
+          <dt>ID configurazione</dt>
+          <dd>{{ idConfigurazione(configurazioneSelezionata) }}</dd>
+        </div>
+        <div>
+          <dt>Stato</dt>
+          <dd>
+            <span
+              class="stato-lampeggiante"
+              [class.stato-attivo]="statoConfigurazione(configurazioneSelezionata) === 'Active'"
+              [class.stato-disattivo]="statoConfigurazione(configurazioneSelezionata) !== 'Active'"
+            >
+              {{ statoConfigurazione(configurazioneSelezionata) }}
+            </span>
+          </dd>
+        </div>
+        <div>
+          <dt>CER</dt>
+          <dd>{{ cer?.ragioneSociale }}</dd>
+        </div>
+        <div>
+          <dt>ID CER</dt>
+          <dd>{{ cer?.idCer }}</dd>
+        </div>
+        <div>
+          <dt>Anno attivazione</dt>
+          <dd>{{ configurazioneSelezionata.annoAttivazione }}</dd>
+        </div>
+      </dl>
+
+      <h3>Impianti associati</h3>
+      <div class="stato-vuoto" *ngIf="impiantiConfigurazioneSelezionata().length === 0">
+        Nessun impianto associato alla configurazione.
+      </div>
+      <ul class="lista-impianti-dialog" *ngIf="impiantiConfigurazioneSelezionata().length > 0">
+        <li *ngFor="let impianto of impiantiConfigurazioneSelezionata()">
+          <span>{{ impianto.codiceCabina }}</span>
+          <small>{{ impianto.tipologia || impianto.codTipologia }}</small>
+        </li>
+      </ul>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+  </ng-container>
+</ng-template>
 
 <ng-template #dettaglioImpiantoDialog>
   <ng-container *ngIf="impiantoSelezionato">
@@ -202,6 +368,10 @@
 
 <ng-template #nessunImpianto>
   <div class="stato-vuoto">Nessun impianto associato alla CER selezionata.</div>
+</ng-template>
+
+<ng-template #nessunaConfigurazione>
+  <div class="stato-vuoto">Nessuna configurazione associata alla CER selezionata.</div>
 </ng-template>
 
 <ng-template #cerNonTrovata>

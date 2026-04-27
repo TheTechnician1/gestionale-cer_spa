@@ -32,6 +32,11 @@
 }
 
 .node-icon {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  overflow: visible;
+  flex: 0 0 24px;
   margin-right: 8px;
   color: var(--brand-blue-600);
 }

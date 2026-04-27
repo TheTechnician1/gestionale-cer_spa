@@ -1,0 +1,148 @@
+.pagina-configurazioni {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
+}
+
+.scheda-configurazioni {
+  width: 100%;
+  border: 1px solid #b3e5fc;
+  border-radius: 18px;
+  background-color: #f4fbff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+}
+
+mat-card-title {
+  color: #0277bd;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+mat-card-subtitle {
+  color: #4f6f7c;
+  margin-top: 6px;
+}
+
+.form-ricerca {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.riga-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.riga-pulsanti {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.riga-pulsanti button,
+button[mat-icon-button] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+mat-icon {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  overflow: visible;
+}
+
+.tabella-configurazioni {
+  width: 100%;
+  margin-top: 22px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.stato-caricamento,
+.stato-vuoto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #e1f5fe;
+  color: #4f6f7c;
+}
+
+.lista-dati {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin: 0;
+}
+
+.campo-intero {
+  grid-column: 1 / -1;
+}
+
+.lista-dati dt {
+  margin-bottom: 4px;
+  color: #4f6f7c;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lista-dati dd {
+  margin: 0;
+  color: #14324a;
+  overflow-wrap: anywhere;
+}
+
+h3 {
+  margin: 22px 0 0;
+  color: #0277bd;
+  font-size: 18px;
+}
+
+.lista-impianti {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-impianti li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #e1f5fe;
+}
+
+.lista-impianti small {
+  color: #4f6f7c;
+}
+
+@media (max-width: 800px) {
+  .riga-form,
+  .lista-dati {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-intero {
+    grid-column: auto;
+  }
+}

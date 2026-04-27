@@ -68,9 +68,6 @@
       <div class="risultati-ricerca">
         <h3>Risultati</h3>
 
-        <div *ngIf="risultatiFiltrati.length === 0" class="stato-vuoto">
-          Nessun elemento trovato con i filtri selezionati.
-        </div>
         <app-tabella-cer
           class="risultato-item"
           [risultatiFiltrati]="risultatiFiltrati"

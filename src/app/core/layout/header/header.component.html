@@ -7,9 +7,47 @@
 
   <span class="spacer"></span>
 
-  <button mat-icon-button aria-label="Notifiche">
+  <button
+    mat-icon-button
+    aria-label="Notifiche"
+    [matMenuTriggerFor]="notificheMenu"
+    *ngIf="mostraNotifiche()"
+    (click)="segnaNotificheLette()"
+    class="notification-button"
+  >
     <mat-icon>notifications</mat-icon>
+    <span class="notification-badge" *ngIf="notificheService.totaleNonLette > 0">
+      {{ notificheService.totaleNonLette }}
+    </span>
   </button>
+
+  <mat-menu #notificheMenu="matMenu" class="notification-menu">
+    <ng-container *ngIf="notifiche$ | async as notifiche">
+      <div class="notification-panel" (click)="$event.stopPropagation()">
+        <div class="notification-panel-header">
+          <span>Notifiche</span>
+          <button
+            mat-button
+            type="button"
+            (click)="svuotaNotifiche()"
+            *ngIf="notifiche.length > 0"
+          >
+            Svuota
+          </button>
+        </div>
+
+        <div class="notification-empty" *ngIf="notifiche.length === 0">
+          Nessuna notifica.
+        </div>
+
+        <div class="notification-item" *ngFor="let notifica of notifiche">
+          <strong>{{ notifica.titolo }}</strong>
+          <span>{{ notifica.messaggio }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </mat-menu>
+
   <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu" #menuTrigger>
     <mat-icon>account_circle</mat-icon>
   </button>
