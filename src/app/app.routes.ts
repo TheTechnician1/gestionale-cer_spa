@@ -10,6 +10,7 @@ import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.com
 import { Role } from './core/util/role.enum';
 import { HomeComponent } from './home/home.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
+import { ProfiloUtenteComponent } from './profilo-utente/profilo-utente.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
@@ -18,6 +19,13 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuard],
+  },
+  { path: 'userProfile',
+    component: ProfiloUtenteComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN, Role.GEST, Role.GUEST],
+    },
   },
   { path: 'user',
     component: TabellaUtentiComponent,

@@ -10,6 +10,7 @@ import {
   MatDialogContent,
 } from '@angular/material/dialog';
 import { DialogLogoutComponent } from "src/app/dialog-logout/dialog-logout.component";
+import { Route, Router } from "@angular/router";
 
 
 
@@ -24,7 +25,7 @@ import { DialogLogoutComponent } from "src/app/dialog-logout/dialog-logout.compo
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
 
-  constructor (private loginService: LoginService, public dialog: MatDialog) {}
+  constructor (private loginService: LoginService, public dialog: MatDialog, private router: Router) {}
 
   logout(){
     this.loginService.logout();
@@ -43,6 +44,12 @@ export class HeaderComponent {
   openDialog() {
     this.dialog.open(DialogLogoutComponent);
   }
+
+  navigateTo(){
+    this.router.navigateByUrl('userProfile');
+  }
+
+
 }
 
 // @Component({

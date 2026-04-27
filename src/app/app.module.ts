@@ -36,6 +36,7 @@ import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tab
 import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
 import { DialogLogoutComponent } from './dialog-logout/dialog-logout.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
+import { ProfiloUtenteComponent } from './profilo-utente/profilo-utente.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.componen
     RegistrazioneCerComponent,
     DialogLogoutComponent,
     TabellaUtentiComponent,
+    ProfiloUtenteComponent,
   ],
   imports: [
     BrowserModule,

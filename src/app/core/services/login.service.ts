@@ -5,6 +5,7 @@ import {
   ImpiantoCER,
   RegistrazioneUtente,
   RicercaCerRequest,
+  User,
   Utente,
   UtenteModel,
 } from '../interfaces/user.model';
@@ -57,6 +58,10 @@ export class LoginService {
   registraUtente(payload: RegistrazioneUtente): Observable<RegistrazioneUtente> {
     const endpoint = "/utente/inserisci"
     return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
+  }
+
+  visualizzaUtenti(email: string){
+    return this.apiService.get<User[]>(`/utente/visualizza-lista-completa/${email}`);
   }
 
   getTabellaCER(payload: RicercaCerRequest = {}): Observable<GetListaCER[]>{

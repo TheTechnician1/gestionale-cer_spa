@@ -17,9 +17,42 @@ export class UtenteModel implements Utente {
     this.idUtente = data?.idUtente ?? null;
     this.nome = data?.nome ?? null;
     this.cognome = data?.cognome ?? null;
-    this.ruolo = data?.ruolo ?? null;
     this.messaggio = data?.messaggio ?? null;
+    this.ruolo = data?.ruolo ?? null;
   }
+}
+
+export interface User {
+  nome?: string | null,
+  cognome?: string | null,
+  codiceFiscale?: string | null,
+  email: string | null,
+  numeroTelefono?: number | null,
+  ruolo: string | null,
+  password: string | null,
+
+
+}
+
+export class UserModel implements User {
+  nome?: string | null;
+  cognome?: string | null;
+  codiceFiscale?: string | null;
+  email: string | null = '';
+  numeroTelefono?: number | null;
+  ruolo: string | null = '';
+  password: string | null = '';
+
+  constructor (data?: Partial<User>){
+    this.nome = data?.nome ?? null
+    this.cognome = data?.cognome ?? null
+    this.codiceFiscale = data?.codiceFiscale ?? null
+    this.email = data?.email ?? null
+    this.numeroTelefono = data?.numeroTelefono ?? null
+    this.ruolo = data?.ruolo ?? null
+    this.password = data?.password ?? null
+  }
+
 }
 
 export interface RegistrazioneUtente {
@@ -57,14 +90,14 @@ export interface GetListaCER{
   provinciaSedeLegale: string,
   regioneLegale: string,
   formaGiuridica: string,
-telefono: number,
-email: string,
- pec: string,
+  telefono: number,
+  email: string,
+  pec: string,
   sitoWeb: string,
-    referente: string,
+  referente: string,
   flgCanc?: string,
-   specFormaGiuridica?: string
- partitaIVA: string,
+  specFormaGiuridica?: string,
+  partitaIVA: string,
  
 }
 
