@@ -18,25 +18,25 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Prodotta</mat-label>
-                <input matInput type="number" formControlName="energia_prodotta" aria-label="energia_prodotta" required>
+                <input matInput type="number" formControlName="eProdotta" aria-label="energia_prodotta" required>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Prelevata</mat-label>
-                <input matInput type="number" formControlName="energia_prelevata" aria-label="energia_prelevata" required>
+                <input matInput type="number" formControlName="ePrelevata" aria-label="energia_prelevata" required>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Immessa</mat-label>
-                <input matInput type="number" formControlName="energia_immessa" aria-label="energia_immessa" required>
+                <input matInput type="number" formControlName="eImmessa" aria-label="energia_immessa" required>
               </mat-form-field>
             </div>
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Condivisa</mat-label>
-                <input matInput type="number" formControlName="energia_condivisa" aria-label="energia_condivisa" required>
+                <input matInput type="number" formControlName="eCondivisa" aria-label="energia_condivisa" required>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Autoconsumate</mat-label>
-                <input matInput type="number" formControlName="energia_autoconsumata" aria-label="energia_autoconsumata"required>
+                <input matInput type="number" formControlName="eAutoCons" aria-label="energia_autoconsumata"required>
               </mat-form-field>
             </div>
           </div>
@@ -49,12 +49,12 @@
           <div class="section-title">PREMI</div>
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Tarifa Premio</mat-label>
-              <input matInput formControlName="tariffa_premio" aria-label="tariffa_premio" required>
+              <mat-label>Tariffa Premio</mat-label>
+              <input matInput formControlName="tariffaPremium" aria-label="tariffaPremium" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Corrispettivo Premio</mat-label>
-              <input matInput formControlName="corrispettivo_premio" aria-label="corrispettivo_premio" required>
+              <input matInput formControlName="corrPremioOtt" aria-label="corrPremioOtt" required>
             </mat-form-field>
           </div>
         </div>
@@ -63,7 +63,7 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Riduzione Emissione</mat-label>
-              <input matInput formControlName="riduzione_emissione" aria-label="riduzione_emissione" required>
+              <input matInput formControlName="ridEmCo2" aria-label="ridEmCo2" required>
             </mat-form-field>
           </div>
         </div>
@@ -71,17 +71,8 @@
     </div>
   </div>
   <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
-    <!-- <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
-          <mat-icon>edit</mat-icon>Aggiungi
-        </button>
-        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Cancella
-        </button>
-        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Ripristina
-        </button> -->
-        <button mat-raised-button routerLink="/configurazione" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Indietro
-        </button>
-      </div>
+    <button mat-raised-button routerLink="/configurazione" style="border-radius: 8px; min-width: 130px; height: 42px;">
+      Indietro
+    </button>
+  </div>
 </form>

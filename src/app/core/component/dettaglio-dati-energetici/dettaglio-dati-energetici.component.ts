@@ -19,17 +19,16 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.loadDati(parseInt(id!));
     this.datiEnergeticiForm = this.fb.group({
-      id_cer: ['', [Validators.required]],
-      id_config: ['', [Validators.required]],
       anno: ['', [Validators.required]],
-      energia_prodotta: ['', [Validators.required]],
-      energia_prelevata: ['', [Validators.required]],
-      energia_immessa: ['', [Validators.required]],
-      energia_condivisa: ['', [Validators.required]],
-      energia_autoconsumata: ['', [Validators.required]],
-      tariffa_premio: ['', [Validators.required]],
-      corrispettivo_premio: ['', [Validators.required]],
-      riduzione_emissione: ['', [Validators.required]]
+      eProdotta: ['', [Validators.required]],
+      ePrelevata: ['', [Validators.required]],
+      eImmessa: ['', [Validators.required]],
+      eCondivisa: ['', [Validators.required]],
+      eAutoCons: ['', [Validators.required]],
+      tariffaPremium: ['', [Validators.required]],
+      corrPremioOtt: ['', [Validators.required]],
+      ridEmCo2: ['', [Validators.required]],
+      statoScheda: ['']
     });
     this.datiEnergeticiForm.disable();
   }
