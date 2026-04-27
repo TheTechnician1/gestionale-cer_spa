@@ -1,45 +1,58 @@
-<mat-icon>account_circle</mat-icon>
-<h1>Login</h1>
-<p>Enter your credentials</p>
-<!-- <img> -->
+<section class="pagina-login">
+  <mat-card class="scheda-login">
+    <mat-card-header>
+      <div mat-card-avatar class="icona-login">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <mat-card-title>Login</mat-card-title>
+      <mat-card-subtitle>Inserisci le credenziali per accedere</mat-card-subtitle>
+    </mat-card-header>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="email-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your email</mat-label>
-      <input matInput formControlName="email" placeholder="user@example.com" />
-      <mat-error *ngIf="form.get('email')?.hasError('required')"
-        >You must enter a value: Email is mandatory</mat-error
-      >
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-login">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="user@example.com" />
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Email obbligatoria
+          </mat-error>
 
-      <mat-error
-        *ngIf="
-          form.get('email')?.hasError('email') ||
-          form.get('email')?.hasError('pattern')
-        "
-        >Invalid Email</mat-error
-      >
-    </mat-form-field>
-  </div>
+          <mat-error
+            *ngIf="
+              form.get('email')?.hasError('email') ||
+              form.get('email')?.hasError('pattern')
+            "
+          >
+            Email non valida
+          </mat-error>
+        </mat-form-field>
 
-  <div class="password-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your password</mat-label>
-      <input
-        matInput
-        [type]="hide ? 'password' : 'text'"
-        formControlName="password"
-        placeholder="12345678"
-      /><button mat-icon-button matSuffix type="button" (click)="hide = !hide">
-        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-      </button>
-      <mat-error *ngIf="form.get('password')?.hasError('minlength')"
-        >You must enter a value: Password is mandatory</mat-error
-      >
-    </mat-form-field>
-  </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="12345678"
+          />
+          <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            Password obbligatoria
+          </mat-error>
+        </mat-form-field>
 
-  <button type="submit">Log in</button>
-</form>
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" (click)="submitOspite()">
+            Entra come ospite
+          </button>
 
-<button (click)="submitOspite()">Continue as a Guest</button>
+          <button mat-raised-button color="primary" type="submit">
+            Accedi
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

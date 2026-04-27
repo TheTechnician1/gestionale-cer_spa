@@ -1,37 +1,50 @@
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource" matSort>
     <!-- Position Column -->
     <ng-container matColumnDef="ragioneSociale">
-      <th mat-header-cell *matHeaderCellDef>Ragione Sociale</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ragione Sociale</th>
       <td mat-cell *matCellDef="let ele">{{ ele.ragioneSociale }}</td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="partitaIVA">
-      <th mat-header-cell *matHeaderCellDef>Partita IVA</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Partita IVA</th>
       <td mat-cell *matCellDef="let ele">{{ ele.partitaIVA }}</td>
     </ng-container>
 
     <!-- Weight Column -->
     <ng-container matColumnDef="formaGiuridica">
-      <th mat-header-cell *matHeaderCellDef>Forma Giuridica</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Forma Giuridica</th>
       <td mat-cell *matCellDef="let ele">{{ ele.formaGiuridica }}</td>
     </ng-container>
 
     <!-- Symbol Column -->
     <ng-container matColumnDef="comuneSedeLegale">
-      <th mat-header-cell *matHeaderCellDef>Comune</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Comune</th>
       <td mat-cell *matCellDef="let ele">{{ ele.comuneSedeLegale }}</td>
     </ng-container>
 
     <ng-container matColumnDef="provinciaSedeLegale">
-      <th mat-header-cell *matHeaderCellDef>Provincia</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Provincia</th>
       <td mat-cell *matCellDef="let ele">{{ ele.provinciaSedeLegale }}</td>
     </ng-container>
 
     <ng-container matColumnDef="regioneLegale">
-      <th mat-header-cell *matHeaderCellDef>Regione</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Regione</th>
       <td mat-cell *matCellDef="let ele">{{ ele.regioneLegale }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="flgCanc">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato</th>
+      <td mat-cell *matCellDef="let ele">
+        <span
+          class="stato-lampeggiante"
+          [class.stato-attivo]="!cerDisattiva(ele)"
+          [class.stato-disattivo]="cerDisattiva(ele)"
+        >
+          {{ statoCer(ele) }}
+        </span>
+      </td>
     </ng-container>
 
     <!-- Symbol Column -->
@@ -41,6 +54,7 @@
         <button
           mat-icon-button
           [routerLink]="['/tabella-cer', ele.idCer]"
+          *ngIf="abilitaVisualizzazione"
           aria-label="Visualizza dettaglio configurazione cabina energetica"
         >
           <mat-icon>visibility</mat-icon>
@@ -51,7 +65,10 @@
 
         <button
           mat-icon-button
-          *ngIf="getRuolo() === 'ADMIN' || getRuolo() === 'GEST'"
+          *ngIf="getRuolo() === 'ADMIN'"
+          [disabled]="!puoModificare()"
+          (click)="apriModificaCer(ele, modificaCer)"
+          aria-label="Modifica CER"
         >
           <mat-icon>edit</mat-icon>
         </button>
@@ -59,6 +76,9 @@
         <button
           mat-icon-button
           *ngIf="getRuolo() === 'ADMIN'"
+          [disabled]="!puoCancellare()"
+          (click)="cancellaCer(ele)"
+          aria-label="Elimina CER"
         >
           <mat-icon>delete</mat-icon>
         </button>
@@ -68,11 +88,19 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell cella-vuota" [attr.colspan]="displayedColumns.length">
+        {{ messaggioVuoto }}
+      </td>
+    </tr>
   </table>
 
   
   <button
-    *ngIf="getRuolo() === 'ADMIN'"
+    mat-raised-button
+    color="primary"
+    routerLink="/cer/new"
+    *ngIf="mostraInserisci && getRuolo() === 'ADMIN'"
   >
   Inserisci
   </button>
@@ -85,3 +113,60 @@
   >
   </mat-paginator>
 </div>
+
+<ng-template #modificaCer>
+  <h2 mat-dialog-title>Modifica CER</h2>
+  <mat-dialog-content>
+    <form [formGroup]="formModificaCer" class="form-ricerca">
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Ragione sociale</mat-label>
+          <input matInput formControlName="ragioneSociale" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Codice fiscale</mat-label>
+          <input matInput formControlName="codiceFiscale" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Partita IVA</mat-label>
+          <input matInput formControlName="partitaIVA" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Forma giuridica</mat-label>
+          <input matInput formControlName="formaGiuridica" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Comune</mat-label>
+          <input matInput formControlName="comuneSedeLegale" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Provincia</mat-label>
+          <input matInput formControlName="provinciaSedeLegale" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Regione</mat-label>
+          <input matInput formControlName="regioneLegale" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Referente</mat-label>
+          <input matInput formControlName="referente" />
+        </mat-form-field>
+      </div>
+      <p class="cella-vuota">
+        Il salvataggio della modifica CER richiede un endpoint backend di modifica non presente nell'OpenAPI.
+      </p>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Annulla</button>
+    <button mat-raised-button color="primary" type="button" (click)="salvaModificaCerNonDisponibile()">
+      Salva
+    </button>
+  </mat-dialog-actions>
+</ng-template>

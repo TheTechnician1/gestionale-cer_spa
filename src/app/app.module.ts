@@ -36,6 +36,16 @@ import { DettagliTabellaCerComponent } from './dettagli-tabella-cer/dettagli-tab
 import { RegistrazioneCerComponent } from './registrazione-cer/registrazione-cer.component';
 import { DialogLogoutComponent } from './dialog-logout/dialog-logout.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
+import { CerDisattivateComponent } from './cer-disattivate/cer-disattivate.component';
+import { ConfermaPasswordDialogComponent } from './conferma-password-dialog/conferma-password-dialog.component';
+import { RicercaImpiantiComponent } from './ricerca-impianti/ricerca-impianti.component';
+import { FormImpiantoComponent } from './form-impianto/form-impianto.component';
+import { RicercaConfigurazioniComponent } from './ricerca-configurazioni/ricerca-configurazioni.component';
+import { FormConfigurazioneComponent } from './form-configurazione/form-configurazione.component';
+import { ConfigurazioniDisattivateComponent } from './configurazioni-disattivate/configurazioni-disattivate.component';
+import { ImpostazioniComponent } from './impostazioni/impostazioni.component';
+import { RicercaDatiEnergeticiComponent } from './ricerca-dati-energetici/ricerca-dati-energetici.component';
+import { FormDatiEnergeticiComponent } from './form-dati-energetici/form-dati-energetici.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +63,16 @@ import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.componen
     RegistrazioneCerComponent,
     DialogLogoutComponent,
     TabellaUtentiComponent,
+    CerDisattivateComponent,
+    ConfermaPasswordDialogComponent,
+    RicercaImpiantiComponent,
+    FormImpiantoComponent,
+    RicercaConfigurazioniComponent,
+    FormConfigurazioneComponent,
+    ConfigurazioniDisattivateComponent,
+    ImpostazioniComponent,
+    RicercaDatiEnergeticiComponent,
+    FormDatiEnergeticiComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { GetListaCER, RicercaCerRequest } from '../core/interfaces/user.model';
+import { CerService } from '../core/services/cer.service';
 import { LoginService } from '../core/services/login.service';
 
 @Component({
@@ -13,18 +14,10 @@ export class FormRicercaCerComponent implements OnInit {
 
  formRicerca: FormGroup;
  risultatiFiltrati: GetListaCER[] = [];
-
- elencoFormaGiuridica: string[] = [
-  'Associazione',
-  'Associazione non riconosciuta',
-  'Associazione riconosciuta',
-  'Cooperativa',
-  'Consorzio',
-  'Fondazione di partecipazione',
-  'Societa di capitali'
- ];
+ elencoFormaGiuridica: string[] = [];
 
  private loginService = inject(LoginService);
+ private cerService = inject(CerService);
 
   constructor(private costruttoreForm: FormBuilder) {
      this.formRicerca = this.costruttoreForm.group(
@@ -40,7 +33,7 @@ export class FormRicercaCerComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.cercaCer({});
+    this.caricaListaCompleta();
   }
 
   get ragioneSociale(): FormControl {
@@ -83,7 +76,7 @@ export class FormRicercaCerComponent implements OnInit {
 
     console.log('Dati di ricerca:', datiRicerca);
 
-    this.cercaCer(datiRicerca);
+    this.cercaCer(datiRicerca, this.formaGiuridica.value ?? '');
   }
 
   resetFiltri(): void {
@@ -98,13 +91,32 @@ export class FormRicercaCerComponent implements OnInit {
     this.cercaCer({});
   }
 
-  private cercaCer(payload: RicercaCerRequest): void {
+  private cercaCer(payload: RicercaCerRequest, formaGiuridica: string = ''): void {
     this.loginService.getTabellaCER(payload).subscribe({
       next: (risultati) => {
+        const risultatiFiltrati = this.cerService.filtraPerFormaGiuridica(
+          risultati,
+          formaGiuridica
+        );
+        this.risultatiFiltrati = risultatiFiltrati;
+        this.risultatiFiltratiChange.emit(risultatiFiltrati);
+      },
+      error: () => {
+        this.risultatiFiltrati = [];
+        this.risultatiFiltratiChange.emit([]);
+      },
+    });
+  }
+
+  private caricaListaCompleta(): void {
+    this.loginService.getTabellaCER({}).subscribe({
+      next: (risultati) => {
+        this.elencoFormaGiuridica = this.cerService.estraiFormeGiuridiche(risultati);
         this.risultatiFiltrati = risultati;
         this.risultatiFiltratiChange.emit(risultati);
       },
       error: () => {
+        this.elencoFormaGiuridica = [];
         this.risultatiFiltrati = [];
         this.risultatiFiltratiChange.emit([]);
       },

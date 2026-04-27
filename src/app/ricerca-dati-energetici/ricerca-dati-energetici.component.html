@@ -1,0 +1,298 @@
+<section class="pagina-dati-energetici">
+  <mat-card class="scheda-dati-energetici">
+    <mat-card-header>
+      <mat-card-title>Ricerca dati energetici annuali</mat-card-title>
+      <mat-card-subtitle>Filtra per cabina, CER, anno e stato della scheda</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formRicerca" (ngSubmit)="cerca()" class="form-ricerca">
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Anno da</mat-label>
+            <input matInput formControlName="daAnno" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Anno a</mat-label>
+            <input matInput formControlName="getaAnno" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA CER</mat-label>
+            <input matInput formControlName="partitaIva" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codice cabina</mat-label>
+            <input matInput formControlName="codiceCabina" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Stato scheda</mat-label>
+            <mat-select formControlName="stato">
+              <mat-option value="">Tutti</mat-option>
+              <mat-option *ngFor="let stato of statiScheda" [value]="stato">
+                {{ stato }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" (click)="resetFiltri()">
+            Pulisci filtri
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="caricamento">
+            Cerca
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            routerLink="/dati-energetici/new"
+            *ngIf="puoInserire()"
+          >
+            <mat-icon>add</mat-icon>
+            Nuova scheda
+          </button>
+        </div>
+      </form>
+
+      <div class="stato-caricamento" *ngIf="caricamento">
+        <mat-spinner diameter="34"></mat-spinner>
+        <span>Ricerca in corso...</span>
+      </div>
+
+      <div
+        class="stato-vuoto"
+        *ngIf="ricercaEseguita && !caricamento && dataSource.data.length === 0"
+      >
+        Nessuna scheda energetica trovata.
+      </div>
+
+      <div class="tabella-dati" *ngIf="!caricamento && dataSource.data.length > 0">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="idDati">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.idDati }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="idCer">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID CER</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.idCer }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="idConfigurazione">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID configurazione</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.idConfigurazione }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="anno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Anno</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.anno }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="prodotta">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Prodotta MWh/anno</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.geteProdotta }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="condivisa">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Condivisa MWh/anno</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.geteCondivisa }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="riduzioneCo2">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Riduzione CO2</th>
+            <td mat-cell *matCellDef="let dati">{{ dati.ridEmCo2 }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="stato">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato</th>
+            <td mat-cell *matCellDef="let dati">
+              <span
+                class="stato-lampeggiante"
+                [class.stato-attivo]="statoDati(dati) === 'Active'"
+                [class.stato-disattivo]="statoDati(dati) !== 'Active'"
+              >
+                {{ statoDati(dati) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th mat-header-cell *matHeaderCellDef>Azioni</th>
+            <td mat-cell *matCellDef="let dati">
+              <button mat-icon-button type="button" (click)="apriDettaglio(dati, dettaglioDati)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="apriModifica(dati, modificaDati)"
+                *ngIf="puoModificare() && dati.idDati"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="cancella(dati)"
+                *ngIf="puoCancellare() && dati.idDati"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Paginazione dati energetici"
+        ></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #dettaglioDati>
+  <ng-container *ngIf="datiSelezionati">
+    <h2 mat-dialog-title>Scheda energetica {{ datiSelezionati.anno }}</h2>
+    <mat-dialog-content>
+      <dl class="lista-dati">
+        <div>
+          <dt>ID CER</dt>
+          <dd>{{ datiSelezionati.idCer }}</dd>
+        </div>
+        <div>
+          <dt>ID configurazione</dt>
+          <dd>{{ datiSelezionati.idConfigurazione }}</dd>
+        </div>
+        <div>
+          <dt>Energia prodotta</dt>
+          <dd>{{ datiSelezionati.geteProdotta }} MWh/anno</dd>
+        </div>
+        <div>
+          <dt>Energia prelevata</dt>
+          <dd>{{ datiSelezionati.getePrelevata }} MWh/anno</dd>
+        </div>
+        <div>
+          <dt>Energia immessa</dt>
+          <dd>{{ datiSelezionati.geteImmessa }} MWh/anno</dd>
+        </div>
+        <div>
+          <dt>Energia condivisa</dt>
+          <dd>{{ datiSelezionati.geteCondivisa }} MWh/anno</dd>
+        </div>
+        <div>
+          <dt>Autoconsumo</dt>
+          <dd>{{ datiSelezionati.geteAutoCons }} MWh/anno</dd>
+        </div>
+        <div>
+          <dt>Tariffa premium</dt>
+          <dd>{{ datiSelezionati.tariffaPremium }} euro</dd>
+        </div>
+        <div>
+          <dt>Corrispettivo premio</dt>
+          <dd>{{ datiSelezionati.corrPremioOtt }} euro</dd>
+        </div>
+        <div>
+          <dt>Riduzione CO2</dt>
+          <dd>{{ datiSelezionati.ridEmCo2 }}</dd>
+        </div>
+        <div>
+          <dt>Stato</dt>
+          <dd>
+            <span
+              class="stato-lampeggiante"
+              [class.stato-attivo]="statoDati(datiSelezionati) === 'Active'"
+              [class.stato-disattivo]="statoDati(datiSelezionati) !== 'Active'"
+            >
+              {{ statoDati(datiSelezionati) }}
+            </span>
+          </dd>
+        </div>
+      </dl>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+  </ng-container>
+</ng-template>
+
+<ng-template #modificaDati>
+  <h2 mat-dialog-title>Modifica dati energetici</h2>
+  <mat-dialog-content>
+    <form [formGroup]="formModifica" class="form-ricerca">
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>ID CER</mat-label>
+          <input matInput type="number" formControlName="idCer" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>ID configurazione</mat-label>
+          <input matInput type="number" formControlName="idConfigurazione" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Anno</mat-label>
+          <input matInput formControlName="anno" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Energia prodotta</mat-label>
+          <input matInput type="number" formControlName="geteProdotta" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Energia prelevata</mat-label>
+          <input matInput type="number" formControlName="getePrelevata" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Energia immessa</mat-label>
+          <input matInput type="number" formControlName="geteImmessa" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Energia condivisa</mat-label>
+          <input matInput type="number" formControlName="geteCondivisa" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Autoconsumo</mat-label>
+          <input matInput type="number" formControlName="geteAutoCons" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Tariffa premium</mat-label>
+          <input matInput type="number" formControlName="tariffaPremium" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Corrispettivo premio</mat-label>
+          <input matInput type="number" formControlName="corrPremioOtt" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Riduzione CO2</mat-label>
+          <input matInput formControlName="ridEmCo2" />
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Annulla</button>
+    <button mat-raised-button color="primary" type="button" (click)="salvaModifica()">Salva</button>
+  </mat-dialog-actions>
+</ng-template>

@@ -1,0 +1,94 @@
+<section class="pagina-cer-disattivate">
+  <mat-card class="scheda-cer-disattivate">
+    <mat-card-header>
+      <mat-card-title>CER disattivate</mat-card-title>
+      <mat-card-subtitle>
+        Elenco delle comunita energetiche rimosse
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formRicerca" (ngSubmit)="applicaFiltri()" class="form-ricerca">
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Ragione Sociale</mat-label>
+            <input matInput formControlName="ragioneSociale" type="text" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA</mat-label>
+            <input matInput formControlName="partitaIVA" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Scegli Forma Giuridica</mat-label>
+            <mat-select formControlName="formaGiuridica">
+              <mat-option value="">Tutte</mat-option>
+              <mat-option *ngFor="let forma of elencoFormaGiuridica" [value]="forma">
+                {{ forma }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Comune</mat-label>
+            <input matInput formControlName="comune" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" type="text" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="regione" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" (click)="resetFiltri()">
+            Pulisci filtri
+          </button>
+          <button mat-raised-button color="primary" type="submit">
+            Cerca
+          </button>
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="caricaCerDisattivate()"
+            [disabled]="caricamento"
+          >
+            <mat-icon>refresh</mat-icon>
+            Aggiorna
+          </button>
+        </div>
+      </form>
+
+      <div class="risultati-ricerca">
+        <h3>Risultati</h3>
+
+        <div *ngIf="caricamento" class="stato-caricamento">
+          <mat-spinner diameter="36"></mat-spinner>
+          <span>Caricamento in corso...</span>
+        </div>
+
+        <app-tabella-cer
+          *ngIf="!caricamento"
+          class="risultato-item"
+          [risultatiFiltrati]="risultatiFiltrati"
+          [mostraInserisci]="false"
+          [abilitaVisualizzazione]="true"
+          [abilitaModifica]="false"
+          [abilitaCancellazione]="false"
+          [mostraStato]="true"
+          messaggioVuoto="Nessuna CER disattivata trovata con i filtri selezionati."
+        ></app-tabella-cer>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>

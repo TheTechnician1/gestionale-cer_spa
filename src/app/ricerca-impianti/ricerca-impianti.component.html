@@ -1,0 +1,273 @@
+<section class="pagina-impianti">
+  <mat-card class="scheda-impianti">
+    <mat-card-header>
+      <mat-card-title>Ricerca impianti</mat-card-title>
+      <mat-card-subtitle>Filtra per tipologia, localizzazione e CER di appartenenza</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formRicerca" (ngSubmit)="cerca()" class="form-ricerca">
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Anno attivazione da</mat-label>
+            <input matInput type="number" formControlName="annoAttivazioneDa" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Anno attivazione a</mat-label>
+            <input matInput type="number" formControlName="annoAttivazioneA" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA CER</mat-label>
+            <input matInput formControlName="partitaIva" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codice cabina</mat-label>
+            <input matInput formControlName="codiceCabina" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipologia impianto</mat-label>
+            <mat-select formControlName="codTipologia">
+              <mat-option value="">Tutte</mat-option>
+              <mat-option *ngFor="let tipologia of tipologie" [value]="tipologia">
+                {{ tipologia }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Categoria produttore</mat-label>
+            <mat-select formControlName="categoriaProduttore">
+              <mat-option value="">Tutte</mat-option>
+              <mat-option *ngFor="let categoria of categorieProduttore" [value]="categoria">
+                {{ categoria }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form riga-form-localizzazione">
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="regione" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Comune</mat-label>
+            <input matInput formControlName="comune" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" (click)="resetFiltri()">
+            Pulisci filtri
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="caricamento">
+            Cerca
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            routerLink="/impianti/new"
+            *ngIf="puoInserire()"
+          >
+            <mat-icon>add</mat-icon>
+            Nuovo impianto
+          </button>
+        </div>
+      </form>
+
+      <div class="stato-caricamento" *ngIf="caricamento">
+        <mat-spinner diameter="34"></mat-spinner>
+        <span>Ricerca in corso...</span>
+      </div>
+
+      <div
+        class="stato-vuoto"
+        *ngIf="ricercaEseguita && !caricamento && dataSource.data.length === 0"
+      >
+        Nessun impianto trovato.
+      </div>
+
+      <div class="tabella-impianti" *ngIf="!caricamento && dataSource.data.length > 0">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="idImpianto">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.idImpianto }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="codiceCabina">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Codice cabina</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.codiceCabina }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="tipologia">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipologia</th>
+            <td mat-cell *matCellDef="let impianto">
+              {{ impianto.tipologia || impianto.codTipologia }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="partitaIva">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Partita IVA CER</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.partitaIva }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="comune">
+            <th mat-header-cell *matHeaderCellDef>Comune</th>
+            <td mat-cell *matCellDef="let impianto">{{ comuneImpianto(impianto) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="categoriaProduttore">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria produttore</th>
+            <td mat-cell *matCellDef="let impianto">{{ impianto.categoriaProduttore }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="azioni">
+            <th mat-header-cell *matHeaderCellDef>Azioni</th>
+            <td mat-cell *matCellDef="let impianto">
+              <button mat-icon-button type="button" (click)="apriDettaglio(impianto, dettaglioImpianto)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="apriModifica(impianto, modificaImpianto)"
+                *ngIf="puoModificare() && impianto.idImpianto"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                type="button"
+                (click)="cancella(impianto)"
+                *ngIf="puoCancellare() && impianto.idImpianto"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons
+          aria-label="Paginazione impianti"
+        ></mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<ng-template #dettaglioImpianto>
+  <ng-container *ngIf="impiantoSelezionato">
+    <h2 mat-dialog-title>{{ impiantoSelezionato.codiceCabina }}</h2>
+    <mat-dialog-content>
+      <dl class="lista-dati">
+        <div>
+          <dt>Tipologia</dt>
+          <dd>{{ impiantoSelezionato.tipologia || impiantoSelezionato.codTipologia }}</dd>
+        </div>
+        <div>
+          <dt>Partita IVA CER</dt>
+          <dd>{{ impiantoSelezionato.partitaIva }}</dd>
+        </div>
+        <div>
+          <dt>Categoria produttore</dt>
+          <dd>{{ impiantoSelezionato.categoriaProduttore }}</dd>
+        </div>
+        <div>
+          <dt>Comune</dt>
+          <dd>{{ comuneImpianto(impiantoSelezionato) }}</dd>
+        </div>
+        <div>
+          <dt>Provincia</dt>
+          <dd>{{ provinciaImpianto(impiantoSelezionato) }}</dd>
+        </div>
+        <div>
+          <dt>Sito installazione</dt>
+          <dd>{{ sitoInstallazione(impiantoSelezionato) }}</dd>
+        </div>
+        <div>
+          <dt>Data esercizio</dt>
+          <dd>{{ impiantoSelezionato.dataEsercizio }}</dd>
+        </div>
+      </dl>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-stroked-button mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+  </ng-container>
+</ng-template>
+
+<ng-template #modificaImpianto>
+  <h2 mat-dialog-title>Modifica impianto</h2>
+  <mat-dialog-content>
+    <form [formGroup]="formModifica" class="form-ricerca">
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>ID configurazione</mat-label>
+          <input matInput type="number" formControlName="idConfigurazione" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Codice cabina</mat-label>
+          <input matInput formControlName="codiceCabina" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Partita IVA CER</mat-label>
+          <input matInput formControlName="partitaIva" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Data esercizio</mat-label>
+          <input matInput type="date" formControlName="dataEsercizio" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipologia</mat-label>
+          <input matInput formControlName="tipologia" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Categoria produttore</mat-label>
+          <input matInput formControlName="categoriaProduttore" />
+        </mat-form-field>
+      </div>
+      <div class="riga-form riga-form-localizzazione">
+        <mat-form-field appearance="outline">
+          <mat-label>Regione</mat-label>
+          <input matInput formControlName="regione" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Provincia</mat-label>
+          <input matInput formControlName="provincia" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Comune</mat-label>
+          <input matInput formControlName="comune" />
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Annulla</button>
+    <button mat-raised-button color="primary" type="button" (click)="salvaModifica()">Salva</button>
+  </mat-dialog-actions>
+</ng-template>

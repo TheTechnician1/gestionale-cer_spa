@@ -10,6 +10,15 @@ import { FormRicercaCerComponent } from './form-ricerca-cer/form-ricerca-cer.com
 import { Role } from './core/util/role.enum';
 import { HomeComponent } from './home/home.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
+import { CerDisattivateComponent } from './cer-disattivate/cer-disattivate.component';
+import { RicercaImpiantiComponent } from './ricerca-impianti/ricerca-impianti.component';
+import { FormImpiantoComponent } from './form-impianto/form-impianto.component';
+import { RicercaConfigurazioniComponent } from './ricerca-configurazioni/ricerca-configurazioni.component';
+import { FormConfigurazioneComponent } from './form-configurazione/form-configurazione.component';
+import { ConfigurazioniDisattivateComponent } from './configurazioni-disattivate/configurazioni-disattivate.component';
+import { ImpostazioniComponent } from './impostazioni/impostazioni.component';
+import { RicercaDatiEnergeticiComponent } from './ricerca-dati-energetici/ricerca-dati-energetici.component';
+import { FormDatiEnergeticiComponent } from './form-dati-energetici/form-dati-energetici.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   //{ path: "pagina2", component: LoginComponent },
@@ -43,6 +52,88 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     path: 'cer/new',
     component: RegistrazioneCerComponent,
     canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'cer/disattivate',
+    component: CerDisattivateComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'configurazioni',
+    component: RicercaConfigurazioniComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'configurazioni/new',
+    component: FormConfigurazioneComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'configurazioni/disattivate',
+    component: ConfigurazioniDisattivateComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'configurazioni/:id/edit',
+    component: FormConfigurazioneComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN, Role.GEST],
+    },
+  },
+  {
+    path: 'impianti',
+    component: RicercaImpiantiComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'impianti/new',
+    component: FormImpiantoComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'impianti/:id/edit',
+    component: FormImpiantoComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN, Role.GEST],
+    },
+  },
+  {
+    path: 'dati-energetici',
+    component: RicercaDatiEnergeticiComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dati-energetici/new',
+    component: FormDatiEnergeticiComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN],
+    },
+  },
+  {
+    path: 'dati-energetici/:id/edit',
+    component: FormDatiEnergeticiComponent,
+    canActivate: [AuthGuard],
+    data: {
+      roles: [Role.ADMIN, Role.GEST],
+    },
   },
   {
     path: 'tabella-cer/:id/impianti/:impiantoId',
@@ -56,6 +147,11 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     data: {
       roles: [Role.ADMIN, Role.GEST, Role.GUEST],
     },
+  },
+  {
+    path: 'impostazioni',
+    component: ImpostazioniComponent,
+    canActivate: [AuthGuard],
   },
   { path: "**", redirectTo: "home" },
   

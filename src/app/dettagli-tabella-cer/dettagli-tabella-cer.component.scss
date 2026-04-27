@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 18px;
   padding: 24px;
-  background: #f5f8fb;
+  background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
   box-sizing: border-box;
 }
 
@@ -16,14 +16,13 @@
 
 .intestazione-dettaglio h1 {
   margin: 0;
-  color: #14324a;
+  color: #0277bd;
   font-size: 30px;
   font-weight: 700;
 }
 
 .sovratitolo {
-  margin: 0 0 4px;
-  color: #607d8b;
+  color: #4f6f7c;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
@@ -41,6 +40,11 @@
   font-weight: 700;
 }
 
+.badge-stato-disattiva {
+  background: #ffebee;
+  color: #b71c1c;
+}
+
 .griglia-dettaglio {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -48,19 +52,20 @@
 }
 
 .scheda-dettaglio {
-  border: 1px solid #d8e3ea;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(20, 50, 74, 0.08);
+  border: 1px solid #b3e5fc;
+  border-radius: 18px;
+  background-color: #f4fbff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 mat-card-title {
-  color: #14324a;
+  color: #0277bd;
   font-size: 20px;
   font-weight: 700;
 }
 
 mat-card-subtitle {
-  color: #607d8b;
+  color: #4f6f7c;
 }
 
 .lista-dati {
@@ -70,13 +75,8 @@ mat-card-subtitle {
   margin: 0;
 }
 
-.lista-dati div {
-  min-width: 0;
-}
-
 .lista-dati dt {
-  margin-bottom: 4px;
-  color: #607d8b;
+  color: #4f6f7c;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -84,15 +84,8 @@ mat-card-subtitle {
 
 .lista-dati dd {
   margin: 0;
-  color: #263238;
-  font-size: 15px;
+  color: #14324a;
   overflow-wrap: anywhere;
-}
-
-.scheda-note p {
-  margin: 0;
-  color: #263238;
-  line-height: 1.55;
 }
 
 .tabella-impianti {
@@ -100,32 +93,49 @@ mat-card-subtitle {
   overflow-x: auto;
 }
 
+.azioni-sezione {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
 table {
   width: 100%;
 }
 
 .riga-selezionata {
-  background: #e3f2fd;
+  background: #e1f5fe;
 }
 
 .lista-dati-impianto {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.sottotitolo-dialog {
-  margin: 0 0 18px;
-  color: #607d8b;
+.lista-impianti-dialog {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lista-impianti-dialog li {
+  display: flex;
+  padding: 10px 12px;
+  background: #e1f5fe;
 }
 
 .stato-vuoto {
   padding: 16px;
   border-radius: 8px;
-  background: #eef4f7;
-  color: #455a64;
+  background: #e1f5fe;
+  color: #4f6f7c;
 }
 
 button mat-icon {
   margin-right: 6px;
+  line-height: 24px;
+  overflow: visible;
 }
 
 button[mat-icon-button] mat-icon {

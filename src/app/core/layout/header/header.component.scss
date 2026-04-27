@@ -19,3 +19,64 @@
 .app-toolbar .mat-icon {
   color: #ffffff;
 }
+
+.notification-button {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #d32f2f;
+  color: #ffffff;
+  border: 2px solid var(--brand-blue);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 15px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.notification-panel {
+  width: 320px;
+  max-width: 90vw;
+  padding: 10px;
+}
+
+.notification-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 4px 8px;
+  color: #0277bd;
+  font-weight: 700;
+}
+
+.notification-empty {
+  padding: 12px;
+  color: #4f6f7c;
+}
+
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  border-top: 1px solid #d7eefb;
+  color: #263238;
+}
+
+.notification-item strong {
+  color: #0277bd;
+}
+
+.notification-item span {
+  color: #4f6f7c;
+  font-size: 13px;
+}

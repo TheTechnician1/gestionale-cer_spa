@@ -1,0 +1,49 @@
+<section class="pagina-impostazioni">
+  <mat-card class="scheda-impostazioni">
+    <mat-card-header>
+      <mat-card-title>Impostazioni</mat-card-title>
+      <mat-card-subtitle>Gestisci lingua e sessione</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="contenuto-impostazioni">
+      <section class="sezione-impostazione">
+        <div class="testo-sezione">
+          <mat-icon>language</mat-icon>
+          <div>
+            <h2>Lingua</h2>
+            <p>Scegli la lingua dell'applicazione.</p>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Lingua</mat-label>
+          <mat-select
+            [value]="linguaSelezionata"
+            (selectionChange)="cambiaLingua($event.value)"
+          >
+            <mat-option
+              *ngFor="let lingua of lingue"
+              [value]="lingua.codice"
+            >
+              {{ lingua.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </section>
+
+      <section class="sezione-impostazione">
+        <div class="testo-sezione">
+          <mat-icon>logout</mat-icon>
+          <div>
+            <h2>Sessione</h2>
+            <p>Esci dall'account corrente.</p>
+          </div>
+        </div>
+
+        <button mat-raised-button type="button" (click)="apriLogout()">
+          Logout
+        </button>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</section>

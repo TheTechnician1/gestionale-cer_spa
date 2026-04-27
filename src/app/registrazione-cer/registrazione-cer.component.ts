@@ -5,6 +5,7 @@ import {
   RegistrazioneCerPayload,
   RegistrazioneCerService,
 } from '../core/services/registrazione-cer.service';
+import { NotificheService } from '../core/services/notifiche.service';
 
 @Component({
   selector: 'app-registrazione-cer',
@@ -50,7 +51,10 @@ export class RegistrazioneCerComponent {
 
   private snackBar = inject(MatSnackBar);
 
-  constructor(private registrazioneCerService: RegistrazioneCerService) {
+  constructor(
+    private registrazioneCerService: RegistrazioneCerService,
+    private notificheService: NotificheService
+  ) {
     this.formRegistrazioneCer =
       this.registrazioneCerService.creaFormRegistrazioneCer();
   }
@@ -123,6 +127,10 @@ export class RegistrazioneCerComponent {
     this.registrazioneCerService.registraCer(payload).subscribe({
       next: (risposta) => {
         this.rispostaBackend = risposta;
+        this.notificheService.notificaAdmin(
+          'CER inserita',
+          `Inserita CER ${payload.ragioneSociale}.`
+        );
         this.mostraMessaggio(risposta || 'CER registrata con successo.', 3000);
 
         formDirective.resetForm();

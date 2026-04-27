@@ -1,0 +1,190 @@
+<section class="pagina-form-impianto">
+  <mat-card class="scheda-form-impianto">
+    <mat-card-header>
+      <mat-card-title>{{ titolo }}</mat-card-title>
+      <mat-card-subtitle>
+        L impianto deve essere associato a una CER valida tramite configurazione e partita IVA
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="stato-caricamento" *ngIf="caricamento">
+        <mat-spinner diameter="34"></mat-spinner>
+        <span>Caricamento impianto...</span>
+      </div>
+
+      <form
+        *ngIf="!caricamento"
+        [formGroup]="formImpianto"
+        (ngSubmit)="inviaModulo()"
+        class="form-impianto"
+      >
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>ID configurazione</mat-label>
+            <input matInput type="number" formControlName="idConfigurazione" />
+            <mat-error *ngIf="campo('idConfigurazione').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('idConfigurazione').hasError('min')">
+              Inserire un valore maggiore di zero.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codice cabina</mat-label>
+            <input matInput formControlName="codiceCabina" />
+            <mat-error *ngIf="campo('codiceCabina').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('codiceCabina').hasError('pattern')">
+              Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA CER</mat-label>
+            <input matInput formControlName="partitaIva" />
+            <mat-error *ngIf="campo('partitaIva').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('partitaIva').hasError('pattern')">
+              Inserire una partita IVA di 11 cifre.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Data entrata in esercizio</mat-label>
+            <input matInput type="date" formControlName="dataEsercizio" />
+            <mat-error *ngIf="campo('dataEsercizio').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Codice tipologia</mat-label>
+            <mat-select formControlName="codTipologia">
+              <mat-option *ngFor="let tipologia of tipologie" [value]="tipologia">
+                {{ tipologia }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="campo('codTipologia').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descrizione tipologia</mat-label>
+            <input matInput formControlName="tipologia" />
+            <mat-error *ngIf="campo('tipologia').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Potenza nominale kW</mat-label>
+            <input matInput type="number" step="0.01" formControlName="preNom" />
+            <mat-error *ngIf="campo('preNom').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+            <mat-error *ngIf="campo('preNom').hasError('min')">
+              Il valore deve essere maggiore di zero.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Capacita accumulo kWh</mat-label>
+            <input matInput type="number" step="0.01" formControlName="capAccumulo" />
+          </mat-form-field>
+
+          <mat-checkbox formControlName="flgAccumulo">
+            Presenza accumulo
+          </mat-checkbox>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Codice categoria produttore</mat-label>
+            <input matInput formControlName="codCatProd" />
+            <mat-error *ngIf="campo('codCatProd').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Categoria produttore</mat-label>
+            <mat-select formControlName="categoriaProduttore">
+              <mat-option *ngFor="let categoria of categorieProduttore" [value]="categoria">
+                {{ categoria }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="campo('categoriaProduttore').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="regione" />
+            <mat-error *ngIf="campo('regione').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" />
+            <mat-error *ngIf="campo('provincia').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Comune</mat-label>
+            <input matInput formControlName="comune" />
+            <mat-error *ngIf="campo('comune').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipologia sito</mat-label>
+            <mat-select formControlName="codTipoInst">
+              <mat-option *ngFor="let sito of tipologieSito" [value]="sito">
+                {{ sito }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="campo('codTipoInst').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="campo-largo">
+            <mat-label>Sito installazione</mat-label>
+            <input matInput formControlName="sitoInstallazione" />
+            <mat-error *ngIf="campo('sitoInstallazione').hasError('required')">
+              Il campo e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="riga-pulsanti">
+          <button mat-stroked-button type="button" routerLink="/impianti">
+            Annulla
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="salvataggioInCorso">
+            Salva
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</section>

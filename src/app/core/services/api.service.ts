@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpContext, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { APP_SETTINGS } from "../config/app-settings";
 
@@ -9,8 +9,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  get<T>(path: string, params?: Record<string, string | number | boolean>): Observable<T> {
-    return this.http.get<T>(this.buildUrl(path), { params: this.buildParams(params) });
+  get<T>(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    context?: HttpContext
+  ): Observable<T> {
+    return this.http.get<T>(this.buildUrl(path), {
+      params: this.buildParams(params),
+      context,
+    });
   }
 
   post<T>(path: string, body: unknown): Observable<T> {

@@ -1,4 +1,5 @@
 export interface Utente {
+  email?: string | null;
   idUtente?: number | null;
   nome?: string | null;
   cognome?: string | null;
@@ -7,6 +8,7 @@ export interface Utente {
 }
 
 export class UtenteModel implements Utente {
+  email?: string | null;
   idUtente?: number | null;
   nome?: string | null;
   cognome?: string | null;
@@ -14,6 +16,7 @@ export class UtenteModel implements Utente {
   ruolo: string | null;
 
   constructor(data?: Partial<Utente>) {
+    this.email = data?.email ?? null;
     this.idUtente = data?.idUtente ?? null;
     this.nome = data?.nome ?? null;
     this.cognome = data?.cognome ?? null;
@@ -39,6 +42,11 @@ export interface RicercaCerRequest {
   comuneSedeLegale?: string;
   codiceFiscale?: string;
   ragioneSociale?: string;
+}
+
+export interface AccessoRequest {
+  email: string;
+  password: string;
 }
 
 export interface AnagraficaUtenti{
@@ -69,28 +77,132 @@ email: string,
 }
 
 export interface UbicazioneImpianto {
-  regione: string;
-  regioneNome: string;
-  provincia: string;
-  comune: string;
-  comuneNome: string;
-  codTipoInst: string;
-  sitoInstallazione: string;
-  idConfigurazione: number;
-  codTipologia: string;
+  regione?: string;
+  regioneNome?: string;
+  provincia?: string;
+  comune?: string;
+  comuneNome?: string;
+  codTipoInst?: string;
+  sitoInstallazione?: string;
+  idConfigurazione?: number;
+  codTipologia?: string;
 }
 
 export interface ImpiantoCER {
-  idImpianto: number;
-  idConfigurazione: number;
+  idImpianto?: number;
+  idConfigurazione?: number;
+  configurazione?: ConfigurazioneCabina;
+  codiceCabina?: string;
+  dataEsercizio?: string;
+  codTipologia?: string;
+  tipologia?: string;
+  partitaIva?: string;
+  codCatProd?: string;
+  categoriaProduttore?: string;
+  ubicazioni?: UbicazioneImpianto[];
+}
+
+export interface ConfigurazioneCabina {
+  idConfig?: number;
+  idConfigurazione?: number;
+  idCer?: number;
+  codiceCabina?: string;
+  codCabina?: string;
+  annoAttivazione?: number;
+  stato?: string;
+  flgCanc?: string;
+  flgcancellazione?: string;
+  cer?: GetListaCER;
+  impianti?: ImpiantoCER[];
+}
+
+export interface RicercaConfigurazioneRequest {
+  idConfig?: number | null;
+  idCer?: number | null;
+  codiceCabina?: string;
+  annoAttivazione?: number | null;
+  stato?: string;
+}
+
+export interface ConfigurazionePayload {
+  idConfig: number;
+  idCer: number;
   codiceCabina: string;
-  dataEsercizio: string;
-  codTipologia: string;
-  tipologia: string;
-  partitaIva: string;
-  codCatProd: string;
-  categoriaProduttore: string;
-  ubicazioni: UbicazioneImpianto[];
+  annoAttivazione: number;
+  flgcancellazione: string;
+}
+
+export interface RicercaImpiantoRequest {
+  annoAttivazioneDa?: number | null;
+  annoAttivazioneA?: number | null;
+  partitaIva?: string;
+  regione?: string;
+  provincia?: string;
+  comune?: string;
+  codiceCabina?: string;
+  codTipologia?: string;
+  categoriaProduttore?: string;
+  codTipoInst?: string;
+}
+
+export interface ImpiantoPayload {
+  idImpianto?: number;
+  idConfigurazione?: number;
+  codiceCabina?: string;
+  dataEsercizio?: string;
+  codTipologia?: string;
+  tipologia?: string;
+  partitaIva?: string;
+  codCatProd?: string;
+  categoriaProduttore?: string;
+  ubicazioni?: UbicazioneImpianto[];
+}
+
+export interface ModificaImpiantoPayload {
+  idImpianto: number;
+  configurazione?: {
+    idConfig?: number;
+    codiceCabina?: string;
+  };
+  flgEsercizio?: string;
+  dataEserc?: string;
+  codTipologia?: string;
+  preNom?: number;
+  flgAccumulo?: boolean;
+  capAccumulo?: number;
+  tipoProduttore?: boolean;
+  codCatProduttore?: string;
+  flgCanc?: string;
+  specTipologia?: string;
+  specCatProduttore?: string;
+  codSitoInst?: string;
+}
+
+export interface DatiEnergetici {
+  idDati?: number;
+  idCer: number;
+  idConfigurazione: number;
+  anno?: string;
+  geteProdotta?: number;
+  getePrelevata?: number;
+  geteImmessa?: number;
+  geteCondivisa?: number;
+  geteAutoCons?: number;
+  tariffaPremium?: number;
+  corrPremioOtt?: number;
+  ridEmCo2?: string;
+  statoScheda?: string;
+  flgCanc?: string;
+  codiceCabina?: string;
+  partitaIva?: string;
+}
+
+export interface RicercaDatiEnergeticiRequest {
+  daAnno?: string;
+  getaAnno?: string;
+  partitaIva?: string;
+  codiceCabina?: string;
+  stato?: string;
 }
 
 export type AnagraficaCER = GetListaCER;
