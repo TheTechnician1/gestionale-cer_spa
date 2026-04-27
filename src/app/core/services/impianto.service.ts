@@ -14,9 +14,9 @@ export class ImpiantoService {
       return this.api.postLogin<Impianto[]>(endpoint, payload);
     }
 
-    getImpianto(payload: any): Observable<Impianto> {
-      const endpoint = "impianto/visualizzazione/{id}";
-      return this.api.get<Impianto>(endpoint, payload);
+    getImpianto(id: number): Observable<Impianto[]> {
+      const endpoint = `impianto/visualizzazione/${id}`;
+      return this.api.get<Impianto[]>(endpoint);
     }
 
     createImpianto(payload: Impianto): Observable<Impianto> {

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Impianto } from '../../interfaces/impianto.model';
+import { ImpiantoService } from '../../services/impianto.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dettaglio-impianto',
@@ -7,12 +10,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./dettaglio-impianto.component.scss']
 })
 export class DettaglioImpiantoComponent implements OnInit {
+  constructor(private fb: FormBuilder, private imp: ImpiantoService, private route: ActivatedRoute) {}
 
+  impianto?: Impianto;
   impiantiForm!: FormGroup;
-  
-  constructor(private fb: FormBuilder) {}
-  
+
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.loadImpianto(parseInt(id!));
     this.impiantiForm = this.fb.group({
     codice_cabina: ['', [Validators.required]],
     data_entrata_esercizio: ['', [Validators.required]],
@@ -33,5 +38,16 @@ export class DettaglioImpiantoComponent implements OnInit {
       })
     });
     this.impiantiForm.disable();
+  }
+
+  loadImpianto(id: number) {
+    this.imp.getImpianto(id).subscribe({
+      next: (impianto) => {
+        this.impianto = impianto[0];
+      },
+      error: (err) => {
+        console.log("Errore imprevisto: ", err);
+      }
+    })
   }
 }

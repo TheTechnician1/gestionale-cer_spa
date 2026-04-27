@@ -1,22 +1,13 @@
 <div class="impianti">
   <div class="h3-header">
-    <h3>Impianti</h3>
-    <div>
-      <button mat-raised-button color="primary" routerLink="inserimento-impianto"><mat-icon>add</mat-icon> Aggiungi Impianto</button>
-    </div>
-  </div>
-</div>
-<div>
-  <div class="h3-header">
-  <h3 class="demo-section">
-    <span [matBadge]="impianti.length" matBadgeOverlap="true" style="padding-right: 10px;">Impianti</span>
-  </h3>
+    <h3 class="demo-section">
+      <span [matBadge]="impianti.length" matBadgeOverlap="true" style="padding-right: 10px;">Impianti</span>
+    </h3>
     <button mat-raised-button color="primary" routerLink="inserimento-impianto">
-    <mat-icon>add</mat-icon>
-    Aggiungi Impianto 
-  </button>
+      <mat-icon>add</mat-icon>
+      Aggiungi Impianto
+    </button>
   </div>
-  <br>
   <div class="filtro" rows="3">
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
@@ -64,58 +55,58 @@
       </button>
     </div>
   </div>
-</div>
-<div class="table">
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
-    <ng-container matColumnDef="annoAttivazione">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="annoAttivazione">Anno di Attivazione</th>
-      <td mat-cell *matCellDef="let element">{{ element.annoAttivazione }}</td>
-    </ng-container>
-    <ng-container matColumnDef="partitaIva">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva">Partita IVA</th>
-      <td mat-cell *matCellDef="let element">{{ element.partitaIva }}</td>
-    </ng-container>
-    <ng-container matColumnDef="regione">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="regione">Regione Legale</th>
-      <td mat-cell *matCellDef="let element">{{ element.regione }}</td>
-    </ng-container>
-    <ng-container matColumnDef="provincia">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="provincia">Provincia Legale</th>
-      <td mat-cell *matCellDef="let element">{{ element.provincia }}</td>
-    </ng-container>
-    <ng-container matColumnDef="comune">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="comune">Comune Legale</th>
-      <td mat-cell *matCellDef="let element">{{ element.comune }}</td>
-    </ng-container>
-    <ng-container matColumnDef="codiceCabina">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceCabina">COD.Cabina</th>
-      <td mat-cell *matCellDef="let element">{{ element.codiceCabina }}</td>
-    </ng-container>
-    <ng-container matColumnDef="codiceTipologia">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceTipologia">Tipologia Impianto</th>
-      <td mat-cell *matCellDef="let element">{{ element.codiceTipologia }}</td>
-    </ng-container>
-    <ng-container matColumnDef="codCategoriaProduttore">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codCategoriaProduttore">Categoria Produttore</th>
-      <td mat-cell *matCellDef="let element">{{ element.codCategoriaProduttore }}</td>
-    </ng-container>
-    <ng-container matColumnDef="codInstallazione">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="codInstallazione">Tipologia Installazione</th>
-      <td mat-cell *matCellDef="let element">{{ element.codInstallazione }}</td>
-    </ng-container>
-    <ng-container matColumnDef="azioni">
-      <th mat-header-cell *matHeaderCellDef> Azioni </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button routerLink="dettaglio-impianto/:id">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button mat-button routerLink="modifica-impianto/:id">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="tableImp"></tr>
-    <tr mat-row *matRowDef="let row; columns: tableImp;"></tr>
-  </table>
-  <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  <div class="table">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+      <ng-container matColumnDef="annoAttivazione">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="annoAttivazione">Anno di Attivazione</th>
+        <td mat-cell *matCellDef="let element">{{ element.annoAttivazione }}</td>
+      </ng-container>
+      <ng-container matColumnDef="partitaIva">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva">Partita IVA</th>
+        <td mat-cell *matCellDef="let element">{{ element.partitaIva }}</td>
+      </ng-container>
+      <ng-container matColumnDef="regione">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="regione">Regione Legale</th>
+        <td mat-cell *matCellDef="let element">{{ element.regione }}</td>
+      </ng-container>
+      <ng-container matColumnDef="provincia">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="provincia">Provincia Legale</th>
+        <td mat-cell *matCellDef="let element">{{ element.provincia }}</td>
+      </ng-container>
+      <ng-container matColumnDef="comune">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="comune">Comune Legale</th>
+        <td mat-cell *matCellDef="let element">{{ element.comune }}</td>
+      </ng-container>
+      <ng-container matColumnDef="codiceCabina">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceCabina">COD.Cabina</th>
+        <td mat-cell *matCellDef="let element">{{ element.codiceCabina }}</td>
+      </ng-container>
+      <ng-container matColumnDef="codiceTipologia">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceTipologia">Tipologia Impianto</th>
+        <td mat-cell *matCellDef="let element">{{ element.codiceTipologia }}</td>
+      </ng-container>
+      <ng-container matColumnDef="codCategoriaProduttore">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codCategoriaProduttore">Categoria Produttore</th>
+        <td mat-cell *matCellDef="let element">{{ element.codCategoriaProduttore }}</td>
+      </ng-container>
+      <ng-container matColumnDef="codInstallazione">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="codInstallazione">Tipologia Installazione</th>
+        <td mat-cell *matCellDef="let element">{{ element.codInstallazione }}</td>
+      </ng-container>
+      <ng-container matColumnDef="azioni">
+        <th mat-header-cell *matHeaderCellDef> Azioni </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button routerLink="dettaglio-impianto/:id">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-button routerLink="modifica-impianto/:id">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="tableImp"></tr>
+      <tr mat-row *matRowDef="let row; columns: tableImp;"></tr>
+    </table>
+    <mat-paginator class="mat-elevation-z8" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements"></mat-paginator>
+  </div>
 </div>
