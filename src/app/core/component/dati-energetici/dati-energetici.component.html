@@ -5,7 +5,7 @@
   </h3>
     <button mat-raised-button color="primary" routerLink="inserimento-dati-energetici">
     <mat-icon>add</mat-icon>
-    Aggiungi Dati Energetici 
+    Aggiungi Dati Energetici
   </button>
   </div>
   <br>
@@ -42,10 +42,10 @@
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-button routerLink="dettaglio-dati/:id">
+        <button mat-button [routerLink]="['/dati-energetici', 'dettaglio-dati', element.idDati]">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-button routerLink="modifica-dati/:id">
+        <button mat-button [routerLink]="['/dati-energetici', 'modifica-dati', element.idDati]">
           <mat-icon>edit</mat-icon>
         </button>
       </td>

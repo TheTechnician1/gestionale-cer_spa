@@ -1,48 +1,47 @@
+import { Configurazione } from "./configurazione.model";
+
 export interface DatiEnergetici {
-  id_dati: number | null,
-  id_cer: number | null,
-  id_config: number | null,
+  idDati: number | null,
   anno: string | null,
-  e_prodotta: number | null,
-  e_prelevata: number | null,
-  e_immessa: number | null,
-  e_condivisa: number | null,
-  e_auto_cons: number | null,
-  tariffa_premium: number | null,
-  corr_premio_ott: number | null,
-  rid_em_co2: string | null,
-  flg_cancellazione: string | null
+  eProdotta: number | null,
+  ePrelevata: number | null,
+  eImmessa: number | null,
+  eCondivisa: number | null,
+  eAutoCons: number | null,
+  tariffaPremium: number | null,
+  corrPremioOtt: number | null,
+  ridEmCo2: string | null,
+  statoScheda: string | null,
+  configurazioneCer: Configurazione | null
 }
 
 export class DatiEnergeticiModel implements DatiEnergetici {
-  id_dati: number | null;
-  id_cer: number | null;
-  id_config: number | null;
+  idDati: number | null;
   anno: string | null;
-  e_prodotta: number | null;
-  e_prelevata: number | null;
-  e_immessa: number | null;
-  e_condivisa: number | null;
-  e_auto_cons: number | null;
-  tariffa_premium: number | null;
-  corr_premio_ott: number | null;
-  rid_em_co2: string | null;
-  flg_cancellazione: string | null;
+  eProdotta: number | null;
+  ePrelevata: number | null;
+  eImmessa: number | null;
+  eCondivisa: number | null;
+  eAutoCons: number | null;
+  tariffaPremium: number | null;
+  corrPremioOtt: number | null;
+  ridEmCo2: string | null;
+  statoScheda: string | null;
+  configurazioneCer: Configurazione | null;
 
   constructor(data?: Partial<DatiEnergetici>) {
-    this.id_dati = data?.id_dati ?? null;
-    this.id_cer = data?.id_cer ?? null;
-    this.id_config = data?.id_config ?? null;
+    this.idDati = data?.idDati ?? null;
     this.anno = data?.anno ?? null;
-    this.e_prodotta = data?.e_prodotta ?? null;
-    this.e_prelevata = data?.e_prelevata ?? null;
-    this.e_immessa = data?.e_immessa ?? null;
-    this.e_condivisa = data?.e_condivisa ?? null;
-    this.e_auto_cons = data?.e_auto_cons ?? null;
-    this.tariffa_premium = data?.tariffa_premium ?? null;
-    this.corr_premio_ott = data?.corr_premio_ott ?? null;
-    this.rid_em_co2 = data?.rid_em_co2 ?? null;
-    this.flg_cancellazione = data?.flg_cancellazione ?? null;
+    this.eProdotta = data?.eProdotta ?? null;
+    this.ePrelevata = data?.ePrelevata ?? null;
+    this.eImmessa = data?.eImmessa ?? null;
+    this.eCondivisa = data?.eCondivisa ?? null;
+    this.eAutoCons = data?.eAutoCons ?? null;
+    this.tariffaPremium = data?.tariffaPremium ?? null;
+    this.corrPremioOtt = data?.corrPremioOtt ?? null;
+    this.ridEmCo2 = data?.ridEmCo2 ?? null;
+    this.statoScheda = data?.statoScheda ?? null;
+    this.configurazioneCer = data?.configurazioneCer ?? null;
   }
 }
 
