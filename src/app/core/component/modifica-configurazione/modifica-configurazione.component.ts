@@ -30,8 +30,7 @@ export class ModificaConfigurazioneComponent implements OnInit {
   loadConfig(id: number) {
     this.configService.getConfigurazione(id).subscribe({
       next: (config) => {
-      console.log("Peppeeeee", config);
-      this.config = config;
+      this.config = config[0];
       this.configForm.patchValue(config);
       },
       error: (error) => {

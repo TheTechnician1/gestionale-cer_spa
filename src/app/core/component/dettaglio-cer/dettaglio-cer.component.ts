@@ -45,7 +45,7 @@ export class DettaglioCerComponent implements OnInit {
   loadCER(id: number) {
     this.cerService.getCER(id).subscribe({
       next: (cer) => {
-      this.cer = cer;
+      this.cer = cer[0];
       },
       error: (error) => {
         console.error("Login error", error);

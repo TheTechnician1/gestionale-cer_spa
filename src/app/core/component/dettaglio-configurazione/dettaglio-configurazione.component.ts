@@ -13,7 +13,6 @@ export class DettaglioConfigurazioneComponent implements OnInit {
   constructor(private fb: FormBuilder, private configService: ConfigurazioneService, private route: ActivatedRoute) {}
 
   config?: Configurazione;
-
   configForm!: FormGroup;
 
   ngOnInit(): void {
@@ -29,10 +28,10 @@ export class DettaglioConfigurazioneComponent implements OnInit {
   loadConfig(id: number) {
     this.configService.getConfigurazione(id).subscribe({
       next: (config) => {
-      this.config = config;
+      this.config = config[0];
       },
       error: (error) => {
-        console.error("Login error", error);
+        console.error("Errore imprevisto: ", error);
       }
     });
   }

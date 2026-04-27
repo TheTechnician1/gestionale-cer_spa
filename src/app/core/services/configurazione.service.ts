@@ -14,9 +14,9 @@ export class ConfigurazioneService {
     return this.api.postLogin<Configurazione[]>(endpoint, payload);
   }
 
-  getConfigurazione(payload: any): Observable<Configurazione> {
-    const endpoint = "configurazione/visualizza/{id}";
-    return this.api.get<Configurazione>(endpoint, payload);
+  getConfigurazione(id: number): Observable<Configurazione[]> {
+    const endpoint = `configurazione/visualizza/${id}`;
+    return this.api.get<Configurazione[]>(endpoint);
   }
 
   createConfigurazione(payload: Configurazione): Observable<Configurazione> {
