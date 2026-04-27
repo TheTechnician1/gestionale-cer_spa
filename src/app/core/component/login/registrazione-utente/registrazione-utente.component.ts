@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators  } from '@angular/f
 import { Ruolo } from 'src/app/core/interfaces/ruolo.model';
 import { UtenteService } from '../../../services/utente.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-registrazione-utente',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./registrazione-utente.component.scss']
 })
 export class RegistrazioneUtenteComponent {
-  constructor(private fb: FormBuilder, private authService: UtenteService, private route: Router) {}
+  constructor(private fb: FormBuilder, private authService: UtenteService, private route: Router, private snackBar: MatSnackBar) {}
 
   form = this.fb.group (
     {
@@ -43,17 +44,21 @@ export class RegistrazioneUtenteComponent {
   }
 
   onSubmit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
+    if (this.form.invalid) {
+      // console.log(this.form.value);
+      this.showToast('Compila correttamente tutti i campi');
+      return;
     }
     const { confermaPassword, ...payload } = this.form.getRawValue();
     this.authService.createUtente(payload).subscribe({
       next: () => {
       this.form.reset();
+      this.showToast('Utente registrato con successo!');
       this.route.navigateByUrl('/dashboard');
       },
       error: (error) => {
         console.error("Register error", error);
+        this.showToast('Errore durante la registrazione')
       }
     });
   }
@@ -71,6 +76,14 @@ export class RegistrazioneUtenteComponent {
     }
 
     return null;
+  }
+
+  private showToast(message: string, action: string = 'OK') {
+    this.snackBar.open(message, action, {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
   }
 }
 

@@ -17,7 +17,7 @@ export class InserimentoImpiantoComponent implements OnInit {
   
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private route: ActivatedRoute) {}
     cer?: CER;
-    cers: CER[] = []
+    cers: CER[] = [];
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -26,7 +26,7 @@ export class InserimentoImpiantoComponent implements OnInit {
     codiceCabina: ['', [Validators.required]],
     dataEserc: ['', [Validators.required]],
     codiceTipologia: ['', [Validators.required]],
-    potenza_nominale: ['', [Validators.required]],
+    potenzaNominale: ['', [Validators.required]],
     presenza_accumulo: ['', [Validators.required]],
     capAccumulo: ['', [Validators.required]],
     tipoProduttore: ['', [Validators.required]],
@@ -36,7 +36,7 @@ export class InserimentoImpiantoComponent implements OnInit {
       provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       comune: ['', [Validators.required]],
       indirizzo: ['', [Validators.required]],
-      numero_civico: ['', [Validators.required]],
+      civico: ['', [Validators.required]],
       cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
       specTipoInst: ['', [Validators.required]]
       })
@@ -49,6 +49,11 @@ export class InserimentoImpiantoComponent implements OnInit {
     this.cerService.getCER(id).subscribe({
       next: (cer) => {
       this.cer = cer[0];
+      if(this.impiantiForm) {
+        this.impiantiForm.patchValue({
+          ragSociale: this.cer.ragSociale
+        });
+      }
       },
       error: (error) => {
         console.error("Login error", error);
