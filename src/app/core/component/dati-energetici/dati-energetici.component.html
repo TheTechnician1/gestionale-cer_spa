@@ -12,12 +12,20 @@
   <div class="filtro" rows="3">
     <h6>Filtra per:</h6>
     <mat-form-field appearance="fill" class="form-field">
-      <mat-label>Energia Prodotta</mat-label>
+      <mat-label>Anno di Riferimento</mat-label>
       <input [(ngModel)]="filtro.anno" matInput type="text" aria-label="anno">
     </mat-form-field>
     <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Partita IVA</mat-label>
+      <input [(ngModel)]="filtro.partitaIva" matInput type="text" aria-label="partitaIva">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>COD.Cabina</mat-label>
+      <input [(ngModel)]="filtro.codiceCabina" matInput type="text" aria-label="codiceCabina">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form-field">
       <mat-label>Stato</mat-label>
-      <input [(ngModel)]="filtro.flg_cancellazione" matInput type="text" aria-label="flg_cancellazione">
+      <input [(ngModel)]="filtro.statoScheda" matInput type="text" aria-label="statoScheda">
     </mat-form-field>
     <div class="button-filtro">
       <button mat-raised-button color="primary" type="button" value="Cerca" aria-label="Cerca" (click)="filtraDatiEnergetici()">
@@ -35,9 +43,17 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header="anno">Anno di Riferimento</th>
       <td mat-cell *matCellDef="let element">{{ element.anno }}</td>
     </ng-container>
-    <ng-container matColumnDef="flg_cancellazione">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="flg_cancellazione">Stato</th>
-      <td mat-cell *matCellDef="let element">{{ element.flg_cancellazione }}</td>
+    <ng-container matColumnDef="partitaIva">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="partitaIva">Partita IVA</th>
+      <td mat-cell *matCellDef="let element">{{ element.partitaIva }}</td>
+    </ng-container>
+    <ng-container matColumnDef="codiceCabina">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceCabina">COD.Cabina</th>
+      <td mat-cell *matCellDef="let element">{{ element.codiceCabina }}</td>
+    </ng-container>
+    <ng-container matColumnDef="statoScheda">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="statoScheda">Stato</th>
+      <td mat-cell *matCellDef="let element">{{ element.statoScheda }}</td>
     </ng-container>
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef> Azioni </th>

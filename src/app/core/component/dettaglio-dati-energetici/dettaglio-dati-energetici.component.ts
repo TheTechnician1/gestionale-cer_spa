@@ -17,7 +17,6 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.loadDati(parseInt(id!));
     this.datiEnergeticiForm = this.fb.group({
       anno: ['', [Validators.required]],
       eProdotta: ['', [Validators.required]],
@@ -28,15 +27,35 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
       tariffaPremium: ['', [Validators.required]],
       corrPremioOtt: ['', [Validators.required]],
       ridEmCo2: ['', [Validators.required]],
-      statoScheda: ['']
+      statoScheda: [''],
+      ragioneSociale: [''],
+      codiceCabina: ['']
     });
     this.datiEnergeticiForm.disable();
+    this.loadDati(parseInt(id!));
   }
 
   loadDati(id: number) {
     this.dati.getDato(id).subscribe({
       next: (dato) => {
         this.datiEnergetici = dato[0];
+
+        if(this.datiEnergeticiForm) {
+          this.datiEnergeticiForm.patchValue({
+            anno: this.datiEnergetici.anno,
+            eProdotta: this.datiEnergetici.eProdotta,
+            ePrelevata: this.datiEnergetici.ePrelevata,
+            eImmessa: this.datiEnergetici.eImmessa,
+            eCondivisa: this.datiEnergetici.eCondivisa,
+            eAutoCons: this.datiEnergetici.eAutoCons,
+            tariffaPremium: this.datiEnergetici.tariffaPremium,
+            corrPremioOtt: this.datiEnergetici.corrPremioOtt,
+            ridEmCo2: this.datiEnergetici.ridEmCo2,
+            statoScheda: this.datiEnergetici.statoScheda,
+            ragioneSociale: this.datiEnergetici.configurazioneCer?.ragioneSociale,
+            codiceCabina: this.datiEnergetici.configurazioneCer?.codiceCabina
+          })
+        }
       },
       error: (err) => {
         console.log("Errore imprevisto: ", err);
