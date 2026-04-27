@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { ImpiantoService } from '../../services/impianto.service';
+import { Impianto } from '../../interfaces/impianto.model';
 
 
 @Component({
@@ -9,42 +12,70 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./modifica-impianto.component.scss']
 })
 export class ModificaImpiantoComponent implements OnInit {
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private impiantoService: ImpiantoService, private route: ActivatedRoute) {}
 
+  impianto?: Impianto;
   impiantiForm!: FormGroup;
-  
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
-  
+  submitted = false;
+
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
     this.impiantiForm = this.fb.group({
-    codice_cabina: ['', [Validators.required]],
-    data_entrata_esercizio: ['', [Validators.required]],
-    tipologia_impianto: ['', [Validators.required]],
-    potenza_nominale: ['', [Validators.required]],
-    presenza_accumulo: ['', [Validators.required]],
-    capacita_accumulo: ['', [Validators.required]],
-    tipologia_produttore: ['', [Validators.required]],
-    categoria_produttore: ['', [Validators.required]],
-    ubicazione_impianto: this.fb.group({
-      regione: ['', [Validators.required]],
-      provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-      comune: ['', [Validators.required]],
-      indirizzo: ['', [Validators.required]],
-      numero_civico: ['', [Validators.required]],
-      cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-      tipologia_sito: ['', [Validators.required]]
-      })
+      codiceCabina: ['', [Validators.required]],
+      annoAttivazione: ['', [Validators.required]],
+      tipologia: ['', [Validators.required]],
+      potenzaNominale: ['', [Validators.required]],
+      flgAccumulo: ['', [Validators.required]],
+      capAccumulo: ['', [Validators.required]],
+      tipologiaProduttore: ['', [Validators.required]],
+      specCatProduttore: ['', [Validators.required]],
+      regione: [''],
+      provincia: [''],
+      comune: [''],
+      indirizzo: [''],
+      civico: [''],
+      cap: [''],
+      sitoInstallazione: ['']
     });
     this.impiantiForm.enable();
+    this.loadImpianto(parseInt(id!));
   }
 
-  submitted = false;
+  loadImpianto(id: number) {
+    this.impiantoService.getImpianto(id).subscribe({
+      next: (impianto) => {
+        this.impianto = impianto[0];
+        if(this.impiantiForm) {
+          this.impiantiForm.patchValue({
+            codiceCabina: this.impianto.codiceCabina,
+            annoAttivazione: this.impianto.annoAttivazione,
+            tipologia: this.impianto.tipologia,
+            potenzaNominale: this.impianto.potenzaNominale,
+            flgAccumulo: this.impianto.flgAccumulo,
+            capAccumulo: this.impianto.capAccumulo,
+            tipologiaProduttore: this.impianto.tipologiaProduttore,
+            specCatProduttore: this.impianto.specCatProduttore,
+            regione: this.impianto.regione,
+            provincia: this.impianto.provincia,
+            comune: this.impianto.comune,
+            indirizzo: this.impianto.indirizzo,
+            civico: this.impianto.civico,
+            cap: this.impianto.cap,
+            sitoInstallazione: this.impianto.sitoInstallazione
+          })
+        }
+      },
+      error: (err) => {
+        console.log("Errore imprevisto: ", err);
+      }
+    })
+  }
 
   submit() {
     this.submitted = true;
 
     if (this.impiantiForm.invalid) {
       this.impiantiForm.markAllAsTouched();
-
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
@@ -52,7 +83,6 @@ export class ModificaImpiantoComponent implements OnInit {
           duration: 3000
         }
       );
-      
       return;
     }
 
@@ -65,5 +95,4 @@ export class ModificaImpiantoComponent implements OnInit {
     );
     console.log(this.impiantiForm.value);
   }
-
 }

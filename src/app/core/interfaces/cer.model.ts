@@ -3,6 +3,7 @@ export interface CER {
   ragSociale: string | null,
   ragioneSociale: string | null,
   codFisc: string | null,
+  codFiscale: string | null,
   codiceFiscale: string | null,
   comune: ComuneLegale | null,
   comuneLegale: ComuneLegale | null,
@@ -50,6 +51,7 @@ export class CERModel implements CER {
   ragSociale: string | null;
   ragioneSociale: string | null;
   codFisc: string | null;
+  codFiscale: string | null;
   codiceFiscale: string | null;
   comune: ComuneLegale | null;
   comuneLegale: ComuneLegale | null;
@@ -72,6 +74,7 @@ export class CERModel implements CER {
     this.ragSociale = data?.ragSociale ?? null;
     this.ragioneSociale = data?.ragioneSociale ?? null;
     this.codFisc = data?.codFisc ?? null;
+    this.codFiscale = data?.codFiscale ?? null;
     this.codiceFiscale = data?.codiceFiscale ?? null;
     this.comune = data?.comune ?? null;
     this.comuneLegale = data?.comuneLegale ?? null;

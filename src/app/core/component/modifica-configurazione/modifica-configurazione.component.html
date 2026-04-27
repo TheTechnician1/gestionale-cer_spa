@@ -21,6 +21,13 @@
                       Campo obbligatorio
                     </mat-error>
                   </mat-form-field>
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Ragione Sociale</mat-label>
+                    <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale">
+                    <mat-error *ngIf="configForm.get('ragioneSociale')?.invalid && (configForm.get('ragioneSociale')?.touched || submitted)">
+                      Campo obbligatorio
+                    </mat-error>
+                  </mat-form-field>
                 </div>
               </div>
             </div>

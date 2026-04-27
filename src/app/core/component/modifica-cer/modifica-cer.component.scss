@@ -1,3 +1,22 @@
+.button {
+  border-radius: 8px;
+  min-width: 130px;
+  height: 42px;
+}
+
+.button-edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.div-button {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px
+}
+
 .flex-container {
   display: flex;
   gap: 20px;

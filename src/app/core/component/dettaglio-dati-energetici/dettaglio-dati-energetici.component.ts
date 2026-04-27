@@ -19,15 +19,15 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.datiEnergeticiForm = this.fb.group({
       anno: ['', [Validators.required]],
-      eProdotta: ['', [Validators.required]],
-      ePrelevata: ['', [Validators.required]],
-      eImmessa: ['', [Validators.required]],
-      eCondivisa: ['', [Validators.required]],
-      eAutoCons: ['', [Validators.required]],
+      energiaProdotta: ['', [Validators.required]],
+      energiaPrelevata: ['', [Validators.required]],
+      energiaImmessa: ['', [Validators.required]],
+      energiaCondivisa: ['', [Validators.required]],
+      energiaAutoCons: ['', [Validators.required]],
       tariffaPremium: ['', [Validators.required]],
       corrPremioOtt: ['', [Validators.required]],
       ridEmCo2: ['', [Validators.required]],
-      statoScheda: [''],
+      flgCancellazione: [''],
       ragioneSociale: [''],
       codiceCabina: ['']
     });
@@ -43,15 +43,15 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
         if(this.datiEnergeticiForm) {
           this.datiEnergeticiForm.patchValue({
             anno: this.datiEnergetici.anno,
-            eProdotta: this.datiEnergetici.eProdotta,
-            ePrelevata: this.datiEnergetici.ePrelevata,
-            eImmessa: this.datiEnergetici.eImmessa,
-            eCondivisa: this.datiEnergetici.eCondivisa,
-            eAutoCons: this.datiEnergetici.eAutoCons,
+            energiaProdotta: this.datiEnergetici.energiaProdotta,
+            energiaPrelevata: this.datiEnergetici.energiaPrelevata,
+            energiaImmessa: this.datiEnergetici.energiaImmessa,
+            energiaCondivisa: this.datiEnergetici.energiaCondivisa,
+            energiaAutoCons: this.datiEnergetici.energiaAutoCons,
             tariffaPremium: this.datiEnergetici.tariffaPremium,
             corrPremioOtt: this.datiEnergetici.corrPremioOtt,
             ridEmCo2: this.datiEnergetici.ridEmCo2,
-            statoScheda: this.datiEnergetici.statoScheda,
+            flgCancellazione: this.datiEnergetici.flgCancellazione,
             ragioneSociale: this.datiEnergetici.configurazioneCer?.ragioneSociale,
             codiceCabina: this.datiEnergetici.configurazioneCer?.codiceCabina
           })

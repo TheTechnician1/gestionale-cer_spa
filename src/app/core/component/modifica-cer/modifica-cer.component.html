@@ -23,8 +23,8 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Codice Fiscale</mat-label>
-                <input matInput formControlName="codFisc" aria-label="codFisc">
-                  <mat-error *ngIf="cerForm.get('codFisc')?.invalid && (cerForm.get('codFisc')?.touched || submitted)">
+                <input matInput formControlName="codFiscale" aria-label="codFiscale">
+                  <mat-error *ngIf="cerForm.get('codFiscale')?.invalid && (cerForm.get('codFiscale')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
@@ -38,31 +38,6 @@
             </mat-form-field>
           </div>
         </div>
-        <!-- <div class="section-box">
-          <div class="section-title">CONTATTI</div>
-          <div class="field-group">
-            <div class="row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Telefono</mat-label>
-                <input matInput formControlName="telefono" aria-label="telefono" required>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" aria-label="email" required>
-              </mat-form-field>
-            </div>
-            <div class="row">
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>PEC</mat-label>
-                <input matInput formControlName="pec" aria-label="pec" required>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Sito Web</mat-label>
-                <input matInput formControlName="sitoWeb" aria-label="sitoWeb" required>
-              </mat-form-field>
-            </div>
-          </div>
-        </div> -->
         <div class="section-box">
           <div class="section-title">REFERENTE</div>
           <div class="field-group">
@@ -75,15 +50,6 @@
             </mat-form-field>
           </div>
         </div>
-        <!-- <div class="section-box">
-          <div class="section-title">CABINE PRIMARIE</div>
-          <div class="field-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Numero Cabine</mat-label>
-              <input matInput formControlName="numeroCabine" aria-label="numeroCabine" required>
-            </mat-form-field>
-          </div>
-        </div> -->
         <div class="section-box">
           <div class="section-title">STATO ATTUALE</div>
           <div class="field-group">
@@ -144,105 +110,52 @@
         <div class="section-box">
           <div class="section-title">SEDE LEGALE</div>
           <div class="field-group">
-            <!-- <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Via sede legale</mat-label>
-              <input matInput formControlName="viaSedeLegale" aria-label="viaSedeLegale" required>
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Cap</mat-label>
-              <input matInput formControlName="cap" aria-label="cap" required>
-            </mat-form-field> -->
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune sede legale</mat-label>
-              <mat-select formControlName="comune" aria-label="comune" required>
+              <mat-select formControlName="comuneLegale" aria-label="comuneLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="cerForm.get('comune')?.invalid && (cerForm.get('comune')?.touched || submitted)">
+              <mat-error *ngIf="cerForm.get('comuneLegale')?.invalid && (cerForm.get('comuneLegale')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
-              <mat-select formControlName="provincia" aria-label="provincia" required>
+              <mat-select formControlName="provinciaLegale" aria-label="provinciaLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="cerForm.get('provincia')?.invalid && (cerForm.get('provincia')?.touched || submitted)">
+              <mat-error *ngIf="cerForm.get('provinciaLegale')?.invalid && (cerForm.get('provinciaLegale')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Regione sede legale</mat-label>
-              <mat-select formControlName="regione" aria-label="regione" required>
+              <mat-select formControlName="regioneLegale" aria-label="regioneLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="cerForm.get('regione')?.invalid && (cerForm.get('regione')?.touched || submitted)">
-                  Selezione obbligatoria
-                </mat-error>
+              <mat-error *ngIf="cerForm.get('regioneLegale')?.invalid && (cerForm.get('regioneLegale')?.touched || submitted)">
+                Selezione obbligatoria
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
-        <!-- <div class="section-box">
-          <div class="section-title">DOCUMENTI</div>
-          <div class="field-group">
-            <div class="doc-row">
-              <div class="doc-label">
-                <mat-icon>description</mat-icon>
-                <span>Atto Costitutivo</span>
-                <button mat-icon-button>
-                  <mat-icon>download</mat-icon>
-                </button>
-              </div> -->
-              <!-- <input type="file" (change)="onFileSelected($event, 'attoCostitutivo')" accept=".pdf,.doc,.docx"/> -->
-            <!-- </div>
-            <div class="doc-row">
-              <div class="doc-label">
-                <mat-icon>description</mat-icon>
-                <span>Statuto Stipulato</span>
-                <button mat-icon-button>
-                  <mat-icon>download</mat-icon>
-                </button>
-              </div> -->
-              <!-- <input type="file" (change)="onFileSelected($event, 'statutoStipulato')" accept=".pdf,.doc,.docx"/> -->
-            <!-- </div>
-            <div class="doc-row">
-              <div class="doc-label">
-                <mat-icon>description</mat-icon>
-                <span>Regolamento CER</span>
-                <button mat-icon-button>
-                  <mat-icon>download</mat-icon>
-                </button>
-              </div> -->
-              <!-- <input type="file" (change)="onFileSelected($event, 'regolamentoCer')" accept=".pdf,.doc,.docx"/> -->
-            <!-- </div>
-          </div>
-        </div>
-        <div class="section-box">
-          <div class="section-title">CABINE PRIMARIE</div>
-          <div class="field-group">
-            <mat-checkbox formControlName="iscrizioneRunts">Iscrizione RUNTS</mat-checkbox>
-            <mat-checkbox formControlName="terzoSettore">Terzo Settore</mat-checkbox>
-            <mat-checkbox formControlName="progettiInclusioneSociale">Progetti inclusione sociale</mat-checkbox>
-            <mat-checkbox formControlName="areeMontaneInterne">Aree montane o interne</mat-checkbox>
-            <mat-checkbox formControlName="progettiCambiamentiClimatici">Progetti cambiamenti climatici</mat-checkbox>
-          </div>
-        </div> -->
       </mat-card>
     </div>
   </div>
-  <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
-    <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
+  <div class="div-button">
+    <button mat-raised-button color="primary" type="submit" class="button button-edit">
       <mat-icon>edit</mat-icon> Modifica
     </button>
-    <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
+    <button mat-flat-button color="accent" class="button">
       Cancella
     </button>
-    <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
+    <button mat-raised-button class="button">
       Ripristina Cancellazione
     </button>
-    <button mat-raised-button routerLink="/cer" style="border-radius: 8px; min-width: 130px; height: 42px;">
+    <button mat-raised-button routerLink="/cer" class="button">
       Indietro
     </button>
   </div>
