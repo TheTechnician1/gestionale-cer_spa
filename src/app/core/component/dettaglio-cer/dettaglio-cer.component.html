@@ -8,16 +8,16 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Ragione Sociale</mat-label>
-              <input matInput formControlName="ragSociale" aria-label="ragSociale">
+              <input matInput formControlName="ragioneSociale" aria-label="ragioneSociale">
             </mat-form-field>
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Partita IVA</mat-label>
-                <input matInput formControlName="pIva" aria-label="pIva">
+                <input matInput formControlName="partitaIva" aria-label="partitaIva">
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Codice Fiscale</mat-label>
-                <input matInput formControlName="codFisc" aria-label="codFisc">
+                <input matInput formControlName="codiceFiscale" aria-label="codiceFiscale">
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
@@ -32,19 +32,6 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Nome e Cognome Referente</mat-label>
               <input matInput formControlName="referente" aria-label="referente">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="section-box">
-          <div class="section-title">STATO ATTUALE</div>
-          <div class="field-group">
-            <mat-form-field appearance="fill" class="mb-15">
-              <mat-label>Stato CER</mat-label>
-              <mat-select formControlName="statoCer">
-                <mat-option *ngFor="let stato of stati" [value]="stato.value">
-                  {{stato.viewValue}}
-                </mat-option>
-              </mat-select>
             </mat-form-field>
           </div>
         </div>
@@ -82,21 +69,21 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune sede legale</mat-label>
-              <mat-select formControlName="comune" aria-label="comune" required>
+              <mat-select formControlName="comuneLegale" aria-label="comuneLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
-              <mat-select formControlName="provincia" aria-label="provincia" required>
+              <mat-select formControlName="provinciaLegale" aria-label="provinciaLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Regione sede legale</mat-label>
-              <mat-select formControlName="regione" aria-label="regione" required>
+              <mat-select formControlName="regioneLegale" aria-label="regioneLegale" required>
                 <mat-option>
                 </mat-option>
               </mat-select>

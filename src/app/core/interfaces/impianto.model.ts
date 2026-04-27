@@ -2,11 +2,19 @@ export interface Impianto {
   idImpianto: number | null,
   idConfigurazione: number | null,
   flgEsercizio: string | null,
+  annoAttivazione: Date | null,
   dataEserc: Date | null,
+  dataAttivazione: Date | null,
+  tipologia: string | null,
   partitaIva: string | null,
+  potenzaNominale: number | null,
   regione: string | null,
   comune: string | null,
   provincia: string | null,
+  indirizzo: string | null,
+  civico: string | null,
+  cap: string | null,
+  sitoInstallazione: string | null,
   codiceCabina: string | null,
   codiceTipologia: string | null,
   codTipologia: CodiceTipologia | null,
@@ -14,6 +22,7 @@ export interface Impianto {
   flgAccumulo: string | null,
   capAccumulo: number | null,
   tipoProduttore: string | null,
+  tipologiaProduttore: string | null,
   codCategoriaProduttore: string | null,
   codCatProd: CategoriaProduttore | null,
   codInstallazione: string | null,
@@ -57,11 +66,19 @@ export class ImpiantoModel implements Impianto {
   idImpianto: number | null;
   idConfigurazione: number | null;
   flgEsercizio: string | null;
+  annoAttivazione: Date | null;
   dataEserc: Date | null;
+  dataAttivazione: Date | null;
+  tipologia: string | null;
   partitaIva: string | null;
+  potenzaNominale: number | null;
   regione: string | null;
   comune: string | null;
   provincia: string | null;
+  indirizzo: string | null;
+  civico: string | null;
+  cap: string | null;
+  sitoInstallazione: string | null;
   codiceCabina: string | null;
   codiceTipologia: string | null;
   codTipologia: CodiceTipologia | null;
@@ -69,6 +86,7 @@ export class ImpiantoModel implements Impianto {
   flgAccumulo: string | null;
   capAccumulo: number | null;
   tipoProduttore: string | null;
+  tipologiaProduttore: string | null;
   codCategoriaProduttore: string | null;
   codCatProd: CategoriaProduttore | null;
   codInstallazione: string | null;
@@ -86,18 +104,27 @@ export class ImpiantoModel implements Impianto {
     this.idImpianto = data?.idImpianto ?? null;
     this.idConfigurazione = data?.idConfigurazione ?? null;
     this.flgEsercizio = data?.flgEsercizio ?? null;
+    this.annoAttivazione = data?.annoAttivazione ?? null;
     this.dataEserc = data?.dataEserc ?? null;
+    this.dataAttivazione = data?.dataAttivazione ?? null;
+    this.tipologia = data?.tipologia ?? null;
     this.partitaIva = data?.partitaIva ?? null;
+    this.potenzaNominale = data?.potenzaNominale ?? null;
     this.codiceTipologia = data?.codiceTipologia ?? null;
     this.codTipologia = data?.codTipologia ?? null;
     this.regione = data?.regione ?? null;
     this.comune = data?.comune ?? null;
     this.provincia = data?.provincia ?? null;
+    this.indirizzo = data?.indirizzo ?? null;
+    this.civico = data?.civico ?? null;
+    this.cap = data?.cap ?? null;
+    this.sitoInstallazione = data?.sitoInstallazione ?? null;
     this.codiceCabina = data?.codiceCabina ?? null;
     this.preNom = data?.preNom ?? null;
     this.flgAccumulo = data?.flgAccumulo ?? null;
     this.capAccumulo = data?.capAccumulo ?? null;
     this.tipoProduttore = data?.tipoProduttore ?? null;
+    this.tipologiaProduttore = data?.tipologiaProduttore ?? null;
     this.codCategoriaProduttore = data?.codCategoriaProduttore ?? null;
     this.codCatProd = data?.codCatProd ?? null;
     this.codInstallazione = data?.codInstallazione ?? null;

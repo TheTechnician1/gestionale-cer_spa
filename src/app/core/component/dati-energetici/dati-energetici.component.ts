@@ -13,7 +13,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 })
 export class DatiEnergeticiComponent {
   constructor(private datiService: DatiEnergeticiService, private _liveAnnouncer: LiveAnnouncer) {}
-  tableDat: string[] = ['anno', 'flg_cancellazione', 'azioni'];
+  tableDat: string[] = ['anno', 'partitaIva', 'codiceCabina', 'statoScheda', 'azioni'];
 
   datiEnergetici: DatiEnergetici[] = [];
 
@@ -28,7 +28,9 @@ export class DatiEnergeticiComponent {
 
   filtro = {
     anno: '',
-    flg_cancellazione: ''
+    partitaIva: '',
+    codiceCabina: '',
+    statoScheda: ''
   };
 
   listaFiltrata = [...this.datiEnergetici];
@@ -66,10 +68,13 @@ export class DatiEnergeticiComponent {
 
     this.filtro = {
       anno: '',
-      flg_cancellazione: ''
+      partitaIva: '',
+      codiceCabina: '',
+      statoScheda: ''
     };
 
     this.listaFiltrata = [...this.datiEnergetici];
+    this.loadDati();
   }
 
   sortData(sortState: Sort) {
