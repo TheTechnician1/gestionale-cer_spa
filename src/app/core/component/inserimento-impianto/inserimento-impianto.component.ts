@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CERService } from '../../services/cer.service';
+import { ConfigurazioneService } from '../../services/configurazione.service';
+import { CER } from '../../interfaces/cer.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inserimento-impianto',
@@ -11,29 +15,45 @@ export class InserimentoImpiantoComponent implements OnInit {
 
   impiantiForm!: FormGroup;
   
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
-  
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private route: ActivatedRoute) {}
+    cer?: CER;
+    cers: CER[] = []
+
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
     this.impiantiForm = this.fb.group({
-    codice_cabina: ['', [Validators.required]],
-    data_entrata_esercizio: ['', [Validators.required]],
-    tipologia_impianto: ['', [Validators.required]],
+    ragSociale: ['', Validators.required],
+    codiceCabina: ['', [Validators.required]],
+    dataEserc: ['', [Validators.required]],
+    codiceTipologia: ['', [Validators.required]],
     potenza_nominale: ['', [Validators.required]],
     presenza_accumulo: ['', [Validators.required]],
-    capacita_accumulo: ['', [Validators.required]],
-    tipologia_produttore: ['', [Validators.required]],
-    categoria_produttore: ['', [Validators.required]],
-    ubicazione_impianto: this.fb.group({
+    capAccumulo: ['', [Validators.required]],
+    tipoProduttore: ['', [Validators.required]],
+    codCategoriaProduttore: ['', [Validators.required]],
+    ubicazione: this.fb.group({
       regione: ['', [Validators.required]],
       provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       comune: ['', [Validators.required]],
       indirizzo: ['', [Validators.required]],
       numero_civico: ['', [Validators.required]],
       cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-      tipologia_sito: ['', [Validators.required]]
+      specTipoInst: ['', [Validators.required]]
       })
     });
     this.impiantiForm.enable();
+    this.loadCER(parseInt(id!));
+  }
+
+  loadCER(id: number) {
+    this.cerService.getCER(id).subscribe({
+      next: (cer) => {
+      this.cer = cer[0];
+      },
+      error: (error) => {
+        console.error("Login error", error);
+      }
+    });
   }
 
   submitted = false;
@@ -47,20 +67,15 @@ export class InserimentoImpiantoComponent implements OnInit {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
-
       return;
       }
 
     this.snackBar.open(
       'Inserimento completato!',
       'OK',
-      {
-        duration: 2000
-      }
+      { duration: 2000 }
     );
     console.log(this.impiantiForm.value);
   }

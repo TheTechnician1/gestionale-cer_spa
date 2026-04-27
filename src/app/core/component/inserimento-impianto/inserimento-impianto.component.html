@@ -6,17 +6,35 @@
         <div class="section-box">
           <div class="section-title">DATI IMPIANTO</div>
           <div class="field-group">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Codice Cabina</mat-label>
-              <input matInput formControlName="codice_cabina" aria-label="codice_cabina" required>
-                <mat-error *ngIf="impiantiForm.get('codice_cabina')?.invalid && (impiantiForm.get('codice_cabina')?.touched || submitted)">
-                  Campo obbligatorio
-                </mat-error>
-            </mat-form-field>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Ragione Sociale</mat-label>
+                  <mat-select formControlName="ragSociale">
+                    <mat-option *ngFor="let cer of cers" [value]="cer.ragSociale">
+                      {{cer.ragSociale}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="impiantiForm.get('ragSociale')?.invalid && (impiantiForm.get('ragSociale')?.touched || submitted)">
+                    Selezione obbligatoria
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Codice Cabina</mat-label>
+                  <mat-select formControlName="codiceCabina">
+                    <mat-option>
+                      <!-- <mat-option *ngFor="let cer of cers" [value]="codice_cabina">
+                        {{codice_cabina}} -->
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="impiantiForm.get('codiceCabina')?.invalid && (impiantiForm.get('codiceCabina')?.touched || submitted)">
+                      Selezione obbligatoria
+                    </mat-error>
+              </mat-form-field>
+            </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Data Entrata Esercizio</mat-label>
-              <input matInput formControlName="data_entrata_esercizio" aria-label="data_entrata_esercizio" required>
-                <mat-error *ngIf="impiantiForm.get('data_entrata_esercizio')?.invalid && (impiantiForm.get('data_entrata_esercizio')?.touched || submitted)">
+              <input matInput formControlName="dataEserc" aria-label="dataEserc" required>
+                <mat-error *ngIf="impiantiForm.get('dataEserc')?.invalid && (impiantiForm.get('dataEserc')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
@@ -27,8 +45,8 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Impianto</mat-label>
-              <input matInput formControlName="tipologia_impianto" aria-label="tipologia_impianto" required>
-                <mat-error *ngIf="impiantiForm.get('tipologia_impianto')?.invalid && (impiantiForm.get('tipologia_impianto')?.touched || submitted)">
+              <input matInput formControlName="codiceTipologia" aria-label="codiceTipologia" required>
+                <mat-error *ngIf="impiantiForm.get('codiceTipologia')?.invalid && (impiantiForm.get('codiceTipologia')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
@@ -51,8 +69,8 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Capacità Accumulo (KWh)</mat-label>
-              <input matInput type="number" formControlName="capacita_accumulo" required>
-                <mat-error *ngIf="impiantiForm.get('capacita_accumulo')?.invalid && (impiantiForm.get('capacita_accumulo')?.touched || submitted)">
+              <input matInput type="number" formControlName="capAccumulo" required>
+                <mat-error *ngIf="impiantiForm.get('capAccumulo')?.invalid && (impiantiForm.get('capAccumulo')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
@@ -68,41 +86,41 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Tipologia Produttore</mat-label>
-                <input matInput formControlName="tipologia_produttore" aria-label="tipologia_produttore" required>
-                  <mat-error *ngIf="impiantiForm.get('tipologia_produttore')?.invalid && (impiantiForm.get('tipologia_produttore')?.touched || submitted)">
+                <input matInput formControlName="tipoProduttore" aria-label="tipoProduttore" required>
+                  <mat-error *ngIf="impiantiForm.get('tipoProduttore')?.invalid && (impiantiForm.get('tipoProduttore')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Categoria Produttore</mat-label>
-                <input matInput formControlName="categoria_produttore" aria-label="categoria_produttore" required>
-                  <mat-error *ngIf="impiantiForm.get('categoria_produttore')?.invalid && (impiantiForm.get('categoria_produttore')?.touched || submitted)">
+                <input matInput formControlName="codCategoriaProduttore" aria-label="codCategoriaProduttore" required>
+                  <mat-error *ngIf="impiantiForm.get('codCategoriaProduttore')?.invalid && (impiantiForm.get('codCategoriaProduttore')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
             </div>
           </div>
         </div>
-        <div class="section-box" formGroupName="ubicazione_impianto">
+        <div class="section-box" formGroupName="ubicazione">
           <div class="section-title">UBICAZIONE IMPIANTO</div>
           <div class="field-group">
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Regione</mat-label>
                 <mat-select formControlName="regione" required>
-                  <mat-option value="campania">Abruzzo</mat-option>
+                  <mat-option value="abruzzo">Abruzzo</mat-option>
                   <mat-option value="campania">Campania</mat-option>
-                  <mat-option value="campania">Lazio</mat-option>
-                  <mat-option value="campania">Veneto</mat-option>
+                  <mat-option value="lazio">Lazio</mat-option>
+                  <mat-option value="veneto">Veneto</mat-option>
                 </mat-select>
-                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.regione')?.invalid && (impiantiForm.get('ubicazione_impianto.regione')?.touched || submitted)">
+                  <mat-error *ngIf="impiantiForm.get('ubicazione.regione')?.invalid && (impiantiForm.get('ubicazione.regione')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Provincia</mat-label>
                 <input matInput formControlName="provincia" required>
-                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.provincia')?.invalid && (impiantiForm.get('ubicazione_impianto.provincia')?.touched || submitted)">
+                  <mat-error *ngIf="impiantiForm.get('ubicazione.provincia')?.invalid && (impiantiForm.get('ubicazione.provincia')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
@@ -110,14 +128,14 @@
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune</mat-label>
               <input matInput formControlName="comune" required>
-                <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.comune')?.invalid && (impiantiForm.get('ubicazione_impianto.comune')?.touched || submitted)">
+                <mat-error *ngIf="impiantiForm.get('ubicazione.comune')?.invalid && (impiantiForm.get('ubicazione.comune')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Indirizzo</mat-label>
               <input matInput formControlName="indirizzo" required>
-                <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.indirizzo')?.invalid && (impiantiForm.get('ubicazione_impianto.indirizzo')?.touched || submitted)">
+                <mat-error *ngIf="impiantiForm.get('ubicazione.indirizzo')?.invalid && (impiantiForm.get('ubicazione.indirizzo')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
@@ -125,22 +143,22 @@
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Numero Civico</mat-label>
                 <input matInput formControlName="numero_civico" required>
-                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.numero_civico')?.invalid && (impiantiForm.get('ubicazione_impianto.numero_civico')?.touched || submitted)">
+                  <mat-error *ngIf="impiantiForm.get('ubicazione.numero_civico')?.invalid && (impiantiForm.get('ubicazione.numero_civico')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>CAP</mat-label>
                 <input matInput formControlName="cap" required>
-                  <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.cap')?.invalid && (impiantiForm.get('ubicazione_impianto.cap')?.touched || submitted)">
+                  <mat-error *ngIf="impiantiForm.get('ubicazione.cap')?.invalid && (impiantiForm.get('ubicazione.cap')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Tipologia Sito</mat-label>
-              <input matInput formControlName="tipologia_sito" required>
-                 <mat-error *ngIf="impiantiForm.get('ubicazione_impianto.tipologia_sito')?.invalid && (impiantiForm.get('ubicazione_impianto.tipologia_sito')?.touched || submitted)">
+              <mat-label>Tipologia Installazione</mat-label>
+              <input matInput formControlName="specTipoInst" required>
+                 <mat-error *ngIf="impiantiForm.get('ubicazione.specTipoInst')?.invalid && (impiantiForm.get('ubicazione.specTipoInst')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
             </mat-form-field>
