@@ -3,6 +3,7 @@ export interface Impianto {
   idConfigurazione: number | null,
   flgEsercizio: string | null,
   dataEserc: Date | null,
+  dataAttivazione: Date | null,
   partitaIva: string | null,
   regione: string | null,
   comune: string | null,
@@ -58,6 +59,7 @@ export class ImpiantoModel implements Impianto {
   idConfigurazione: number | null;
   flgEsercizio: string | null;
   dataEserc: Date | null;
+  dataAttivazione: Date | null;
   partitaIva: string | null;
   regione: string | null;
   comune: string | null;
@@ -87,6 +89,7 @@ export class ImpiantoModel implements Impianto {
     this.idConfigurazione = data?.idConfigurazione ?? null;
     this.flgEsercizio = data?.flgEsercizio ?? null;
     this.dataEserc = data?.dataEserc ?? null;
+    this.dataAttivazione = data?.dataAttivazione ?? null;
     this.partitaIva = data?.partitaIva ?? null;
     this.codiceTipologia = data?.codiceTipologia ?? null;
     this.codTipologia = data?.codTipologia ?? null;
