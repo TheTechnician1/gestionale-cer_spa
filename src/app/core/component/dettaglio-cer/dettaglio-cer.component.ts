@@ -23,32 +23,48 @@ export class DettaglioCerComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    this.loadCER(parseInt(id!));
-    this.cerForm =this.fb.group({
-      ragSociale: ['', [Validators.required]],
-      pIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
-      codFisc: ['', [Validators.required]],
+    this.cerForm = this.fb.group({
+      ragioneSociale: ['', [Validators.required]],
+      partitaIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
+      codiceFiscale: ['', [Validators.required]],
       formaGiuridica: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       email: ['', [Validators.required, Validators.email]],
       pec: ['', [Validators.required, Validators.email]],
       sitoWeb: ['', [Validators.required]],
       referente: ['', [Validators.required]],
-      comune: ['', [Validators.required]],
-      provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-      regione: ['', [Validators.required]],
-      statoCer: ['', [Validators.required]],
+      comuneLegale: ['', [Validators.required]],
+      provinciaLegale: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+      regioneLegale: ['', [Validators.required]],
     });
     this.cerForm.disable();
+    this.loadCER(parseInt(id!));
   }
 
   loadCER(id: number) {
     this.cerService.getCER(id).subscribe({
       next: (cer) => {
       this.cer = cer[0];
+
+      if(this.cerForm) {
+        this.cerForm.patchValue({
+          ragioneSociale: this.cer.ragioneSociale,
+          partitaIva: this.cer.partitaIva,
+          codiceFiscale: this.cer.codiceFiscale,
+          formaGiuridica: this.cer.formaGiuridica?.descrizione,
+          telefono: this.cer.telefono,
+          email: this.cer.email,
+          pec: this.cer.pec,
+          sitoWeb: this.cer.sitoWeb,
+          referente: this.cer.referente,
+          comuneLegale: this.cer.comuneLegale?.descrizione,
+          provinciaLegale: this.cer.provinciaLegale?.descrizione,
+          regioneLegale: this.cer.regioneLegale?.descrizione
+        })
+      }
       },
       error: (error) => {
-        console.error("Login error", error);
+        console.error("Errore caricamento CER", error);
       }
     });
   }
