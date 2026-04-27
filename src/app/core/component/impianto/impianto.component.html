@@ -96,10 +96,10 @@
       <ng-container matColumnDef="azioni">
         <th mat-header-cell *matHeaderCellDef> Azioni </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-button routerLink="dettaglio-impianto/:id">
+          <button mat-button [routerLink]="['/impianto', 'dettaglio-impianto', element.idImpianto]">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-button routerLink="modifica-impianto/:id">
+          <button mat-button [routerLink]="['/impianto', 'modifica-impianto', element.idImpianto]">
             <mat-icon>edit</mat-icon>
           </button>
         </td>

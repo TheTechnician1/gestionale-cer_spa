@@ -8,11 +8,11 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Codice Cabina</mat-label>
-              <input matInput formControlName="codice_cabina" aria-label="codice_cabina" required>
+              <input matInput formControlName="codiceCabina" aria-label="codiceCabina" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Data Entrata Esercizio</mat-label>
-              <input matInput formControlName="data_entrata_esercizio" aria-label="data_entrata_esercizio" required>
+              <input matInput formControlName="annoAttivazione" aria-label="annoAttivazione" required>
             </mat-form-field>
           </div>
         </div>
@@ -21,22 +21,19 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Impianto</mat-label>
-              <input matInput formControlName="tipologia_impianto" aria-label="tipologia_impianto" required>
+              <input matInput formControlName="tipologia" aria-label="tipologia" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Potenza Nominale(KW)</mat-label>
-              <input matInput type="number" formControlName="potenza_nominale" aria-label="potenza_nominale" required>
+              <input matInput type="number" formControlName="potenzaNominale" aria-label="potenzaNominale" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Presenza Accumulo</mat-label>
-                <mat-select formControlName="presenza_accumulo">
-                  <mat-option value="SI">SI</mat-option>
-                  <mat-option value="NO">NO</mat-option>
-                </mat-select>
+              <input matInput type="number" formControlName="flgAccumulo" aria-label="flgAccumulo" required>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Capacità Accumulo (KWh)</mat-label>
-              <input matInput type="number" formControlName="capacita_accumulo" required>
+              <input matInput type="number" formControlName="capAccumulo" aria-label="capAccumulo" required>
             </mat-form-field>
           </div>
         </div>
@@ -50,73 +47,61 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Tipologia Produttore</mat-label>
-                <input matInput formControlName="tipologia_produttore" aria-label="tipologia_produttore" required>
+                <input matInput formControlName="tipologiaProduttore" aria-label="tipologiaProduttore" required>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Categoria Produttore</mat-label>
-                <input matInput formControlName="categoria_produttore" aria-label="categoria_produttore" required>
+                <input matInput formControlName="specCatProduttore" aria-label="specCatProduttore" required>
               </mat-form-field>
             </div>
           </div>
         </div>
-        <div class="section-box" formGroupName="ubicazione_impianto">
+        <div class="section-box">
           <div class="section-title">UBICAZIONE IMPIANTO</div>
           <div class="field-group">
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Regione</mat-label>
                 <mat-select formControlName="regione" required>
-                  <mat-option value="campania">Abruzzo</mat-option>
-                  <mat-option value="campania">Campania</mat-option>
-                  <mat-option value="campania">Lazio</mat-option>
-                  <mat-option value="campania">Veneto</mat-option>
+                  <mat-option value=""></mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Provincia</mat-label>
-                <input matInput formControlName="provincia" required>
+                <input matInput formControlName="provincia" aria-label="provincia" required>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune</mat-label>
-              <input matInput formControlName="comune" required>
+              <input matInput formControlName="comune" aria-label="comune" required>
             </mat-form-field>
-             <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
               <mat-label>Indirizzo</mat-label>
-              <input matInput formControlName="indirizzo" required>
+              <input matInput formControlName="indirizzo" aria-label="indirizzo" required>
             </mat-form-field>
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Numero Civico</mat-label>
-                <input matInput formControlName="numero_civico" required>
+                <input matInput formControlName="civico" aria-label="civico" required>
               </mat-form-field>
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>CAP</mat-label>
-                <input matInput formControlName="cap" required>
+                <input matInput formControlName="cap" aria-label="cap" required>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Sito</mat-label>
-              <input matInput formControlName="tipologia_sito" required>
+              <input matInput formControlName="sitoInstallazione" aria-label="sitoInstallazione" required>
             </mat-form-field>
           </div>
         </div>
       </mat-card>
     </div>
   </div>
-  <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
-        <!-- <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
-          <mat-icon>edit</mat-icon>Aggiungi
-        </button>
-        <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Cancella
-        </button>
-        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Ripristina
-        </button> -->
-        <button mat-raised-button routerLink="/configurazione" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Indietro
-        </button>
-      </div>
+  <div class="div-button">
+    <button mat-raised-button routerLink="/configurazione" class="button">
+      Indietro
+    </button>
+  </div>
 </form>
 
