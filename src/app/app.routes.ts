@@ -4,13 +4,11 @@ import { AuthGuard } from "./core/guard/auth.guard";
 import { RegistrazioneUtenteComponent } from "./core/component/login/registrazione-utente/registrazione-utente.component";
 import { LoginComponent } from "./core/component/login/login/login.component";
 import { DashboardComponent } from "./core/component/dashboard/dashboard.component";
-import { HomeComponent } from "./core/component/home/home.component";
 import { UtenteComponent } from "./core/component/utente/utente.component";
 import { NotAuthorizedComponent } from "./core/component/not-authorized/not-authorized.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
-  { path: "", redirectTo: "home", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
-  { path: "home", component: HomeComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard], pathMatch: "full" },
+  { path: "", redirectTo: "dashboard", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
   { path: "dashboard", component: DashboardComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
   { path: "registrazione", component: RegistrazioneUtenteComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] },
   { path: "cer", loadChildren: () => import("./core/modules/cer.module").then((m) => m.CerModule), data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },

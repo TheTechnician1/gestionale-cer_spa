@@ -14,7 +14,7 @@
     <mat-icon>account_circle</mat-icon>
     <mat-menu #menu="matMenu">
       <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="(isLoggedIn$ | async)" mat-menu-item routerLink="/">Home</button>
+      <button *ngIf="(isLoggedIn$ | async)" mat-menu-item routerLink="/dashboard">Home</button>
       <button *ngIf="(isLoggedIn$ | async)" mat-menu-item routerLink="profilo/:id">Profilo</button>
       <button *ngIf="(isLoggedIn$ | async)" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
     </mat-menu>
