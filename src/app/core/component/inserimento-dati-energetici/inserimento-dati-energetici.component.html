@@ -29,14 +29,14 @@
                     Selezione obbligatoria
                   </mat-error>
               </mat-form-field>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Anno</mat-label>
+                <input matInput formControlName="anno" aria-label="anno" required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('anno')?.invalid && (datiEnergeticiForm.get('anno')?.touched || submitted)">
+                    Campo obbligatorio
+                  </mat-error>
+              </mat-form-field>
             </div>
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Anno</mat-label>
-              <input matInput formControlName="anno" aria-label="anno" required>
-                <mat-error *ngIf="datiEnergeticiForm.get('anno')?.invalid && (datiEnergeticiForm.get('anno')?.touched || submitted)">
-                  Campo obbligatorio
-                </mat-error>
-            </mat-form-field>
           </div>
         </div>
         <div class="section-box">
