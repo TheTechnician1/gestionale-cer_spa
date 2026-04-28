@@ -7,16 +7,13 @@
 
   <span class="spacer"></span>
 
-  <button mat-icon-button aria-label="Notifiche">
-    <mat-icon>notifications</mat-icon>
-  </button>
   <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
     <mat-menu #menu="matMenu">
       <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
       <button *ngIf="(isLoggedIn$ | async)" mat-menu-item routerLink="/dashboard">Home</button>
       <button *ngIf="(isLoggedIn$ | async)" mat-menu-item routerLink="profilo/:id">Profilo</button>
-      <button *ngIf="(isLoggedIn$ | async)" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
+      <button *ngIf="(isLoggedIn$ | async)" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
     </mat-menu>
   </button>
 </mat-toolbar>

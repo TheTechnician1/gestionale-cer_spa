@@ -27,7 +27,7 @@ export const CONFIGURAZIONE_ROUTES: Routes = [
   {
     path: "dettaglio-configurazione/:id",
     component: DettaglioConfigurazioneComponent,
-    data: { role: ["ADMIN", "GEST"] },
+    data: { role: ["ADMIN", "GEST", "GUEST"] },
     canActivate: [AuthGuard],
   },
 ];

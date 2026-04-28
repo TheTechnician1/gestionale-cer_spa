@@ -39,6 +39,8 @@ export class InserimentoDatiEnergeticiComponent implements OnInit {
       ridEmCo2: ['', [Validators.required]]
     });
     this.datiEnergeticiForm.enable();
+    this.loadCERS();
+    this.loadConfigs();
   }
 
   loadCERS() {
