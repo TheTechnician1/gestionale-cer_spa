@@ -21,22 +21,22 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Prodotta</mat-label>
-                <input matInput type="number" formControlName="energiaProdotta" aria-label="energiaProdotta" required>
-                  <mat-error *ngIf="datiEnergeticiForm.get('energiaProdotta')?.invalid && (datiEnergeticiForm.get('energiaProdotta')?.touched || submitted)">
+                <input matInput type="number" formControlName="eProdotta" aria-label="eProdotta" required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('eProdotta')?.invalid && (datiEnergeticiForm.get('eProdotta')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Prelevata</mat-label>
-                <input matInput type="number" formControlName="energiaPrelevata" aria-label="energiaPrelevata" required>
-                  <mat-error *ngIf="datiEnergeticiForm.get('energiaprelevata')?.invalid && (datiEnergeticiForm.get('energiaprelevata')?.touched || submitted)">
+                <input matInput type="number" formControlName="ePrelevata" aria-label="ePrelevata" required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('ePrelevata')?.invalid && (datiEnergeticiForm.get('ePrelevata')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Immessa</mat-label>
-                <input matInput type="number" formControlName="energiaimmessa" aria-label="energiaImmessa" required>
-                  <mat-error *ngIf="datiEnergeticiForm.get('energiaImmessa')?.invalid && (datiEnergeticiForm.get('energiaImmessa')?.touched || submitted)">
+                <input matInput type="number" formControlName="eImmessa" aria-label="eImmessa" required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('eImmessa')?.invalid && (datiEnergeticiForm.get('eImmessa')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
@@ -44,15 +44,15 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Condivisa</mat-label>
-                <input matInput type="number" formControlName="energiaCondivisa" aria-label="energiaCondivisa" required>
-                  <mat-error *ngIf="datiEnergeticiForm.get('energiaCondivisa')?.invalid && (datiEnergeticiForm.get('energiaCondivisa')?.touched || submitted)">
+                <input matInput type="number" formControlName="eCondivisa" aria-label="eCondivisa" required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('eCondivisa')?.invalid && (datiEnergeticiForm.get('eCondivisa')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Energia Autoconsumate</mat-label>
-                <input matInput type="number" formControlName="energiaAutoCons" aria-label="energiaAutoCons"required>
-                  <mat-error *ngIf="datiEnergeticiForm.get('energiaAutoCons')?.invalid && (datiEnergeticiForm.get('energiaAutoCons')?.touched || submitted)">
+                <input matInput type="number" formControlName="eAutoCons" aria-label="eAutoCons"required>
+                  <mat-error *ngIf="datiEnergeticiForm.get('eAutoCons')?.invalid && (datiEnergeticiForm.get('eAutoCons')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
