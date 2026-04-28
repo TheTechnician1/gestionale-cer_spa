@@ -74,6 +74,21 @@ export class ModificaCerComponent {
     });
   }
 
+  editCER(payload: any) {
+    this.cerService.editCER(payload).subscribe({
+      next: (res) => {
+        this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  deleteCER() {
+    
+  }
+
   submit() {
     this.submitted = true;
     if (this.cerForm.invalid) {
@@ -96,5 +111,7 @@ export class ModificaCerComponent {
         duration: 2000
       }
     );
+    const payload = { ...this.cerForm.value, id: this.cer?.idCer }
+    this.editCER(payload);
   }
 }

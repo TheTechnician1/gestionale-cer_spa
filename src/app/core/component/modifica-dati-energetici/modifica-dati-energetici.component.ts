@@ -65,6 +65,17 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     })
   }
 
+  editDati(payload: any) {
+    this.dati.editDatiEnergetici(payload).subscribe({
+      next: (res) => {
+        this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   submit() {
     this.submitted = true;
 
@@ -89,5 +100,7 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
       }
     );
     console.log(this.datiEnergeticiForm.value);
+    const payload = { ...this.datiEnergeticiForm.value, id: this.datiEnergetici?.idDati }
+    this.editDati(payload);
   }
 }

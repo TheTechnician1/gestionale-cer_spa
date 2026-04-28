@@ -71,6 +71,17 @@ export class ModificaImpiantoComponent implements OnInit {
     })
   }
 
+  editImpianto(payload: any) {
+    this.impiantoService.editImpianto(payload).subscribe({
+      next: (res) => {
+        this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   submit() {
     this.submitted = true;
 
@@ -94,5 +105,7 @@ export class ModificaImpiantoComponent implements OnInit {
       }
     );
     console.log(this.impiantiForm.value);
+    const payload = { ...this.impiantiForm.value, id: this.impianto?.idImpianto }
+    this.editImpianto(payload);
   }
 }
