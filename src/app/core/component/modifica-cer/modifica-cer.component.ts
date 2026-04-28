@@ -86,7 +86,15 @@ export class ModificaCerComponent {
   }
 
   deleteCER() {
-    
+    const id = { ...this.cerForm.value, id: this.cer?.idCer };
+    this.cerService.deleteCER(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
   submit() {
@@ -111,7 +119,7 @@ export class ModificaCerComponent {
         duration: 2000
       }
     );
-    const payload = { ...this.cerForm.value, id: this.cer?.idCer }
+    const payload = { ...this.cerForm.value, id: this.cer?.idCer };
     this.editCER(payload);
   }
 }

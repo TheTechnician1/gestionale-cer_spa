@@ -35,6 +35,11 @@ export class ApiService {
     return this.request<T>('PUT', path, body);
   }
 
+  putDelete<T>(path: string, body: any): Observable<T> {
+    body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
+    return this.request<T>('PUT', path, body);
+  }
+
   putText(path: string, body: any): Observable<string> {
     body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
     return this.request('PUT', path, body, 'text');

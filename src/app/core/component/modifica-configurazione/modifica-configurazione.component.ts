@@ -56,6 +56,18 @@ export class ModificaConfigurazioneComponent implements OnInit {
     });
   }
 
+  deleteConfig() {
+    const id = { ...this.configForm.value, id: this.config.idConfigurazione };
+    this.configService.deleteConfigurazione(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   submit() {
     this.submitted = true;
     if (this.configForm.invalid) {

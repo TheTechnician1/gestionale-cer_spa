@@ -82,6 +82,18 @@ export class ModificaImpiantoComponent implements OnInit {
     });
   }
 
+  deleteImpianto() {
+    const id = { ...this.impiantiForm.value, id: this.impianto?.idImpianto }
+    this.impiantoService.deleteImpianto(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   submit() {
     this.submitted = true;
 

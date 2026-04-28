@@ -38,7 +38,7 @@
         <button mat-raised-button color="primary" type="submit" class="button button-edit">
           <mat-icon>edit</mat-icon>Modifica
         </button>
-        <button mat-flat-button color="accent" class="button">Cancella</button>
+        <button mat-flat-button color="accent" (click)="deleteConfig()" class="button">Cancella</button>
         <button mat-raised-button class="button">Ripristina</button>
         <button mat-raised-button routerLink="/configurazione" class="button">Indietro</button>
       </div>

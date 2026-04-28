@@ -31,9 +31,9 @@ export class CERService {
     return this.apiService.put<CER>(endpoint, payload);
   }
 
-  deleteCER(payload: CER): Observable<CER> {
+  deleteCER(payload: any): Observable<CER> {
     console.log('CER eliminato con successo')
     const endpoint = "cer/cancellazione";
-    return this.apiService.put<CER>(endpoint, payload);
+    return this.apiService.putDelete<CER>(endpoint, payload);
   }
 }

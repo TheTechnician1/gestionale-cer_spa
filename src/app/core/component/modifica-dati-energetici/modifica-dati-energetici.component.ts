@@ -76,6 +76,18 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     });
   }
 
+  deleteDati() {
+    const id = { ...this.datiEnergeticiForm.value, id: this.datiEnergetici?.idDati }
+    this.dati.deleteDatiEnergetici(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
   submit() {
     this.submitted = true;
 
