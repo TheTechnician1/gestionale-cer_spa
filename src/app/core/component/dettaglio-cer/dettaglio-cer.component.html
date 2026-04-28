@@ -35,6 +35,19 @@
             </mat-form-field>
           </div>
         </div>
+        <div class="section-box">
+          <div class="section-title">STATO ATTUALE</div>
+          <div class="field-group">
+            <mat-form-field appearance="fill" class="mb-15">
+              <mat-label>Stato CER</mat-label>
+              <mat-select formControlName="flgCancelllazione">
+                <mat-option *ngFor="let stato of stati" [value]="stato.value">
+                  {{stato.viewValue}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
       </mat-card>
     </div>
     <div class="flex-col">

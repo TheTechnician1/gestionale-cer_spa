@@ -20,9 +20,10 @@ export class InserimentoConfigurazioneComponent implements OnInit {
 
   ngOnInit() {
     this.configForm = this.fb.group({
+      ragSociale: ['', [Validators.required]],
       codiceCabina: ['', [Validators.required]],
       annoAttivazione: ['', [Validators.required]],
-      ragSociale: ['', [Validators.required]]
+      idCer: ['', [Validators.required]]
     });
     this.configForm.enable();
     this.loadCERS();
@@ -37,7 +38,8 @@ export class InserimentoConfigurazioneComponent implements OnInit {
           this.cer = cers[0];
 
           this.configForm.patchValue({
-            ragSociale: this.cer.ragSociale
+            ragSociale: this.cer.ragSociale,
+            idCer: this.cer.idCer
           });
         }
       },

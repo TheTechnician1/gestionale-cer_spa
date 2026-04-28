@@ -28,6 +28,8 @@ export class InserimentoImpiantoComponent implements OnInit {
     this.impiantiForm = this.fb.group({
     ragSociale: ['', Validators.required],
     codiceCabina: ['', [Validators.required]],
+    idCer: ['', [Validators.required]],
+    idConfig: ['', [Validators.required]],
     dataEserc: ['', [Validators.required]],
     codiceTipologia: ['', [Validators.required]],
     potenzaNominale: ['', [Validators.required]],
@@ -35,15 +37,13 @@ export class InserimentoImpiantoComponent implements OnInit {
     capAccumulo: ['', [Validators.required]],
     tipoProduttore: ['', [Validators.required]],
     codCategoriaProduttore: ['', [Validators.required]],
-    ubicazione: this.fb.group({
-      regione: ['', [Validators.required]],
-      provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-      comune: ['', [Validators.required]],
-      indirizzo: ['', [Validators.required]],
-      civico: ['', [Validators.required]],
-      cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-      specTipoInst: ['', [Validators.required]]
-      })
+    regione: ['', [Validators.required]],
+    provincia: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
+    comune: ['', [Validators.required]],
+    indirizzo: ['', [Validators.required]],
+    civico: ['', [Validators.required]],
+    cap: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
+    specTipoInst: ['', [Validators.required]]
     });
     this.impiantiForm.enable();
     this.loadCERS();
@@ -59,7 +59,8 @@ export class InserimentoImpiantoComponent implements OnInit {
           this.cer = cers[0];
 
           this.impiantiForm.patchValue({
-            ragSociale: this.cer.ragSociale
+            ragSociale: this.cer.ragSociale,
+            idCer: this.cer.idCer
           });
         }
       },
@@ -78,7 +79,8 @@ export class InserimentoImpiantoComponent implements OnInit {
           this.config = configs[0];
 
           this.impiantiForm.patchValue({
-            codiceCabina: this.config.codiceCabina
+            codiceCabina: this.config.codiceCabina,
+            idConfig: this.config.idConfig
           });
         }
       },
