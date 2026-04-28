@@ -35,7 +35,7 @@ export class ModificaConfigurazioneComponent implements OnInit {
         this.configForm.patchValue({
           codiceCabina: this.config.codiceCabina,
           annoAttivazione: this.config.annoAttivazione,
-          ragioneSociale: this.config.cer?.ragioneSociale
+          ragioneSociale: this.config.cer?.ragSociale
         })
       }
       },
