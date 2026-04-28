@@ -35,7 +35,7 @@ export class ModificaConfigurazioneComponent implements OnInit {
         this.configForm.patchValue({
           codiceCabina: this.config.codiceCabina,
           annoAttivazione: this.config.annoAttivazione,
-          ragioneSociale: this.config.cer?.ragioneSociale
+          ragioneSociale: this.config.cer?.ragSociale
         })
       }
       },
@@ -49,6 +49,18 @@ export class ModificaConfigurazioneComponent implements OnInit {
     this.configService.editConfigurazione(payload).subscribe({
       next: (res) => {
         this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  deleteConfig() {
+    const id = { ...this.configForm.value, id: this.config.idConfigurazione };
+    this.configService.deleteConfigurazione(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
       },
       error: (err) => {
         console.log(err);

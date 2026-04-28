@@ -31,7 +31,7 @@ export class DatiEnergeticiService {
     return this.api.put<DatiEnergetici>(endpoint, payload);
   }
 
-  deleteDatiEnergetici(payload: DatiEnergetici): Observable<DatiEnergetici> {
+  deleteDatiEnergetici(payload: any): Observable<DatiEnergetici> {
     console.log('Dati Energetici eliminati con successo')
     const endpoint = "datiEnergetici/disattiva";
     return this.api.put<DatiEnergetici>(endpoint, payload);

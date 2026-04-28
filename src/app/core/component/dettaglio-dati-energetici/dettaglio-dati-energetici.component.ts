@@ -28,7 +28,7 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
       corrPremioOtt: ['', [Validators.required]],
       ridEmCo2: ['', [Validators.required]],
       statoScheda: [''],
-      ragioneSociale: [''],
+      ragSociale: [''],
       codiceCabina: ['']
     });
     this.datiEnergeticiForm.disable();
@@ -52,7 +52,7 @@ export class DettaglioDatiEnergeticiComponent implements OnInit {
             corrPremioOtt: this.datiEnergetici.corrPremioOtt,
             ridEmCo2: this.datiEnergetici.ridEmCo2,
             statoScheda: this.datiEnergetici.statoScheda,
-            ragioneSociale: this.datiEnergetici.configurazioneCer?.ragioneSociale,
+            ragSociale: this.datiEnergetici.configurazioneCer?.cer?.ragSociale,
             codiceCabina: this.datiEnergetici.configurazioneCer?.codiceCabina
           })
         }

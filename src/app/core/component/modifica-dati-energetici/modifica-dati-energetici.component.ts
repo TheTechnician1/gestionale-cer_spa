@@ -21,16 +21,16 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     this.datiEnergeticiForm = this.fb.group({
       anno: ['', [Validators.required]],
-      energiaProdotta: ['', [Validators.required]],
-      energiaPrelevata: ['', [Validators.required]],
-      energiaImmessa: ['', [Validators.required]],
-      energiaCondivisa: ['', [Validators.required]],
-      energiaAutoCons: ['', [Validators.required]],
+      eProdotta: ['', [Validators.required]],
+      ePrelevata: ['', [Validators.required]],
+      eImmessa: ['', [Validators.required]],
+      eCondivisa: ['', [Validators.required]],
+      eAutoCons: ['', [Validators.required]],
       tariffaPremium: ['', [Validators.required]],
       corrPremioOtt: ['', [Validators.required]],
       ridEmCo2: ['', [Validators.required]],
       flgCancellazione: [''],
-      ragioneSociale: [''],
+      ragSociale: [''],
       codiceCabina: ['']
     });
     this.datiEnergeticiForm.enable();
@@ -45,16 +45,16 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
         if(this.datiEnergeticiForm) {
           this.datiEnergeticiForm.patchValue({
             anno: this.datiEnergetici.anno,
-            energiaProdotta: this.datiEnergetici.energiaProdotta,
-            energiaPrelevata: this.datiEnergetici.energiaPrelevata,
-            energiaImmessa: this.datiEnergetici.energiaImmessa,
-            energiaCondivisa: this.datiEnergetici.energiaCondivisa,
-            energiaAutoCons: this.datiEnergetici.energiaAutoCons,
+            eProdotta: this.datiEnergetici.eProdotta,
+            ePrelevata: this.datiEnergetici.ePrelevata,
+            eImmessa: this.datiEnergetici.eImmessa,
+            eCondivisa: this.datiEnergetici.eCondivisa,
+            eAutoCons: this.datiEnergetici.eAutoCons,
             tariffaPremium: this.datiEnergetici.tariffaPremium,
             corrPremioOtt: this.datiEnergetici.corrPremioOtt,
             ridEmCo2: this.datiEnergetici.ridEmCo2,
             flgCancellazione: this.datiEnergetici.flgCancellazione,
-            ragioneSociale: this.datiEnergetici.configurazioneCer?.ragioneSociale,
+            ragSociale: this.datiEnergetici.configurazioneCer?.cer?.ragSociale,
             codiceCabina: this.datiEnergetici.configurazioneCer?.codiceCabina
           })
         }
@@ -69,6 +69,18 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     this.dati.editDatiEnergetici(payload).subscribe({
       next: (res) => {
         this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  deleteDati() {
+    const id = { ...this.datiEnergeticiForm.value, id: this.datiEnergetici?.idDati }
+    this.dati.deleteDatiEnergetici(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
       },
       error: (err) => {
         console.log(err);

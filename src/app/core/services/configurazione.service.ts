@@ -31,7 +31,7 @@ export class ConfigurazioneService {
     return this.api.put<Configurazione>(endpoint, payload);
   }
 
-  deleteConfigurazione(payload: Configurazione): Observable<Configurazione> {
+  deleteConfigurazione(payload: any): Observable<Configurazione> {
     console.log('Configurazione eliminato con successo');
     const endpoint = "configurazione/disattiva";
     return this.api.put<Configurazione>(endpoint, payload);

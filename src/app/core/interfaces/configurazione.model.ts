@@ -9,6 +9,7 @@ export interface Configurazione {
   annoAttivazione: string | null,
   partitaIva: string | null,
   ragioneSociale: string | null,
+  ragSociale: string | null,
   regioneLegale: string | null,
   emailUtenteLoggato: string | null,
   flg_cancellazione: string | null
@@ -23,6 +24,7 @@ export class ConfigurazioneModel implements Configurazione {
   annoAttivazione: string | null;
   partitaIva: string | null;
   ragioneSociale: string | null;
+  ragSociale: string | null;
   regioneLegale: string | null;
   emailUtenteLoggato: string | null;
   flg_cancellazione: string | null;
@@ -36,6 +38,7 @@ export class ConfigurazioneModel implements Configurazione {
     this.annoAttivazione = data?.annoAttivazione ?? null;
     this.partitaIva = data?.partitaIva ?? null;
     this.ragioneSociale = data?.ragioneSociale ?? null;
+    this.ragSociale = data?.ragSociale ?? null;
     this.regioneLegale = data?.regioneLegale ?? null;
     this.emailUtenteLoggato = data?.emailUtenteLoggato ?? null;
     this.flg_cancellazione = data?.flg_cancellazione ?? null;

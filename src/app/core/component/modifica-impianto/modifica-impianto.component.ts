@@ -47,7 +47,7 @@ export class ModificaImpiantoComponent implements OnInit {
         this.impianto = impianto[0];
         if(this.impiantiForm) {
           this.impiantiForm.patchValue({
-            codiceCabina: this.impianto.codiceCabina,
+            codiceCabina: this.impianto.configurazioneDto?.codiceCabina,
             annoAttivazione: this.impianto.annoAttivazione,
             tipologia: this.impianto.tipologia,
             potenzaNominale: this.impianto.potenzaNominale,
@@ -75,6 +75,18 @@ export class ModificaImpiantoComponent implements OnInit {
     this.impiantoService.editImpianto(payload).subscribe({
       next: (res) => {
         this.snackBar.open('Modifica completata!');
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  deleteImpianto() {
+    const id = { ...this.impiantiForm.value, id: this.impianto?.idImpianto }
+    this.impiantoService.deleteImpianto(id).subscribe({
+      next: (res) => {
+        this.snackBar.open('Elimina completata!');
       },
       error: (err) => {
         console.log(err);
