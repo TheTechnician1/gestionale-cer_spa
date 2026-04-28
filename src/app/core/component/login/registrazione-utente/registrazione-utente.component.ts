@@ -45,7 +45,6 @@ export class RegistrazioneUtenteComponent {
 
   onSubmit() {
     if (this.form.invalid) {
-      // console.log(this.form.value);
       this.showToast('Compila correttamente tutti i campi');
       return;
     }
