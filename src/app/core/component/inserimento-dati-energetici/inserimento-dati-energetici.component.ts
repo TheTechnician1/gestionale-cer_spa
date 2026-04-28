@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatiEnergeticiService } from '../../services/dati-energetici.service';
 
 @Component({
   selector: 'app-inserimento-dati-energetici',
@@ -11,7 +12,7 @@ export class InserimentoDatiEnergeticiComponent implements OnInit {
 
   datiEnergeticiForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
+  constructor(private fb: FormBuilder, private datiEnergeticiService: DatiEnergeticiService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.datiEnergeticiForm = this.fb.group({
@@ -41,23 +42,33 @@ export class InserimentoDatiEnergeticiComponent implements OnInit {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
-
       return;
     }
 
-    this.snackBar.open(
-      'Inserimento completato!',
-      'OK',
-      {
-        duration: 2000
-      }
-    );
-    console.log(this.datiEnergeticiForm.value);
-  }
+    this.datiEnergeticiService.createDatiEnergetici(this.datiEnergeticiForm.value).subscribe({
+      next: (res) => {
+        this.snackBar.open(
+          'Inserimento completato!',
+          'OK',
+          { duration: 2000 }
+        );
+        console.log('Salvato:', res);
 
+        this.datiEnergeticiForm.reset();
+        this.submitted = false;
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.snackBar.open(
+          'Errore durnte il salvataggio',
+          'Chiudi',
+          { duration: 3000 }
+        );
+      }
+    });
+  }
 }
 

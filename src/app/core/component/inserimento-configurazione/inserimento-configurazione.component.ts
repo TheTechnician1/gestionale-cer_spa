@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CERService } from '../../services/cer.service';
 import { CER } from '../../interfaces/cer.model';
 import { ActivatedRoute } from '@angular/router';
+import { ConfigurazioneService } from '../../services/configurazione.service';
 
 @Component({
   selector: 'app-inserimento-configurazione',
@@ -14,7 +15,7 @@ export class InserimentoConfigurazioneComponent implements OnInit {
 
   configForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private route: ActivatedRoute) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private route: ActivatedRoute) {}
    cer?: CER;
    cers : CER [] = []
 
@@ -56,12 +57,27 @@ export class InserimentoConfigurazioneComponent implements OnInit {
       return;
     }
 
-    this.snackBar.open(
-      'Inserimento completato!',
-      'OK',
-      { duration: 2000 }
-    );
-    console.log(this.configForm.value);
-  }
+    this.configurazioneService.createConfigurazione(this.configForm.value).subscribe({
+      next: (res) => {
+        this.snackBar.open(
+          'Configurazione inserita!',
+          'OK',
+          { duration: 2000 }
+        );
+        console.log('Salvato:', res);
 
+        this.configForm.reset();
+        this.submitted = false;
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.snackBar.open(
+          'Errore durante il salvataggio',
+          'Chiudi',
+          { duration: 3000 }
+        );
+      }
+    });
+  }
 }

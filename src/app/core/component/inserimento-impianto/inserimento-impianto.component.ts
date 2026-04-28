@@ -85,7 +85,7 @@ export class InserimentoImpiantoComponent implements OnInit {
           'OK',
           { duration: 2000 }
         );
-        console.log(this.impiantiForm.value);
+        console.log('Salvato:', res);
 
         this.impiantiForm.reset();
         this.submitted = false;
