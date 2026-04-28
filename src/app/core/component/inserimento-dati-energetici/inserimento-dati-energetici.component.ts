@@ -9,29 +9,25 @@ import { DatiEnergeticiService } from '../../services/dati-energetici.service';
   styleUrls: ['./inserimento-dati-energetici.component.scss'],
 })
 export class InserimentoDatiEnergeticiComponent implements OnInit {
-
-  datiEnergeticiForm!: FormGroup;
-
   constructor(private fb: FormBuilder, private datiEnergeticiService: DatiEnergeticiService, private snackBar: MatSnackBar) {}
 
-  ngOnInit(): void {
+  datiEnergeticiForm!: FormGroup;
+  submitted = false;
+
+  ngOnInit() {
     this.datiEnergeticiForm = this.fb.group({
-     idCer: ['', [Validators.required]],
-     idConfigurazione: ['', [Validators.required]],
-     anno: ['', [Validators.required]],
-     eProdotta: ['', [Validators.required]],
-     ePrelevata: ['', [Validators.required]],
-     eImmessa: ['', [Validators.required]],
-     eCondivisa: ['', [Validators.required]],
-     eAutoCons: ['', [Validators.required]],
-     tariffaPremium: ['', [Validators.required]],
-     corrPremioOtt: ['', [Validators.required]],
-     ridEmCo2: ['', [Validators.required]]
+      anno: ['', [Validators.required]],
+      eProdotta: ['', [Validators.required]],
+      ePrelevata: ['', [Validators.required]],
+      eImmessa: ['', [Validators.required]],
+      eCondivisa: ['', [Validators.required]],
+      eAutoCons: ['', [Validators.required]],
+      tariffaPremium: ['', [Validators.required]],
+      corrPremioOtt: ['', [Validators.required]],
+      ridEmCo2: ['', [Validators.required]]
     });
     this.datiEnergeticiForm.enable();
   }
-
-  submitted = false;
 
   submit() {
     this.submitted = true;
