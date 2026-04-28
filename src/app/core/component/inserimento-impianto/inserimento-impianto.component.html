@@ -11,7 +11,7 @@
                 <mat-label>Ragione Sociale</mat-label>
                   <mat-select formControlName="ragSociale">
                     <mat-option *ngFor="let cer of cers" [value]="cer.ragSociale">
-                      {{cer.ragSociale}}
+                      {{ cer.ragSociale }}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="impiantiForm.get('ragSociale')?.invalid && (impiantiForm.get('ragSociale')?.touched || submitted)">
@@ -21,14 +21,13 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Codice Cabina</mat-label>
                   <mat-select formControlName="codiceCabina">
-                    <mat-option>
-                      <!-- <mat-option *ngFor="let cer of cers" [value]="codice_cabina">
-                        {{codice_cabina}} -->
-                      </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="impiantiForm.get('codiceCabina')?.invalid && (impiantiForm.get('codiceCabina')?.touched || submitted)">
-                      Selezione obbligatoria
-                    </mat-error>
+                    <mat-option *ngFor="let config of configs" [value]="config.codiceCabina">
+                      {{ config.codiceCabina }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="impiantiForm.get('codiceCabina')?.invalid && (impiantiForm.get('codiceCabina')?.touched || submitted)">
+                    Selezione obbligatoria
+                  </mat-error>
               </mat-form-field>
             </div>
             <mat-form-field appearance="outline" class="full-width">
@@ -52,24 +51,24 @@
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Potenza Nominale(KW)</mat-label>
-              <input matInput type="number" formControlName="potenza_nominale" aria-label="potenza_nominale" required>
-                <mat-error *ngIf="impiantiForm.get('potenza_nominale')?.invalid && (impiantiForm.get('potenza_nominale')?.touched || submitted)">
+              <input matInput type="number" formControlName="potenzaNominale" aria-label="potenzaNominale" required>
+                <mat-error *ngIf="impiantiForm.get('potenzaNominale')?.invalid && (impiantiForm.get('potenzaNominale')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Presenza Accumulo</mat-label>
-                <mat-select formControlName="presenza_accumulo">
+                <mat-select formControlName="flgAccumulo">
                   <mat-option value="SI">SI</mat-option>
                   <mat-option value="NO">NO</mat-option>
                 </mat-select>
-                <mat-error *ngIf="impiantiForm.get('presenza_accumulo')?.invalid && (impiantiForm.get('presenza_accumulo')?.touched || submitted)">
+                <mat-error *ngIf="impiantiForm.get('flgAccumulo')?.invalid && (impiantiForm.get('flgAccumulo')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Capacità Accumulo (KWh)</mat-label>
-              <input matInput type="number" formControlName="capAccumulo" required>
+              <input matInput type="number" formControlName="capAccumulo" aria-label="capAccumulo" required>
                 <mat-error *ngIf="impiantiForm.get('capAccumulo')?.invalid && (impiantiForm.get('capAccumulo')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
@@ -119,7 +118,7 @@
               </mat-form-field>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Provincia</mat-label>
-                <input matInput formControlName="provincia" required>
+                <input matInput formControlName="provincia" aria-label="provincia" required>
                   <mat-error *ngIf="impiantiForm.get('ubicazione.provincia')?.invalid && (impiantiForm.get('ubicazione.provincia')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
@@ -127,14 +126,14 @@
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune</mat-label>
-              <input matInput formControlName="comune" required>
+              <input matInput formControlName="comune" aria-label="comune" required>
                 <mat-error *ngIf="impiantiForm.get('ubicazione.comune')?.invalid && (impiantiForm.get('ubicazione.comune')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Indirizzo</mat-label>
-              <input matInput formControlName="indirizzo" required>
+              <input matInput formControlName="indirizzo" aria-label="indirizzo" required>
                 <mat-error *ngIf="impiantiForm.get('ubicazione.indirizzo')?.invalid && (impiantiForm.get('ubicazione.indirizzo')?.touched || submitted)">
                   Campo obbligatorio
                 </mat-error>
@@ -142,14 +141,14 @@
             <div class="row">
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>Numero Civico</mat-label>
-                <input matInput formControlName="numero_civico" required>
-                  <mat-error *ngIf="impiantiForm.get('ubicazione.numero_civico')?.invalid && (impiantiForm.get('ubicazione.numero_civico')?.touched || submitted)">
+                <input matInput formControlName="civico" aria-label="civico" required>
+                  <mat-error *ngIf="impiantiForm.get('ubicazione.civico')?.invalid && (impiantiForm.get('ubicazione.civico')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="half-width">
                 <mat-label>CAP</mat-label>
-                <input matInput formControlName="cap" required>
+                <input matInput formControlName="cap" aria-label="cap" required>
                   <mat-error *ngIf="impiantiForm.get('ubicazione.cap')?.invalid && (impiantiForm.get('ubicazione.cap')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
@@ -157,7 +156,7 @@
             </div>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Tipologia Installazione</mat-label>
-              <input matInput formControlName="specTipoInst" required>
+              <input matInput formControlName="specTipoInst" aria-label="specTipoInst" required>
                  <mat-error *ngIf="impiantiForm.get('ubicazione.specTipoInst')?.invalid && (impiantiForm.get('ubicazione.specTipoInst')?.touched || submitted)">
                     Campo obbligatorio
                   </mat-error>
@@ -171,12 +170,6 @@
     <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
       <mat-icon>edit</mat-icon> Aggiungi
     </button>
-    <!-- <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
-      Cancella
-    </button>
-    <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
-      Ripristina
-    </button> -->
     <button mat-raised-button routerLink="/impianto" style="border-radius: 8px; min-width: 130px; height: 42px;">
       Indietro
     </button>

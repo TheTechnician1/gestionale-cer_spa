@@ -6,6 +6,7 @@ import { ConfigurazioneService } from '../../services/configurazione.service';
 import { CER } from '../../interfaces/cer.model';
 import { ActivatedRoute } from '@angular/router';
 import { ImpiantoService } from '../../services/impianto.service';
+import { Configurazione } from '../../interfaces/configurazione.model';
 
 @Component({
   selector: 'app-inserimento-impianto',
@@ -15,20 +16,22 @@ import { ImpiantoService } from '../../services/impianto.service';
 export class InserimentoImpiantoComponent implements OnInit {
 
   impiantiForm!: FormGroup;
-  
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private impiantoService: ImpiantoService, private route: ActivatedRoute) {}
+
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configService: ConfigurazioneService, private configurazioneService: ConfigurazioneService, private impiantoService: ImpiantoService, private route: ActivatedRoute) {}
     cer?: CER;
     cers: CER[] = [];
+    config?: Configurazione;
+    configs: Configurazione[] = [];
+    submitted = false;
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
     this.impiantiForm = this.fb.group({
     ragSociale: ['', Validators.required],
     codiceCabina: ['', [Validators.required]],
     dataEserc: ['', [Validators.required]],
     codiceTipologia: ['', [Validators.required]],
     potenzaNominale: ['', [Validators.required]],
-    presenza_accumulo: ['', [Validators.required]],
+    flgAccumulo: ['', [Validators.required]],
     capAccumulo: ['', [Validators.required]],
     tipoProduttore: ['', [Validators.required]],
     codCategoriaProduttore: ['', [Validators.required]],
@@ -43,26 +46,47 @@ export class InserimentoImpiantoComponent implements OnInit {
       })
     });
     this.impiantiForm.enable();
-    this.loadCER(parseInt(id!));
+    this.loadCERS();
+    this.loadConfigs();
   }
 
-  loadCER(id: number) {
-    this.cerService.getCER(id).subscribe({
-      next: (cer) => {
-      this.cer = cer[0];
-      if(this.impiantiForm) {
-        this.impiantiForm.patchValue({
-          ragSociale: this.cer.ragSociale
-        });
-      }
+  loadCERS() {
+    const payload = { ...this.impiantiForm.value };
+    this.cerService.getCERS(payload).subscribe({
+      next: (cers) => {
+        this.cers = cers;
+        if (cers.length > 0) {
+          this.cer = cers[0];
+
+          this.impiantiForm.patchValue({
+            ragSociale: this.cer.ragSociale
+          });
+        }
       },
       error: (error) => {
-        console.error("Login error", error);
+        console.error("Errore caricamento CER", error);
       }
     });
   }
 
-  submitted = false;
+  loadConfigs() {
+    const payload = { ...this.impiantiForm.value };
+    this.configService.getConfigurazioni(payload).subscribe({
+      next: (configs) => {
+        this.configs = configs;
+        if (configs.length > 0) {
+          this.config = configs[0];
+
+          this.impiantiForm.patchValue({
+            codiceCabina: this.config.codiceCabina
+          });
+        }
+      },
+      error: (error) => {
+        console.error("Errore caricamento Configurazione", error);
+      }
+    });
+  }
 
   submit() {
     this.submitted = true;
@@ -77,7 +101,7 @@ export class InserimentoImpiantoComponent implements OnInit {
       );
       return;
     }
-    
+
     this.impiantoService.createImpianto(this.impiantiForm.value).subscribe({
       next: (res) => {
         this.snackBar.open(

@@ -42,7 +42,7 @@ export class InserimentoConfigurazioneComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error("Login error", error);
+        console.error("Errore caricamento CER", error);
       }
     });
   }
