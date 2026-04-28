@@ -5,6 +5,7 @@ import { CERService } from '../../services/cer.service';
 import { ConfigurazioneService } from '../../services/configurazione.service';
 import { CER } from '../../interfaces/cer.model';
 import { ActivatedRoute } from '@angular/router';
+import { ImpiantoService } from '../../services/impianto.service';
 
 @Component({
   selector: 'app-inserimento-impianto',
@@ -15,7 +16,7 @@ export class InserimentoImpiantoComponent implements OnInit {
 
   impiantiForm!: FormGroup;
   
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private route: ActivatedRoute) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private impiantoService: ImpiantoService, private route: ActivatedRoute) {}
     cer?: CER;
     cers: CER[] = [];
 
@@ -75,14 +76,29 @@ export class InserimentoImpiantoComponent implements OnInit {
         { duration: 3000 }
       );
       return;
+    }
+    
+    this.impiantoService.createImpianto(this.impiantiForm.value).subscribe({
+      next: (res) => {
+        this.snackBar.open(
+          'Inserimento completato!',
+          'OK',
+          { duration: 2000 }
+        );
+        console.log('Salvato:', res);
+
+        this.impiantiForm.reset();
+        this.submitted = false;
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.snackBar.open(
+          'Errore durante il salvataggio',
+          'Chiudi',
+          { duration: 3000 }
+        );
       }
-
-    this.snackBar.open(
-      'Inserimento completato!',
-      'OK',
-      { duration: 2000 }
-    );
-    console.log(this.impiantiForm.value);
+    });
   }
-
 }
