@@ -27,7 +27,7 @@ export const IMPIANTO_ROUTES: Routes = [
   {
     path: "dettaglio-impianto/:id",
     component: DettaglioImpiantoComponent,
-    data: { role: ["ADMIN", "GEST"] },
+    data: { role: ["ADMIN", "GEST", "GUEST"] },
     canActivate: [AuthGuard],
   },
 ];
