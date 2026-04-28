@@ -39,7 +39,7 @@ export class ModificaCerComponent {
       comuneLegale: ['', [Validators.required]],
       provinciaLegale: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       regioneLegale: ['', [Validators.required]],
-      flgCancelllazione: ['', [Validators.required]],
+      flgCancellazione: ['', [Validators.required]],
     });
     this.cerForm.enable();
     this.loadCER(parseInt(id!));
@@ -105,9 +105,7 @@ export class ModificaCerComponent {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
       return;
     }

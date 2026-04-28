@@ -75,18 +75,14 @@ export class ModificaConfigurazioneComponent implements OnInit {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
       return;
     }
     this.snackBar.open(
       'Inserimento completato!',
       'OK',
-      {
-        duration: 2000
-      }
+      { duration: 2000 }
     );
     console.log(this.configForm.value);
     const payload = { ...this.configForm.value, id: this.config.idConfigurazione }

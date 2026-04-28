@@ -102,9 +102,7 @@ export class ModificaImpiantoComponent implements OnInit {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
       return;
     }
@@ -112,9 +110,7 @@ export class ModificaImpiantoComponent implements OnInit {
     this.snackBar.open(
       'Inserimento completato!',
       'OK',
-      {
-        duration: 2000
-      }
+      { duration: 2000 }
     );
     console.log(this.impiantiForm.value);
     const payload = { ...this.impiantiForm.value, id: this.impianto?.idImpianto }
