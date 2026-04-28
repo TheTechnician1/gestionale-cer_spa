@@ -97,9 +97,7 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
       return;
     }
@@ -107,9 +105,7 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     this.snackBar.open(
       'Inserimento completato!',
       'OK',
-      {
-        duration: 2000
-      }
+      { duration: 2000 }
     );
     console.log(this.datiEnergeticiForm.value);
     const payload = { ...this.datiEnergeticiForm.value, id: this.datiEnergetici?.idDati }
