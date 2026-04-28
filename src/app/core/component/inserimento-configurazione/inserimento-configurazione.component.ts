@@ -12,36 +12,40 @@ import { ConfigurazioneService } from '../../services/configurazione.service';
   styleUrls: ['./inserimento-configurazione.component.scss'],
 })
 export class InserimentoConfigurazioneComponent implements OnInit {
-
-  configForm!: FormGroup;
-
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService, private configurazioneService: ConfigurazioneService, private route: ActivatedRoute) {}
-   cer?: CER;
-   cers : CER [] = []
+    cer?: CER;
+    cers : CER [] = [];
+    configForm!: FormGroup;
+    submitted = false;
 
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+  ngOnInit() {
     this.configForm = this.fb.group({
       codiceCabina: ['', [Validators.required]],
       annoAttivazione: ['', [Validators.required]],
       ragSociale: ['', [Validators.required]]
     });
     this.configForm.enable();
-    this.loadCER(parseInt(id!));
+    this.loadCERS();
   }
 
-  loadCER(id: number) {
-    this.cerService.getCER(id).subscribe({
-      next: (cer) => {
-      this.cer = cer[0];
+  loadCERS() {
+    const payload = { ...this.configForm.value };
+    this.cerService.getCERS(payload).subscribe({
+      next: (cers) => {
+        this.cers = cers;
+        if (cers.length > 0) {
+          this.cer = cers[0];
+
+          this.configForm.patchValue({
+            ragSociale: this.cer.ragSociale
+          });
+        }
       },
       error: (error) => {
         console.error("Login error", error);
       }
     });
   }
-
-  submitted = false;
 
   submit() {
     this.submitted = true;

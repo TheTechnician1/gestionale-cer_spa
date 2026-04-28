@@ -9,14 +9,14 @@
                 <div class="row">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Codice Cabina</mat-label>
-                    <input matInput formControlName="codiceCabina" required>
+                    <input matInput formControlName="codiceCabina" aria-label="codiceCabina" required>
                       <mat-error *ngIf="configForm.get('codiceCabina')?.invalid && (configForm.get('codiceCabina')?.touched || submitted)">
                         Campo obbligatorio
                       </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Anno Attivazione</mat-label>
-                    <input matInput formControlName="annoAttivazione" required>
+                    <input matInput formControlName="annoAttivazione" aria-label="annoAttivazione" required>
                       <mat-error *ngIf="configForm.get('annoAttivazione')?.invalid && (configForm.get('annoAttivazione')?.touched || submitted)">
                         Campo obbligatorio
                       </mat-error>
@@ -28,7 +28,7 @@
                     <mat-label>Ragione Sociale</mat-label>
                       <mat-select formControlName="ragSociale">
                         <mat-option *ngFor="let cer of cers" [value]="cer.ragSociale">
-                          {{cer.ragSociale}}
+                          {{ cer.ragSociale }}
                         </mat-option>
                       </mat-select>
                       <mat-error *ngIf="configForm.get('ragSociale')?.invalid && (configForm.get('ragSociale')?.touched || submitted)">
@@ -44,12 +44,6 @@
         <button mat-raised-button color="primary" type="submit" style="border-radius: 8px; min-width: 130px; height: 42px; display: flex; align-items: center; gap: 6px;">
           <mat-icon>edit</mat-icon>Aggiungi
         </button>
-        <!-- <button mat-flat-button color="accent" style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Cancella
-        </button>
-        <button mat-raised-button style="border-radius: 8px; min-width: 130px; height: 42px;">
-          Ripristina
-        </button> -->
         <button mat-raised-button routerLink="/configurazione" style="border-radius: 8px; min-width: 130px; height: 42px;">
           Indietro
         </button>
