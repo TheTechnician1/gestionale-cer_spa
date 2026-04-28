@@ -1,109 +1,61 @@
-mat-grid-tile {
-  background: lightblue;
+th {
+  font-weight: bold;
 }
 
-h5 {
-  background-color: rgba(61, 133, 184, 0.228);
+td {
+  padding-right: 0px;
+}
+
+table {
   width: 100%;
-  text-align: center;
 }
 
-p {
-  margin: 0px;
+.form-field {
+  margin-left: 6px;
+  margin-right: 6px;
+  width:32%;
 }
 
-.body-conf {
-  display: flex;
+.table {
+  margin-top: 20px;
 }
 
-.cer-span p {
-  text-decoration: underline;
-  margin-right: 5px;
-  text-align: end;
-}
-
-.cer-div-span {
+.button-filtro, button {
   margin: 5px;
-  display: flex;
-  margin-left: 30%;
 }
 
-.header-cer {
-  display: flex;
-  justify-content: center;
-  background-color: rgba(170, 164, 164, 0.548);
-  padding-top: 5px;
+.button-filtro {
+  justify-self: center;
 }
 
-.header-conf {
-  display: flex;
+.filtro {
+  background-color: white;
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  padding:10px;
 }
 
-.header-impianto {
+.h3-header {
   display: flex;
   justify-content: center;
 }
 
-.span-conf {
-  margin-top: -2px;
+.button-td {
+  width: 15%;
+  padding-left: 0px;
 }
 
-.icon-span {
-  margin-top: 4px;
-  margin-left: 10px;
-  background-color: transparent;
+.regione {
+  padding-left: 4.5%;
 }
 
-.icon-dat {
-  padding-top: 5px;
+.provincia {
+  padding-left: 4.5%;
 }
 
-.icon-col {
-  display: flex;
-  flex-direction: column;
+.comune {
+  padding-left: 4.5%;
 }
 
-.icon {
-  margin-top: 3.8px;
-}
-
-.span-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.section-1-cer {
-  display: flex;
-  width: 100%;
-  margin: 10px;
-}
-
-.section-2-cer {
-  width: 100%;
-  margin: 10px;
-}
-
-.section-conf-dati {
-  display: flex;
-  width: 100%;
-}
-
-.strong {
-  font-weight: bolder;
-}
-
-.span-conf {
-  display: flex;;
-}
-
-.space-5-top {
-  margin-top: 5px;
-}
-
-.space-2-top {
-  margin-top: 3px;
-}
-
-.width-50 {
-  width: 50%;
+.span-h2 {
+  padding-right: 10px;
 }
