@@ -1,3 +1,5 @@
+import { Configurazione } from "./configurazione.model"
+
 export interface Impianto {
   idImpianto: number | null,
   idConfigurazione: number | null,
@@ -34,7 +36,8 @@ export interface Impianto {
   ubicazione: UbicazioneImpianto[] | null,
   specCatProduttore: string | null,
   codSitoInst: string | null,
-  emailUtenteLoggato: string | null
+  emailUtenteLoggato: string | null,
+  configurazioneDto: Configurazione | null
 }
 
 export interface CodiceTipologia {
@@ -99,6 +102,7 @@ export class ImpiantoModel implements Impianto {
   specCatProduttore: string | null;
   codSitoInst: string | null;
   emailUtenteLoggato: string | null;
+  configurazioneDto: Configurazione | null;
 
   constructor(data?: Partial<Impianto>) {
     this.idImpianto = data?.idImpianto ?? null;
@@ -137,6 +141,7 @@ export class ImpiantoModel implements Impianto {
     this.specCatProduttore = data?.specCatProduttore ?? null;
     this.codSitoInst = data?.codSitoInst ?? null;
     this.emailUtenteLoggato = data?.emailUtenteLoggato ?? null;
+    this.configurazioneDto = data?.configurazioneDto ?? null;
   }
 }
 

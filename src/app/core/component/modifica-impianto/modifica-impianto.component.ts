@@ -47,7 +47,7 @@ export class ModificaImpiantoComponent implements OnInit {
         this.impianto = impianto[0];
         if(this.impiantiForm) {
           this.impiantiForm.patchValue({
-            codiceCabina: this.impianto.codiceCabina,
+            codiceCabina: this.impianto.configurazioneDto?.codiceCabina,
             annoAttivazione: this.impianto.annoAttivazione,
             tipologia: this.impianto.tipologia,
             potenzaNominale: this.impianto.potenzaNominale,
