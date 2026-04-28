@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Stato } from '../../interfaces/stato.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CERService } from '../../services/cer.service';
 
 @Component({
   selector: 'app-inserimento-cer',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class InserimentoCerComponent {
   cerForm!:FormGroup;
   
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService) {}
   
   ngOnInit(): void {
     this.cerForm =this.fb.group({
@@ -48,22 +49,32 @@ export class InserimentoCerComponent {
       this.snackBar.open(
         'Compila tutti i campi obbligatori correttamente',
         'Chiudi',
-        {
-          duration: 3000
-        }
+        { duration: 3000 }
       );
-
-    return;
+      return;
     }
 
-    this.snackBar.open(
-      'Inserimento completato!',
-      'OK',
-      {
-        duration: 2000
+    this.cerService.createCER(this.cerForm.value).subscribe({
+      next: (res) => {
+        this.snackBar.open(
+          'Inserimento completato!',
+          'OK',
+          { duration: 2000 }
+        );
+        console.log('Salvato:', res);
+
+        this.cerForm.reset();
+        this.submitted = false;
+      },
+      error: (err) => {
+        console.error(err);
+
+        this.snackBar.open(
+          'Errore durante il salvataggio',
+          'Chiudi',
+          { duration: 3000 }
+        );
       }
-    );
-    console.log(this.cerForm.value);
+    });
   }
-  
 }
