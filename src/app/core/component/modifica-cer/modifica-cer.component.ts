@@ -27,9 +27,9 @@ export class ModificaCerComponent {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.cerForm = this.fb.group({
-      ragSociale: ['', [Validators.required]],
-      pIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
-      codFiscale: ['', [Validators.required]],
+      ragioneSociale: ['', [Validators.required]],
+      partitaIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
+      codiceFiscale: ['', [Validators.required]],
       formaGiuridica: ['', [Validators.required]],
       telefono: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       email: ['', [Validators.required, Validators.email]],
@@ -52,9 +52,9 @@ export class ModificaCerComponent {
 
       if(this.cerForm) {
         this.cerForm.patchValue({
-          ragSociale: this.cer.ragSociale,
-          pIva: this.cer.pIva,
-          codFiscale: this.cer.codFiscale,
+          ragioneSociale: this.cer.ragioneSociale,
+          partitaIva: this.cer.partitaIva,
+          codiceFiscale: this.cer.codiceFiscale,
           formaGiuridica: this.cer.formaGiuridica?.descrizione,
           telefono: this.cer.telefono,
           email: this.cer.email,

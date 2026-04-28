@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatiEnergetici } from '../../interfaces/dati-energetici.model';
+import { DatiEnergeticiService } from '../../services/dati-energetici.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-modifica-dati-energetici',
@@ -8,29 +11,59 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./modifica-dati-energetici.component.scss']
 })
 export class ModificaDatiEnergeticiComponent implements OnInit {
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private dati: DatiEnergeticiService, private route: ActivatedRoute) {}
 
+  datiEnergetici?: DatiEnergetici;
   datiEnergeticiForm!: FormGroup;
+  submitted = false;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar) {}
-
-  ngOnInit(): void {
+  ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
     this.datiEnergeticiForm = this.fb.group({
-     id_cer: ['', [Validators.required]],
-     id_config: ['', [Validators.required]],
-     anno: ['', [Validators.required]],
-     energia_prodotta: ['', [Validators.required]],
-     energia_prelevata: ['', [Validators.required]],
-     energia_immessa: ['', [Validators.required]],
-     energia_condivisa: ['', [Validators.required]],
-     energia_autoconsumata: ['', [Validators.required]],
-     tariffa_premio: ['', [Validators.required]],
-     corrispettivo_premio: ['', [Validators.required]],
-     riduzione_emissione: ['', [Validators.required]]
+      anno: ['', [Validators.required]],
+      energiaProdotta: ['', [Validators.required]],
+      energiaPrelevata: ['', [Validators.required]],
+      energiaImmessa: ['', [Validators.required]],
+      energiaCondivisa: ['', [Validators.required]],
+      energiaAutoCons: ['', [Validators.required]],
+      tariffaPremium: ['', [Validators.required]],
+      corrPremioOtt: ['', [Validators.required]],
+      ridEmCo2: ['', [Validators.required]],
+      flgCancellazione: [''],
+      ragioneSociale: [''],
+      codiceCabina: ['']
     });
     this.datiEnergeticiForm.enable();
+    this.loadDati(parseInt(id!));
   }
 
-  submitted = false;
+  loadDati(id: number) {
+    this.dati.getDato(id).subscribe({
+      next: (dato) => {
+        this.datiEnergetici = dato[0];
+
+        if(this.datiEnergeticiForm) {
+          this.datiEnergeticiForm.patchValue({
+            anno: this.datiEnergetici.anno,
+            energiaProdotta: this.datiEnergetici.energiaProdotta,
+            energiaPrelevata: this.datiEnergetici.energiaPrelevata,
+            energiaImmessa: this.datiEnergetici.energiaImmessa,
+            energiaCondivisa: this.datiEnergetici.energiaCondivisa,
+            energiaAutoCons: this.datiEnergetici.energiaAutoCons,
+            tariffaPremium: this.datiEnergetici.tariffaPremium,
+            corrPremioOtt: this.datiEnergetici.corrPremioOtt,
+            ridEmCo2: this.datiEnergetici.ridEmCo2,
+            flgCancellazione: this.datiEnergetici.flgCancellazione,
+            ragioneSociale: this.datiEnergetici.configurazioneCer?.ragioneSociale,
+            codiceCabina: this.datiEnergetici.configurazioneCer?.codiceCabina
+          })
+        }
+      },
+      error: (err) => {
+        console.log("Errore imprevisto: ", err);
+      }
+    })
+  }
 
   submit() {
     this.submitted = true;
@@ -45,7 +78,6 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
           duration: 3000
         }
       );
-
       return;
     }
 
@@ -58,5 +90,4 @@ export class ModificaDatiEnergeticiComponent implements OnInit {
     );
     console.log(this.datiEnergeticiForm.value);
   }
-
 }
