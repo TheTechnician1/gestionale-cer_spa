@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { LoginComponent } from '../login/login.component';
 import { LoginService } from '../core/services/login.service';
 import { SharedModule } from "../shared/shared.module";
-import { AnagraficaUtenti } from '../core/interfaces/user.model';
+import { AnagraficaUtenti, User } from '../core/interfaces/user.model';
 
 
 /**
@@ -24,12 +24,29 @@ export class TabellaUtentiComponent implements AfterViewInit {
   displayedColumns: string[] = [
     'nome',
     'cognome',
-    'email',
+    'codiceFiscale',
+    'numeroTelefono',
     'ruolo',
-    'azioni',
   ];
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    
+    this.login.visualizzaTotUtenti().subscribe({
+      next: (res) => {
+        this.dataSource.data = res
+        console.log(this.dataSource.data)
+      },
+      error: (error) => {
+
+      }
+      
+    })
   
-  dataSource = new MatTableDataSource<AnagraficaUtenti>(ELEMENT_DATA);
+  }
+  
+  dataSource = new MatTableDataSource<User>();
 
   constructor(private login: LoginService) {}
   // simone?: number
@@ -49,146 +66,4 @@ export class TabellaUtentiComponent implements AfterViewInit {
   }
 }
 
-const ELEMENT_DATA: AnagraficaUtenti[] = [
-  {
-    nome: 'Hydrogen',
-    cognome: '1.0079',
-    email: 'H',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Helium',
-    cognome: '4.0026',
-    email: 'He',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Lithium',
-    cognome: '6.941',
-    email: 'Li',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Beryllium',
-    cognome: '9.0122',
-    email: 'Be',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Boron',
-    cognome: '10.811',
-    email: 'B',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Carbon',
-    cognome: '12.0107',
-    email: 'C',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Nitrogen',
-    cognome: '14.0067',
-    email: 'N',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Oxygen',
-    cognome: '15.9994',
-    email: 'O',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Fluorine',
-    cognome: '18.9984',
-    email: 'F',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Neon',
-    cognome: '20.1797',
-    email: 'Ne',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Sodium',
-    cognome: '22.9897',
-    email: 'Na',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Magnesium',
-    cognome: '24.305',
-    email: 'Mg',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Aluminum',
-    cognome: '26.9815',
-    email: 'Al',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Silicon',
-    cognome: '28.0855',
-    email: 'Si',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Phosphorus',
-    cognome: '30.9738',
-    email: 'P',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Sulfur',
-    cognome: '32.065',
-    email: 'S',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Chlorine',
-    cognome: '35.453',
-    email: 'Cl',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Argon',
-    cognome: '39.948',
-    email: 'Ar',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Potassium',
-    cognome: '39.0983',
-    email: 'K',
-    ruolo: '',
-    azioni: '',
-  },
-  {
-    nome: 'Calcium',
-    cognome: '40.078',
-    email: 'Ca',
-    ruolo: '',
-    azioni: '',
-  },
-];
 

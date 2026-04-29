@@ -7,6 +7,7 @@ import {
   RegistrazioneUtente,
   RicercaCerRequest,
   User,
+  UserTest,
   Utente,
   UtenteModel,
 } from '../interfaces/user.model';
@@ -71,9 +72,15 @@ export class LoginService {
     return this.apiService.post<RegistrazioneUtente>(endpoint, payload)
   }
 
-  visualizzaUtenti(email: string){
-    return this.apiService.get<User[]>(`/utente/visualizza-lista-completa/${email}`);
+  visualizzaUtente(email: string | null){
+    return this.apiService.get<UserTest>(`/utente/visualizza-dettaglio-per-email?email=${email}`);
   }
+
+  visualizzaTotUtenti(){
+    return this.apiService.get<User[]>(`/utente/visualizza-lista-completa`);
+  }
+
+
 
   getTabellaCER(payload: RicercaCerRequest = {}): Observable<GetListaCER[]>{
     return this.cerService.ricercaCer(payload)
@@ -117,7 +124,9 @@ export class LoginService {
   //   return this.apiService.get<GetListaCER[]>(endpoint)
   // }
 
-  
+  getLocalStorage(){
+    return localStorage?.getItem(this.storageKey)
+  }
 
 
   // Logout: rimuove l'utente sia dalla memoria reattiva che dal localStorage,

@@ -90,7 +90,7 @@ export class LoginComponent {
         console.error("Login error", error);
         let verticalPosition: MatSnackBarVerticalPosition = 'bottom';
         let horizontalPosition: MatSnackBarHorizontalPosition = 'end';
-        this.snackBar.open(error, 'Undo', {
+        this.snackBar.open("Error: " + error.message, 'Undo', {
           duration: 3000,
           horizontalPosition: horizontalPosition,
           verticalPosition: verticalPosition,

@@ -5,6 +5,7 @@ export interface Utente {
   cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
+  token: string | null
 }
 
 export class UtenteModel implements Utente {
@@ -14,6 +15,7 @@ export class UtenteModel implements Utente {
   cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
+  token: string | null;
 
   constructor(data?: Partial<Utente>) {
     this.email = data?.email ?? null;
@@ -22,10 +24,25 @@ export class UtenteModel implements Utente {
     this.cognome = data?.cognome ?? null;
     this.messaggio = data?.messaggio ?? null;
     this.ruolo = data?.ruolo ?? null;
+    this.token = data?.token ?? null
+  }
+}
+  export interface UserTest {
+    nome: string,
+    cognome: string,
+    codiceFiscale: string,
+    numeroTelefono: number,
+    ruolo: string,
+    credenziali: {
+    email: string,
+    password: string
   }
 }
 
-export interface User {
+
+  
+
+export interface User{
   nome?: string | null,
   cognome?: string | null,
   codiceFiscale?: string | null,
@@ -33,8 +50,10 @@ export interface User {
   numeroTelefono?: number | null,
   ruolo: string | null,
   password: string | null,
-
-
+   credenziali: {
+    email: string | null,
+    password: string | null,
+   } | null
 }
 
 export class UserModel implements User {
@@ -45,6 +64,10 @@ export class UserModel implements User {
   numeroTelefono?: number | null;
   ruolo: string | null = '';
   password: string | null = '';
+  credenziali: {
+    email: string | null,
+    password: string | null,
+  } | null;
 
   constructor (data?: Partial<User>){
     this.nome = data?.nome ?? null
@@ -54,6 +77,7 @@ export class UserModel implements User {
     this.numeroTelefono = data?.numeroTelefono ?? null
     this.ruolo = data?.ruolo ?? null
     this.password = data?.password ?? null
+    this.credenziali = data?.credenziali ?? null
   }
 
 }
@@ -87,7 +111,6 @@ export interface AnagraficaUtenti{
   cognome: string;
   email: string;
   ruolo: string;
-  azioni: any;
 }
 
 export interface GetListaCER{

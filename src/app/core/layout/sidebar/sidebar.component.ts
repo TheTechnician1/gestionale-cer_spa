@@ -63,6 +63,24 @@ const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
+  {
+    label: 'Anagrafica',
+    icon: 'assignment_ind',
+    children: [
+      { label: 'Lista utenti', icon: 'people', route: 'user', roles: [Role.ADMIN]},
+      {
+        label: 'Nuovo utente',
+        icon: 'add_circle',
+        route: 'user/new',
+        roles: [Role.ADMIN],
+      },
+      {
+        label: 'Profilo Utente',
+        icon: 'info',
+        route: 'userProfile'
+      },
+    ],
+  },
   { label: 'Impostazioni', icon: 'settings', route: '/impostazioni' },
 ];
 

@@ -13,9 +13,15 @@
     </ng-container>
 
     <!-- Weight Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let ele">{{ ele.email }}</td>
+    <ng-container matColumnDef="codiceFiscale">
+      <th mat-header-cell *matHeaderCellDef>Codice Fiscale</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.codiceFiscale }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="numeroTelefono">
+      <th mat-header-cell *matHeaderCellDef>Numero di Telefono</th>
+      <td mat-cell *matCellDef="let ele">{{ ele.numeroTelefono }}</td>
     </ng-container>
 
     <!-- Weight Column -->
@@ -23,32 +29,7 @@
       <th mat-header-cell *matHeaderCellDef>Ruolo</th>
       <td mat-cell *matCellDef="let ele">{{ ele.ruolo }}</td>
     </ng-container>
-
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="azioni">
-      <th mat-header-cell *matHeaderCellDef>Azioni</th>
-      <td mat-cell *matCellDef="let ele">
-        <button mat-icon-button><mat-icon>visibility</mat-icon></button>
-
-        <!-- <button  mat-icon-button ><mat-icon>add_shopping_cart</mat-icon>
-        </button> -->
-
-        <!-- <button
-          mat-icon-button
-          *ngIf="getRuolo() === 'ADMIN' || getRuolo() === 'GEST'"
-        >
-          <mat-icon>edit</mat-icon>
-        </button> -->
-
-        <button
-          mat-icon-button
-          *ngIf="getRuolo() === 'ADMIN'"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-
-      </td>
-    </ng-container>
+    
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -57,6 +38,7 @@
   
   <button
     *ngIf="getRuolo() === 'ADMIN'"
+    routerLink="/user/new"
   >
   Inserisci
   </button>

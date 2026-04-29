@@ -1,0 +1,69 @@
+<section class="pagina-dettaglio-user" >
+    
+
+  <div class="intestazione-dettaglio">
+    <button mat-stroked-button routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      Torna alla home
+    </button>
+
+    <div>
+      
+      <h1>Dettaglio Utente</h1>
+    </div>
+  </div>
+
+  <div class="griglia-dettaglio">
+    <mat-card class="scheda-dettaglio">
+      <mat-card-header>
+        <mat-card-title>Dati anagrafici</mat-card-title>
+        <mat-card-subtitle>Informazioni identificative dell'utente in sessione</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <dl class="lista-dati">
+          <div>
+            <dt>Nome</dt>
+            <dd>{{ user?.nome }}</dd>
+          </div>
+          <div>
+            <dt>Cognome</dt>
+            <dd>{{ user?.cognome }}</dd>
+          </div>
+          <div>
+            <dt>Codice fiscale</dt>
+            <dd>{{ user?.codiceFiscale }}</dd>
+          </div>
+          <div>
+            <dt>Ruolo</dt>
+            <dd>{{ user?.ruolo }}</dd>
+          </div>
+          <div>
+            <dt>Numero di telefono</dt>
+            <dd>{{ user?.numeroTelefono }}</dd>
+          </div>
+        </dl>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="scheda-dettaglio">
+      <mat-card-header>
+        <mat-card-title>Credenziali</mat-card-title>
+        <mat-card-subtitle>Recapiti forniti dall'utente</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <dl class="lista-dati">
+          <div>
+            <dt>Mail</dt>
+            <dd>{{ user?.credenziali?.email }}</dd>
+          </div>
+          <!-- <div>
+            <dt>Password</dt>
+            <dd>{{user?.credenziali?.password}}</dd>
+          </div> -->
+        </dl>
+      </mat-card-content>
+    </mat-card>
+  </div>
+ </section>
