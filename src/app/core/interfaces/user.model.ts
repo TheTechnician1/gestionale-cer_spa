@@ -121,9 +121,9 @@ export interface GetListaCER{
   provinciaSedeLegale: string,
   regioneLegale: string,
   formaGiuridica: string,
-  telefono: number | null,
-  email: string,
-  pec: string,
+telefono: string,
+email: string,
+ pec: string,
   sitoWeb: string,
   referente: string,
   flgCanc?: string,
@@ -303,7 +303,7 @@ export class GetListaCERModel implements GetListaCER {
   provinciaSedeLegale: string = '';
   regioneLegale: string = '';
   formaGiuridica: string = '';
-  telefono: number | null;
+  telefono: string = '';
   email: string = '';
   pec: string = '';
   sitoWeb: string = '';
@@ -322,7 +322,7 @@ export class GetListaCERModel implements GetListaCER {
     this.provinciaSedeLegale = data?.provinciaSedeLegale ?? '';
     this.regioneLegale = data?.regioneLegale ?? '';
     this.formaGiuridica = data?.formaGiuridica ?? '';
-    this.telefono = data?.telefono ?? null;
+    this.telefono = data?.telefono ?? '';
     this.email = data?.email ?? '';
     this.pec = data?.pec ?? '';
     this.sitoWeb = data?.sitoWeb ?? '';
