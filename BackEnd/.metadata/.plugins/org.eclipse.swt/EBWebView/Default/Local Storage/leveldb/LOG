@@ -1,0 +1,4 @@
+2026/04/27-14:43:21.489 9538 Creating DB C:\Users\danie\OneDrive\Documents\GitHub\gestionale-cer_spa\BackEnd\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb since it was missing.
+2026/04/27-14:43:21.577 9538 Reusing MANIFEST C:\Users\danie\OneDrive\Documents\GitHub\gestionale-cer_spa\BackEnd\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2026/04/27-14:43:21.580 9538 Recovering log #3
+2026/04/27-14:43:21.588 9538 Reusing old log C:\Users\danie\OneDrive\Documents\GitHub\gestionale-cer_spa\BackEnd\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 

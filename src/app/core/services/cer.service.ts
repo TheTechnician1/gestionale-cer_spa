@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpContext } from '@angular/common/http';
-import { catchError, forkJoin, map, Observable, of } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import {
   AccessoRequest,
   GetListaCER,
@@ -32,10 +32,22 @@ export interface RispostaCancellazioneCer {
   providedIn: 'root',
 })
 export class CerService {
+  readonly formeGiuridichePredefinite = [
+    'Associazione',
+    'Associazione riconosciuta',
+    'Cooperativa',
+    'Consorzio',
+    'Fondazione di partecipazione',
+    'Altro',
+  ];
+
   constructor(private apiService: ApiService) {}
 
   ricercaCer(payload: RicercaCerRequest = {}): Observable<GetListaCER[]> {
-    return this.apiService.post<GetListaCER[]>('/cer/ricerca', this.creaPayloadRicerca(payload));
+    return this.apiService.post<GetListaCER[]>('/cer/ricerca', this.creaPayloadRicerca(payload)).pipe(
+      map((risultati) => risultati.map((cer) => this.normalizzaCer(cer))),
+      switchMap((risultati) => this.arricchisciCerMancanti(risultati))
+    );
   }
 
   visualizzaCer(idCer: number, mostraErrore = true): Observable<GetListaCER> {
@@ -43,11 +55,13 @@ export class CerService {
       `/cer/visualizza/${idCer}`,
       undefined,
       this.creaContestoErrore(mostraErrore)
-    );
+    ).pipe(map((cer) => this.normalizzaCer(cer)));
   }
 
   visualizzaCerDisattivate(payload: AccessoRequest): Observable<GetListaCER[]> {
-    return this.apiService.post<GetListaCER[]>('/cer/visualizza-cer-disattivate', payload);
+    return this.apiService.post<GetListaCER[]>('/cer/visualizza-cer-disattivate', payload).pipe(
+      map((risultati) => risultati.map((cer) => this.normalizzaCer(cer)))
+    );
   }
 
   arricchisciCer(cer: GetListaCER[]): Observable<GetListaCER[]> {
@@ -62,7 +76,7 @@ export class CerService {
         }
 
         return this.visualizzaCer(elemento.idCer, false).pipe(
-          map((dettaglio) => ({ ...elemento, ...dettaglio })),
+          map((dettaglio) => this.normalizzaCer({ ...elemento, ...dettaglio })),
           catchError(() => of(elemento))
         );
       })
@@ -131,25 +145,42 @@ export class CerService {
   }
 
   estraiFormeGiuridiche(cer: GetListaCER[]): string[] {
-    return Array.from(
+    const formeDaBackend = Array.from(
       new Set(
         cer
           .map((elemento) => elemento.formaGiuridica?.trim())
           .filter((forma): forma is string => !!forma)
       )
+    );
+
+    return Array.from(
+      new Set([...this.formeGiuridichePredefinite, ...formeDaBackend])
     ).sort((a, b) => a.localeCompare(b));
   }
 
-  filtraPerFormaGiuridica(cer: GetListaCER[], formaGiuridica: string): GetListaCER[] {
+  filtraPerFormaGiuridica(
+    cer: GetListaCER[],
+    formaGiuridica: string,
+    specFormaGiuridica: string = ''
+  ): GetListaCER[] {
     const formaNormalizzata = formaGiuridica.trim();
+    const specificaNormalizzata = specFormaGiuridica.trim().toLowerCase();
 
     if (!formaNormalizzata) {
       return cer;
     }
 
-    return cer.filter(
-      (elemento) => elemento.formaGiuridica?.trim() === formaNormalizzata
-    );
+    if (formaNormalizzata === 'Altro') {
+      return cer.filter((elemento) => {
+        const forma = elemento.formaGiuridica?.trim();
+        const specifica = elemento.specFormaGiuridica?.trim().toLowerCase() ?? '';
+        const isAltro = forma === 'Altro' || (!forma && !!specifica);
+
+        return isAltro && (!specificaNormalizzata || specifica.includes(specificaNormalizzata));
+      });
+    }
+
+    return cer.filter((elemento) => elemento.formaGiuridica?.trim() === formaNormalizzata);
   }
 
   private creaContestoErrore(mostraErrore: boolean): HttpContext | undefined {
@@ -193,5 +224,62 @@ export class CerService {
 
   private pulisciFiltro(value: unknown): string {
     return typeof value === 'string' ? value.trim().toLowerCase() : '';
+  }
+
+  private arricchisciCerMancanti(cer: GetListaCER[]): Observable<GetListaCER[]> {
+    const haDatiAnagraficiMancanti = cer.some(
+      (elemento) =>
+        elemento.idCer &&
+        (!elemento.formaGiuridica || !elemento.partitaIVA || !elemento.regioneLegale)
+    );
+
+    return haDatiAnagraficiMancanti ? this.arricchisciCer(cer) : of(cer);
+  }
+
+  private normalizzaCer(cer: GetListaCER): GetListaCER {
+    const raw = cer as Record<string, any>;
+    const formaGiuridica = this.primaStringa([
+      cer.formaGiuridica,
+      raw['forma_giuridica'],
+      raw['descFormaGiuridica'],
+      raw['descrizioneFormaGiuridica'],
+      raw['tipoFormaGiuridica'],
+      raw['forma'],
+    ]);
+    const specFormaGiuridica = this.primaStringa([
+      cer.specFormaGiuridica,
+      raw['spec_forma_giuridica'],
+      raw['specificaFormaGiuridica'],
+      raw['specifica'],
+    ]);
+
+    return {
+      ...cer,
+      idCer: cer.idCer ?? raw['id'] ?? raw['idCER'] ?? undefined,
+      ragioneSociale: this.primaStringa([cer.ragioneSociale, raw['ragSociale']]),
+      codiceFiscale: this.primaStringa([cer.codiceFiscale, raw['codFiscale']]),
+      partitaIVA: this.primaStringa([cer.partitaIVA, raw['partitaIva'], raw['partita_iva']]),
+      comuneSedeLegale: this.primaStringa([cer.comuneSedeLegale, raw['comuneLegale']]),
+      provinciaSedeLegale: this.primaStringa([
+        cer.provinciaSedeLegale,
+        raw['provinciaLegale'],
+      ]),
+      regioneLegale: this.primaStringa([cer.regioneLegale, raw['regione']]),
+      formaGiuridica: formaGiuridica || (specFormaGiuridica ? 'Altro' : ''),
+      specFormaGiuridica,
+      telefono: this.primaStringa([cer.telefono, raw['numeroTelefono']]),
+      email: this.primaStringa([cer.email]),
+      pec: this.primaStringa([cer.pec]),
+      sitoWeb: this.primaStringa([cer.sitoWeb]),
+      referente: this.primaStringa([cer.referente]),
+    };
+  }
+
+  private primaStringa(values: unknown[]): string {
+    const valore = values.find(
+      (item) => typeof item === 'string' && item.trim().length > 0
+    );
+
+    return typeof valore === 'string' ? valore.trim() : '';
   }
 }

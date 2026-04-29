@@ -1,10 +1,11 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoginService } from '../core/services/login.service';
 import {
   ConfigurazioneCabina,
+  DatiEnergetici,
   GetListaCER,
   ImpiantoCER,
 } from '../core/interfaces/user.model';
@@ -13,6 +14,7 @@ import { ConfermaPasswordDialogService } from '../core/services/conferma-passwor
 import { CerService } from '../core/services/cer.service';
 import { ConfigurazioneCabinaService } from '../core/services/configurazione-cabina.service';
 import { NotificheService } from '../core/services/notifiche.service';
+import { DatiEnergeticiService } from '../core/services/dati-energetici.service';
 
 @Component({
   selector: 'app-dettagli-tabella-cer',
@@ -23,13 +25,16 @@ export class DettagliTabellaCerComponent implements OnInit {
   cer?: GetListaCER;
   configurazioni: ConfigurazioneCabina[] = [];
   impianti: ImpiantoCER[] = [];
+  datiEnergetici: DatiEnergetici[] = [];
   impiantoSelezionato?: ImpiantoCER;
   configurazioneSelezionata?: ConfigurazioneCabina;
+  dettaglioDisattivata = false;
   displayedColumnsConfigurazioni: string[] = [
     'idConfig',
     'codiceCabina',
     'annoAttivazione',
     'impianti',
+    'datiEnergetici',
     'azioni',
   ];
   displayedColumnsImpianti: string[] = [
@@ -39,14 +44,18 @@ export class DettagliTabellaCerComponent implements OnInit {
     'comune',
     'azioni',
   ];
+  @ViewChild('dettaglioConfigurazioneDialog')
+  dettaglioConfigurazioneDialog?: TemplateRef<unknown>;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private login: LoginService,
     private dialog: MatDialog,
     private cerService: CerService,
     private impiantoService: ImpiantoService,
     private configurazioneService: ConfigurazioneCabinaService,
+    private datiEnergeticiService: DatiEnergeticiService,
     private confermaPasswordDialog: ConfermaPasswordDialogService,
     private snackBar: MatSnackBar,
     private notificheService: NotificheService
@@ -226,16 +235,32 @@ export class DettagliTabellaCerComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const cerId = Number(params.get('id'));
       const impiantoId = Number(params.get('impiantoId'));
+      const configurazioneId = Number(this.route.snapshot.queryParamMap.get('configurazioneId'));
 
       if (!cerId) {
+        return;
+      }
+
+      this.dettaglioDisattivata = this.router.url.startsWith('/cer/disattivate/');
+
+      if (this.dettaglioDisattivata) {
+        const cerDaNavigazione = history.state?.cer as GetListaCER | undefined;
+
+        if (cerDaNavigazione?.idCer === cerId) {
+          this.cer = cerDaNavigazione;
+          this.configurazioni = [];
+          this.impianti = [];
+          this.datiEnergetici = [];
+        }
+
         return;
       }
 
       this.login.visualizzaCer(cerId).subscribe({
         next: (cer) => {
           this.cer = cer;
-          this.caricaConfigurazioni(cer);
-          this.caricaImpianti(cer, impiantoId);
+          this.caricaDatiEnergetici(cer);
+          this.caricaConfigurazioni(cer, impiantoId, configurazioneId);
         },
       });
     });
@@ -273,32 +298,58 @@ export class DettagliTabellaCerComponent implements OnInit {
     );
   }
 
+  datiEnergeticiConfigurazione(configurazione: ConfigurazioneCabina): DatiEnergetici[] {
+    const datiConfigurazione = configurazione.datiEnergetici?.length
+      ? configurazione.datiEnergetici
+      : this.datiEnergetici;
+
+    return this.datiEnergeticiService.datiConfigurazione(
+      this.idConfigurazione(configurazione),
+      datiConfigurazione,
+      this.cer?.idCer ?? null
+    );
+  }
+
   impiantiConfigurazioneSelezionata(): ImpiantoCER[] {
     return this.configurazioneSelezionata
       ? this.impiantiConfigurazione(this.configurazioneSelezionata)
       : [];
   }
 
-  private caricaConfigurazioni(cer: GetListaCER): void {
+  private caricaConfigurazioni(
+    cer: GetListaCER,
+    impiantoId: number,
+    configurazioneIdDaAprire: number
+  ): void {
     this.configurazioneService.ricerca({ idCer: cer.idCer ?? null }).subscribe({
       next: (configurazioni) => {
-        this.configurazioneService.arricchisciConDettaglio(configurazioni).subscribe({
+        const configurazioniCer = this.filtraConfigurazioniCer(configurazioni, cer.idCer ?? null);
+
+        this.configurazioneService.arricchisciConDettaglio(configurazioniCer).subscribe({
           next: (configurazioniDettaglio) => {
-            this.configurazioni = configurazioniDettaglio.filter(
+            this.configurazioni = this.filtraConfigurazioniCer(
+              configurazioniDettaglio,
+              cer.idCer ?? null
+            ).filter(
               (configurazione) =>
                 !this.configurazioneService.configurazioneDisattiva(configurazione)
             );
+            this.apriConfigurazioneDaQuery(configurazioneIdDaAprire);
+            this.caricaImpianti(cer, impiantoId);
           },
           error: () => {
-            this.configurazioni = configurazioni.filter(
+            this.configurazioni = configurazioniCer.filter(
               (configurazione) =>
                 !this.configurazioneService.configurazioneDisattiva(configurazione)
             );
+            this.apriConfigurazioneDaQuery(configurazioneIdDaAprire);
+            this.caricaImpianti(cer, impiantoId);
           },
         });
       },
       error: () => {
         this.configurazioni = [];
+        this.caricaImpianti(cer, impiantoId);
       },
     });
   }
@@ -311,8 +362,8 @@ export class DettagliTabellaCerComponent implements OnInit {
       comune: cer.comuneSedeLegale,
     }).subscribe({
       next: (impianti) => {
-        this.impianti = impianti;
-        this.impiantoSelezionato = impianti.find(
+        this.impianti = this.filtraImpiantiCer(impianti, cer);
+        this.impiantoSelezionato = this.impianti.find(
           (impianto) => impianto.idImpianto === impiantoId
         );
       },
@@ -322,11 +373,75 @@ export class DettagliTabellaCerComponent implements OnInit {
     });
   }
 
+  private caricaDatiEnergetici(cer: GetListaCER): void {
+    this.datiEnergeticiService.ricerca({ partitaIva: cer.partitaIVA }).subscribe({
+      next: (datiEnergetici) => {
+        this.datiEnergetici = this.datiEnergeticiService
+          .filtraAttivi(datiEnergetici)
+          .filter((dati) => dati.idCer === cer.idCer);
+      },
+      error: () => {
+        this.datiEnergetici = [];
+      },
+    });
+  }
+
+  private filtraConfigurazioniCer(
+    configurazioni: ConfigurazioneCabina[],
+    idCer: number | null
+  ): ConfigurazioneCabina[] {
+    if (!idCer) {
+      return configurazioni;
+    }
+
+    return configurazioni.filter(
+      (configurazione) =>
+        configurazione.idCer === idCer || configurazione.cer?.idCer === idCer
+    );
+  }
+
+  private filtraImpiantiCer(impianti: ImpiantoCER[], cer: GetListaCER): ImpiantoCER[] {
+    const idConfigurazioni = new Set(
+      this.configurazioni
+        .map((configurazione) => this.idConfigurazione(configurazione))
+        .filter((id): id is number => !!id)
+    );
+
+    return impianti.filter((impianto) => {
+      const idConfigurazione = this.impiantoService.idConfigurazioneImpianto(impianto);
+      const stessaConfigurazione = !!idConfigurazione && idConfigurazioni.has(idConfigurazione);
+      const stessaPartitaIva = impianto.partitaIva === cer.partitaIVA;
+
+      return stessaConfigurazione || stessaPartitaIva;
+    });
+  }
+
   private mostraMessaggio(messaggio: string): void {
     this.snackBar.open(messaggio, 'Chiudi', {
       duration: 4500,
       horizontalPosition: 'end',
       verticalPosition: 'top',
     });
+  }
+
+  private apriConfigurazioneDaQuery(configurazioneId: number): void {
+    if (!configurazioneId || !this.dettaglioConfigurazioneDialog) {
+      return;
+    }
+
+    const configurazione = this.configurazioni.find(
+      (item) => this.idConfigurazione(item) === configurazioneId
+    );
+
+    if (!configurazione) {
+      return;
+    }
+
+    setTimeout(() =>
+      this.apriDettaglioConfigurazione(
+        configurazione,
+        this.dettaglioConfigurazioneDialog as TemplateRef<unknown>
+      )
+    );
   }
 }

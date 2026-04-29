@@ -5,6 +5,7 @@ export interface Utente {
   cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
+  token?: string | null;
 }
 
 export class UtenteModel implements Utente {
@@ -14,6 +15,7 @@ export class UtenteModel implements Utente {
   cognome?: string | null;
   messaggio?: string | null;
   ruolo: string | null;
+  token?: string | null;
 
   constructor(data?: Partial<Utente>) {
     this.email = data?.email ?? null;
@@ -22,6 +24,7 @@ export class UtenteModel implements Utente {
     this.cognome = data?.cognome ?? null;
     this.ruolo = data?.ruolo ?? null;
     this.messaggio = data?.messaggio ?? null;
+    this.token = data?.token ?? null;
   }
 }
 
@@ -65,12 +68,14 @@ export interface GetListaCER{
   provinciaSedeLegale: string,
   regioneLegale: string,
   formaGiuridica: string,
-telefono: number,
+telefono: string,
 email: string,
  pec: string,
   sitoWeb: string,
     referente: string,
   flgCanc?: string,
+  nomeProprietario?: string,
+  cognomeProprietario?: string,
    specFormaGiuridica?: string
  partitaIVA: string,
  
@@ -84,6 +89,9 @@ export interface UbicazioneImpianto {
   comuneNome?: string;
   codTipoInst?: string;
   sitoInstallazione?: string;
+  indirizzo?: string;
+  numCivico?: string;
+  cap?: string;
   idConfigurazione?: number;
   codTipologia?: string;
 }
@@ -99,7 +107,33 @@ export interface ImpiantoCER {
   partitaIva?: string;
   codCatProd?: string;
   categoriaProduttore?: string;
+  potenzaNominale?: number;
+  isEsercizio?: boolean;
+  accumuloPresente?: boolean;
+  capacitaAccumulo?: number;
   ubicazioni?: UbicazioneImpianto[];
+  sezioneCer?: {
+    ragioneSociale?: string;
+    partitaIva?: string;
+    regione?: string;
+    provincia?: string;
+    comune?: string;
+  };
+  sezioneConfigurazione?: {
+    idConfigurazione?: number;
+    descConfigurazione?: string;
+  };
+  sezioneImpianto?: {
+    dataEsercizio?: string;
+    tipologia?: string;
+    potenzaNominale?: number;
+    isEsercizio?: boolean;
+    accumulo?: {
+      presente?: boolean;
+      capacita?: number;
+    };
+    ubicazione?: UbicazioneImpianto;
+  };
 }
 
 export interface ConfigurazioneCabina {
@@ -114,6 +148,7 @@ export interface ConfigurazioneCabina {
   flgcancellazione?: string;
   cer?: GetListaCER;
   impianti?: ImpiantoCER[];
+  datiEnergetici?: DatiEnergetici[];
 }
 
 export interface RicercaConfigurazioneRequest {
@@ -215,12 +250,14 @@ export class GetListaCERModel implements GetListaCER {
   provinciaSedeLegale: string = '';
   regioneLegale: string = '';
   formaGiuridica: string = '';
-  telefono: number = 0;
+  telefono: string = '';
   email: string = '';
   pec: string = '';
   sitoWeb: string = '';
   referente: string = '';
   flgCanc?: string;
+  nomeProprietario?: string;
+  cognomeProprietario?: string;
   specFormaGiuridica?: string;
   partitaIVA: string = '';
 
@@ -232,12 +269,14 @@ export class GetListaCERModel implements GetListaCER {
     this.provinciaSedeLegale = data?.provinciaSedeLegale ?? '';
     this.regioneLegale = data?.regioneLegale ?? '';
     this.formaGiuridica = data?.formaGiuridica ?? '';
-    this.telefono = data?.telefono ?? 0;
+    this.telefono = data?.telefono ?? '';
     this.email = data?.email ?? '';
     this.pec = data?.pec ?? '';
     this.sitoWeb = data?.sitoWeb ?? '';
     this.referente = data?.referente ?? '';
     this.flgCanc = data?.flgCanc ?? undefined;
+    this.nomeProprietario = data?.nomeProprietario ?? undefined;
+    this.cognomeProprietario = data?.cognomeProprietario ?? undefined;
     this.specFormaGiuridica = data?.specFormaGiuridica ?? undefined;
     this.partitaIVA = data?.partitaIVA ?? '';
   }

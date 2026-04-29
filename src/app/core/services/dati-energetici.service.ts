@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   DatiEnergetici,
   RicercaDatiEnergeticiRequest,
@@ -55,11 +55,13 @@ export class DatiEnergeticiService {
     return this.apiService.post<DatiEnergetici[]>(
       '/dati-energetici/ricerca',
       this.creaPayloadRicerca(payload)
-    );
+    ).pipe(map((risultati) => risultati.map((dati) => this.normalizzaDati(dati))));
   }
 
   visualizza(idDati: number): Observable<DatiEnergetici> {
-    return this.apiService.get<DatiEnergetici>(`/dati-energetici/visualizza/${idDati}`);
+    return this.apiService
+      .get<DatiEnergetici>(`/dati-energetici/visualizza/${idDati}`)
+      .pipe(map((dati) => this.normalizzaDati(dati)));
   }
 
   inserisci(payload: DatiEnergetici): Observable<string> {
@@ -175,6 +177,23 @@ export class DatiEnergeticiService {
     return datiEnergetici.filter((dati) => !this.datoCancellato(dati));
   }
 
+  datiConfigurazione(
+    idConfigurazione: number | null,
+    datiEnergetici: DatiEnergetici[],
+    idCer?: number | null
+  ): DatiEnergetici[] {
+    if (!idConfigurazione) {
+      return [];
+    }
+
+    return datiEnergetici.filter(
+      (dati) =>
+        dati.idConfigurazione === idConfigurazione &&
+        (!idCer || dati.idCer === idCer) &&
+        !this.datoCancellato(dati)
+    );
+  }
+
   private creaPayloadRicerca(
     payload: RicercaDatiEnergeticiRequest
   ): RicercaDatiEnergeticiRequest {
@@ -266,5 +285,23 @@ export class DatiEnergeticiService {
       '';
 
     return String(flag).trim().toUpperCase();
+  }
+
+  private normalizzaDati(dati: DatiEnergetici): DatiEnergetici {
+    const raw = dati as Record<string, any>;
+
+    return {
+      ...dati,
+      idDati: dati.idDati ?? raw['id'] ?? raw['idDato'] ?? undefined,
+      idCer: dati.idCer ?? raw['cerId'] ?? raw['idCER'] ?? 0,
+      idConfigurazione:
+        dati.idConfigurazione ?? raw['idConfig'] ?? raw['idConfigurazione'] ?? 0,
+      statoScheda:
+        dati.statoScheda ??
+        raw['flgCanc'] ??
+        raw['flgcancellazione'] ??
+        raw['flgCancellazione'] ??
+        '',
+    };
   }
 }

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { finalize } from 'rxjs';
 import { GetListaCER, RicercaCerRequest } from '../core/interfaces/user.model';
 import { CerService } from '../core/services/cer.service';
 import { LoginService } from '../core/services/login.service';
@@ -15,6 +16,9 @@ export class FormRicercaCerComponent implements OnInit {
  formRicerca: FormGroup;
  risultatiFiltrati: GetListaCER[] = [];
  elencoFormaGiuridica: string[] = [];
+ caricamento = false;
+ ricercaEseguita = false;
+ readonly formaGiuridicaAltro = 'Altro';
 
  private loginService = inject(LoginService);
  private cerService = inject(CerService);
@@ -25,6 +29,7 @@ export class FormRicercaCerComponent implements OnInit {
      ragioneSociale: [''],
      partitaIVA: [''],
      formaGiuridica: [''],
+     specFormaGiuridica: [''],
      comune: [''],
      provincia: [''],
      regione: ['']
@@ -33,6 +38,11 @@ export class FormRicercaCerComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.formaGiuridica.valueChanges.subscribe((forma) => {
+      if (forma !== this.formaGiuridicaAltro) {
+        this.specFormaGiuridica.setValue('', { emitEvent: false });
+      }
+    });
     this.caricaListaCompleta();
   }
 
@@ -46,6 +56,14 @@ export class FormRicercaCerComponent implements OnInit {
 
   get formaGiuridica(): FormControl {
     return this.formRicerca.get('formaGiuridica') as FormControl;
+ }
+
+  get specFormaGiuridica(): FormControl {
+    return this.formRicerca.get('specFormaGiuridica') as FormControl;
+ }
+
+  get mostraSpecFormaGiuridica(): boolean {
+    return this.formaGiuridica.value === this.formaGiuridicaAltro;
  }
 
   get comune(): FormControl {
@@ -76,7 +94,11 @@ export class FormRicercaCerComponent implements OnInit {
 
     console.log('Dati di ricerca:', datiRicerca);
 
-    this.cercaCer(datiRicerca, this.formaGiuridica.value ?? '');
+    this.cercaCer(
+      datiRicerca,
+      this.formaGiuridica.value ?? '',
+      this.specFormaGiuridica.value ?? ''
+    );
   }
 
   resetFiltri(): void {
@@ -84,6 +106,7 @@ export class FormRicercaCerComponent implements OnInit {
       ragioneSociale: '',
       partitaIVA: '',
       formaGiuridica: '',
+      specFormaGiuridica: '',
       comune: '',
       provincia: '',
       regione: '',
@@ -91,12 +114,25 @@ export class FormRicercaCerComponent implements OnInit {
     this.cercaCer({});
   }
 
-  private cercaCer(payload: RicercaCerRequest, formaGiuridica: string = ''): void {
-    this.loginService.getTabellaCER(payload).subscribe({
+  private cercaCer(
+    payload: RicercaCerRequest,
+    formaGiuridica: string = '',
+    specFormaGiuridica: string = ''
+  ): void {
+    this.caricamento = true;
+    this.ricercaEseguita = false;
+
+    this.loginService.getTabellaCER(payload).pipe(
+      finalize(() => {
+        this.caricamento = false;
+        this.ricercaEseguita = true;
+      })
+    ).subscribe({
       next: (risultati) => {
         const risultatiFiltrati = this.cerService.filtraPerFormaGiuridica(
           risultati,
-          formaGiuridica
+          formaGiuridica,
+          specFormaGiuridica
         );
         this.risultatiFiltrati = risultatiFiltrati;
         this.risultatiFiltratiChange.emit(risultatiFiltrati);
@@ -109,7 +145,15 @@ export class FormRicercaCerComponent implements OnInit {
   }
 
   private caricaListaCompleta(): void {
-    this.loginService.getTabellaCER({}).subscribe({
+    this.caricamento = true;
+    this.ricercaEseguita = false;
+
+    this.loginService.getTabellaCER({}).pipe(
+      finalize(() => {
+        this.caricamento = false;
+        this.ricercaEseguita = true;
+      })
+    ).subscribe({
       next: (risultati) => {
         this.elencoFormaGiuridica = this.cerService.estraiFormeGiuridiche(risultati);
         this.risultatiFiltrati = risultati;

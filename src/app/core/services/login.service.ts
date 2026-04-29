@@ -27,6 +27,7 @@ export class LoginService {
   // Serve per ricordare il login anche dopo refresh o riapertura del browser.
   private readonly storageKey = "utente";
   private readonly accessoStorageKey = "accessoRequest";
+  private readonly tokenKey = "auth_token";
   // Stato reattivo dell'utente corrente. È il punto centrale da cui
   // il resto dell'app capisce se l'utente è loggato o meno.
   private readonly userSubject = new BehaviorSubject<UtenteModel | null>(this.loadFromStorage());
@@ -60,6 +61,7 @@ export class LoginService {
       map((utente) => new UtenteModel({ ...utente, email: payload.email })),
       tap((utente) => {
         this.persistUser(utente);
+        this.persistToken(utente.token);
         this.persistAccessoRequest(payload);
       }),
     );
@@ -119,6 +121,8 @@ export class LoginService {
   // così l'app torna allo stato "non autenticato".
   logout(): void {
     localStorage.removeItem(this.storageKey);
+    localStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.accessoStorageKey);
     this.userSubject.next(null);
     this.router.navigate(['/login']);
@@ -144,6 +148,16 @@ export class LoginService {
       this.accessoStorageKey,
       JSON.stringify({ email: payload.email, password: payload.password })
     );
+  }
+
+  private persistToken(token?: string | null): void {
+    if (!token) {
+      localStorage.removeItem(this.tokenKey);
+      sessionStorage.removeItem(this.tokenKey);
+      return;
+    }
+
+    localStorage.setItem(this.tokenKey, JSON.stringify(token));
   }
 
   // Recupera l'utente dal localStorage all'avvio dell'app.

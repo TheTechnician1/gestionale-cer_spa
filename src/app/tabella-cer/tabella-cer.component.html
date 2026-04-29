@@ -54,7 +54,16 @@
         <button
           mat-icon-button
           [routerLink]="['/tabella-cer', ele.idCer]"
-          *ngIf="abilitaVisualizzazione"
+          *ngIf="abilitaVisualizzazione && !visualizzazioneCustom"
+          aria-label="Visualizza dettaglio configurazione cabina energetica"
+        >
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          type="button"
+          (click)="gestisciVisualizzazione(ele)"
+          *ngIf="abilitaVisualizzazione && visualizzazioneCustom"
           aria-label="Visualizza dettaglio configurazione cabina energetica"
         >
           <mat-icon>visibility</mat-icon>
@@ -96,14 +105,12 @@
   </table>
 
   
-  <button
-    mat-raised-button
-    color="primary"
-    routerLink="/cer/new"
-    *ngIf="mostraInserisci && getRuolo() === 'ADMIN'"
-  >
-  Inserisci
-  </button>
+  <div class="azioni-tabella" *ngIf="mostraInserisci && getRuolo() === 'ADMIN'">
+    <button mat-raised-button color="primary" routerLink="/cer/new">
+      <mat-icon>add</mat-icon>
+      Inserisci
+    </button>
+  </div>
   
 
   <mat-paginator

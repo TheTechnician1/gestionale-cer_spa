@@ -84,12 +84,24 @@
 
           <ng-container matColumnDef="idCer">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID CER</th>
-            <td mat-cell *matCellDef="let dati">{{ dati.idCer }}</td>
+            <td mat-cell *matCellDef="let dati">
+              <a class="link-tabella" [routerLink]="['/tabella-cer', dati.idCer]">
+                {{ dati.idCer }}
+              </a>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="idConfigurazione">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID configurazione</th>
-            <td mat-cell *matCellDef="let dati">{{ dati.idConfigurazione }}</td>
+            <td mat-cell *matCellDef="let dati">
+              <a
+                class="link-tabella"
+                [routerLink]="['/tabella-cer', dati.idCer]"
+                [queryParams]="{ configurazioneId: dati.idConfigurazione }"
+              >
+                {{ dati.idConfigurazione }}
+              </a>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="anno">
@@ -171,11 +183,24 @@
       <dl class="lista-dati">
         <div>
           <dt>ID CER</dt>
-          <dd>{{ datiSelezionati.idCer }}</dd>
+          <dd>
+            <a class="link-tabella" [routerLink]="['/tabella-cer', datiSelezionati.idCer]" mat-dialog-close>
+              {{ datiSelezionati.idCer }}
+            </a>
+          </dd>
         </div>
         <div>
           <dt>ID configurazione</dt>
-          <dd>{{ datiSelezionati.idConfigurazione }}</dd>
+          <dd>
+            <a
+              class="link-tabella"
+              [routerLink]="['/tabella-cer', datiSelezionati.idCer]"
+              [queryParams]="{ configurazioneId: datiSelezionati.idConfigurazione }"
+              mat-dialog-close
+            >
+              {{ datiSelezionati.idConfigurazione }}
+            </a>
+          </dd>
         </div>
         <div>
           <dt>Energia prodotta</dt>
