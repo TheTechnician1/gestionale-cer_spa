@@ -32,8 +32,9 @@ export interface RegistrazioneCerPayload {
   providedIn: 'root'
 })
 export class RegistrazioneCerService {
+  readonly formaGiuridicaAltro = 'Altro';
   private readonly codiceFiscalePattern =
-    /^([0-9]{11}|[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z])$/;
+    /^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/;
   private readonly partitaIvaPattern = /^[0-9]{11}$/;
   private readonly telefonoPattern = /^(0|3)[0-9]{8,9}$/;
   private readonly emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -77,7 +78,7 @@ export class RegistrazioneCerService {
   }
 
   registraCer(payload: RegistrazioneCerPayload): Observable<string> {
-    return this.apiService.post<string>('cer/inserisci', payload);
+    return this.apiService.post<string>('/cer/inserisci', payload);
   }
 
   normalizzaPayload(form: FormGroup): RegistrazioneCerPayload {
@@ -95,7 +96,10 @@ export class RegistrazioneCerService {
       sitoWeb: this.normalizzaSitoWeb(form.get('sitoWeb')?.value),
       referente: this.pulisci(form.get('referente')?.value),
       flgCanc: 'N',
-      specFormaGiuridica: this.pulisci(form.get('specFormaGiuridica')?.value),
+      specFormaGiuridica:
+        this.pulisci(form.get('formaGiuridica')?.value) === this.formaGiuridicaAltro
+          ? this.pulisci(form.get('specFormaGiuridica')?.value)
+          : '',
     };
   }
 
@@ -115,7 +119,7 @@ export class RegistrazioneCerService {
 
   private verificaCodiceFiscaleUnico(codiceFiscale: string): Observable<boolean> {
     return this.apiService
-      .post<AnagraficaCER[]>('cer/ricerca', { codiceFiscale })
+      .post<AnagraficaCER[]>('/cer/ricerca', { codiceFiscale })
       .pipe(
         map((risultati) => risultati.length === 0),
         catchError(() => of(true))

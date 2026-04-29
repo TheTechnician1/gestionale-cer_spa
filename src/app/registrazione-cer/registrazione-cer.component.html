@@ -45,7 +45,7 @@
                 Il codice fiscale e obbligatorio
               </mat-error>
               <mat-error *ngIf="codiceFiscale.hasError('pattern')">
-                Inserisci 11 cifre oppure un codice fiscale valido di 16 caratteri
+                Inserisci un codice fiscale valido di 16 caratteri
               </mat-error>
               <mat-error *ngIf="codiceFiscale.hasError('codiceFiscaleDuplicato')">
                 Il codice fiscale e gia presente nel sistema
@@ -90,9 +90,15 @@
               </mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" *ngIf="mostraSpecFormaGiuridica">
               <mat-label>Specifiche forma giuridica</mat-label>
               <input matInput formControlName="specFormaGiuridica" type="text" />
+              <mat-error *ngIf="specFormaGiuridica.hasError('required')">
+                La specifica della forma giuridica e obbligatoria
+              </mat-error>
+              <mat-error *ngIf="specFormaGiuridica.hasError('minlength')">
+                La specifica deve contenere almeno 2 caratteri
+              </mat-error>
             </mat-form-field>
           </div>
         </div>

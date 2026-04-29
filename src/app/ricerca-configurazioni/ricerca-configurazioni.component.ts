@@ -232,6 +232,10 @@ export class RicercaConfigurazioniComponent implements OnInit, AfterViewInit {
     return this.configurazioneService.idConfigurazione(configurazione);
   }
 
+  idCerConfigurazione(configurazione: ConfigurazioneCabina): number | null {
+    return configurazione.idCer ?? configurazione.cer?.idCer ?? null;
+  }
+
   stato(configurazione: ConfigurazioneCabina): string {
     return this.configurazioneService.stato(configurazione);
   }

@@ -34,12 +34,6 @@ const NAV_ITEMS: NavItem[] = [
         route: '/configurazioni/new',
         roles: [Role.ADMIN],
       },
-      {
-        label: 'Configurazioni disattivate',
-        icon: 'inventory_2',
-        route: '/configurazioni/disattivate',
-        roles: [Role.ADMIN],
-      },
     ],
   },
   {

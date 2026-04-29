@@ -1,9 +1,11 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -36,6 +38,8 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
   @Input() abilitaCancellazione = true;
   @Input() mostraStato = false;
   @Input() messaggioVuoto = 'Nessun elemento trovato con i filtri selezionati.';
+  @Input() visualizzazioneCustom = false;
+  @Output() visualizzaCer = new EventEmitter<GetListaCER>();
 
   displayedColumns: string[] = [
     'ragioneSociale',
@@ -142,6 +146,12 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
 
   cerDisattiva(cer: GetListaCER): boolean {
     return this.cerService.cerDisattiva(cer);
+  }
+
+  gestisciVisualizzazione(cer: GetListaCER): void {
+    if (this.visualizzazioneCustom) {
+      this.visualizzaCer.emit(cer);
+    }
   }
 
   cancellaCer(cer: GetListaCER): void {

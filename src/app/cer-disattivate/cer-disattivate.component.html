@@ -86,6 +86,8 @@
           [abilitaModifica]="false"
           [abilitaCancellazione]="false"
           [mostraStato]="true"
+          [visualizzazioneCustom]="true"
+          (visualizzaCer)="visualizzaDettaglio($event)"
           messaggioVuoto="Nessuna CER disattivata trovata con i filtri selezionati."
         ></app-tabella-cer>
       </div>

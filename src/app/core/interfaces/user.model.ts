@@ -121,14 +121,16 @@ export interface GetListaCER{
   provinciaSedeLegale: string,
   regioneLegale: string,
   formaGiuridica: string,
-  telefono: number,
+  telefono: number | null,
   email: string,
   pec: string,
   sitoWeb: string,
   referente: string,
   flgCanc?: string,
-  specFormaGiuridica?: string,
-  partitaIVA: string,
+  nomeProprietario?: string,
+  cognomeProprietario?: string,
+   specFormaGiuridica?: string
+ partitaIVA: string,
  
 }
 
@@ -140,6 +142,9 @@ export interface UbicazioneImpianto {
   comuneNome?: string;
   codTipoInst?: string;
   sitoInstallazione?: string;
+  indirizzo?: string;
+  numCivico?: string;
+  cap?: string;
   idConfigurazione?: number;
   codTipologia?: string;
 }
@@ -155,7 +160,33 @@ export interface ImpiantoCER {
   partitaIva?: string;
   codCatProd?: string;
   categoriaProduttore?: string;
+  potenzaNominale?: number;
+  isEsercizio?: boolean;
+  accumuloPresente?: boolean;
+  capacitaAccumulo?: number;
   ubicazioni?: UbicazioneImpianto[];
+  sezioneCer?: {
+    ragioneSociale?: string;
+    partitaIva?: string;
+    regione?: string;
+    provincia?: string;
+    comune?: string;
+  };
+  sezioneConfigurazione?: {
+    idConfigurazione?: number;
+    descConfigurazione?: string;
+  };
+  sezioneImpianto?: {
+    dataEsercizio?: string;
+    tipologia?: string;
+    potenzaNominale?: number;
+    isEsercizio?: boolean;
+    accumulo?: {
+      presente?: boolean;
+      capacita?: number;
+    };
+    ubicazione?: UbicazioneImpianto;
+  };
 }
 
 export interface ConfigurazioneCabina {
@@ -170,6 +201,7 @@ export interface ConfigurazioneCabina {
   flgcancellazione?: string;
   cer?: GetListaCER;
   impianti?: ImpiantoCER[];
+  datiEnergetici?: DatiEnergetici[];
 }
 
 export interface RicercaConfigurazioneRequest {
@@ -271,12 +303,14 @@ export class GetListaCERModel implements GetListaCER {
   provinciaSedeLegale: string = '';
   regioneLegale: string = '';
   formaGiuridica: string = '';
-  telefono: number = 0;
+  telefono: number | null;
   email: string = '';
   pec: string = '';
   sitoWeb: string = '';
   referente: string = '';
   flgCanc?: string;
+  nomeProprietario?: string;
+  cognomeProprietario?: string;
   specFormaGiuridica?: string;
   partitaIVA: string = '';
 
@@ -288,12 +322,14 @@ export class GetListaCERModel implements GetListaCER {
     this.provinciaSedeLegale = data?.provinciaSedeLegale ?? '';
     this.regioneLegale = data?.regioneLegale ?? '';
     this.formaGiuridica = data?.formaGiuridica ?? '';
-    this.telefono = data?.telefono ?? 0;
+    this.telefono = data?.telefono ?? null;
     this.email = data?.email ?? '';
     this.pec = data?.pec ?? '';
     this.sitoWeb = data?.sitoWeb ?? '';
     this.referente = data?.referente ?? '';
     this.flgCanc = data?.flgCanc ?? undefined;
+    this.nomeProprietario = data?.nomeProprietario ?? undefined;
+    this.cognomeProprietario = data?.cognomeProprietario ?? undefined;
     this.specFormaGiuridica = data?.specFormaGiuridica ?? undefined;
     this.partitaIVA = data?.partitaIVA ?? '';
   }

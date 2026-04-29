@@ -243,7 +243,7 @@ export class ConfigurazioneCabinaService {
             provinciaSedeLegale: '',
             regioneLegale: '',
             formaGiuridica: '',
-            telefono: 0,
+            telefono: '',
             email: '',
             pec: '',
             sitoWeb: '',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   ImpiantoCER,
   ImpiantoPayload,
@@ -58,14 +58,20 @@ export class ImpiantoService {
   }
 
   ricerca(payload: RicercaImpiantoRequest): Observable<ImpiantoCER[]> {
+    const filtri = this.creaPayloadRicerca(payload);
+
     return this.apiService.post<ImpiantoCER[]>(
       '/impianti/ricerca-avanzata',
-      this.creaPayloadRicerca(payload)
+      filtri
+    ).pipe(
+      map((risultati) => risultati.map((impianto) => this.normalizzaImpianto(impianto)))
     );
   }
 
   visualizza(idImpianto: number): Observable<ImpiantoCER> {
-    return this.apiService.get<ImpiantoCER>(`/impianti/visualizza/${idImpianto}`);
+    return this.apiService
+      .get<ImpiantoCER>(`/impianti/visualizza/${idImpianto}`)
+      .pipe(map((impianto) => this.normalizzaImpianto(impianto)));
   }
 
   inserisci(payload: ImpiantoPayload): Observable<string> {
@@ -166,7 +172,7 @@ export class ImpiantoService {
     form.patchValue({
       idImpianto: impianto.idImpianto ?? null,
       idConfigurazione: impianto.idConfigurazione ?? ubicazione?.idConfigurazione ?? null,
-      codiceCabina: impianto.codiceCabina ?? '',
+      codiceCabina: impianto.codiceCabina ?? impianto.sezioneConfigurazione?.descConfigurazione ?? '',
       partitaIva: impianto.partitaIva ?? '',
       dataEsercizio: impianto.dataEsercizio ?? '',
       codTipologia: impianto.codTipologia ?? ubicazione?.codTipologia ?? '',
@@ -209,34 +215,35 @@ export class ImpiantoService {
 
     return impianti.filter(
       (impianto) =>
-        impianto.idConfigurazione === configurazioneId ||
+        this.idConfigurazioneImpianto(impianto) === configurazioneId ||
         impianto.ubicazioni?.some((ubicazione) => ubicazione.idConfigurazione === configurazioneId)
+    );
+  }
+
+  idConfigurazioneImpianto(impianto: ImpiantoCER): number | null {
+    return (
+      impianto.idConfigurazione ??
+      impianto.sezioneConfigurazione?.idConfigurazione ??
+      impianto.ubicazioni?.[0]?.idConfigurazione ??
+      null
     );
   }
 
   private creaPayloadRicerca(
     payload: RicercaImpiantoRequest
   ): RicercaImpiantoRequest {
-    return Object.entries(payload).reduce<RicercaImpiantoRequest>(
-      (acc, [key, value]) => {
-        if (typeof value === 'string' && value.trim().length > 0) {
-          return {
-            ...acc,
-            [key]: value.trim(),
-          };
-        }
-
-        if (typeof value === 'number' && value > 0) {
-          return {
-            ...acc,
-            [key]: value,
-          };
-        }
-
-        return acc;
-      },
-      {}
-    );
+    return {
+      annoAttivazioneDa: payload.annoAttivazioneDa ?? 0,
+      annoAttivazioneA: payload.annoAttivazioneA ?? 0,
+      partitaIva: payload.partitaIva?.trim() ?? '',
+      regione: payload.regione?.trim() ?? '',
+      provincia: payload.provincia?.trim() ?? '',
+      comune: payload.comune?.trim() ?? '',
+      codiceCabina: payload.codiceCabina?.trim() ?? '',
+      codTipologia: payload.codTipologia?.trim() ?? '',
+      categoriaProduttore: payload.categoriaProduttore?.trim() ?? '',
+      codTipoInst: payload.codTipoInst?.trim() ?? '',
+    };
   }
 
   private pulisci(value: unknown): string {
@@ -247,4 +254,43 @@ export class ImpiantoService {
     const numero = Number(value);
     return Number.isFinite(numero) ? numero : 0;
   }
+
+  private normalizzaImpianto(impianto: ImpiantoCER): ImpiantoCER {
+    const sezioneCer = impianto.sezioneCer;
+    const sezioneConfigurazione = impianto.sezioneConfigurazione;
+    const sezioneImpianto = impianto.sezioneImpianto;
+    const ubicazione = sezioneImpianto?.ubicazione;
+    const idConfigurazione =
+      impianto.idConfigurazione ?? sezioneConfigurazione?.idConfigurazione;
+
+    return {
+      ...impianto,
+      idConfigurazione,
+      configurazione: impianto.configurazione ?? (idConfigurazione
+        ? {
+            idConfig: idConfigurazione,
+            idConfigurazione,
+            codiceCabina: sezioneConfigurazione?.descConfigurazione ?? impianto.codiceCabina,
+          }
+        : undefined),
+      codiceCabina:
+        impianto.codiceCabina ??
+        impianto.configurazione?.codiceCabina ??
+        sezioneConfigurazione?.descConfigurazione ??
+        '',
+      dataEsercizio: impianto.dataEsercizio ?? sezioneImpianto?.dataEsercizio ?? '',
+      tipologia: impianto.tipologia ?? sezioneImpianto?.tipologia ?? '',
+      partitaIva: impianto.partitaIva ?? sezioneCer?.partitaIva ?? '',
+      potenzaNominale: impianto.potenzaNominale ?? sezioneImpianto?.potenzaNominale,
+      isEsercizio: impianto.isEsercizio ?? sezioneImpianto?.isEsercizio,
+      accumuloPresente: impianto.accumuloPresente ?? sezioneImpianto?.accumulo?.presente,
+      capacitaAccumulo: impianto.capacitaAccumulo ?? sezioneImpianto?.accumulo?.capacita,
+      ubicazioni: impianto.ubicazioni?.length
+        ? impianto.ubicazioni
+        : ubicazione
+          ? [{ ...ubicazione, idConfigurazione }]
+          : [],
+    };
+  }
+
 }

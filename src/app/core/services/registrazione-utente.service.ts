@@ -99,7 +99,7 @@ export class RegistrazioneUtenteService {
   }
 
   registraUtente(payload: RegistrazioneUtentePayload): Observable<string> {
-    return this.apiService.post<string>('Utente/crea-utente', payload);
+    return this.apiService.post<string>('/utente/inserisci', payload);
   }
 
   private pulisci(value: unknown): string {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   RegistrazioneCerPayload,
@@ -17,6 +17,7 @@ export class RegistrazioneCerComponent {
   ultimoPayloadInviato: RegistrazioneCerPayload | null = null;
   rispostaBackend: string | null = null;
   salvataggioInCorso = false;
+  readonly formaGiuridicaAltro = this.registrazioneCerService.formaGiuridicaAltro;
 
   elencoFormaGiuridica: string[] = [
     'Associazione',
@@ -24,6 +25,7 @@ export class RegistrazioneCerComponent {
     'Cooperativa',
     'Consorzio',
     'Fondazione di partecipazione',
+    this.registrazioneCerService.formaGiuridicaAltro,
   ];
 
   elencoRegioni: string[] = [
@@ -57,6 +59,9 @@ export class RegistrazioneCerComponent {
   ) {
     this.formRegistrazioneCer =
       this.registrazioneCerService.creaFormRegistrazioneCer();
+
+    this.formaGiuridica.valueChanges.subscribe(() => this.aggiornaValidazioneSpecForma());
+    this.aggiornaValidazioneSpecForma();
   }
 
   get ragioneSociale(): FormControl {
@@ -73,6 +78,14 @@ export class RegistrazioneCerComponent {
 
   get formaGiuridica(): FormControl {
     return this.formRegistrazioneCer.get('formaGiuridica') as FormControl;
+  }
+
+  get specFormaGiuridica(): FormControl {
+    return this.formRegistrazioneCer.get('specFormaGiuridica') as FormControl;
+  }
+
+  get mostraSpecFormaGiuridica(): boolean {
+    return this.formaGiuridica.value === this.formaGiuridicaAltro;
   }
 
   get referente(): FormControl {
@@ -135,6 +148,7 @@ export class RegistrazioneCerComponent {
 
         formDirective.resetForm();
         this.formRegistrazioneCer.reset();
+        this.aggiornaValidazioneSpecForma();
         this.salvataggioInCorso = false;
       },
       error: (errore) => {
@@ -155,6 +169,17 @@ export class RegistrazioneCerComponent {
       horizontalPosition: 'end',
       verticalPosition: 'top',
     });
+  }
+
+  private aggiornaValidazioneSpecForma(): void {
+    if (this.mostraSpecFormaGiuridica) {
+      this.specFormaGiuridica.setValidators([Validators.required, Validators.minLength(2)]);
+    } else {
+      this.specFormaGiuridica.clearValidators();
+      this.specFormaGiuridica.setValue('', { emitEvent: false });
+    }
+
+    this.specFormaGiuridica.updateValueAndValidity({ emitEvent: false });
   }
 
 }

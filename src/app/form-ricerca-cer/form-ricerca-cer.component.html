@@ -36,14 +36,33 @@
             </mat-select>
           </mat-form-field>
 
+          <mat-form-field appearance="outline" *ngIf="mostraSpecFormaGiuridica; else campoComune">
+            <mat-label>Specifiche forma giuridica</mat-label>
+            <input matInput formControlName="specFormaGiuridica" type="text" />
+          </mat-form-field>
+
+          <ng-template #campoComune>
+            <mat-form-field appearance="outline">
+              <mat-label>Comune</mat-label>
+              <input matInput formControlName="comune" type="text" />
+            </mat-form-field>
+          </ng-template>
+        </div>
+
+        <div class="riga-form" *ngIf="mostraSpecFormaGiuridica">
           <mat-form-field appearance="outline">
             <mat-label>Comune</mat-label>
             <input matInput formControlName="comune" type="text" />
           </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" type="text" />
+          </mat-form-field>
         </div>
 
         <div class="riga-form">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" *ngIf="!mostraSpecFormaGiuridica">
             <mat-label>Provincia</mat-label>
             <input matInput formControlName="provincia" type="text" />
           </mat-form-field>
@@ -68,7 +87,13 @@
       <div class="risultati-ricerca">
         <h3>Risultati</h3>
 
+        <div class="stato-caricamento" *ngIf="caricamento">
+          <mat-spinner diameter="34"></mat-spinner>
+          <span>Caricamento dati in corso...</span>
+        </div>
+
         <app-tabella-cer
+          *ngIf="!caricamento && ricercaEseguita"
           class="risultato-item"
           [risultatiFiltrati]="risultatiFiltrati"
         >
