@@ -19,10 +19,21 @@
         (ngSubmit)="inviaModulo()"
         class="form-dati-energetici"
       >
+        <input type="hidden" formControlName="idCer" />
+        <input type="hidden" formControlName="idConfigurazione" />
+        <input type="hidden" formControlName="codiceCabina" />
+
         <div class="riga-form">
           <mat-form-field appearance="outline">
-            <mat-label>ID CER</mat-label>
-            <input matInput type="number" min="1" formControlName="idCer" />
+            <mat-label>CER</mat-label>
+            <mat-select
+              [value]="campo('idCer').value"
+              (selectionChange)="aggiornaCerSelezionata($event.value)"
+            >
+              <mat-option *ngFor="let cer of cerDisponibili" [value]="cer.idCer">
+                {{ cer.ragioneSociale }}
+              </mat-option>
+            </mat-select>
             <mat-error *ngIf="campo('idCer').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>
@@ -32,24 +43,23 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>ID configurazione</mat-label>
-            <input matInput type="number" min="1" formControlName="idConfigurazione" />
+            <mat-label>Codice cabina</mat-label>
+            <mat-select
+              [value]="campo('idConfigurazione').value"
+              (selectionChange)="aggiornaConfigurazioneSelezionata($event.value)"
+            >
+              <mat-option
+                *ngFor="let configurazione of configurazioniFiltrate()"
+                [value]="idConfigurazione(configurazione)"
+              >
+                {{ codiceCabinaConfigurazione(configurazione) }}
+              </mat-option>
+            </mat-select>
             <mat-error *ngIf="campo('idConfigurazione').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>
             <mat-error *ngIf="campo('idConfigurazione').hasError('min')">
               Inserire un valore maggiore di zero.
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Codice cabina</mat-label>
-            <input matInput formControlName="codiceCabina" />
-            <mat-error *ngIf="campo('codiceCabina').hasError('required')">
-              Il campo e obbligatorio.
-            </mat-error>
-            <mat-error *ngIf="campo('codiceCabina').hasError('pattern')">
-              Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
             </mat-error>
           </mat-form-field>
         </div>

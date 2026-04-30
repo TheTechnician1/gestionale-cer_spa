@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatiEnergeticiService } from '../core/services/dati-energetici.service';
 import { NotificheService } from '../core/services/notifiche.service';
+import { ConfigurazioneCabina, GetListaCER } from '../core/interfaces/user.model';
+import { CerService } from '../core/services/cer.service';
+import { ConfigurazioneCabinaService } from '../core/services/configurazione-cabina.service';
 
 @Component({
   selector: 'app-form-dati-energetici',
@@ -15,11 +18,15 @@ export class FormDatiEnergeticiComponent implements OnInit {
   idDati: number | null = null;
   salvataggioInCorso = false;
   caricamento = false;
+  cerDisponibili: GetListaCER[] = [];
+  configurazioniDisponibili: ConfigurazioneCabina[] = [];
 
   readonly statiScheda = ['Active', 'Disabled'];
 
   constructor(
     private datiEnergeticiService: DatiEnergeticiService,
+    private cerService: CerService,
+    private configurazioneService: ConfigurazioneCabinaService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
@@ -32,6 +39,8 @@ export class FormDatiEnergeticiComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.idDati = id || null;
     this.configuraCalcoloAutomaticoCo2();
+    this.caricaCerDisponibili();
+    this.caricaConfigurazioniDisponibili();
 
     if (!this.idDati) {
       return;
@@ -41,6 +50,7 @@ export class FormDatiEnergeticiComponent implements OnInit {
     this.datiEnergeticiService.visualizza(this.idDati).subscribe({
       next: (dati) => {
         this.datiEnergeticiService.popolaForm(this.formDatiEnergetici, dati);
+        this.caricaConfigurazioniDisponibili(dati.idCer);
         this.caricamento = false;
       },
       error: (errore) => {
@@ -107,6 +117,52 @@ export class FormDatiEnergeticiComponent implements OnInit {
     return this.formDatiEnergetici.get(nome) as FormControl;
   }
 
+  configurazioniFiltrate(): ConfigurazioneCabina[] {
+    const idCer = Number(this.campo('idCer').value);
+
+    if (!idCer) {
+      return this.configurazioniDisponibili;
+    }
+
+    return this.configurazioniDisponibili.filter(
+      (configurazione) =>
+        configurazione.idCer === idCer || configurazione.cer?.idCer === idCer
+    );
+  }
+
+  codiceCabinaConfigurazione(configurazione: ConfigurazioneCabina): string {
+    return this.configurazioneService.codiceCabina(configurazione);
+  }
+
+  idConfigurazione(configurazione: ConfigurazioneCabina): number | null {
+    return this.configurazioneService.idConfigurazione(configurazione);
+  }
+
+  aggiornaCerSelezionata(idCer: number): void {
+    this.formDatiEnergetici.patchValue({
+      idCer,
+      idConfigurazione: null,
+      codiceCabina: '',
+    });
+    this.caricaConfigurazioniDisponibili(idCer);
+  }
+
+  aggiornaConfigurazioneSelezionata(idConfigurazione: number): void {
+    const configurazione = this.configurazioniDisponibili.find(
+      (item) => this.idConfigurazione(item) === idConfigurazione
+    );
+
+    if (!configurazione) {
+      return;
+    }
+
+    this.formDatiEnergetici.patchValue({
+      idConfigurazione,
+      idCer: configurazione.idCer ?? configurazione.cer?.idCer ?? this.campo('idCer').value,
+      codiceCabina: this.codiceCabinaConfigurazione(configurazione),
+    });
+  }
+
   aggiornaRiduzioneCo2(): void {
     this.formDatiEnergetici.patchValue({
       ridEmCo2: this.datiEnergeticiService.calcolaRiduzioneCo2(this.formDatiEnergetici),
@@ -136,6 +192,45 @@ export class FormDatiEnergeticiComponent implements OnInit {
         this.aggiornaRiduzioneCo2();
       }
     });
+  }
+
+  private caricaCerDisponibili(): void {
+    this.cerService.ricercaCer().subscribe({
+      next: (cer) => {
+        this.cerDisponibili = cer.filter((elemento) => !!elemento.idCer);
+      },
+      error: () => {
+        this.cerDisponibili = [];
+      },
+    });
+  }
+
+  private caricaConfigurazioniDisponibili(idCer?: number): void {
+    this.configurazioneService.ricerca({ idCer: idCer ?? null }).subscribe({
+      next: (configurazioni) => {
+        this.configurazioneService.arricchisciConDettaglio(configurazioni).subscribe({
+          next: (dettagli) => {
+            this.configurazioniDisponibili = this.filtraConfigurazioniAttive(dettagli);
+          },
+          error: () => {
+            this.configurazioniDisponibili = this.filtraConfigurazioniAttive(configurazioni);
+          },
+        });
+      },
+      error: () => {
+        this.configurazioniDisponibili = [];
+      },
+    });
+  }
+
+  private filtraConfigurazioniAttive(
+    configurazioni: ConfigurazioneCabina[]
+  ): ConfigurazioneCabina[] {
+    return configurazioni.filter(
+      (configurazione) =>
+        !!this.idConfigurazione(configurazione) &&
+        !this.configurazioneService.configurazioneDisattiva(configurazione)
+    );
   }
 
   private mostraMessaggio(messaggio: string): void {

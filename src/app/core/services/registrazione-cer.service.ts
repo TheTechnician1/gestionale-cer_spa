@@ -12,6 +12,7 @@ import { ApiService } from './api.service';
 import { AnagraficaCER } from '../interfaces/user.model';
 
 export interface RegistrazioneCerPayload {
+  idCer: number;
   ragioneSociale: string;
   codiceFiscale: string;
   partitaIVA: string;
@@ -83,6 +84,7 @@ export class RegistrazioneCerService {
 
   normalizzaPayload(form: FormGroup): RegistrazioneCerPayload {
     return {
+      idCer: 0,
       ragioneSociale: this.pulisci(form.get('ragioneSociale')?.value),
       codiceFiscale: this.pulisci(form.get('codiceFiscale')?.value).toUpperCase(),
       partitaIVA: this.pulisci(form.get('partitaIVA')?.value),
