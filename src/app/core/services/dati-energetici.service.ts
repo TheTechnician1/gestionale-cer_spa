@@ -96,8 +96,8 @@ export class DatiEnergeticiService {
 
   normalizzaRicerca(form: FormGroup): RicercaDatiEnergeticiRequest {
     return {
-      daAnno: this.pulisci(form.get('daAnno')?.value),
-      getaAnno: this.pulisci(form.get('getaAnno')?.value),
+      daAnno: this.annoNonNegativo(form.get('daAnno')?.value),
+      getaAnno: this.annoNonNegativo(form.get('getaAnno')?.value),
       partitaIva: this.pulisci(form.get('partitaIva')?.value),
       codiceCabina: this.pulisci(form.get('codiceCabina')?.value).toUpperCase(),
       stato: this.normalizzaStatoScheda(form.get('stato')?.value),
@@ -112,13 +112,13 @@ export class DatiEnergeticiService {
       idCer: this.numero(form.get('idCer')?.value),
       idConfigurazione: this.numero(form.get('idConfigurazione')?.value),
       anno: this.pulisci(form.get('anno')?.value),
-      geteProdotta: this.numero(form.get('geteProdotta')?.value),
-      getePrelevata: this.numero(form.get('getePrelevata')?.value),
-      geteImmessa: this.numero(form.get('geteImmessa')?.value),
-      geteCondivisa: this.numero(form.get('geteCondivisa')?.value),
-      geteAutoCons: this.numero(form.get('geteAutoCons')?.value),
-      tariffaPremium: this.numero(form.get('tariffaPremium')?.value),
-      corrPremioOtt: this.numero(form.get('corrPremioOtt')?.value),
+      geteProdotta: this.numeroNonNegativo(form.get('geteProdotta')?.value),
+      getePrelevata: this.numeroNonNegativo(form.get('getePrelevata')?.value),
+      geteImmessa: this.numeroNonNegativo(form.get('geteImmessa')?.value),
+      geteCondivisa: this.numeroNonNegativo(form.get('geteCondivisa')?.value),
+      geteAutoCons: this.numeroNonNegativo(form.get('geteAutoCons')?.value),
+      tariffaPremium: this.numeroNonNegativo(form.get('tariffaPremium')?.value),
+      corrPremioOtt: this.numeroNonNegativo(form.get('corrPremioOtt')?.value),
       ridEmCo2: this.pulisci(form.get('ridEmCo2')?.value),
       statoScheda: this.normalizzaStatoScheda(form.get('statoScheda')?.value) || 'N',
     };
@@ -146,8 +146,8 @@ export class DatiEnergeticiService {
   }
 
   calcolaRiduzioneCo2(form: FormGroup): string {
-    const energiaProdotta = this.numero(form.get('geteProdotta')?.value);
-    const fattoreEmissione = this.numero(form.get('fattoreEmissioneCo2')?.value);
+    const energiaProdotta = this.numeroNonNegativo(form.get('geteProdotta')?.value);
+    const fattoreEmissione = this.numeroNonNegativo(form.get('fattoreEmissioneCo2')?.value);
     return String(Math.round(energiaProdotta * fattoreEmissione));
   }
 
@@ -222,7 +222,7 @@ export class DatiEnergeticiService {
   }
 
   private aggiornaFattoreEmissione(form: FormGroup): void {
-    const valore = this.numero(form.get('fattoreEmissioneCo2')?.value);
+    const valore = this.numeroNonNegativo(form.get('fattoreEmissioneCo2')?.value);
     localStorage.setItem(this.fattoreEmissioneKey, String(valore));
   }
 
@@ -230,9 +230,19 @@ export class DatiEnergeticiService {
     return typeof value === 'string' ? value.trim() : '';
   }
 
+  private annoNonNegativo(value: unknown): string {
+    const pulito = typeof value === 'number' ? String(value) : this.pulisci(value);
+    const numero = Number(pulito);
+    return !pulito || !Number.isFinite(numero) || numero < 0 ? '' : pulito;
+  }
+
   private numero(value: unknown): number {
     const numero = Number(value);
     return Number.isFinite(numero) ? numero : 0;
+  }
+
+  private numeroNonNegativo(value: unknown): number {
+    return Math.max(0, this.numero(value));
   }
 
   private numeroONull(value: unknown): number | null {

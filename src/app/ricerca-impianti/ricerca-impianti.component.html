@@ -10,12 +10,12 @@
         <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Anno attivazione da</mat-label>
-            <input matInput type="number" formControlName="annoAttivazioneDa" />
+            <input matInput type="number" min="0" formControlName="annoAttivazioneDa" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Anno attivazione a</mat-label>
-            <input matInput type="number" formControlName="annoAttivazioneA" />
+            <input matInput type="number" min="0" formControlName="annoAttivazioneA" />
           </mat-form-field>
         </div>
 
@@ -223,7 +223,7 @@
       <div class="riga-form">
         <mat-form-field appearance="outline">
           <mat-label>ID configurazione</mat-label>
-          <input matInput type="number" formControlName="idConfigurazione" />
+          <input matInput type="number" min="1" formControlName="idConfigurazione" />
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Codice cabina</mat-label>

@@ -25,9 +25,8 @@ export class RicercaConfigurazioniComponent implements OnInit, AfterViewInit {
   ricercaEseguita = false;
 
   readonly displayedColumns = [
-    'idConfig',
-    'idCer',
     'codiceCabina',
+    'cer',
     'annoAttivazione',
     'stato',
     'azioni',
@@ -98,8 +97,11 @@ export class RicercaConfigurazioniComponent implements OnInit, AfterViewInit {
 
   resetFiltri(): void {
     this.formRicerca.reset({
-      idConfig: null,
-      idCer: null,
+      daAnno: null,
+      getaAnno: null,
+      ragSociale: '',
+      partitaIva: '',
+      descRegione: '',
       codiceCabina: '',
       annoAttivazione: null,
     });
@@ -242,6 +244,10 @@ export class RicercaConfigurazioniComponent implements OnInit, AfterViewInit {
 
   codiceCabina(configurazione: ConfigurazioneCabina): string {
     return this.configurazioneService.codiceCabina(configurazione);
+  }
+
+  ragioneSocialeCer(configurazione: ConfigurazioneCabina): string {
+    return configurazione.cer?.ragioneSociale || '-';
   }
 
   impianti(configurazione: ConfigurazioneCabina): ImpiantoCER[] {

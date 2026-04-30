@@ -30,3 +30,52 @@ table {
 .azioni-tabella mat-icon {
   margin-right: 6px;
 }
+
+.titolo-modifica-cer {
+  color: #0277bd;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.contenuto-modifica-cer {
+  background-color: #f4fbff;
+  border-top: 1px solid #b3e5fc;
+  padding-top: 18px;
+}
+
+.form-registrazione-cer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sezione-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sezione-form h3 {
+  margin: 4px 0 0;
+  color: #0277bd;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.riga-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.campo-largo {
+  width: 100%;
+}
+
+.testo-maiuscolo {
+  text-transform: uppercase;
+}
+
+mat-form-field {
+  width: 100%;
+}

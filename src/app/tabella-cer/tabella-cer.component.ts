@@ -10,7 +10,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -62,17 +62,25 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
     private formBuilder: FormBuilder
   ) {
     this.formModificaCer = this.formBuilder.group({
-      ragioneSociale: [''],
-      codiceFiscale: [''],
-      partitaIVA: [''],
+      idCer: [null],
+      ragioneSociale: ['', [Validators.required, Validators.minLength(2)]],
+      codiceFiscale: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/),
+        ],
+      ],
+      partitaIVA: ['', [Validators.pattern(/^[0-9]{11}$/)]],
       formaGiuridica: [''],
-      comuneSedeLegale: [''],
-      provinciaSedeLegale: [''],
-      regioneLegale: [''],
-      referente: [''],
-      telefono: [''],
-      email: [''],
-      pec: [''],
+      specFormaGiuridica: [''],
+      comuneSedeLegale: ['', [Validators.required]],
+      provinciaSedeLegale: ['', [Validators.required, Validators.pattern(/^[A-Z]{2}$/)]],
+      regioneLegale: ['', [Validators.required]],
+      referente: ['', [Validators.required, Validators.minLength(2)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^(0|3)[0-9]{8,9}$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      pec: ['', [Validators.email]],
       sitoWeb: [''],
     });
   }
@@ -82,6 +90,12 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
 
   ngOnInit(): void {
     this.aggiornaColonne();
+    this.formModificaCer.get('codiceFiscale')?.valueChanges.subscribe((value) =>
+      this.maiuscolo(this.campoModifica('codiceFiscale'), value)
+    );
+    this.formModificaCer.get('provinciaSedeLegale')?.valueChanges.subscribe((value) =>
+      this.maiuscolo(this.campoModifica('provinciaSedeLegale'), value)
+    );
 
     if (!this.risultatiFiltrati) {
       this.getTabellaCER();
@@ -201,13 +215,47 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
   apriModificaCer(cer: GetListaCER, template: TemplateRef<unknown>): void {
     this.cerInModifica = cer;
     this.formModificaCer.patchValue(cer);
-    this.dialog.open(template, { width: '860px', maxWidth: '95vw' });
+    this.dialog.open(template, { width: '920px', maxWidth: '95vw' });
   }
 
-  salvaModificaCerNonDisponibile(): void {
-    this.mostraMessaggio(
-      'Modifica CER non disponibile: nel contratto OpenAPI non esiste un endpoint /cer/modifica.'
-    );
+  salvaModificaCer(): void {
+    if (this.formModificaCer.invalid || !this.cerInModifica?.idCer) {
+      this.formModificaCer.markAllAsTouched();
+      this.mostraMessaggio('Correggi i campi evidenziati prima di salvare.');
+      return;
+    }
+
+    const payload = {
+      ...this.cerInModifica,
+      ...this.formModificaCer.getRawValue(),
+      idCer: this.cerInModifica.idCer,
+      codiceFiscale: this.campoModifica('codiceFiscale').value?.trim().toUpperCase(),
+      provinciaSedeLegale: this.campoModifica('provinciaSedeLegale').value?.trim().toUpperCase(),
+      email: this.campoModifica('email').value?.trim().toLowerCase(),
+      pec: this.campoModifica('pec').value?.trim().toLowerCase(),
+      flgCanc: this.cerInModifica.flgCanc ?? 'N',
+    } as GetListaCER;
+
+    this.cerService.modificaCer(payload).subscribe({
+      next: (risposta) => {
+        this.dataSource.data = this.dataSource.data.map((cer) =>
+          cer.idCer === payload.idCer ? payload : cer
+        );
+        this.dialog.closeAll();
+        this.notificheService.notificaAdmin(
+          'CER modificata',
+          `Modificata CER ${payload.ragioneSociale}.`
+        );
+        this.mostraMessaggio(risposta || 'CER modificata correttamente.');
+      },
+      error: (errore) => {
+        this.mostraMessaggio(errore?.error || 'Errore durante la modifica della CER.');
+      },
+    });
+  }
+
+  campoModifica(nome: string): FormControl {
+    return this.formModificaCer.get(nome) as FormControl;
   }
 
   private aggiornaColonne(): void {
@@ -235,5 +283,16 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
       horizontalPosition: 'end',
       verticalPosition: 'top',
     });
+  }
+
+  private maiuscolo(control: FormControl, value: unknown): void {
+    if (typeof value !== 'string') {
+      return;
+    }
+
+    const normalizzato = value.toUpperCase();
+    if (value !== normalizzato) {
+      control.setValue(normalizzato, { emitEvent: false });
+    }
   }
  }

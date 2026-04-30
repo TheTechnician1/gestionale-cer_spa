@@ -122,57 +122,117 @@
 </div>
 
 <ng-template #modificaCer>
-  <h2 mat-dialog-title>Modifica CER</h2>
-  <mat-dialog-content>
-    <form [formGroup]="formModificaCer" class="form-ricerca">
-      <div class="riga-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Ragione sociale</mat-label>
-          <input matInput formControlName="ragioneSociale" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Codice fiscale</mat-label>
-          <input matInput formControlName="codiceFiscale" />
+  <h2 mat-dialog-title class="titolo-modifica-cer">Modifica CER</h2>
+  <mat-dialog-content class="contenuto-modifica-cer">
+    <form [formGroup]="formModificaCer" class="form-registrazione-cer">
+      <input type="hidden" formControlName="idCer" />
+
+      <div class="sezione-form">
+        <h3>Dati anagrafici</h3>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Ragione sociale</mat-label>
+            <input matInput formControlName="ragioneSociale" />
+            <mat-error *ngIf="campoModifica('ragioneSociale').invalid">
+              Inserire una ragione sociale valida.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Codice fiscale</mat-label>
+            <input matInput formControlName="codiceFiscale" maxlength="16" class="testo-maiuscolo" />
+            <mat-error *ngIf="campoModifica('codiceFiscale').invalid">
+              Inserire un codice fiscale valido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA</mat-label>
+            <input matInput formControlName="partitaIVA" maxlength="11" />
+            <mat-error *ngIf="campoModifica('partitaIVA').invalid">
+              Inserire una partita IVA di 11 cifre.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Forma giuridica</mat-label>
+            <input matInput formControlName="formaGiuridica" />
+          </mat-form-field>
+        </div>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Specifiche forma giuridica</mat-label>
+            <input matInput formControlName="specFormaGiuridica" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Referente</mat-label>
+            <input matInput formControlName="referente" />
+            <mat-error *ngIf="campoModifica('referente').invalid">
+              Inserire un referente valido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="sezione-form">
+        <h3>Sede legale e contatti</h3>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Comune</mat-label>
+            <input matInput formControlName="comuneSedeLegale" />
+            <mat-error *ngIf="campoModifica('comuneSedeLegale').invalid">
+              Il comune e obbligatorio.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provinciaSedeLegale" maxlength="2" class="testo-maiuscolo" />
+            <mat-error *ngIf="campoModifica('provinciaSedeLegale').invalid">
+              Inserire la sigla provincia.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="regioneLegale" />
+            <mat-error *ngIf="campoModifica('regioneLegale').invalid">
+              La regione e obbligatoria.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Telefono</mat-label>
+            <input matInput formControlName="telefono" />
+            <mat-error *ngIf="campoModifica('telefono').invalid">
+              Inserire un telefono valido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" />
+            <mat-error *ngIf="campoModifica('email').invalid">
+              Inserire un'email valida.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>PEC</mat-label>
+            <input matInput formControlName="pec" type="email" />
+            <mat-error *ngIf="campoModifica('pec').invalid">
+              Inserire una PEC valida.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="campo-largo">
+          <mat-label>Sito web</mat-label>
+          <input matInput formControlName="sitoWeb" />
         </mat-form-field>
       </div>
-      <div class="riga-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Partita IVA</mat-label>
-          <input matInput formControlName="partitaIVA" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Forma giuridica</mat-label>
-          <input matInput formControlName="formaGiuridica" />
-        </mat-form-field>
-      </div>
-      <div class="riga-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Comune</mat-label>
-          <input matInput formControlName="comuneSedeLegale" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Provincia</mat-label>
-          <input matInput formControlName="provinciaSedeLegale" />
-        </mat-form-field>
-      </div>
-      <div class="riga-form">
-        <mat-form-field appearance="outline">
-          <mat-label>Regione</mat-label>
-          <input matInput formControlName="regioneLegale" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Referente</mat-label>
-          <input matInput formControlName="referente" />
-        </mat-form-field>
-      </div>
-      <p class="cella-vuota">
-        Il salvataggio della modifica CER richiede un endpoint backend di modifica non presente nell'OpenAPI.
-      </p>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-stroked-button mat-dialog-close>Annulla</button>
-    <button mat-raised-button color="primary" type="button" (click)="salvaModificaCerNonDisponibile()">
+    <button mat-raised-button color="primary" type="button" (click)="salvaModificaCer()">
       Salva
     </button>
   </mat-dialog-actions>

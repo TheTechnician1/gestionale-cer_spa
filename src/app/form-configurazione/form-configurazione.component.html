@@ -19,21 +19,16 @@
         (ngSubmit)="inviaModulo()"
         class="form-configurazione"
       >
+        <input type="hidden" formControlName="idConfig" />
+
         <div class="riga-form">
           <mat-form-field appearance="outline">
-            <mat-label>ID configurazione</mat-label>
-            <input matInput type="number" formControlName="idConfig" />
-            <mat-error *ngIf="campo('idConfig').hasError('required')">
-              Il campo e obbligatorio.
-            </mat-error>
-            <mat-error *ngIf="campo('idConfig').hasError('min')">
-              Inserire un valore non negativo.
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>ID CER</mat-label>
-            <input matInput type="number" formControlName="idCer" />
+            <mat-label>CER</mat-label>
+            <mat-select formControlName="idCer">
+              <mat-option *ngFor="let cer of cerDisponibili" [value]="cer.idCer">
+                {{ cer.ragioneSociale }}
+              </mat-option>
+            </mat-select>
             <mat-error *ngIf="campo('idCer').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>
@@ -44,9 +39,6 @@
               CER non trovata o non valida.
             </mat-error>
           </mat-form-field>
-        </div>
-
-        <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Codice cabina</mat-label>
             <input matInput formControlName="codiceCabina" maxlength="11" class="testo-maiuscolo" />
@@ -57,10 +49,12 @@
               Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
             </mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Anno di attivazione</mat-label>
-            <input matInput type="number" formControlName="annoAttivazione" />
+            <input matInput type="number" min="1900" formControlName="annoAttivazione" />
             <mat-error *ngIf="campo('annoAttivazione').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>

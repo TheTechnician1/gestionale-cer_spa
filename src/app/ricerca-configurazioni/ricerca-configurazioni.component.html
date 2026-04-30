@@ -2,23 +2,11 @@
   <mat-card class="scheda-configurazioni">
     <mat-card-header>
       <mat-card-title>Configurazioni cabina energetica</mat-card-title>
-      <mat-card-subtitle>Filtra per CER, identificativo, anno e codice cabina</mat-card-subtitle>
+      <mat-card-subtitle>Filtra per CER, periodo, regione e codice cabina</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="formRicerca" (ngSubmit)="cerca()" class="form-ricerca">
-        <div class="riga-form">
-          <mat-form-field appearance="outline">
-            <mat-label>ID configurazione</mat-label>
-            <input matInput type="text" inputmode="numeric" formControlName="idConfig" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>ID CER</mat-label>
-            <input matInput type="text" inputmode="numeric" formControlName="idCer" />
-          </mat-form-field>
-        </div>
-
         <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Codice cabina</mat-label>
@@ -26,8 +14,37 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
+            <mat-label>Ragione sociale CER</mat-label>
+            <input matInput formControlName="ragSociale" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Partita IVA CER</mat-label>
+            <input matInput formControlName="partitaIva" maxlength="11" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Regione</mat-label>
+            <input matInput formControlName="descRegione" />
+          </mat-form-field>
+        </div>
+
+        <div class="riga-form">
+          <mat-form-field appearance="outline">
             <mat-label>Anno attivazione</mat-label>
-            <input matInput type="text" inputmode="numeric" formControlName="annoAttivazione" />
+            <input matInput type="number" min="0" formControlName="annoAttivazione" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Anno da</mat-label>
+            <input matInput type="number" min="0" formControlName="daAnno" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Anno a</mat-label>
+            <input matInput type="number" min="0" formControlName="getaAnno" />
           </mat-form-field>
         </div>
 
@@ -65,38 +82,33 @@
 
       <div class="tabella-configurazioni" *ngIf="!caricamento && dataSource.data.length > 0">
         <table mat-table [dataSource]="dataSource" matSort>
-          <ng-container matColumnDef="idConfig">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <ng-container matColumnDef="codiceCabina">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Codice cabina</th>
             <td mat-cell *matCellDef="let configurazione">
               <a
                 *ngIf="idCerConfigurazione(configurazione); else idConfigTesto"
                 [routerLink]="['/tabella-cer', idCerConfigurazione(configurazione)]"
                 [queryParams]="{ configurazioneId: idConfigurazione(configurazione) }"
               >
-                {{ idConfigurazione(configurazione) }}
+                {{ codiceCabina(configurazione) }}
               </a>
               <ng-template #idConfigTesto>
-                {{ idConfigurazione(configurazione) }}
+                {{ codiceCabina(configurazione) }}
               </ng-template>
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="idCer">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID CER</th>
+          <ng-container matColumnDef="cer">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>CER</th>
             <td mat-cell *matCellDef="let configurazione">
               <a
                 *ngIf="idCerConfigurazione(configurazione); else idCerTesto"
                 [routerLink]="['/tabella-cer', idCerConfigurazione(configurazione)]"
               >
-                {{ idCerConfigurazione(configurazione) }}
+                {{ ragioneSocialeCer(configurazione) }}
               </a>
               <ng-template #idCerTesto>-</ng-template>
             </td>
-          </ng-container>
-
-          <ng-container matColumnDef="codiceCabina">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Codice cabina</th>
-            <td mat-cell *matCellDef="let configurazione">{{ codiceCabina(configurazione) }}</td>
           </ng-container>
 
           <ng-container matColumnDef="annoAttivazione">
@@ -169,7 +181,7 @@
     <mat-dialog-content>
       <dl class="lista-dati">
         <div>
-          <dt>ID configurazione</dt>
+          <dt>Codice cabina</dt>
           <dd>
             <a
               *ngIf="idCerConfigurazione(configurazioneSelezionata); else idConfigDialogTesto"
@@ -177,29 +189,25 @@
               [queryParams]="{ configurazioneId: idConfigurazione(configurazioneSelezionata) }"
               mat-dialog-close
             >
-              {{ idConfigurazione(configurazioneSelezionata) }}
+              {{ codiceCabina(configurazioneSelezionata) }}
             </a>
             <ng-template #idConfigDialogTesto>
-              {{ idConfigurazione(configurazioneSelezionata) }}
+              {{ codiceCabina(configurazioneSelezionata) }}
             </ng-template>
           </dd>
         </div>
         <div>
-          <dt>ID CER</dt>
+          <dt>CER</dt>
           <dd>
             <a
               *ngIf="idCerConfigurazione(configurazioneSelezionata); else idCerDialogTesto"
               [routerLink]="['/tabella-cer', idCerConfigurazione(configurazioneSelezionata)]"
               mat-dialog-close
             >
-              {{ idCerConfigurazione(configurazioneSelezionata) }}
+              {{ ragioneSocialeCer(configurazioneSelezionata) }}
             </a>
             <ng-template #idCerDialogTesto>-</ng-template>
           </dd>
-        </div>
-        <div>
-          <dt>CER</dt>
-          <dd>{{ configurazioneSelezionata.cer?.ragioneSociale || '-' }}</dd>
         </div>
         <div>
           <dt>Stato</dt>
@@ -241,13 +249,11 @@
   <mat-dialog-content>
     <form [formGroup]="formModifica" class="form-ricerca">
       <div class="riga-form">
+        <input type="hidden" formControlName="idConfig" />
+        <input type="hidden" formControlName="idCer" />
         <mat-form-field appearance="outline">
-          <mat-label>ID configurazione</mat-label>
-          <input matInput type="number" formControlName="idConfig" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>ID CER</mat-label>
-          <input matInput type="number" formControlName="idCer" />
+          <mat-label>CER</mat-label>
+          <input matInput [value]="configurazioneInModifica ? ragioneSocialeCer(configurazioneInModifica) : ''" disabled />
         </mat-form-field>
       </div>
       <div class="riga-form">
@@ -257,7 +263,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Anno attivazione</mat-label>
-          <input matInput type="number" formControlName="annoAttivazione" />
+          <input matInput type="number" min="1900" formControlName="annoAttivazione" />
         </mat-form-field>
       </div>
     </form>

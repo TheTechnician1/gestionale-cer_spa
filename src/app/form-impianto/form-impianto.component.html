@@ -19,26 +19,27 @@
         (ngSubmit)="inviaModulo()"
         class="form-impianto"
       >
+        <input type="hidden" formControlName="codiceCabina" />
+
         <div class="riga-form">
           <mat-form-field appearance="outline">
-            <mat-label>ID configurazione</mat-label>
-            <input matInput type="number" formControlName="idConfigurazione" />
+            <mat-label>Configurazione</mat-label>
+            <mat-select
+              formControlName="idConfigurazione"
+              (selectionChange)="aggiornaConfigurazioneSelezionata($event.value)"
+            >
+              <mat-option
+                *ngFor="let configurazione of configurazioniDisponibili"
+                [value]="idConfigurazione(configurazione)"
+              >
+                {{ codiceCabinaConfigurazione(configurazione) }}
+              </mat-option>
+            </mat-select>
             <mat-error *ngIf="campo('idConfigurazione').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>
             <mat-error *ngIf="campo('idConfigurazione').hasError('min')">
               Inserire un valore maggiore di zero.
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Codice cabina</mat-label>
-            <input matInput formControlName="codiceCabina" />
-            <mat-error *ngIf="campo('codiceCabina').hasError('required')">
-              Il campo e obbligatorio.
-            </mat-error>
-            <mat-error *ngIf="campo('codiceCabina').hasError('pattern')">
-              Il codice cabina deve contenere 11 caratteri alfanumerici maiuscoli.
             </mat-error>
           </mat-form-field>
 
@@ -87,7 +88,7 @@
         <div class="riga-form">
           <mat-form-field appearance="outline">
             <mat-label>Potenza nominale kW</mat-label>
-            <input matInput type="number" step="0.01" formControlName="preNom" />
+            <input matInput type="number" min="0.01" step="0.01" formControlName="preNom" />
             <mat-error *ngIf="campo('preNom').hasError('required')">
               Il campo e obbligatorio.
             </mat-error>
@@ -98,7 +99,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Capacita accumulo kWh</mat-label>
-            <input matInput type="number" step="0.01" formControlName="capAccumulo" />
+            <input matInput type="number" min="0" step="0.01" formControlName="capAccumulo" />
           </mat-form-field>
 
           <mat-checkbox formControlName="flgAccumulo">

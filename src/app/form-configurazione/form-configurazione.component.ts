@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfigurazioneCabinaService } from '../core/services/configurazione-cabina.service';
 import { CerService } from '../core/services/cer.service';
 import { NotificheService } from '../core/services/notifiche.service';
+import { GetListaCER } from '../core/interfaces/user.model';
 
 @Component({
   selector: 'app-form-configurazione',
@@ -16,6 +17,7 @@ export class FormConfigurazioneComponent implements OnInit {
   idConfig: number | null = null;
   salvataggioInCorso = false;
   caricamento = false;
+  cerDisponibili: GetListaCER[] = [];
 
   constructor(
     private configurazioneService: ConfigurazioneCabinaService,
@@ -29,6 +31,8 @@ export class FormConfigurazioneComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.caricaCerDisponibili();
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.idConfig = id || null;
     if (this.idConfig) {
@@ -88,6 +92,21 @@ export class FormConfigurazioneComponent implements OnInit {
 
   campo(nome: string): FormControl {
     return this.formConfigurazione.get(nome) as FormControl;
+  }
+
+  nomeCer(idCer: number | null | undefined): string {
+    return this.cerDisponibili.find((cer) => cer.idCer === idCer)?.ragioneSociale || '';
+  }
+
+  private caricaCerDisponibili(): void {
+    this.cerService.ricercaCer().subscribe({
+      next: (cer) => {
+        this.cerDisponibili = cer.filter((elemento) => !!elemento.idCer);
+      },
+      error: () => {
+        this.cerDisponibili = [];
+      },
+    });
   }
 
   private verificaCerESalva(): void {
