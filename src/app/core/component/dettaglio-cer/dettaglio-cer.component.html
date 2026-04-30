@@ -40,7 +40,7 @@
           <div class="field-group">
             <mat-form-field appearance="fill" class="mb-15">
               <mat-label>Stato CER</mat-label>
-              <mat-select formControlName="flgCancelllazione">
+              <mat-select formControlName="flgCancellazione" disable>
                 <mat-option *ngFor="let stato of stati" [value]="stato.value">
                   {{stato.viewValue}}
                 </mat-option>
@@ -82,24 +82,15 @@
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Comune sede legale</mat-label>
-              <mat-select formControlName="comuneLegale" aria-label="comuneLegale" required>
-                <mat-option>
-                </mat-option>
-              </mat-select>
+              <input matInput formControlName="comuneLegale" aria-label="comuneLegale">
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Provincia sede legale</mat-label>
-              <mat-select formControlName="provinciaLegale" aria-label="provinciaLegale" required>
-                <mat-option>
-                </mat-option>
-              </mat-select>
+              <input matInput formControlName="provinciaLegale" aria-label="provinciaLegale">
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Regione sede legale</mat-label>
-              <mat-select formControlName="regioneLegale" aria-label="regioneLegale" required>
-                <mat-option>
-                </mat-option>
-              </mat-select>
+              <input matInput formControlName="regioneLegale" aria-label="regioneLegale">
             </mat-form-field>
           </div>
         </div>

@@ -4,14 +4,30 @@
     <div class="flex-col">
       <mat-card>
         <div class="section-box">
-          <div class="section-title">DATI CER</div>
+          <div class="section-title">DATI ENERGETICI</div>
           <div class="field-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Anno</mat-label>
               <input matInput formControlName="anno" aria-label="anno" required>
-                <mat-error *ngIf="datiEnergeticiForm.get('anno')?.invalid && (datiEnergeticiForm.get('anno')?.touched || submitted)">
-                  Campo obbligatorio
-                </mat-error>
+              <mat-error *ngIf="datiEnergeticiForm.get('anno')?.invalid && (datiEnergeticiForm.get('anno')?.touched || submitted)">
+                Campo obbligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="section-box">
+          <div class="section-title">DATI CER</div>
+          <div class="field-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Ragione Sociale</mat-label>
+              <mat-select formControlName="ragSociale">
+                <mat-option *ngFor="let cer of cers" [value]="cer.ragSociale">
+                  {{ cer.ragSociale }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="datiEnergeticiForm.get('ragSociale')?.invalid && (datiEnergeticiForm.get('ragSociale')?.touched || submitted)">
+                Campo obbligatorio
+              </mat-error>
             </mat-form-field>
           </div>
         </div>
@@ -63,6 +79,22 @@
     </div>
     <div class="flex-col">
       <mat-card>
+        <div class="section-box">
+          <div class="section-title">DATI CONFIGURAZIONE</div>
+          <div class="field-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>COD.Cabina</mat-label>
+              <mat-select formControlName="codiceCabina">
+                <mat-option *ngFor="let config of configs" [value]="config.codiceCabina">
+                  {{ config.codiceCabina }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="datiEnergeticiForm.get('codiceCabina')?.invalid && (datiEnergeticiForm.get('codiceCabina')?.touched || submitted)">
+                Campo obbligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         <div class="section-box">
           <div class="section-title">PREMI</div>
           <div class="field-group">

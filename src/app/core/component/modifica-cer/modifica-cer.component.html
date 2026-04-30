@@ -55,12 +55,12 @@
           <div class="field-group">
             <mat-form-field appearance="fill" class="mb-15">
               <mat-label>Stato CER</mat-label>
-              <mat-select formControlName="flgCancelllazione">
+              <mat-select formControlName="flgCancellazione">
                 <mat-option *ngFor="let stato of stati" [value]="stato.value">
                   {{stato.viewValue}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="cerForm.get('flgCancelllazione')?.invalid && (cerForm.get('flgCancelllazione')?.touched || submitted)">
+              <mat-error *ngIf="cerForm.get('flgCancellazione')?.invalid && (cerForm.get('flgCancellazione')?.touched || submitted)">
                   Selezione obbligatoria
                 </mat-error>
             </mat-form-field>

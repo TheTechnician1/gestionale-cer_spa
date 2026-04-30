@@ -15,7 +15,8 @@ export class InserimentoCerComponent {
   constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private cerService: CERService) {}
 
   ngOnInit(): void {
-    this.cerForm =this.fb.group({
+    this.cerForm = this.fb.group({
+      idCer: null,
       ragSociale: ['', [Validators.required]],
       pIva: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
       codFiscale: ['', [Validators.required]],
@@ -29,6 +30,12 @@ export class InserimentoCerComponent {
       provinciaLegale: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       regioneLegale: ['', [Validators.required]],
       flgCancellazione: ['', [Validators.required]],
+    });
+    this.cerForm.get('codFiscale')?.valueChanges.subscribe(value => {
+      const upper = value?.toUpperCase() || '';
+      if (upper !== value) {
+      this.cerForm.get('codFiscale')?.setValue(upper, { emitEvent: false });
+      }
     });
     this.cerForm.enable();
   }

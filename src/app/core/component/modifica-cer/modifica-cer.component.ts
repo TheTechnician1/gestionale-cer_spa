@@ -41,6 +41,12 @@ export class ModificaCerComponent {
       regioneLegale: ['', [Validators.required]],
       flgCancellazione: ['', [Validators.required]],
     });
+    this.cerForm.get('codiceFiscale')?.valueChanges.subscribe(value => {
+      const upper = value?.toUpperCase() || '';
+      if (upper !== value) {
+      this.cerForm.get('codiceFiscale')?.setValue(upper, { emitEvent: false });
+      }
+    });
     this.cerForm.enable();
     this.loadCER(parseInt(id!));
   }
@@ -64,7 +70,7 @@ export class ModificaCerComponent {
           comuneLegale: this.cer.comuneLegale?.descrizione,
           provinciaLegale: this.cer.provinciaLegale?.descrizione,
           regioneLegale: this.cer.regioneLegale?.descrizione,
-          flgCancellazione: this.cer.flgCancellazione
+          flgCancellazione: this.cer.flgCancellazione ? 'attivo' : 'noattivo'
         })
       }
       },

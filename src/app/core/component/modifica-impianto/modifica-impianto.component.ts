@@ -29,13 +29,13 @@ export class ModificaImpiantoComponent implements OnInit {
       capAccumulo: ['', [Validators.required]],
       tipologiaProduttore: ['', [Validators.required]],
       specCatProduttore: ['', [Validators.required]],
-      regione: [''],
-      provincia: [''],
-      comune: [''],
-      indirizzo: [''],
-      civico: [''],
-      cap: [''],
-      sitoInstallazione: ['']
+      regione: ['', [Validators.required]],
+      provincia: ['', [Validators.required]],
+      comune: ['', [Validators.required]],
+      indirizzo: ['', [Validators.required]],
+      civico: ['', [Validators.required]],
+      cap: ['', [Validators.required]],
+      sitoInstallazione: ['', [Validators.required]]
     });
     this.impiantiForm.enable();
     this.loadImpianto(parseInt(id!));

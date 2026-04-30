@@ -18,7 +18,7 @@ export class DettaglioCerComponent implements OnInit {
 
   stati: Stato[] = [
     { value: 'attivo', viewValue: 'Attivo'},
-    { value: 'noattivo', viewValue: 'Non Attivo'}
+    { value: 'nonattivo', viewValue: 'Non Attivo'}
   ]
 
   ngOnInit(): void {
@@ -36,6 +36,7 @@ export class DettaglioCerComponent implements OnInit {
       comuneLegale: ['', [Validators.required]],
       provinciaLegale: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       regioneLegale: ['', [Validators.required]],
+      flgCancellazione: ['', [Validators.required]],
     });
     this.cerForm.disable();
     this.loadCER(parseInt(id!));
@@ -59,7 +60,8 @@ export class DettaglioCerComponent implements OnInit {
           referente: this.cer.referente,
           comuneLegale: this.cer.comuneLegale?.descrizione,
           provinciaLegale: this.cer.provinciaLegale?.descrizione,
-          regioneLegale: this.cer.regioneLegale?.descrizione
+          regioneLegale: this.cer.regioneLegale?.descrizione,
+          flgCancellazione: this.cer.flgCancellazione ? 'attivo' : 'nonattivo'
         })
       }
       },

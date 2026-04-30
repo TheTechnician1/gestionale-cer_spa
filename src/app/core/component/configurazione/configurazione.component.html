@@ -5,7 +5,7 @@
   </h3>
     <button mat-raised-button color="primary" routerLink="inserimento-configurazione">
     <mat-icon>add</mat-icon>
-    Aggiungi Configurazione 
+    Aggiungi Configurazione
   </button>
   </div>
   <div class="filtro" rows="3">
@@ -37,7 +37,7 @@
   </div>
 </div>
 <div class="table">
-  <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
+  <table mat-table [dataSource]="isFiltering ? listaFiltrata : dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8">
     <ng-container matColumnDef="codiceCabina">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="codiceCabina">COD.Cabina</th>
       <td mat-cell *matCellDef="let element">{{ element.codiceCabina }}</td>

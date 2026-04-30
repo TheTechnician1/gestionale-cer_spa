@@ -23,7 +23,7 @@ export class RegistrazioneUtenteComponent {
       confermaPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$")]],
       numTelefono: ['', [Validators.required, Validators.minLength(10), Validators.pattern("^\\+?\\d{10,15}$")]],
       ruolo: [ null ],
-      id_utente: [ null ]
+      idUtente: [ null ]
     },
     { validators: this.passwordMatchValidator }
   )
