@@ -165,14 +165,12 @@
           <input matInput formControlName="referente" />
         </mat-form-field>
       </div>
-      <p class="cella-vuota">
-        Il salvataggio della modifica CER richiede un endpoint backend di modifica non presente nell'OpenAPI.
-      </p>
+      
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-stroked-button mat-dialog-close>Annulla</button>
-    <button mat-raised-button color="primary" type="button" (click)="salvaModificaCerNonDisponibile()">
+    <button mat-raised-button color="primary" type="button" (click)="salvaModificaCerDisponibile()">
       Salva
     </button>
   </mat-dialog-actions>

@@ -62,18 +62,20 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
     private formBuilder: FormBuilder
   ) {
     this.formModificaCer = this.formBuilder.group({
-      ragioneSociale: [''],
-      codiceFiscale: [''],
-      partitaIVA: [''],
-      formaGiuridica: [''],
-      comuneSedeLegale: [''],
-      provinciaSedeLegale: [''],
-      regioneLegale: [''],
-      referente: [''],
-      telefono: [''],
-      email: [''],
-      pec: [''],
-      sitoWeb: [''],
+      idCer: 0,
+      ragioneSociale: '',
+      codiceFiscale: '',
+      partitaIVA: '',
+      formaGiuridica: '',
+      comuneSedeLegale: '',
+      provinciaSedeLegale: '',
+      regioneLegale: '',
+      referente: '',
+      telefono: '',
+      email: '',
+      pec: '',
+      sitoWeb: '',
+      flgCanc: '',
     });
   }
   // simone?: number
@@ -174,15 +176,9 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
         if (!password) {
           return;
         }
-
-        this.cerService.cancellaCer(cer.idCer!, {
-          email: credenziali.email,
-          password,
-        }).subscribe({
+        this.cerService.cancellaCer(cer.idCer!).subscribe({
           next: () => {
-            this.dataSource.data = this.dataSource.data.filter(
-              (elemento) => elemento.idCer !== cer.idCer
-            );
+            this.getTabellaCER();
             this.notificheService.notificaAdmin(
               'CER cancellata',
               `Disattivata CER ${cer.ragioneSociale || cer.idCer}.`
@@ -201,13 +197,21 @@ export class TabellaCERComponent implements AfterViewInit, OnChanges, OnInit {
   apriModificaCer(cer: GetListaCER, template: TemplateRef<unknown>): void {
     this.cerInModifica = cer;
     this.formModificaCer.patchValue(cer);
+
     this.dialog.open(template, { width: '860px', maxWidth: '95vw' });
   }
 
-  salvaModificaCerNonDisponibile(): void {
-    this.mostraMessaggio(
-      'Modifica CER non disponibile: nel contratto OpenAPI non esiste un endpoint /cer/modifica.'
-    );
+  salvaModificaCerDisponibile() {
+    let template = this.formModificaCer.getRawValue()
+    this.cerService.modificaCer(template).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.dialog.closeAll();
+        this.getTabellaCER();
+      }
+      
+    })
+    
   }
 
   private aggiornaColonne(): void {

@@ -130,6 +130,10 @@ export class LoginService {
     return localStorage?.getItem(this.storageKey)
   }
 
+  getTokenFromLocalStorage(): string | null{
+    return localStorage?.getItem(this.tokenKey)
+  }
+
 
   // Logout: rimuove l'utente sia dalla memoria reattiva che dal localStorage,
   // così l'app torna allo stato "non autenticato".

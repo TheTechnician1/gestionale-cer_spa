@@ -32,7 +32,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     component: ProfiloUtenteComponent,
     canActivate: [AuthGuard],
     data: {
-      roles: [Role.ADMIN, Role.GEST, Role.GUEST],
+      roles: [Role.ADMIN, Role.GEST],
     },
   },
   { path: 'user',

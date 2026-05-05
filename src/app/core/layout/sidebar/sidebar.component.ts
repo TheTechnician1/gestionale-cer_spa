@@ -71,7 +71,8 @@ const NAV_ITEMS: NavItem[] = [
       {
         label: 'Profilo Utente',
         icon: 'info',
-        route: 'userProfile'
+        route: 'userProfile',
+        roles: [Role.ADMIN, Role.GEST]
       },
     ],
   },

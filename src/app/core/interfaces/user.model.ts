@@ -127,12 +127,12 @@ email: string,
   sitoWeb: string,
   referente: string,
   flgCanc?: string,
-  nomeProprietario?: string,
-  cognomeProprietario?: string,
    specFormaGiuridica?: string
  partitaIVA: string,
  
 }
+
+ 
 
 export interface UbicazioneImpianto {
   regione?: string;
@@ -309,8 +309,6 @@ export class GetListaCERModel implements GetListaCER {
   sitoWeb: string = '';
   referente: string = '';
   flgCanc?: string;
-  nomeProprietario?: string;
-  cognomeProprietario?: string;
   specFormaGiuridica?: string;
   partitaIVA: string = '';
 
@@ -328,8 +326,6 @@ export class GetListaCERModel implements GetListaCER {
     this.sitoWeb = data?.sitoWeb ?? '';
     this.referente = data?.referente ?? '';
     this.flgCanc = data?.flgCanc ?? undefined;
-    this.nomeProprietario = data?.nomeProprietario ?? undefined;
-    this.cognomeProprietario = data?.cognomeProprietario ?? undefined;
     this.specFormaGiuridica = data?.specFormaGiuridica ?? undefined;
     this.partitaIVA = data?.partitaIVA ?? '';
   }

@@ -84,13 +84,13 @@ export class CerService {
   }
 
   cancellaCer(
-    idCer: number,
-    credenziali: AccessoRequest
+    idCer: number
   ): Observable<RispostaCancellazioneCer> {
-    return this.apiService.delete<RispostaCancellazioneCer>(`/cer/cancella/${idCer}`, {
-      email: credenziali.email,
-      password: credenziali.password,
-    });
+    return this.apiService.delete<RispostaCancellazioneCer>(`/cer/cancella/${idCer}`);
+  }
+
+  modificaCer(form: any){
+    return this.apiService.putText('/cer/modifica', form)
   }
 
   ricercaImpianti(payload: {
