@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImpiantoService } from '../core/services/impianto.service';
+import { ConfigurazioneCabina } from '../core/interfaces/user.model';
+import { ConfigurazioneCabinaService } from '../core/services/configurazione-cabina.service';
 
 @Component({
   selector: 'app-form-impianto',
@@ -14,6 +16,7 @@ export class FormImpiantoComponent implements OnInit {
   idImpianto: number | null = null;
   salvataggioInCorso = false;
   caricamento = false;
+  configurazioniDisponibili: ConfigurazioneCabina[] = [];
 
   readonly tipologie = [
     'Fotovoltaico',
@@ -47,6 +50,7 @@ export class FormImpiantoComponent implements OnInit {
 
   constructor(
     private impiantoService: ImpiantoService,
+    private configurazioneService: ConfigurazioneCabinaService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
@@ -55,6 +59,8 @@ export class FormImpiantoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.caricaConfigurazioniDisponibili();
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.idImpianto = id || null;
 
@@ -121,6 +127,55 @@ export class FormImpiantoComponent implements OnInit {
 
   campo(nome: string): FormControl {
     return this.formImpianto.get(nome) as FormControl;
+  }
+
+  codiceCabinaConfigurazione(configurazione: ConfigurazioneCabina): string {
+    return this.configurazioneService.codiceCabina(configurazione);
+  }
+
+  idConfigurazione(configurazione: ConfigurazioneCabina): number | null {
+    return this.configurazioneService.idConfigurazione(configurazione);
+  }
+
+  aggiornaConfigurazioneSelezionata(idConfigurazione: number): void {
+    const configurazione = this.configurazioniDisponibili.find(
+      (item) => this.configurazioneService.idConfigurazione(item) === idConfigurazione
+    );
+
+    if (!configurazione) {
+      return;
+    }
+
+    this.formImpianto.patchValue({
+      codiceCabina: this.codiceCabinaConfigurazione(configurazione),
+      partitaIva: configurazione.cer?.partitaIVA ?? this.campo('partitaIva').value,
+    });
+  }
+
+  private caricaConfigurazioniDisponibili(): void {
+    this.configurazioneService.ricerca().subscribe({
+      next: (configurazioni) => {
+        this.configurazioneService.arricchisciConDettaglio(configurazioni).subscribe({
+          next: (dettagli) => {
+            this.configurazioniDisponibili = dettagli.filter(
+              (configurazione) =>
+                !!this.configurazioneService.idConfigurazione(configurazione) &&
+                !this.configurazioneService.configurazioneDisattiva(configurazione)
+            );
+          },
+          error: () => {
+            this.configurazioniDisponibili = configurazioni.filter(
+              (configurazione) =>
+                !!this.configurazioneService.idConfigurazione(configurazione) &&
+                !this.configurazioneService.configurazioneDisattiva(configurazione)
+            );
+          },
+        });
+      },
+      error: () => {
+        this.configurazioniDisponibili = [];
+      },
+    });
   }
 
   private mostraMessaggio(messaggio: string): void {

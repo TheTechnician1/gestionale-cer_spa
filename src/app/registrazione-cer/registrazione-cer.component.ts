@@ -60,6 +60,12 @@ export class RegistrazioneCerComponent {
     this.formRegistrazioneCer =
       this.registrazioneCerService.creaFormRegistrazioneCer();
 
+    this.codiceFiscale.valueChanges.subscribe((value) =>
+      this.maiuscolo(this.codiceFiscale, value)
+    );
+    this.provinciaSedeLegale.valueChanges.subscribe((value) =>
+      this.maiuscolo(this.provinciaSedeLegale, value)
+    );
     this.formaGiuridica.valueChanges.subscribe(() => this.aggiornaValidazioneSpecForma());
     this.aggiornaValidazioneSpecForma();
   }
@@ -180,6 +186,17 @@ export class RegistrazioneCerComponent {
     }
 
     this.specFormaGiuridica.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private maiuscolo(control: FormControl, value: unknown): void {
+    if (typeof value !== 'string') {
+      return;
+    }
+
+    const normalizzato = value.toUpperCase();
+    if (value !== normalizzato) {
+      control.setValue(normalizzato, { emitEvent: false });
+    }
   }
 
 }

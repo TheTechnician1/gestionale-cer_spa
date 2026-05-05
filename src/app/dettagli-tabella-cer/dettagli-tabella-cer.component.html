@@ -126,13 +126,6 @@
 
       <div class="tabella-impianti" *ngIf="configurazioni.length > 0; else nessunaConfigurazione">
         <table mat-table [dataSource]="configurazioni">
-          <ng-container matColumnDef="idConfig">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let configurazione">
-              {{ idConfigurazione(configurazione) }}
-            </td>
-          </ng-container>
-
           <ng-container matColumnDef="codiceCabina">
             <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
             <td mat-cell *matCellDef="let configurazione">
@@ -289,8 +282,8 @@
 
       <dl class="lista-dati">
         <div>
-          <dt>ID configurazione</dt>
-          <dd>{{ idConfigurazione(configurazioneSelezionata) }}</dd>
+          <dt>Codice cabina</dt>
+          <dd>{{ codiceCabinaConfigurazione(configurazioneSelezionata) }}</dd>
         </div>
         <div>
           <dt>Stato</dt>
@@ -307,10 +300,6 @@
         <div>
           <dt>CER</dt>
           <dd>{{ cer?.ragioneSociale }}</dd>
-        </div>
-        <div>
-          <dt>ID CER</dt>
-          <dd>{{ cer?.idCer }}</dd>
         </div>
         <div>
           <dt>Anno attivazione</dt>

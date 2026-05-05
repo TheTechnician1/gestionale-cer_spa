@@ -207,6 +207,11 @@ export interface ConfigurazioneCabina {
 export interface RicercaConfigurazioneRequest {
   idConfig?: number | null;
   idCer?: number | null;
+  daAnno?: number | null;
+  getaAnno?: number | null;
+  ragSociale?: string;
+  partitaIva?: string;
+  descRegione?: string;
   codiceCabina?: string;
   annoAttivazione?: number | null;
   stato?: string;

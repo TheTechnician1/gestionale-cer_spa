@@ -31,7 +31,7 @@ export class ImpiantoService {
       tipologia: ['', [Validators.required]],
       preNom: [null, [Validators.required, Validators.min(0.01)]],
       flgAccumulo: [false],
-      capAccumulo: [null],
+      capAccumulo: [null, [Validators.min(0)]],
       codCatProd: ['', [Validators.required]],
       categoriaProduttore: ['', [Validators.required]],
       regione: ['', [Validators.required]],
@@ -44,8 +44,8 @@ export class ImpiantoService {
 
   creaFormRicerca(): FormGroup {
     return this.formBuilder.group({
-      annoAttivazioneDa: [0],
-      annoAttivazioneA: [0],
+      annoAttivazioneDa: [0, [Validators.min(0)]],
+      annoAttivazioneA: [0, [Validators.min(0)]],
       partitaIva: [''],
       regione: [''],
       provincia: [''],
@@ -105,8 +105,8 @@ export class ImpiantoService {
 
   normalizzaRicerca(form: FormGroup): RicercaImpiantoRequest {
     return {
-      annoAttivazioneDa: this.numero(form.get('annoAttivazioneDa')?.value),
-      annoAttivazioneA: this.numero(form.get('annoAttivazioneA')?.value),
+      annoAttivazioneDa: this.numeroNonNegativo(form.get('annoAttivazioneDa')?.value),
+      annoAttivazioneA: this.numeroNonNegativo(form.get('annoAttivazioneA')?.value),
       partitaIva: this.pulisci(form.get('partitaIva')?.value),
       regione: this.pulisci(form.get('regione')?.value),
       provincia: this.pulisci(form.get('provincia')?.value),
@@ -157,7 +157,7 @@ export class ImpiantoService {
       codTipologia: this.pulisci(form.get('codTipologia')?.value),
       preNom: this.numero(form.get('preNom')?.value),
       flgAccumulo: !!form.get('flgAccumulo')?.value,
-      capAccumulo: this.numero(form.get('capAccumulo')?.value),
+      capAccumulo: this.numeroNonNegativo(form.get('capAccumulo')?.value),
       codCatProduttore: this.pulisci(form.get('codCatProd')?.value),
       flgCanc: 'N',
       specTipologia: this.pulisci(form.get('tipologia')?.value),
@@ -253,6 +253,10 @@ export class ImpiantoService {
   private numero(value: unknown): number {
     const numero = Number(value);
     return Number.isFinite(numero) ? numero : 0;
+  }
+
+  private numeroNonNegativo(value: unknown): number {
+    return Math.max(0, this.numero(value));
   }
 
   private normalizzaImpianto(impianto: ImpiantoCER): ImpiantoCER {

@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { LoginService } from '../core/services/login.service';
 import {
   ConfigurazioneCabina,
@@ -30,7 +31,6 @@ export class DettagliTabellaCerComponent implements OnInit {
   configurazioneSelezionata?: ConfigurazioneCabina;
   dettaglioDisattivata = false;
   displayedColumnsConfigurazioni: string[] = [
-    'idConfig',
     'codiceCabina',
     'annoAttivazione',
     'impianti',
@@ -256,6 +256,15 @@ export class DettagliTabellaCerComponent implements OnInit {
         return;
       }
 
+      if (impiantoId) {
+        this.caricaDettaglioDaImpianto(
+          impiantoId,
+          cerId,
+          configurazioneId
+        );
+        return;
+      }
+
       this.login.visualizzaCer(cerId).subscribe({
         next: (cer) => {
           this.cer = cer;
@@ -355,20 +364,83 @@ export class DettagliTabellaCerComponent implements OnInit {
   }
 
   private caricaImpianti(cer: GetListaCER, impiantoId: number): void {
-    this.impiantoService.ricerca({
-      partitaIva: cer.partitaIVA,
-      regione: cer.regioneLegale,
-      provincia: cer.provinciaSedeLegale,
-      comune: cer.comuneSedeLegale,
-    }).subscribe({
+    const idImpianti = this.idImpiantiDaConfigurazioni(impiantoId);
+
+    if (idImpianti.length === 0) {
+      this.impianti = [];
+      return;
+    }
+
+    forkJoin(
+      idImpianti.map((id) =>
+        this.caricaImpiantoConConfigurazione(id).pipe(
+          catchError(() => of(null))
+        )
+      )
+    ).subscribe({
       next: (impianti) => {
-        this.impianti = this.filtraImpiantiCer(impianti, cer);
+        this.impianti = this.filtraImpiantiCer(
+          impianti.filter((impianto): impianto is ImpiantoCER => !!impianto),
+          cer
+        );
         this.impiantoSelezionato = this.impianti.find(
           (impianto) => impianto.idImpianto === impiantoId
         );
       },
       error: () => {
         this.impianti = [];
+      },
+    });
+  }
+
+  private caricaDettaglioDaImpianto(
+    impiantoId: number,
+    cerIdFallback: number,
+    configurazioneIdDaAprire: number
+  ): void {
+    this.impiantoService.visualizza(impiantoId).pipe(
+      switchMap((impianto) => {
+        const idConfigurazione = this.impiantoService.idConfigurazioneImpianto(impianto);
+
+        if (!idConfigurazione) {
+          return this.login.visualizzaCer(cerIdFallback).pipe(
+            map((cer) => ({ cer, impianto, configurazioneId: configurazioneIdDaAprire }))
+          );
+        }
+
+        return this.configurazioneService.visualizza(idConfigurazione).pipe(
+          switchMap((configurazione) => {
+            const idCer = configurazione.idCer ?? configurazione.cer?.idCer ?? cerIdFallback;
+
+            return this.login.visualizzaCer(idCer).pipe(
+              map((cer) => ({
+                cer,
+                impianto: {
+                  ...impianto,
+                  idConfigurazione,
+                  configurazione,
+                },
+                configurazioneId: configurazioneIdDaAprire,
+              }))
+            );
+          })
+        );
+      })
+    ).subscribe({
+      next: ({ cer, impianto, configurazioneId }) => {
+        this.cer = cer;
+        this.impiantoSelezionato = impianto;
+        this.caricaDatiEnergetici(cer);
+        this.caricaConfigurazioni(cer, impiantoId, configurazioneId);
+      },
+      error: () => {
+        this.login.visualizzaCer(cerIdFallback).subscribe({
+          next: (cer) => {
+            this.cer = cer;
+            this.caricaDatiEnergetici(cer);
+            this.caricaConfigurazioni(cer, impiantoId, configurazioneIdDaAprire);
+          },
+        });
       },
     });
   }
@@ -414,6 +486,43 @@ export class DettagliTabellaCerComponent implements OnInit {
 
       return stessaConfigurazione || stessaPartitaIva;
     });
+  }
+
+  private idImpiantiDaConfigurazioni(impiantoId: number): number[] {
+    const idImpianti = this.configurazioni.flatMap((configurazione) =>
+      (configurazione.impianti ?? [])
+        .map((impianto) => impianto.idImpianto)
+        .filter((id): id is number => !!id)
+    );
+
+    if (impiantoId) {
+      idImpianti.push(impiantoId);
+    }
+
+    return Array.from(new Set(idImpianti));
+  }
+
+  private caricaImpiantoConConfigurazione(
+    idImpianto: number
+  ): Observable<ImpiantoCER | null> {
+    return this.impiantoService.visualizza(idImpianto).pipe(
+      switchMap((impianto) => {
+        const idConfigurazione = this.impiantoService.idConfigurazioneImpianto(impianto);
+
+        if (!idConfigurazione) {
+          return of(impianto);
+        }
+
+        return this.configurazioneService.visualizza(idConfigurazione, false).pipe(
+          map((configurazione) => ({
+            ...impianto,
+            idConfigurazione,
+            configurazione,
+          })),
+          catchError(() => of(impianto))
+        );
+      })
+    );
   }
 
   private mostraMessaggio(messaggio: string): void {

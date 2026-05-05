@@ -6,6 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { DatiEnergetici } from '../core/interfaces/user.model';
+import { catchError, forkJoin, of } from 'rxjs';
+import { CerService } from '../core/services/cer.service';
+import { ConfigurazioneCabinaService } from '../core/services/configurazione-cabina.service';
 import { ConfermaPasswordDialogService } from '../core/services/conferma-password-dialog.service';
 import { DatiEnergeticiService } from '../core/services/dati-energetici.service';
 import { NotificheService } from '../core/services/notifiche.service';
@@ -25,10 +28,12 @@ export class RicercaDatiEnergeticiComponent implements OnInit, AfterViewInit {
   ricercaEseguita = false;
 
   readonly statiScheda = ['Active', 'Disabled'];
+  readonly nomiCer = new Map<number, string>();
+  readonly codiciCabina = new Map<number, string>();
   readonly displayedColumns = [
     'idDati',
-    'idCer',
-    'idConfigurazione',
+    'cer',
+    'configurazione',
     'anno',
     'prodotta',
     'condivisa',
@@ -42,6 +47,8 @@ export class RicercaDatiEnergeticiComponent implements OnInit, AfterViewInit {
 
   constructor(
     private datiEnergeticiService: DatiEnergeticiService,
+    private cerService: CerService,
+    private configurazioneService: ConfigurazioneCabinaService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private confermaPasswordDialog: ConfermaPasswordDialogService,
@@ -72,6 +79,7 @@ export class RicercaDatiEnergeticiComponent implements OnInit, AfterViewInit {
     this.datiEnergeticiService.ricerca(payload).subscribe({
       next: (risultati) => {
         this.dataSource.data = this.datiEnergeticiService.filtraAttivi(risultati);
+        this.caricaRiferimenti(this.dataSource.data);
         this.dataSource.paginator?.firstPage();
         this.caricamento = false;
         this.ricercaEseguita = true;
@@ -192,6 +200,57 @@ export class RicercaDatiEnergeticiComponent implements OnInit, AfterViewInit {
 
   statoDati(dati: DatiEnergetici): string {
     return this.datiEnergeticiService.statoDati(dati);
+  }
+
+  ragioneSocialeCer(dati: DatiEnergetici): string {
+    return this.nomiCer.get(dati.idCer) || String(dati.idCer || '-');
+  }
+
+  codiceCabinaConfigurazione(dati: DatiEnergetici): string {
+    return (
+      dati.codiceCabina ||
+      this.codiciCabina.get(dati.idConfigurazione) ||
+      String(dati.idConfigurazione || '-')
+    );
+  }
+
+  private caricaRiferimenti(datiEnergetici: DatiEnergetici[]): void {
+    const idCer = Array.from(new Set(datiEnergetici.map((dati) => dati.idCer).filter(Boolean)));
+    const idConfigurazioni = Array.from(
+      new Set(datiEnergetici.map((dati) => dati.idConfigurazione).filter(Boolean))
+    );
+
+    idCer.forEach((id) => {
+      if (!this.nomiCer.has(id)) {
+        this.cerService.visualizzaCer(id, false).pipe(catchError(() => of(null))).subscribe((cer) => {
+          if (cer?.ragioneSociale) {
+            this.nomiCer.set(id, cer.ragioneSociale);
+          }
+        });
+      }
+    });
+
+    if (idConfigurazioni.length === 0) {
+      return;
+    }
+
+    forkJoin(
+      idConfigurazioni.map((id) =>
+        this.configurazioneService.visualizza(id, false).pipe(catchError(() => of(null)))
+      )
+    ).subscribe((configurazioni) => {
+      configurazioni.forEach((configurazione) => {
+        if (!configurazione) {
+          return;
+        }
+
+        const id = this.configurazioneService.idConfigurazione(configurazione);
+        const codice = this.configurazioneService.codiceCabina(configurazione);
+        if (id && codice) {
+          this.codiciCabina.set(id, codice);
+        }
+      });
+    });
   }
 
   private mostraMessaggio(messaggio: string): void {

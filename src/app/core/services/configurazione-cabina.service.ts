@@ -34,17 +34,25 @@ export class ConfigurazioneCabinaService {
     return this.formBuilder.group({
       idConfig: [null],
       idCer: [null],
+      daAnno: [null, [Validators.min(0)]],
+      getaAnno: [null, [Validators.min(0)]],
+      ragSociale: [''],
+      partitaIva: [''],
+      descRegione: [''],
       codiceCabina: [''],
-      annoAttivazione: [null],
+      annoAttivazione: [null, [Validators.min(0)]],
     });
   }
 
   ricerca(payload: RicercaConfigurazioneRequest = {}): Observable<ConfigurazioneCabina[]> {
+    const filtri = this.creaPayloadRicerca(payload);
+
     return this.apiService.post<unknown[]>(
       '/configurazioni/ricerca',
-      this.creaPayloadRicerca(payload)
+      filtri
     ).pipe(
-      map((risultati) => this.normalizzaRisultatiRicerca(risultati))
+      map((risultati) => this.normalizzaRisultatiRicerca(risultati)),
+      map((configurazioni) => this.filtraConfigurazioni(configurazioni, filtri))
     );
   }
 
@@ -121,8 +129,11 @@ export class ConfigurazioneCabinaService {
 
   normalizzaRicerca(form: FormGroup): RicercaConfigurazioneRequest {
     return {
-      idConfig: this.numeroONull(form.get('idConfig')?.value),
-      idCer: this.numeroONull(form.get('idCer')?.value),
+      daAnno: this.numeroONull(form.get('daAnno')?.value),
+      getaAnno: this.numeroONull(form.get('getaAnno')?.value),
+      ragSociale: this.pulisci(form.get('ragSociale')?.value),
+      partitaIva: this.pulisci(form.get('partitaIva')?.value),
+      descRegione: this.pulisci(form.get('descRegione')?.value),
       codiceCabina: this.pulisci(form.get('codiceCabina')?.value).toUpperCase(),
       annoAttivazione: this.numeroONull(form.get('annoAttivazione')?.value),
     };
@@ -195,6 +206,11 @@ export class ConfigurazioneCabinaService {
     return {
       idConfig: payload.idConfig ?? null,
       idCer: payload.idCer ?? null,
+      daAnno: payload.daAnno ?? null,
+      getaAnno: payload.getaAnno ?? null,
+      ragSociale: payload.ragSociale ?? '',
+      partitaIva: payload.partitaIva ?? '',
+      descRegione: payload.descRegione ?? '',
       codiceCabina: payload.codiceCabina ?? '',
       annoAttivazione: payload.annoAttivazione ?? null,
     };
@@ -241,14 +257,14 @@ export class ConfigurazioneCabinaService {
             codiceFiscale: '',
             comuneSedeLegale: '',
             provinciaSedeLegale: '',
-            regioneLegale: '',
+            regioneLegale: raw['descRegione'] ?? raw['regioneLegale'] ?? '',
             formaGiuridica: '',
             telefono: '',
             email: '',
             pec: '',
             sitoWeb: '',
             referente: '',
-            partitaIVA: '',
+            partitaIVA: raw['partitaIva'] ?? raw['partitaIVA'] ?? '',
           },
         });
       });
@@ -332,16 +348,23 @@ export class ConfigurazioneCabinaService {
     configurazioni: ConfigurazioneCabina[],
     payload: RicercaConfigurazioneRequest
   ): ConfigurazioneCabina[] {
-    return configurazioni
+    return this.filtraConfigurazioni(configurazioni, payload)
       .filter(
-        (configurazione) =>
-          this.configurazioneDisattiva(configurazione) &&
-          this.configurazioneRispettaFiltri(configurazione, payload)
+        (configurazione) => this.configurazioneDisattiva(configurazione)
       )
       .sort(
         (a, b) =>
           (this.idConfigurazione(a) ?? 0) - (this.idConfigurazione(b) ?? 0)
       );
+  }
+
+  private filtraConfigurazioni(
+    configurazioni: ConfigurazioneCabina[],
+    payload: RicercaConfigurazioneRequest
+  ): ConfigurazioneCabina[] {
+    return configurazioni.filter((configurazione) =>
+      this.configurazioneRispettaFiltri(configurazione, payload)
+    );
   }
 
   private configurazioneRispettaFiltri(
@@ -351,14 +374,41 @@ export class ConfigurazioneCabinaService {
     const idConfig = this.idConfigurazione(configurazione);
     const idCer = configurazione.idCer ?? configurazione.cer?.idCer ?? null;
     const codiceCabina = this.codiceCabina(configurazione).toLowerCase();
+    const ragSociale = this.primaStringa([
+      configurazione.cer?.ragioneSociale,
+      (configurazione as Record<string, any>)['ragSociale'],
+      (configurazione as Record<string, any>)['ragioneSociale'],
+    ]).toLowerCase();
+    const partitaIva = this.primaStringa([
+      configurazione.cer?.partitaIVA,
+      (configurazione as Record<string, any>)['partitaIva'],
+      (configurazione as Record<string, any>)['partitaIVA'],
+    ]).toLowerCase();
+    const regione = this.primaStringa([
+      configurazione.cer?.regioneLegale,
+      (configurazione as Record<string, any>)['descRegione'],
+      (configurazione as Record<string, any>)['regioneLegale'],
+    ]).toLowerCase();
 
     return (
       (!payload.idConfig || idConfig === payload.idConfig) &&
       (!payload.idCer || idCer === payload.idCer) &&
+      (!payload.ragSociale ||
+        ragSociale.includes(payload.ragSociale.toLowerCase())) &&
+      (!payload.partitaIva ||
+        partitaIva.includes(payload.partitaIva.toLowerCase())) &&
+      (!payload.descRegione ||
+        regione.includes(payload.descRegione.toLowerCase())) &&
       (!payload.codiceCabina ||
         codiceCabina.includes(payload.codiceCabina.toLowerCase())) &&
       (!payload.annoAttivazione ||
-        configurazione.annoAttivazione === payload.annoAttivazione)
+        configurazione.annoAttivazione === payload.annoAttivazione) &&
+      (!payload.daAnno ||
+        !configurazione.annoAttivazione ||
+        configurazione.annoAttivazione >= payload.daAnno) &&
+      (!payload.getaAnno ||
+        !configurazione.annoAttivazione ||
+        configurazione.annoAttivazione <= payload.getaAnno)
     );
   }
 }

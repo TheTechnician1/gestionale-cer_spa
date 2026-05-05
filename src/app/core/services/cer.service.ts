@@ -93,6 +93,10 @@ export class CerService {
     return this.apiService.putText('/cer/modifica', form)
   }
 
+  modificaCer(payload: GetListaCER): Observable<string> {
+    return this.apiService.put<string>('/cer/modifica', payload);
+  }
+
   ricercaImpianti(payload: {
     partitaIva?: string;
     regione?: string;
