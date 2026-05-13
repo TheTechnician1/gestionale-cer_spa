@@ -1,32 +1,30 @@
 import { Routes } from "@angular/router";
 import { AuthGuard } from "../guard/auth.guard";
-import { ImpiantoComponent } from "../component/impianto/impianto.component";
-import { DettaglioImpiantoComponent } from "../component/dettaglio-impianto/dettaglio-impianto.component";
-import { InserimentoImpiantoComponent } from "../component/inserimento-impianto/inserimento-impianto.component";
-import { ModificaImpiantoComponent } from "../component/modifica-impianto/modifica-impianto.component";
+import { ImpiantiFormComponent } from "../../components/impianti/impianti-form/impianti-form.component";
+import { ImpiantiRicercaComponent } from "../../components/impianti/impianti-ricerca/impianti-ricerca.component";
 
 export const IMPIANTO_ROUTES: Routes = [
   {
     path: "",
-    component: ImpiantoComponent,
+    component: ImpiantiRicercaComponent,
     data: { role: ["ADMIN", "GEST", "GUEST"] },
     canActivate: [AuthGuard],
   },
   {
     path: "inserimento-impianto",
-    component: InserimentoImpiantoComponent,
+    component: ImpiantiFormComponent,
     data: { role: ["ADMIN", "GEST"] },
     canActivate: [AuthGuard],
   },
   {
     path: "modifica-impianto/:id",
-    component: ModificaImpiantoComponent,
+    component: ImpiantiFormComponent,
     data: { role: ["ADMIN", "GEST"] },
     canActivate: [AuthGuard],
   },
   {
     path: "dettaglio-impianto/:id",
-    component: DettaglioImpiantoComponent,
+    component: ImpiantiFormComponent,
     data: { role: ["ADMIN", "GEST", "GUEST"] },
     canActivate: [AuthGuard],
   },

@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Utente, UtenteLogin, UtenteLoginModel } from '../interfaces/utente.model';
-import { ApiService } from './api.service';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-import { Ruolo, RoleType } from '../enum/role.enum';
-import { isAuthenticated } from '../interfaces/auth.model';
+import { Injectable } from "@angular/core";
+import { Utente, UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
+import { ApiService } from "./api.service";
+import { BehaviorSubject, map, Observable, tap } from "rxjs";
+import { Ruolo, RoleType } from "../enum/role.enum";
+import { isAuthenticated } from "../interfaces/auth.model";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class UtenteService {
   constructor(private apiService: ApiService) {}
@@ -16,13 +16,13 @@ export class UtenteService {
   private readonly userSubject = new BehaviorSubject<UtenteLoginModel | null>(this.loadFromStorage());
   readonly user$ = this.userSubject.asObservable();
   readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
-  private user: {role: Ruolo} | null = null;
+  private user: { role: Ruolo } | null = null;
   private loggedIn$ = new BehaviorSubject<boolean>(false);
 
   isAuth: isAuthenticated = {
     check: false,
-    validUser: false
-  }
+    validUser: false,
+  };
 
   isAuthenticated(user: any): void {
     this.user = user;
@@ -35,7 +35,7 @@ export class UtenteService {
   }
 
   getIsAuthenticated() {
-    return this.isAuth
+    return this.isAuth;
   }
 
   getRole(): RoleType | null {
@@ -81,7 +81,7 @@ export class UtenteService {
   }
 
   createUtente(payload: any) {
-    const path = '/utente/inserisci';
+    const path = "/utente/inserisci";
     return this.apiService.postText(path, payload);
   }
 }

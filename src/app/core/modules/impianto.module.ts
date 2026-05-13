@@ -1,13 +1,11 @@
 import { NgModule } from "@angular/core";
 import { SharedModule } from "src/app/shared/shared.module";
-import { ImpiantoRoutingModule } from "./Impianto-routing.module";
-import { ImpiantoComponent } from "../component/impianto/impianto.component";
-import { DettaglioImpiantoComponent } from "../component/dettaglio-impianto/dettaglio-impianto.component";
-import { InserimentoImpiantoComponent } from "../component/inserimento-impianto/inserimento-impianto.component";
-import { ModificaImpiantoComponent } from "../component/modifica-impianto/modifica-impianto.component";
+import { ImpiantoRoutingModule } from "./impianto-routing.module";
+import { ImpiantiFormComponent } from "../../components/impianti/impianti-form/impianti-form.component";
+import { ImpiantiRicercaComponent } from "../../components/impianti/impianti-ricerca/impianti-ricerca.component";
 
 @NgModule({
-  declarations: [ImpiantoComponent, DettaglioImpiantoComponent, InserimentoImpiantoComponent, ModificaImpiantoComponent],
+  declarations: [ImpiantiRicercaComponent, ImpiantiFormComponent],
   schemas: [],
   exports: [],
   imports: [SharedModule, ImpiantoRoutingModule],

@@ -1,4 +1,4 @@
 export interface Stato {
-  value: string,
-  viewValue: string
+  value: string;
+  viewValue: string;
 }

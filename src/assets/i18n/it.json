@@ -1,14 +1,6 @@
 {
   "app": {
     "main-title": "Gestionale CER SPA",
-    "sections": "Sezioni",
-    "title": "Gestionale CER",
-    "registries": "Anagrafiche",
-    "profile": "Profilo",
-    "registration": "Registrazione",
-    "energy_communities": "Comunità Energetiche",
-    "cabin": "Configurazioni",
-    "plant": "Impianto",
-    "energy_data": "Dati Energetici"
+    "dashboard-title": "Dashboard Comunità Energetiche"
   }
 }

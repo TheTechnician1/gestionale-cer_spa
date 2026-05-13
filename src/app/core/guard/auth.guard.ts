@@ -8,7 +8,10 @@ import { UtenteService } from "../services/utente.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
-  constructor(private auth: UtenteService, private router: Router) {}
+  constructor(
+    private auth: UtenteService,
+    private router: Router,
+  ) {}
 
   canActivateError(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     throw new Error("Method not implemented.");
@@ -18,15 +21,14 @@ export class AuthGuard implements CanActivate {
     const isAuth = !!this.auth.currentUser;
     const userRole = this.auth.getRole();
 
-
-    if(!isAuth){
-      return this.router.createUrlTree(['/login']);
+    if (!isAuth) {
+      return this.router.createUrlTree(["/login"]);
     }
 
-    const allowedRoles = route.data?.['role'] as Ruolo[];
+    const allowedRoles = route.data?.["role"] as Ruolo[];
 
     if (allowedRoles && !allowedRoles.includes(userRole!)) {
-      return this.router.createUrlTree(['/login']);
+      return this.router.createUrlTree(["/login"]);
     }
 
     return true;

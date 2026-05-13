@@ -1,7 +1,7 @@
 export enum Ruolo {
   ADMIN = "admin",
   GEST = "gestore",
-  GUEST = "guest"
+  GUEST = "guest",
 }
 
 export type RoleType = Ruolo;

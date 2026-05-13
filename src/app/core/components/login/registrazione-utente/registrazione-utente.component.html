@@ -1,0 +1,76 @@
+<div class="register">
+  <h3>Registrazione</h3>
+  <br />
+  <div [formGroup]="form">
+    <div rows="2">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input type="text" matInput formControlName="nome" aria-label="nome" required />
+        <mat-icon matSuffix>id_card</mat-icon>
+        <mat-error appFormControlError [control]="form.get('nome')" label="Nome" [customMessages]="nomeErrorMessages"></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Cognome</mat-label>
+        <input type="text" matInput formControlName="cognome" aria-label="cognome" required />
+        <mat-icon matSuffix>id_card</mat-icon>
+        <mat-error appFormControlError [control]="form.get('cognome')" label="Cognome" [customMessages]="cognomeErrorMessages"></mat-error>
+      </mat-form-field>
+    </div>
+    <div rows="2">
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="text" matInput formControlName="mail" aria-label="mail" required />
+        <mat-icon matSuffix>mail</mat-icon>
+        <mat-error appFormControlError [control]="form.get('mail')" label="Email"></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Codice Fiscale</mat-label>
+        <input type="text" matInput formControlName="codiceFiscale" aria-label="codiceFiscale" required />
+        <mat-icon matSuffix>id_card</mat-icon>
+        <mat-error appFormControlError [control]="form.get('codiceFiscale')" label="Codice fiscale" [customMessages]="codiceFiscaleErrorMessages"></mat-error>
+      </mat-form-field>
+    </div>
+    <div rows="2">
+      <mat-form-field appearance="fill" class="password">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" [type]="hide ? 'text' : 'password'" aria-label="password" required />
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-hint>Minimo 8 caratteri</mat-hint>
+        <mat-error appFormControlError [control]="form.get('password')" label="Password" [customMessages]="passwordErrorMessages"></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="password">
+        <mat-label>Conferma Password</mat-label>
+        <input matInput formControlName="confermaPassword" [type]="hide ? 'text' : 'password'" aria-label="password" required />
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-hint>Minimo 8 caratteri</mat-hint>
+        <mat-error appFormControlError [control]="form.get('confermaPassword')" label="Conferma password" [customMessages]="confermaPasswordErrorMessages"></mat-error>
+      </mat-form-field>
+    </div>
+    <div rows="2">
+      <mat-form-field appearance="fill">
+        <mat-label>Telefono</mat-label>
+        <input type="text" matInput formControlName="numTelefono" aria-label="telefono" required />
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-hint>Includi il prefisso</mat-hint>
+        <mat-error appFormControlError [control]="form.get('numTelefono')" label="Telefono" [customMessages]="telefonoErrorMessages"></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="ruolo">
+        <mat-label>Ruolo:</mat-label>
+        <mat-select formControlName="ruolo">
+          <mat-option *ngFor="let ruolo of ruoli" [value]="ruolo.value">
+            {{ ruolo.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div rows="2" class="button">
+      <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
+      <button mat-raised-button color="primary" routerLink="/">Annulla</button>
+    </div>
+  </div>
+  <mat-hint class="campo-obbligatorio">Campi obbligatori *</mat-hint>
+</div>

@@ -9,12 +9,13 @@ import { Observable } from "rxjs";
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
-  constructor(private authService: UtenteService) {this.isLoggedIn$ = this.authService.isLoggedIn$;}
+  constructor(private authService: UtenteService) {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+  }
 
   isLoggedIn$: Observable<boolean>;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   logout() {
     this.authService.logout();

@@ -25,10 +25,10 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatTreeModule } from "@angular/material/tree";
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatTableDataSource } from "@angular/material/table";
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatBadgeModule } from "@angular/material/badge";
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import { FormControlErrorComponent } from "./components/form-control-error/form-control-error.component";
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -54,11 +54,12 @@ export const MATERIAL_MODULES = [
   MatTreeModule,
   MatGridListModule,
   MatBadgeModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
 ];
 
 @NgModule({
+  declarations: [FormControlErrorComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, ...MATERIAL_MODULES],
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, ...MATERIAL_MODULES],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ...MATERIAL_MODULES],
 })
 export class SharedModule {}

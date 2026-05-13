@@ -1,14 +1,14 @@
 import { RoleType } from "../enum/role.enum";
 
 export interface Utente {
-  id_utente: number | null,
-  nome?: string | null,
-  cognome?: string | null,
-  codiceFiscale: string | null,
-  mail?: string | null,
-  password: string | null,
-  numTelefono?: string | null,
-  ruolo: RoleType | null
+  id_utente: number | null;
+  nome?: string | null;
+  cognome?: string | null;
+  codiceFiscale: string | null;
+  mail?: string | null;
+  password: string | null;
+  numTelefono?: string | null;
+  ruolo: RoleType | null;
 }
 
 export class UtenteModel implements Utente {

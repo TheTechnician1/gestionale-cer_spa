@@ -1,0 +1,32 @@
+<div style="display: flex; justify-content: center; align-items: center; height: 80vh">
+  <mat-card style="width: 400px; padding: 20px">
+    <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px">
+      <mat-icon _ngcontent-lfm-c21="" role="img" class="mat-icon notranslate material-icons mat-ligature-font mat-icon-no-color" aria-hidden="true" data-mat-icon-type="font">account_circle</mat-icon>
+      <h2 style="margin: 0">Login</h2>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="utente_email" aria-label="email" required />
+        <mat-error appFormControlError [control]="loginForm.get('utente_email')" label="Email"></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'text' : 'password'" formControlName="password" aria-label="password" required />
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error appFormControlError [control]="loginForm.get('password')" label="Password" [customMessages]="passwordErrorMessages"></mat-error>
+      </mat-form-field>
+      <div class="error" *ngIf="loginError">Email o password errati</div>
+      <mat-checkbox formControlName="rememberMe" style="margin-bottom: 15px">Ricordami</mat-checkbox>
+      <div style="display: flex; justify-content: center; margin-top: 10px">
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+      </div>
+    </form>
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
+      <button mat-button (click)="guestIn()">Accedi come ospite</button>
+      <button mat-button routerLink="/dashboard">Torna alla home</button>
+    </div>
+  </mat-card>
+</div>
