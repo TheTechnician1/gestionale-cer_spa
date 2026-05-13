@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Utente, UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
+import { UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
 import { ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { Ruolo, RoleType } from "../enum/role.enum";
@@ -28,10 +28,6 @@ export class UtenteService {
     this.user = user;
     this.isAuth.validUser = this.user !== null;
     this.loggedIn$.next(this.isAuth.validUser);
-  }
-
-  get isLogged$() {
-    return this.loggedIn$.asObservable();
   }
 
   getIsAuthenticated() {
