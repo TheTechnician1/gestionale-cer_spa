@@ -10,7 +10,7 @@ export class DashboardService {
   constructor(private api: ApiService) {}
 
   getDati(payload: any): Observable<any[]> {
-    const endpoint = "datiEnergetici/ricerca";
+    const endpoint = "cer/ricerca";
     return this.api.postLogin<any[]>(endpoint, payload);
   }
 }
