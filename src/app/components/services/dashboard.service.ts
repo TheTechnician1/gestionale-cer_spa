@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { DatiEnergetici } from "../../core/interfaces/dati-energetici.model";
 import { ApiService } from "../../core/services/api.service";
 import { Observable } from "rxjs";
 
