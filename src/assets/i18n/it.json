@@ -1,6 +1,7 @@
 {
   "app": {
-    "main-title": "CER SPA Manager",
-    "hello": "Hello"
+    "main-title": "Gestionale CER SPA",
+    "dashboard-title": "Dashboard Comunità Energetiche",
+    "title": "Ragione Sociale"
   }
 }
