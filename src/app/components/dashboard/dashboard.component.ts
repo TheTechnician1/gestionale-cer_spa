@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private _liveAnnouncer: LiveAnnouncer,
   ) {}
+
   tableCER: string[] = ["ragSociale", "codFisc", "pIva", "comune", "provincia", "regione", "azioni"];
 
   cer: any[] = [];

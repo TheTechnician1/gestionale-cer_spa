@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ApiService } from "../../core/services/api.service";
+import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -8,8 +8,8 @@ import { Observable } from "rxjs";
 export class DashboardService {
   constructor(private api: ApiService) {}
 
-  getDati(payload: any): Observable<any[]> {
+  getDati(payload: any, options: ApiRequestOptions = {}): Observable<any[]> {
     const endpoint = "cer/ricerca";
-    return this.api.postLogin<any[]>(endpoint, payload);
+    return this.api.postLogin<any[]>(endpoint, payload, options);
   }
 }

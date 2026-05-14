@@ -29,6 +29,8 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { FormControlErrorComponent } from "./components/form-control-error/form-control-error.component";
+import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
+import { ToastSnackbarComponent } from "./components/toast-snackbar/toast-snackbar.component";
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -58,8 +60,8 @@ export const MATERIAL_MODULES = [
 ];
 
 @NgModule({
-  declarations: [FormControlErrorComponent],
+  declarations: [FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, ...MATERIAL_MODULES],
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ...MATERIAL_MODULES],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, ...MATERIAL_MODULES],
 })
 export class SharedModule {}

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
-import { ApiService } from "./api.service";
+import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { Ruolo, RoleType } from "../enum/role.enum";
 import { isAuthenticated } from "../interfaces/auth.model";
@@ -42,9 +42,9 @@ export class UtenteService {
     return this.userSubject.value;
   }
 
-  login(payload: { utente_email: string; password: string }): Observable<UtenteLoginModel> {
+  login(payload: { utente_email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
     const endpoint = "autenticazione/logIn";
-    return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
+    return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
@@ -76,8 +76,8 @@ export class UtenteService {
     }
   }
 
-  createUtente(payload: any) {
+  createUtente(payload: any, options: ApiRequestOptions = {}) {
     const path = "/utente/inserisci";
-    return this.apiService.postText(path, payload);
+    return this.apiService.postText(path, payload, options);
   }
 }

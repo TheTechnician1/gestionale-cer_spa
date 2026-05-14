@@ -86,7 +86,7 @@ export class ImpiantoModel implements Impianto {
     this.partitaIva = data?.partitaIva ?? null;
     this.potenzaNominale = data?.potenzaNominale ?? null;
     this.codiceTipologia = data?.codiceTipologia ?? null;
-    this.codTipologia = data?.codTipologia ? new CodiceTipologiaModel(data.codTipologia) : null;
+    this.codTipologia = data?.codTipologia ? new CodiceTipologiaModel(data.codTipologia) : new CodiceTipologiaModel();
     this.regione = data?.regione ?? null;
     this.comune = data?.comune ?? null;
     this.provincia = data?.provincia ?? null;

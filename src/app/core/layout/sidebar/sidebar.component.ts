@@ -4,6 +4,7 @@ import { MatTreeNestedDataSource } from "@angular/material/tree";
 import { isEmptyArray } from "../../util/collection.util";
 import { UtenteService } from "../../services/utente.service";
 import { BehaviorSubject, map, Observable } from "rxjs";
+import { LocalizedString } from "@angular/compiler";
 
 interface NavItem {
   label: string;

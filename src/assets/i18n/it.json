@@ -1,6 +1,7 @@
 {
   "app": {
     "main-title": "Gestionale CER SPA",
-    "dashboard-title": "Dashboard Comunità Energetiche"
+    "dashboard-title": "Dashboard Comunità Energetiche",
+    "title": "Ragione Sociale"
   }
 }

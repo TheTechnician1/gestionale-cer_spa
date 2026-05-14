@@ -1,9 +1,9 @@
-import { Component, NgModule } from "@angular/core";
+import { Component } from "@angular/core";
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from "@angular/forms";
 import { Ruolo } from "src/app/core/interfaces/ruolo.model";
 import { UtenteService } from "../../../services/utente.service";
 import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { ToastService } from "src/app/core/services/toast.service";
 
 @Component({
   selector: "app-registrazione-utente",
@@ -15,7 +15,7 @@ export class RegistrazioneUtenteComponent {
     private fb: FormBuilder,
     private authService: UtenteService,
     private route: Router,
-    private snackBar: MatSnackBar,
+    private toastService: ToastService,
   ) {}
 
   form = this.fb.group(
@@ -38,10 +38,7 @@ export class RegistrazioneUtenteComponent {
   readonly cognomeErrorMessages: Record<string, string>[] = [{ pattern: "Il cognome puo contenere solo lettere." }];
   readonly codiceFiscaleErrorMessages: Record<string, string>[] = [{ pattern: "Inserisci un codice fiscale valido." }];
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }];
-  readonly confermaPasswordErrorMessages: Record<string, string>[] = [
-    { pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." },
-    { passwordMismatch: "Le password non coincidono." },
-  ];
+  readonly confermaPasswordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }, { passwordMismatch: "Le password non coincidono." }];
   readonly telefonoErrorMessages: Record<string, string>[] = [{ pattern: "Inserisci un numero valido con prefisso, da 10 a 15 cifre." }];
   ruoli: Ruolo[] = [
     { value: "ADMIN", viewValue: "Admin" },
@@ -60,19 +57,18 @@ export class RegistrazioneUtenteComponent {
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.showToast("Compila correttamente tutti i campi");
+      this.toastService.warning("Compila correttamente tutti i campi obbligatori.", "Form non valido");
       return;
     }
+
     const { confermaPassword, ...payload } = this.form.getRawValue();
     this.authService.createUtente(payload).subscribe({
       next: () => {
         this.form.reset();
-        this.showToast("Utente registrato con successo!");
         this.route.navigateByUrl("/dashboard");
       },
       error: (error) => {
         console.error("Register error", error);
-        this.showToast("Errore durante la registrazione");
       },
     });
   }
@@ -103,13 +99,5 @@ export class RegistrazioneUtenteComponent {
     }
 
     return null;
-  }
-
-  private showToast(message: string, action: string = "OK") {
-    this.snackBar.open(message, action, {
-      duration: 3000,
-      horizontalPosition: "right",
-      verticalPosition: "top",
-    });
   }
 }

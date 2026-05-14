@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
+import { ImpiantoModel } from "./core/interfaces/impianto.model";
 
 @Component({
   selector: "app-root",
@@ -7,8 +8,10 @@ import { TranslateService } from "@ngx-translate/core";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
+
+  impianto: ImpiantoModel = new ImpiantoModel()
   constructor(private translate: TranslateService) {
-    this.translate.setDefaultLang("it");
-    this.translate.use("it");
+    this.translate.setDefaultLang("en");
+    this.translate.use("en");
   }
 }

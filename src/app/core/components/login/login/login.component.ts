@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UtenteService } from "src/app/core/services/utente.service";
+import { ToastService } from "src/app/core/services/toast.service";
 
 @Component({
   selector: "app-login",
@@ -16,6 +17,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: UtenteService,
     private route: Router,
+    private toastService: ToastService,
   ) {}
 
   hide = true;
@@ -38,6 +40,7 @@ export class LoginComponent {
     }
 
     this.loginForm.markAllAsTouched();
+    this.toastService.warning("Controlla email e password prima di continuare.", "Form non valido");
   }
 
   guestIn() {
