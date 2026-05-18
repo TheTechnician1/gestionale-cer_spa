@@ -25,7 +25,37 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Registrazione", icon: "person_add", route: "/registrazione", roles: ["ADMIN"] },
     ],
   },
-  { label: "Impianto", icon: "bolt", route: "/impianto", roles: ["ADMIN", "GEST", "GUEST"] },
+{
+  label: "Impianto",
+  icon: "bolt",
+  roles: ["ADMIN", "GEST", "GUEST"],
+  children: [
+    {
+      label: "Lista Impianti",
+      icon: "list",
+      route: "/impianto",
+      roles: ["ADMIN", "GEST", "GUEST"],
+    },
+    {
+      label: "Nuovo Impianto",
+      icon: "add_circle",
+      route: "/impianto/inserimento-impianto",
+      roles: ["ADMIN", "GEST"],
+    },
+    {
+      label: "Modifica Impianto",
+      icon: "edit",
+      route: "/impianto/modifica-impianto/1",
+      roles: ["ADMIN", "GEST"],
+    },
+    {
+      label: "Dettaglio Impianto",
+      icon: "visibility",
+      route: "/impianto/dettaglio-impianto/1",
+      roles: ["ADMIN", "GEST", "GUEST"],
+    },
+  ],
+},
   { label: "Dati Energetici", icon: "settings", route: "/dati-energetici", roles: ["ADMIN", "GEST", "GUEST"] },
 ];
 

@@ -1,1 +1,74 @@
-<p>impianti-form works!</p>
+<mat-card class="impianto-form-card">
+  <mat-card-header>
+    <mat-card-title>{{ titoloPagina }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="impiantoForm" class="impianto-form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipologia</mat-label>
+        <input matInput formControlName="tipologia" />
+        <mat-error *ngIf="impiantoForm.get('tipologia')?.hasError('required')">
+          La tipologia è obbligatoria
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Potenza nominale (kW)</mat-label>
+        <input matInput type="number" formControlName="potenzaNominale" />
+        <mat-error *ngIf="impiantoForm.get('potenzaNominale')?.hasError('required')">
+          La potenza è obbligatoria
+        </mat-error>
+        <mat-error *ngIf="impiantoForm.get('potenzaNominale')?.hasError('min')">
+          La potenza non può essere negativa
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Regione</mat-label>
+        <input matInput formControlName="regione" />
+        <mat-error *ngIf="impiantoForm.get('regione')?.hasError('required')">
+          La regione è obbligatoria
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comune</mat-label>
+        <input matInput formControlName="comune" />
+        <mat-error *ngIf="impiantoForm.get('comune')?.hasError('required')">
+          Il comune è obbligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Indirizzo</mat-label>
+        <input matInput formControlName="indirizzo" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CAP</mat-label>
+        <input matInput formControlName="cap" />
+        <mat-error *ngIf="impiantoForm.get('cap')?.hasError('pattern')">
+          Il CAP deve avere 5 cifre
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Partita IVA</mat-label>
+        <input matInput formControlName="partitaIva" />
+        <mat-error *ngIf="impiantoForm.get('partitaIva')?.hasError('pattern')">
+          La Partita IVA deve avere 11 cifre
+        </mat-error>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="flgAccumulo">Impianto con accumulo</mat-checkbox>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button type="button" (click)="resetForm()">Reset</button>
+    <button mat-flat-button color="primary" type="button" (click)="salvaBozza()">
+      Salva bozza
+    </button>
+  </mat-card-actions>
+</mat-card>

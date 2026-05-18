@@ -1,0 +1,42 @@
+.dettaglio-card {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 8px;
+}
+
+.dettaglio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid #e6e8ec;
+  border-radius: 8px;
+  background: #fafbfd;
+}
+
+.label {
+  font-size: 12px;
+  color: #667085;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+mat-card-actions {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}

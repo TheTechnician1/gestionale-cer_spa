@@ -1,0 +1,20 @@
+.impianto-form-card {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 8px;
+}
+
+.impianto-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
+}
+
+mat-card-actions {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}

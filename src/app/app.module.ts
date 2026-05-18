@@ -22,6 +22,7 @@ import { NotAuthorizedComponent } from "./core/components/not-authorized/not-aut
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+// import { DettaglioComponent } from './components/impianti/impianto-dettaglio/dettaglio.component';
 
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],

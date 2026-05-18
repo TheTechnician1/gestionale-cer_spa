@@ -1,0 +1,58 @@
+<mat-card class="dettaglio-card" *ngIf="impianto">
+  <mat-card-header>
+    <mat-card-title>Dettaglio Impianto #{{ impianto.id }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="dettaglio-grid">
+      <div class="info-item">
+        <span class="label">Tipologia</span>
+        <span class="value">{{ impianto.tipologia }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Potenza nominale (kW)</span>
+        <span class="value">{{ impianto.potenzaNominale }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Regione</span>
+        <span class="value">{{ impianto.regione }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Comune</span>
+        <span class="value">{{ impianto.comune }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Indirizzo</span>
+        <span class="value">{{ impianto.indirizzo }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">CAP</span>
+        <span class="value">{{ impianto.cap }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Partita IVA</span>
+        <span class="value">{{ impianto.partitaIva }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Accumulo</span>
+        <span class="value">{{ impianto.accumulo ? "Sì" : "No" }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-stroked-button type="button" (click)="tornaAllaLista()">
+      Torna alla lista
+    </button>
+    <button mat-flat-button color="primary" type="button" (click)="vaiAModifica()">
+      Modifica Impianto
+    </button>
+  </mat-card-actions>
+</mat-card>
