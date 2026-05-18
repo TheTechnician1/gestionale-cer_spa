@@ -1,1 +1,190 @@
-<p>impianti-ricerca works!</p>
+<h2>Impianti</h2>
+<p class="subtitle">Gestione e consultazione impianti</p>
+
+<div class="white-box">
+
+  <h5>Ricerca elenco impianti</h5>
+
+  <div class="form-group">
+
+    <!-- CER -->
+    <label for="cer">Seleziona CER</label>
+
+        <select id="cer" [(ngModel)]="selectedCer">
+
+        <option value="" disabled selected>
+            -- Seleziona una CER --
+        </option>
+
+        <option *ngFor="let cer of cerList" [value]="cer">
+            {{ cer }}
+        </option>
+
+        </select>
+
+    </div>
+
+    <!-- CABINA -->
+     <div class="form-group">
+
+    <label for="cabina">Seleziona Cabina Primaria</label>
+
+        <select id="cabina" [(ngModel)]="selectedCabina">
+
+        <option value="" disabled selected>
+            -- Seleziona una Cabina --
+        </option>
+
+        <option *ngFor="let cabina of cabinaList" [value]="cabina">
+            {{ cabina }}
+        </option>
+
+        </select>
+
+    </div>
+
+    <!-- TIPOLOGIA -->
+    <div class="form-group">
+
+        <label for="cabina">Seleziona tipologia impianto</label>
+
+        <select id="cabina" [(ngModel)]="selectedTipologia">
+
+        <option value="" disabled selected>
+            -- Seleziona una tipologia --
+        </option>
+
+        <option *ngFor="let tipologia of tipologiaList" [value]="tipologia">
+            {{ tipologia }}
+        </option>
+
+        </select>
+
+    </div>
+
+    <!-- REGIONE -->
+    <div class="form-group">
+
+        <label for="regione">Seleziona regione</label>
+
+        <select id="regione" [(ngModel)]="selectedRegione">
+
+            <option value="" disabled selected>
+            -- Seleziona una regione --
+            </option>
+
+            <option *ngFor="let regione of regioneList" [value]="regione">
+            {{ regione }}
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="form-group">
+
+        <label for="provincia">Seleziona provincia</label>
+
+        <select id="provincia" [(ngModel)]="selectedProvincia">
+
+            <option value="" disabled selected>
+            -- Seleziona una provincia --
+            </option>
+
+            <option *ngFor="let provincia of provinciaList" [value]="provincia">
+            {{ provincia }}
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="form-group">
+
+        <label for="comune">Seleziona comune</label>
+
+        <select id="comune" [(ngModel)]="selectedComune">
+
+            <option value="" disabled selected>
+            -- Seleziona un comune --
+            </option>
+
+            <option *ngFor="let comune of comuneList" [value]="comune">
+            {{ comune }}
+            </option>
+
+        </select>
+
+    </div>
+
+
+  <!-- BOTTONE -->
+  <button
+    class="search-btn"
+    (click)="search()">
+
+    Cerca
+
+  </button>
+
+</div>
+
+<!-- TABELLA -->
+<div class="table-container">
+
+  <table class="energy-table">
+
+    <thead>
+
+      <tr>
+        <th>tipologia</th>
+        <th>potenza nominale</th>
+        <th>tipo produttore</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let impianto of impiantiList">
+
+        <td>{{ impianto.codTipologia }}</td>
+
+        <td>{{ impianto.potenzaNominaleKw }}</td>
+
+        <td>{{ impianto.codCatProd }}</td>
+
+        <!-- AZIONI -->
+        <td class="azioni">
+
+           <mat-icon >
+            find_in_page
+          </mat-icon>
+
+          <mat-icon>
+            edit
+          </mat-icon>
+
+           <mat-icon>
+            delete
+          </mat-icon>
+         
+
+        </td>
+
+      </tr>
+      
+      <tr *ngIf="!impiantiList?.length">
+
+        <td colspan="11" class="empty-table">
+          Nessun dato disponibile
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
