@@ -1,0 +1,58 @@
+.impianti-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 24px;
+  background: #f4f6fb;
+}
+
+.impianto-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.impianto-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+mat-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.impianto-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.campo {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.campo strong {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.campo span {
+  color: #111827;
+  font-weight: 500;
+  text-align: right;
+}
+
+mat-card-actions {
+  padding: 16px;
+  border-top: 1px solid #e5e7eb;
+}

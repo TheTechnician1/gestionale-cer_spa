@@ -13,12 +13,14 @@ export class ImpiantiFormComponent implements OnInit {
   isEditMode = false;
   idImpianto: string | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-  ) {}
+  constructor( private fb: FormBuilder, private route: ActivatedRoute,) {}
 
   ngOnInit(): void {
+
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
+    
+
     this.buildForm();
 
     this.idImpianto = this.route.snapshot.paramMap.get('id');
@@ -30,6 +32,7 @@ export class ImpiantiFormComponent implements OnInit {
     } else {
       this.titoloPagina = 'Nuovo Impianto';
     }
+
   }
 
   private loadMockForEdit(): void {

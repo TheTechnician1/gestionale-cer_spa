@@ -1,1 +1,63 @@
-<p>impianti-ricerca works!</p>
+<div class="impianti-container">
+
+  <mat-card class="impianto-card" *ngFor="let impianto of impianti">
+
+    <mat-card-header>
+      <mat-card-title>
+        {{ impianto.tipologia }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="impianto-grid">
+
+
+      <div class="campo">
+        <strong>Potenza:</strong>
+      <span>{{ impianto.potenzaNominale }} kW</span>
+      </div>
+
+      <div class="campo">
+        <strong>Regione:</strong>
+        <span>{{ impianto.regione }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Comune:</strong>
+        <span>{{ impianto.comune }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Indirizzo:</strong>
+        <span>{{ impianto.indirizzo }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>CAP:</strong>
+        <span>{{ impianto.cap }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Partita IVA:</strong>
+        <span>{{ impianto.partitaIva }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Accumulo:</strong>
+        <span>{{ impianto.flgAccumulo ? 'Sì' : 'No' }}</span>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-stroked-button color="primary">
+        Dettaglio
+      </button>
+
+      <button mat-flat-button color="primary"type="button"(click)="modificaImpianto(impianto.id)">
+        Modifica
+      </button>
+    </mat-card-actions>
+
+  </mat-card>
+
+</div>

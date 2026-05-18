@@ -1,1 +1,82 @@
-<p>dati-energetici-form works!</p>
+<mat-card class="form-card">
+
+  <h2>Inserimento Dati Energetici</h2>
+
+  <form [formGroup]="datiForm" (ngSubmit)="salva()">
+
+    <div class="form-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID CER</mat-label>
+        <input matInput type="number" formControlName="idCer">
+        <mat-error *ngIf="isInvalid('idCer')">Campo obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Configurazione</mat-label>
+        <input matInput type="number" formControlName="idConfig">
+        <mat-error *ngIf="isInvalid('idConfig')">Campo obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Anno</mat-label>
+        <input matInput type="text" formControlName="anno" placeholder="2026">
+        <mat-error *ngIf="isInvalid('anno')">Campo obbligatorio</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia Prodotta</mat-label>
+        <input matInput type="number" formControlName="energiaProdotta">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia Prelevata</mat-label>
+        <input matInput type="number" formControlName="energiaPrelevata">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia Immessa</mat-label>
+        <input matInput type="number" formControlName="energiaImmessa">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia Condivisa</mat-label>
+        <input matInput type="number" formControlName="energiaCondivisa">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia Autoconsumata</mat-label>
+        <input matInput type="number" formControlName="energiaAutoCons">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tariffa Premium</mat-label>
+        <input matInput type="number" step="0.01" formControlName="tariffaPremium">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Corrispettivo Premio Ott.</mat-label>
+        <input matInput type="number" step="0.01" formControlName="corrPremioOtt">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Riduzione Emissioni CO2</mat-label>
+        <input matInput type="text" formControlName="ridEmCo2">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email utente loggato</mat-label>
+        <input matInput type="email" formControlName="emailUtenteLoggato">
+      </mat-form-field>
+
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit">
+        Salva dati energetici
+      </button>
+    </div>
+
+  </form>
+
+</mat-card>
