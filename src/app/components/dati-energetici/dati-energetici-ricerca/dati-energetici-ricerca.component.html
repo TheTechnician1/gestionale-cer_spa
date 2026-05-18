@@ -1,1 +1,191 @@
-<p>dati-energetici-ricerca works!</p>
+<h2>Dati Energetici Annuali</h2>
+<p class="subtitle">Gestione e consultazione dei dati energetici</p>
+
+<div class="white-box">
+
+  <h5>Ricerca Elenco Dati Energetici</h5>
+
+  <div class="form-group">
+
+    <!-- CER -->
+    <label for="cer">Seleziona CER</label>
+
+    <select id="cer" [(ngModel)]="selectedCer">
+
+      <option value="" disabled selected>
+        -- Seleziona una CER --
+      </option>
+
+      <option *ngFor="let cer of cerList" [value]="cer">
+        {{ cer }}
+      </option>
+
+    </select>
+
+  </div>
+
+  <!-- CABINA -->
+  <div class="form-group">
+
+    <label for="cabina">Seleziona Cabina Primaria</label>
+
+    <select id="cabina" [(ngModel)]="selectedCabina">
+
+      <option value="" disabled selected>
+        -- Seleziona una Cabina --
+      </option>
+
+      <option *ngFor="let cabina of cabinaList" [value]="cabina">
+        {{ cabina }}
+      </option>
+
+    </select>
+
+  </div>
+
+  <!-- ANNI -->
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="annoDa">Da anno</label>
+
+      <select id="annoDa" [(ngModel)]="annoDa">
+
+        <option value="" disabled selected>
+          -- Seleziona anno --
+        </option>
+
+        <option *ngFor="let anno of anniList" [value]="anno">
+          {{ anno }}
+        </option>
+
+      </select>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="annoA">A anno</label>
+
+      <select id="annoA" [(ngModel)]="annoA">
+
+        <option value="" disabled selected>
+          -- Seleziona anno --
+        </option>
+
+        <option *ngFor="let anno of anniList" [value]="anno">
+          {{ anno }}
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTONE -->
+  <button
+    class="search-btn"
+    (click)="search()"
+    [disabled]="!isFormValid()">
+
+    Cerca
+
+  </button>
+
+</div>
+
+<!-- TABELLA -->
+<div class="table-container">
+
+  <table class="energy-table">
+
+    <thead>
+
+      <tr>
+
+        <th>Anno</th>
+        <th>Energia prodotta</th>
+        <th>Energia prelevata</th>
+        <th>Energia immessa</th>
+        <th>Energia condivisa</th>
+        <th>Energia autoconsumata</th>
+        <th>Tariffa premium</th>
+        <th>Corrispettivo premio</th>
+        <th>Riduzione CO₂</th>
+        <th>Stato</th>
+        <th>Azioni</th>
+
+      </tr>
+
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let dato of datiEnergetici">
+
+        <td>{{ dato.anno }}</td>
+
+        <td>{{ dato.eProdotta }}</td>
+
+        <td>{{ dato.ePrelevata }}</td>
+
+        <td>{{ dato.eImmessa }}</td>
+
+        <td>{{ dato.eCondivisa }}</td>
+
+        <td>{{ dato.eAutoCons }}</td>
+
+        <td>{{ dato.tariffaPremium }}</td>
+
+        <td>{{ dato.corrPremioOtt }}</td>
+
+        <td>{{ dato.ridEmCo2 }}</td>
+
+        <!-- STATO -->
+        <td>
+
+          <span
+            class="status"
+            [ngClass]="dato.note === 'OK' ? 'success' : 'warning'">
+
+            {{ dato.note }}
+
+          </span>
+
+        </td>
+
+        <!-- AZIONI -->
+        <td class="azioni">
+
+           <mat-icon (click)="visualizzaDato(dato!.idDati!)">
+            find_in_page
+          </mat-icon>
+
+          <mat-icon (click)="modificaDati(dato)">
+            edit
+          </mat-icon>
+
+           <mat-icon (click)="eliminaDati(dato)">
+            delete
+          </mat-icon>
+         
+
+        </td>
+
+      </tr>
+      
+      <tr *ngIf="!datiEnergetici?.length">
+
+        <td colspan="11" class="empty-table">
+          Nessun dato disponibile
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

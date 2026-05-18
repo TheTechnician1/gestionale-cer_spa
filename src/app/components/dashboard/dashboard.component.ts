@@ -4,6 +4,7 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { MatSort, Sort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-dashboard",
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private _liveAnnouncer: LiveAnnouncer,
+    private router: Router,
   ) {}
 
   tableCER: string[] = ["ragSociale", "codFisc", "pIva", "comune", "provincia", "regione", "azioni"];
@@ -85,5 +87,7 @@ export class DashboardComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce("Sorting cleared");
     }
+     
   }
+ 
 }

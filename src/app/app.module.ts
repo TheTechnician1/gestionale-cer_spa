@@ -22,10 +22,11 @@ import { NotAuthorizedComponent } from "./core/components/not-authorized/not-aut
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,   MatIconModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
