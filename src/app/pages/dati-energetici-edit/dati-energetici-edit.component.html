@@ -1,0 +1,81 @@
+<mat-card class="edit-card" *ngIf="formData">
+
+  <div class="header">
+    <h2>Modifica Dati Energetici</h2>
+    <p>Aggiorna i valori energetici del sistema</p>
+  </div>
+
+
+  <div class="grid-3">
+
+    <mat-form-field appearance="outline">
+
+      <mat-label>Anno</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.anno">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Energia prodotta</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.eProdotta">
+    </mat-form-field>
+</div>
+
+ <div class="grid-3">
+    <mat-form-field appearance="outline">
+      <mat-label>Energia prelevata</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.ePrelevata">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Energia immessa</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.eImmessa">
+    </mat-form-field>
+</div>
+
+<div class="grid-2">
+    <mat-form-field appearance="outline">
+      <mat-label>Energia condivisa</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.eCondivisa">
+    </mat-form-field>
+
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Autoconsumo</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.eAutoCons">
+    </mat-form-field>
+</div>
+
+<div class="grid-1">
+    <mat-form-field appearance="outline">
+      <mat-label>Tariffa premium</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.tariffaPremium">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Corrispettivo premio</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.corrPremioOtt">
+    </mat-form-field>
+
+  </div>
+
+  <div class="grid-2">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Riduzione CO₂</mat-label>
+      <input matInput [(ngModel)]="formData.ridEmCo2">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Stato</mat-label>
+      <input matInput [(ngModel)]="formData.note">
+    </mat-form-field>
+
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="salvaModifica()">
+      Salva modifiche
+    </button>
+  </div>
+
+</mat-card>

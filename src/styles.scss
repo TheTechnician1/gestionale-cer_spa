@@ -29,18 +29,24 @@ body {
 }
 
 .app-toast-snackbar-panel {
-  margin-top: 72px !important;
-  margin-left: 16px !important;
-  box-shadow: none !important;
-  background: transparent !important;
+  margin-top: 35vh !important; /* più centrato */
 }
 
+/* contenitore principale dello snackbar */
 .app-toast-snackbar-panel .mdc-snackbar__surface,
 .app-toast-snackbar-panel .mat-mdc-snack-bar-surface {
-  background: transparent !important;
-  box-shadow: none !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+
+  border-radius: 14px !important;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18) !important;
+
+  padding: 14px 18px !important;
 }
 
+/* testo */
 .app-toast-snackbar-panel .mat-mdc-snack-bar-label {
-  padding: 0 !important;
+  color: #0f172a !important;
+  font-weight: 500;
 }

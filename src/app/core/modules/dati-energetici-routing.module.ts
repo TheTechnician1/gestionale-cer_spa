@@ -1,12 +1,18 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DATI_ENERGETICI_ROUTES } from "../routes/dati-energetici.routes";
+
+import { DatiEnergeticiRicercaComponent } from "src/app/components/dati-energetici/dati-energetici-ricerca/dati-energetici-ricerca.component";
+import { DatiEnergeticiEditComponent } from "src/app/pages/dati-energetici-edit/dati-energetici-edit.component";
 
 const routes: Routes = [
   {
     path: "",
-    children: DATI_ENERGETICI_ROUTES,
+    component: DatiEnergeticiRicercaComponent
   },
+  {
+    path: "edit/:id",
+    component: DatiEnergeticiEditComponent
+  }
 ];
 
 @NgModule({
