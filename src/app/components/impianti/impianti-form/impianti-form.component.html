@@ -1,1 +1,174 @@
-<p>impianti-form works!</p>
+<h1>Inserimento nuovo impianto</h1>
+
+<form [formGroup]="formImpianto" (ngSubmit)="salvataggio()">
+
+  <div>
+    <label for="idConfigurazione">Configurazione</label>
+    <input
+      type="number"
+      id="idConfigurazione"
+      formControlName="idConfigurazione">
+  </div>
+
+  <div>
+    <label for="flagEsercizio">Flag Esercizio</label>
+    <input
+      type="text"
+      id="flagEsercizio"
+      formControlName="flagEsercizio">
+  </div>
+
+  <div>
+    <label for="dataEntrataEsercizio">Data Entrata Esercizio</label>
+    <input
+      type="date"
+      id="dataEntrataEsercizio"
+      formControlName="dataEntrataEsercizio">
+  </div>
+
+  <div>
+    <label for="tipologiaImpianto">Tipologia Impianto</label>
+    <input
+      type="text"
+      id="tipologiaImpianto"
+      formControlName="tipologiaImpianto">
+  </div>
+
+  <div>
+    <label for="potenzaNominaleKw">Potenza Nominale (kW)</label>
+    <input
+      type="number"
+      id="potenzaNominaleKw"
+      formControlName="potenzaNominaleKw">
+  </div>
+
+  <div>
+    <label for="presenzaAccumulo">Presenza Accumulo</label>
+    <input
+      type="text"
+      id="presenzaAccumulo"
+      formControlName="presenzaAccumulo">
+  </div>
+
+  <div>
+    <label for="capacitaAccumuloKwh">Capacità Accumulo (kWh)</label>
+    <input
+      type="number"
+      id="capacitaAccumuloKwh"
+      formControlName="capacitaAccumuloKwh">
+  </div>
+
+  <div>
+    <label for="categoriaProduttore">Categoria Produttore</label>
+    <input
+      type="text"
+      id="categoriaProduttore"
+      formControlName="categoriaProduttore">
+  </div>
+
+  <div>
+    <label for="codiceCategoriaProduttore">Codice Categoria Produttore</label>
+    <input
+      type="text"
+      id="codiceCategoriaProduttore"
+      formControlName="codiceCategoriaProduttore">
+  </div>
+
+  <div>
+    <label for="regione">Regione</label>
+    <select formControlName="regione">
+        <option [ngValue]="null">
+            -- Seleziona Regione --
+        </option>
+        <option *ngFor="let r of regioni$ | async"
+            [ngValue]="r">
+                {{r.descrizione}}
+        </option>
+    </select>
+  </div>
+
+  <div>
+    <label for="provincia">Provincia</label>
+    <select formControlName="provincia">
+        <option [ngValue]="null">
+            -- Seleziona Provincia --
+        </option>
+        <option *ngFor="let p of provincie$ | async"
+            [ngValue]="p">
+                {{p.descrizione}}
+        </option>
+    </select>
+  </div>
+
+    <div>
+    <label for="comune">Comune</label>
+    <select formControlName="comune">
+        <option [ngValue]="null">
+            -- Seleziona Comune --
+        </option>
+        <option *ngFor="let c of comuni$ | async"
+            [ngValue]="c">
+                {{c.descrizione}}
+        </option>
+    </select>
+  </div>
+
+  <!-- <div>
+    <label for="comune">Comune</label>
+    <input
+      type="text"
+      id="comune"
+      formControlName="comune">
+  </div> -->
+
+  <div>
+    <label for="indirizzo">Indirizzo</label>
+    <input
+      type="text"
+      id="indirizzo"
+      formControlName="indirizzo">
+  </div>
+
+  <div>
+    <label for="civico">Civico</label>
+    <input
+      type="text"
+      id="civico"
+      formControlName="civico">
+  </div>
+
+  <div>
+    <label for="cap">CAP</label>
+    <input
+      type="text"
+      id="cap"
+      formControlName="cap">
+  </div>
+
+  <div>
+    <label for="statoImpianto">Stato Impianto</label>
+    <input
+      type="text"
+      id="statoImpianto"
+      formControlName="statoImpianto">
+  </div>
+
+  <div>
+    <label for="attivo">Attivo</label>
+    <input
+      type="text"
+      id="attivo"
+      formControlName="attivo">
+  </div>
+
+  <div>
+    <label for="emailUtenteLoggato">Email Utente</label>
+    <input
+      type="email"
+      id="emailUtenteLoggato"
+      formControlName="emailUtenteLoggato">
+  </div>
+
+  <button type="submit">
+    Salva
+  </button>

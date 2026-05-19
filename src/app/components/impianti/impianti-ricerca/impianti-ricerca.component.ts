@@ -61,45 +61,7 @@ export class ImpiantiRicercaComponent {
 
 
   ngAfterViewInit(): void {
-    this.impiantiList = [
-    {
-        idImpianto : 11,
-        idConfigurazione : 12,
-        flgEsercizio : "S",
-        dataEserc : null,
-        codTipologia : null,
-        potenzaNominaleKw : 55,
-        flgAccumulo : null,
-        capAccumulo :  null,
-        tipoProduttore :'S',
-        codCatProd : 'Eolico',
-        flgCancellazione : null,
-        specTipologia : null,
-        specCatProduttore :null,
-        codSitoInst : null,
-        specSitoInst : null,
-        statoImpianto : null
-    },
-        {
-        idImpianto : 10,
-        idConfigurazione : 14,
-        flgEsercizio : "S",
-        dataEserc : null,
-        codTipologia : 'Agrovoltaico',
-        potenzaNominaleKw : 6,
-        flgAccumulo : null,
-        capAccumulo :  null,
-        tipoProduttore :null,
-        codCatProd : 'Terra',
-        flgCancellazione : null,
-        specTipologia : null,
-        specCatProduttore :null,
-        codSitoInst : null,
-        specSitoInst : null,
-        statoImpianto : null
-    }
 
-    ]
   }
   search(): void {
 
