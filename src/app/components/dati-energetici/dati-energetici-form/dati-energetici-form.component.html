@@ -1,1 +1,92 @@
-<p>dati-energetici-form works!</p>
+<div
+  *ngIf="datiForm"
+  class="form-card mat-elevation-z4"
+  style="margin: 20px; padding: 20px; background: #fdfdfd; border-radius: 4px"
+>
+  <h2 style="margin-top: 0">
+    {{
+      modalitaVisualizzazione
+        ? "Visualizzazione Dati Scheda"
+        : "Modifica Dati Energetici"
+    }}
+    (Anno {{ datiForm?.anno }})
+  </h2>
+
+  <div
+    class="filtro"
+    style="
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    "
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Energia Prodotta (kWh)</mat-label>
+      <input
+        [(ngModel)]="datiForm.energiaProdotta"
+        [disabled]="modalitaVisualizzazione"
+        matInput
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Energia Prelevata (kWh)</mat-label>
+      <input
+        [(ngModel)]="datiForm.energiaPrelevata"
+        [disabled]="modalitaVisualizzazione"
+        matInput
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Energia Immessa (kWh)</mat-label>
+      <input
+        [(ngModel)]="datiForm.energiaImmessa"
+        [disabled]="modalitaVisualizzazione"
+        matInput
+        type="number"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Energia Condivisa (kWh)</mat-label>
+      <input
+        [(ngModel)]="datiForm.energiaCondivisa"
+        [disabled]="modalitaVisualizzazione"
+        matInput
+        type="number"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="button-actions" style="margin-top: 15px">
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="!modalitaVisualizzazione"
+      (click)="salvaOggetto()"
+    >
+      Salva Modifiche
+    </button>
+    <button
+      mat-raised-button
+      style="margin-left: 8px"
+      (click)="annullaOChiudi()"
+    >
+      Annulla / Chiudi
+    </button>
+
+    <button
+      *ngIf="energiaForm.value.idDati"
+      mat-raised-button
+      color="warn"
+      type="button"
+      (click)="gestisciCancellazioneLocale()"
+    >
+      <mat-icon>delete</mat-icon>
+      Cancella Dato Energetico
+    </button>
+  </div>
+</div>
