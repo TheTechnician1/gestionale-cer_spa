@@ -1,9 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { DatiEnergetici } from "src/app/core/interfaces/dati-energetici.model";
 import { DatiEnergeticiService } from "../../services/dati-energetici.service";
+import { ConfirmationDialogComponent, DialogCloseReason } from "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { CerService } from "../../services/cer.service";
+import { CerModel } from "src/app/core/interfaces/cer.model";
 
 const MOCK_DATI: DatiEnergetici[] = [
   {
@@ -52,68 +55,193 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
 
   formRicerca!: FormGroup;
 
-  cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
-  cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
+ // cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
+cerList: CerModel[] = [];
+  //cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
+cabinaList: any[] = [];
 
   anniList: number[] = [];
 
   datiEnergetici: DatiEnergetici[] = [];
 
+  @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
+
   constructor(
     private fb: FormBuilder,
     private datiEnergeticiService: DatiEnergeticiService,
-    private router: Router
+    private router: Router,
+    private cerService: CerService
   ) {}
 
   ngOnInit(): void {
 
+  // this.form = this.fb.group({
+  //   idCer: [null, Validators.required],
+  //   anno: [new Date().getFullYear(), Validators.required],
+  //   eProdotta: [0, Validators.required],
+  //   ePrelevata: [0],
+  //   eImmessa: [0],
+  //   eCondivisa: [0],
+  //   eAutoCons: [0],
+  //   tariffaPremium: [0],
+  //   note: [""]
+  // });
+  this.initForm();
+    this.loadCer();
+    this.initAnni();
+}
+ private initForm(): void {
+    const currentYear = new Date().getFullYear();
+
+    this.formRicerca = this.fb.group({
+      cer: [null, Validators.required],
+      cabina: [null],
+      annoDa: [currentYear - 1, Validators.required],
+      annoA: [currentYear, Validators.required]
+    });
+  }
+
+    private initAnni(): void {
     const currentYear = new Date().getFullYear();
 
     this.anniList = Array.from(
       { length: currentYear - 1899 },
       (_, i) => currentYear - i
     );
+  }
 
-    this.formRicerca = this.fb.group({
-      cer: ["", Validators.required],
-      cabina: ["", Validators.required],
-      annoDa: [currentYear - 1, Validators.required],
-      annoA: [currentYear - 1, Validators.required]
+   private loadCer(): void {
+    this.cerService.getCer().subscribe({
+      next: (res) => {
+        this.cerList = res;
+      },
+      error: (err) => console.error("Errore caricamento CER:", err)
     });
   }
 
-  search(): void {
+ search(): void {
 
     if (this.formRicerca.invalid) {
       this.formRicerca.markAllAsTouched();
       return;
     }
 
-    const payload = this.formRicerca.value;
-    console.log("VALORI FORM:", payload);
+    const filters = this.formRicerca.value;
 
-    // MOCK
-    this.datiEnergetici = MOCK_DATI;
+    console.log("FILTRI RICERCA:", filters);
+
+       this.datiEnergeticiService.getDati(filters).subscribe({
+    next: (res) => {
+      this.datiEnergetici = res;
+    },
+    error: (err) => {
+      console.error("Errore ricerca:", err);
+      this.datiEnergetici = [];
+    }
+       });
+       this.cerService.getCer().subscribe({
+  next: (res) => {
+    this.cerList = res;
+  }
+});
+ }
+
+  inserisciDati(): void {
+    this.router.navigate(['/dati-energetici/form']);
   }
 
-  visualizzaDato(idDati: number | null): void {
-    if (!idDati) return;
+  visualizzaDato(id: number | null): void {
+    if (!id) return;
+    this.router.navigate(['/dati-energetici/view', id]);
+  }
 
-    this.datiEnergeticiService.getDato(idDati).subscribe({
-      next: (res) => {
-        console.log("Dettaglio:", res?.[0]);
-      },
-      error: (err) => console.error(err)
+  modificaDati(id: number | null): void {
+    if (!id) return;
+    this.router.navigate(['/dati-energetici/edit', id]);
+  }
+
+    eliminaDati(dato: any): void {
+    this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
+  }
+
+   openDialog(dato: DatiEnergetici): void {
+    this.confirmationDialog.open({
+      payload: dato
     });
   }
 
-  modificaDati(idDati: number | null): void {
-    if (!idDati) return;
-
-    this.router.navigate(['/dati-energetici/edit', idDati]);
+  onCancel(): void {
+    console.log("Annullato");
   }
 
-  eliminaDati(dato: DatiEnergetici): void {
-    this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato);
+  onClosed(reason: DialogCloseReason): void {
+    console.log("Chiuso:", reason);
   }
 }
+
+
+//     const currentYear = new Date().getFullYear();
+
+//     this.anniList = Array.from(
+//       { length: currentYear - 1899 },
+//       (_, i) => currentYear - i
+//     );
+
+//     this.formRicerca = this.fb.group({
+//       cer: ["", Validators.required],
+//       cabina: ["", Validators.required],
+//       annoDa: [currentYear - 1, Validators.required],
+//       annoA: [currentYear - 1, Validators.required]
+//     });
+//   }
+
+//   search(): void {
+
+//     if (this.formRicerca.invalid) {
+//       this.formRicerca.markAllAsTouched();
+//       return;
+//     }
+
+//     const payload = this.formRicerca.value;
+//     console.log("VALORI FORM:", payload);
+
+//     // MOCK
+//     this.datiEnergetici = MOCK_DATI;
+//   }
+
+//   visualizzaDato(idDati: number | null): void {
+
+//   if (!idDati) return;
+
+//   this.router.navigate(['/dati-energetici/view', idDati]);
+// }
+
+//   modificaDati(idDati: number | null): void {
+//     if (!idDati) return;
+
+//     this.router.navigate(['/dati-energetici/edit', idDati]);
+//   }
+
+//   openDialog(dato: DatiEnergetici): void {
+//     this.confirmationDialog.open({
+//       payload: dato
+//     });
+//   }
+
+//   onCancel(): void {
+//     console.log("Annullato");
+//   }
+
+//   onClosed(reason: DialogCloseReason): void {
+//     console.log("Chiuso:", reason);
+//   }
+
+//   eliminaDati(dato: any): void {
+//     this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
+//   }
+
+//   inserisciDati(): void {
+//     this.router.navigate(['/dati-energetici/form']);
+
+  
+// }

@@ -1,0 +1,114 @@
+<div class="detail-container">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <h1>
+      Dettaglio Dati Energetici
+    </h1>
+
+    <p>
+      Anno {{ dettaglio.anno }}
+    </p>
+
+  </div>
+
+  <!-- INFO GENERALI -->
+  <div class="card">
+
+    <h2>Informazioni Generali</h2>
+
+    <div class="info-grid">
+
+      <div>
+        <strong>CER:</strong>
+        {{ dettaglio.cer }}
+      </div>
+
+      <div>
+        <strong>Cabina:</strong>
+        {{ dettaglio.cabina }}
+      </div>
+
+      <div>
+        <strong>Configurazione:</strong>
+        {{ dettaglio.configurazione }}
+      </div>
+
+      <div>
+        <strong>Stato:</strong>
+        {{ dettaglio.stato }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DATI ENERGETICI -->
+  <div class="card">
+
+    <h2>Dati Energetici</h2>
+
+    <table class="detail-table">
+
+      <tr>
+        <td>Energia prodotta</td>
+        <td>{{ dettaglio.energiaProdotta }}</td>
+      </tr>
+
+      <tr>
+        <td>Energia prelevata</td>
+        <td>{{ dettaglio.energiaPrelevata }}</td>
+      </tr>
+
+      <tr>
+        <td>Energia immessa</td>
+        <td>{{ dettaglio.energiaImmessa }}</td>
+      </tr>
+
+      <tr>
+        <td>Energia condivisa</td>
+        <td>{{ dettaglio.energiaCondivisa }}</td>
+      </tr>
+
+      <tr>
+        <td>Energia autoconsumata</td>
+        <td>{{ dettaglio.energiaAutoconsumata }}</td>
+      </tr>
+
+      <tr>
+        <td>Tariffa premium</td>
+        <td>{{ dettaglio.tariffaPremium }}</td>
+      </tr>
+
+      <tr>
+        <td>Corrispettivo premio</td>
+        <td>{{ dettaglio.corrispettivoPremio }}</td>
+      </tr>
+
+      <tr>
+        <td>Riduzione CO₂</td>
+        <td>{{ dettaglio.riduzioneCO2 }}</td>
+      </tr>
+
+    </table>
+
+  </div>
+
+  <!-- BOX CO2 -->
+  <div class="card">
+
+    <h2>Riduzione CO₂</h2>
+
+    <p>
+      La riduzione della CO₂ viene calcolata
+      sulla base dell’energia condivisa annuale.
+    </p>
+
+  </div>
+
+    <button (click)="tornaIndietro()">
+      Torna indietro
+    </button>
+
+</div>

@@ -1,0 +1,59 @@
+.detail-container {
+
+  padding: 24px;
+
+}
+
+.header {
+
+  margin-bottom: 24px;
+
+}
+
+.card {
+
+  background: white;
+
+  padding: 20px;
+
+  border-radius: 8px;
+
+  margin-bottom: 20px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+}
+
+.info-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+
+}
+
+.detail-table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+}
+
+.detail-table td {
+
+  padding: 12px;
+
+  border-bottom: 1px solid #ddd;
+
+}
+
+.buttons {
+
+  display: flex;
+
+  gap: 12px;
+
+}

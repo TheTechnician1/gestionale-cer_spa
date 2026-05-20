@@ -1,0 +1,37 @@
+.page {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.header {
+  margin-bottom: 25px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.header p {
+  margin: 4px 0 0;
+  color: #777;
+}
+
+/* FORM CLEAN */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.note-field {
+  width: 70%;
+  margin: 0 auto;
+}
+
+/* NOTE PIÙ GRANDE */
+.full {
+  width: 100%;
+}

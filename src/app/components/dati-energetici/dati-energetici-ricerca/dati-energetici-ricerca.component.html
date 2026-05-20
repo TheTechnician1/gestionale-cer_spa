@@ -1,8 +1,11 @@
-<h2>Dati Energetici Annuali</h2>
+<h2>Dati Energetici Annuali</h2>         
+<mat-divider></mat-divider>
+
+ <div class="example-button-row"></div>
+    <button mat-raised-button color="primary">Inserisci</button>
 
 <div class="white-box">
 
-  <!-- FORM FILTRI -->
   <form [formGroup]="formRicerca">
 
     <div class="form-group">
@@ -136,7 +139,7 @@
           edit
         </mat-icon>
 
-        <mat-icon (click)="eliminaDati(dato)">
+        <mat-icon (click)="openDialog(dato)">
           delete
         </mat-icon>
 
@@ -173,3 +176,13 @@
   </table>
 
 </div>
+
+<app-confirmation-dialog #confirmationDialog
+  [title]="'Elimina elemento'"
+  [description]="'Sei sicuro di voler eliminare questo elemento?'"
+  [confirmText]="'Elimina'"
+  [cancelText]="'Annulla'"
+  (confirm)="eliminaDati($event)"
+  (cancel)="onCancel()"
+  (closed)="onClosed($event)">
+</app-confirmation-dialog>

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
 import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
   selector: 'app-dati-energetici-edit',
@@ -12,10 +13,12 @@ export class DatiEnergeticiEditComponent implements OnInit {
 
   formData: DatiEnergetici | null = null;
 
+
   constructor(
     private route: ActivatedRoute,
     private service: DatiEnergeticiService,
     private snackBar: MatSnackBar,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +36,6 @@ export class DatiEnergeticiEditComponent implements OnInit {
 
         console.log("RISPOSTA API:", res);
 
-        // ✅ FIX: il service ritorna ARRAY
        this.formData = res?.[0] ?? null;
 
 console.log("formData:", this.formData);
@@ -56,16 +58,7 @@ console.log("formData:", this.formData);
 
       console.log("Salvato:", res);
 
-     this.snackBar.open(
-  '✅ Modifiche salvate con successo',
-  'Chiudi',
-  {
-    duration: 3000,
-    horizontalPosition: 'right',
-    verticalPosition: 'top',
-    panelClass: ['success-snackbar']
-  }
-);
+ this.toastService.success('✅ Modifiche salvate con successo');
 
     },
 

@@ -8,12 +8,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   declarations: [DatiEnergeticiRicercaComponent, DatiEnergeticiFormComponent],
   schemas: [],
   exports: [],
-  imports: [SharedModule, DatiEnergeticiRoutingModule, MatCardModule,
+  imports: [SharedModule, DatiEnergeticiRoutingModule, 
+      ReactiveFormsModule,
+      MatCardModule,
+        RouterModule,
 MatFormFieldModule,
 MatInputModule,
 MatButtonModule,

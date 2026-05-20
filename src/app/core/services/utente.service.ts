@@ -11,18 +11,18 @@ import { isAuthenticated } from "../interfaces/auth.model";
 export class UtenteService {
   constructor(private apiService: ApiService) {
     this.utenteMock = {
-  idUtente: 1,
-  nomeUtente: 'Renè',
-  cognomeUtente: 'Ferretti',
-  codiceFiscale: 'FRRRNN55A18E123Z',
-  mail : 'rene.ferretti@gmail.com',
-  numeroTelefono: '06060606',
-  ruolo: Ruolo.ADMIN,
-  flagCancellato: 'N',
-  utenteUpd: null,
-  dataInserimento: '2026-04-03',
-  dataModifica: '2026-04-03'
-}
+      idUtente: 1,
+      nomeUtente: 'Renè',
+      cognomeUtente: 'Ferretti',
+      codiceFiscale: 'FRRRNN55A18E123Z',
+      mail : 'rene.ferretti@gmail.com',
+      numeroTelefono: '06060606',
+      ruolo: Ruolo.ADMIN,
+      flagCancellato: 'N',
+      utenteUpd: null,
+      dataInserimento: '2026-04-03',
+      dataModifica: '2026-04-03'
+    }
   }
   utente?: UtenteLogin;
 
@@ -32,7 +32,7 @@ export class UtenteService {
   readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
   private user: { role: Ruolo } | null = null;
   private loggedIn$ = new BehaviorSubject<boolean>(false);
-utenteMock : UtenteLoginModel;
+  utenteMock : UtenteLoginModel;
  
 
   isAuth: isAuthenticated = {
@@ -58,24 +58,19 @@ utenteMock : UtenteLoginModel;
     return this.userSubject.value;
   }
 
-  // login(payload: { utente_email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
-  //   const endpoint = "autenticazione/logIn";
-  //   return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
-  //     map((utente) => new UtenteLoginModel({ ...utente })),
-  //     tap((utente) => this.persistUser(utente)),
-  //   );
-  // }
+  login(payload: { utenteEmail: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
+    const endpoint = "api/auth/login";
+    return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
+      map((utente) => new UtenteLoginModel({ ...utente })),
+      tap((utente) => this.persistUser(utente)),
+    );
+  }
 
-  login(payload: { utente_email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
-    const endpoint = "autenticazione/logIn";
-    // return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
-    //   map((utente) => new UtenteLoginModel({ ...utente })),
-    //   tap((utente) => this.persistUser(utente)),
-    // );
-      return new Observable<UtenteLoginModel>((observer) => {
-        observer.next(this.utenteMock);
-        observer.complete();
-      }).pipe(tap((utente) => this.persistUser(utente)));;
+  login1(payload: { utenteEmail: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
+    return new Observable<UtenteLoginModel>((observer) => {
+      observer.next(this.utenteMock);
+      observer.complete();
+    }).pipe(tap((utente) => this.persistUser(utente)));
  
   }
 

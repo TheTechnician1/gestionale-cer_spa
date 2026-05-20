@@ -3,10 +3,11 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { LoginComponent } from "./core/components/login/login/login.component";
-import { DatiEnergeticiEditComponent } from "./pages/dati-energetici-edit/dati-energetici-edit.component";
 import { FULL_LAYOUT_ROUTES } from "./app.routes";
+import { DatiEnergeticiFormComponent } from "./components/dati-energetici/dati-energetici-form/dati-energetici-form.component";
 
 const routes: Routes = [
+
   {
     path: "",
     component: FullLayoutComponent,
@@ -16,8 +17,10 @@ const routes: Routes = [
   },
 
   {
-    path: "dati-energetici-edit/:id",
-    component: DatiEnergeticiEditComponent
+    path: "dati-energetici",
+    loadChildren: () =>
+      import("./core/modules/dati-energetici.module")
+        .then(m => m.DatiEnergeticiModule)
   },
 
   {
@@ -28,7 +31,8 @@ const routes: Routes = [
   {
     path: "**",
     redirectTo: "login"
-  }
+  },
+
 ];
 
 @NgModule({

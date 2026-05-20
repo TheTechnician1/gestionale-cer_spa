@@ -1,1 +1,83 @@
-<p>dati-energetici-form works!</p>
+<div class="page">
+
+  <div class="topbar">
+    <div>
+      <h1>{{ isEdit ? "Modifica dato energetico" : "Nuovo dato energetico" }}</h1>
+      <p>Compila i campi per salvare i nuovi dati</p>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <form [formGroup]="form">
+
+      <div class="grid">
+
+         <div class="grid-3">
+       <mat-form-field appearance="outline">
+  <mat-label>CER</mat-label>
+  <input matInput formControlName="idCer">
+</mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Anno</mat-label>
+          <input matInput type="number" formControlName="anno">
+        </mat-form-field>
+        </div>
+
+
+        <div class="grid-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Energia Prodotta</mat-label>
+          <input matInput type="number" formControlName="eProdotta">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Energia Prelevata</mat-label>
+          <input matInput type="number" formControlName="ePrelevata">
+        </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Energia Immessa</mat-label>
+          <input matInput type="number" formControlName="eImmessa">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Energia Condivisa</mat-label>
+          <input matInput type="number" formControlName="eCondivisa">
+        </mat-form-field>
+
+        <div class="grid-1">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Autoconsumo</mat-label>
+          <input matInput type="number" formControlName="eAutoCons">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tariffa Premium</mat-label>
+          <input matInput type="number" formControlName="tariffaPremium">
+        </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full">
+               <mat-label>Stato</mat-label>
+          <textarea matInput rows="3" formControlName="note"></textarea>
+        </mat-form-field>
+
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="actions-top">
+    <button mat-button (click)="back()">Annulla</button>
+
+    <button mat-raised-button color="primary" (click)="save()">
+      {{ isEdit ? "Aggiorna" : "Salva" }}
+    </button>
+  </div>
+
+</div>
