@@ -1,5 +1,10 @@
 import { Component } from "@angular/core";
-import { Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { Router } from "@angular/router";
+import { Observable, of } from "rxjs";
+import { CodiceDescrizioneBase, Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ComboTables } from "src/app/core/enum/comboTable.enum";
 
 type FiltroRicerca = {
   cer: string | null;
@@ -15,66 +20,80 @@ type FiltroRicerca = {
   styleUrls: ["./impianti-ricerca.component.scss"],
 })
 export class ImpiantiRicercaComponent {
-  //Dati Mock
+
   impiantiList : Impianto[] = [];
+  regioni$? : Observable<CodiceDescrizioneBase[]>;
+  provincie$? : Observable<CodiceDescrizioneBase[]>;
+  comuni$? : Observable<CodiceDescrizioneBase[]>;
+  formRicercaImpianti : FormGroup;
 
-  cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
-  cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
-  tipologiaList: string [] = ["Fotovoltaico",
-    "Agrivoltaico",
-    "Eolico on-shore",
-    "Eolico off-shore",
-    "Idroelittrico",
-    "Biomassa",
-    "Biogas",
-    "Alto (specificare)"];
-  regioneList: string[] = [
-    "PIEMONTE",
-    "VALLE D'AOSTA",
-    "LOMBARDIA",
-    "PROVINCIA AUTONOMA DI BOLZANO",
-    "PROVINCIA AUTONOMA DI TRENTO",
-    "VENETO",
-    "FRIULI VENEZI GIULIA"
-  ];
-  provinciaList: string[] = [
-    "PD",
-    "RG",
-    "SV",
-    "GE",
-    "BZ"
-  ];
-  comuneList : string [] = ["ABANO TERME",                                       
-    "ACATE",                                             
-    "ALASSIO",                                           
-    "BUSALLA",                                           
-    "MARANZA/MERANSEN"];
+  constructor(private codiciDescrizioneBaseService : CodiciDescrizioneBaseService,
+    private fb : FormBuilder,
+    private router : Router){
+      this.formRicercaImpianti = this.fb.group({
+        cer : [''],
+        cabina : [''],
+        regione : [''],
+        provincia : [''],
+        comune : ['']
+      });
 
-  selectedCabina: string = "";
-  selectedCer: string = "";
-  selectedTipologia: string = "";
-  selectedRegione: string = "";
-  selectedProvincia : string = "";
-  selectedComune: string = "";
+  }
 
-  filtriSelezionati: FiltroRicerca[] = [];
+    ngOnInit(): void {
+      this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
+  
+      this.formRicercaImpianti.get('regione')!.valueChanges.subscribe({
+        next:(x : CodiceDescrizioneBase)=>{ 
+          this.formRicercaImpianti.get('provincia')?.setValue(null);
+          this.provincie$ = of([]);
+          this.formRicercaImpianti.get('comune')?.setValue(null);
+          this.comuni$ = of([]);
+          this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
+  
+          this.formRicercaImpianti.get('provincia')?.disable({emitEvent : false});
+  
+          this.provincie$ = x? this.codiciDescrizioneBaseService
+            .getCodiceDescrizioneBase(ComboTables.PROVINCIE, x.codice): of([]);
+          this.provincie$.subscribe({
+            next:(x: CodiceDescrizioneBase[])=>{
+              if(x && x.length> 0){
+                this.formRicercaImpianti.get('provincia')?.enable({emitEvent : false});
+              }
+          }})
+          return of([]);
+        }});
+  
+        this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
+          next:(x : CodiceDescrizioneBase)=>{
+  
+          this.formRicercaImpianti.get('comune')?.setValue(null);
+          this.comuni$ = of([]);
+          this.comuni$ = x? this.codiciDescrizioneBaseService
+            .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
+          this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
+          this.comuni$.subscribe({
+            next:(x: CodiceDescrizioneBase[])=>{
+              if(x && x.length> 0){
+                this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
+              }
+          }})
+          return of([]);
+        }});
+    }
 
 
   ngAfterViewInit(): void {
 
   }
   search(): void {
+  }
 
-    console.log("Ricerca avviata");
+  toForm(){
+    this.router.navigate(['impianto/inserimento-impianto']);
+  }
 
-    const filtro: FiltroRicerca = {
-      cer: this.selectedCer,
-      cabina: this.selectedCabina,
-      regione: this.selectedRegione,
-      provincia: this.selectedProvincia,
-      comune: this.selectedComune
-    };
+  salvataggio(){
 
-    this.filtriSelezionati.push(filtro);
   }
 }

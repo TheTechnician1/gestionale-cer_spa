@@ -1,133 +1,64 @@
-<!-- <h2>Impianti</h2>
+
+<h1><a (click)="toForm()">Creazione</a></h1>
+<h2>Impianti</h2>
 <p class="subtitle">Gestione e consultazione impianti</p>
 
 <div class="white-box">
-
-  <h5>Ricerca elenco impianti</h5>
-
-  <div class="form-group">
-
-
-    <label for="cer">Seleziona CER</label>
-
-        <select id="cer" [(ngModel)]="selectedCer">
-
-        <option value="" disabled selected>
-            -- Seleziona una CER --
-        </option>
-
-        <option *ngFor="let cer of cerList" [value]="cer">
-            {{ cer }}
-        </option>
-
-        </select>
-
+  <form [formGroup]="formRicercaImpianti" (ngSubmit)="salvataggio()">
+    <div class="form-group">
+      <label for="cer">Cer</label>
+      <input
+        type="text"
+        id="cer"
+        formControlName="cer">
     </div>
-
-     <div class="form-group">
-
-    <label for="cabina">Seleziona Cabina Primaria</label>
-
-        <select id="cabina" [(ngModel)]="selectedCabina">
-
-        <option value="" disabled selected>
-            -- Seleziona una Cabina --
-        </option>
-
-        <option *ngFor="let cabina of cabinaList" [value]="cabina">
-            {{ cabina }}
-        </option>
-
-        </select>
-
+    <div class="form-group">
+      <label for="cabina">Cabina</label>
+      <input
+        type="text"
+        id="cabina"
+        formControlName="cabina">
+    </div>
+    <div class="form-group">
+      <label for="regione">Regione</label>
+      <select formControlName="regione">
+          <option [ngValue]="null">
+              -- Seleziona Regione --
+          </option>
+          <option *ngFor="let r of regioni$ | async"
+              [ngValue]="r">
+                  {{r.descrizione}}
+          </option>
+      </select>
     </div>
 
     <div class="form-group">
-
-        <label for="cabina">Seleziona tipologia impianto</label>
-
-        <select id="cabina" [(ngModel)]="selectedTipologia">
-
-        <option value="" disabled selected>
-            -- Seleziona una tipologia --
+      <label for="provincia">Provincia</label>
+      <select formControlName="provincia">
+        <option [ngValue]="null">
+          -- Seleziona Provincia --
         </option>
-
-        <option *ngFor="let tipologia of tipologiaList" [value]="tipologia">
-            {{ tipologia }}
+        <option *ngFor="let p of provincie$ | async"
+            [ngValue]="p">
+          {{p.descrizione}}
         </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label for="regione">Seleziona regione</label>
-
-        <select id="regione" [(ngModel)]="selectedRegione">
-
-            <option value="" disabled selected>
-            -- Seleziona una regione --
-            </option>
-
-            <option *ngFor="let regione of regioneList" [value]="regione">
-            {{ regione }}
-            </option>
-
-        </select>
-
+      </select>
     </div>
 
     <div class="form-group">
-
-        <label for="provincia">Seleziona provincia</label>
-
-        <select id="provincia" [(ngModel)]="selectedProvincia">
-
-            <option value="" disabled selected>
-            -- Seleziona una provincia --
-            </option>
-
-            <option *ngFor="let provincia of provinciaList" [value]="provincia">
-            {{ provincia }}
-            </option>
-
-        </select>
-
+      <label for="comune">Comune</label>
+      <select formControlName="comune">
+        <option [ngValue]="null">
+          -- Seleziona Comune --
+        </option>
+        <option *ngFor="let c of comuni$ | async"
+            [ngValue]="c">
+          {{c.descrizione}}
+        </option>
+      </select>
     </div>
-
-    <div class="form-group">
-
-        <label for="comune">Seleziona comune</label>
-
-        <select id="comune" [(ngModel)]="selectedComune">
-
-            <option value="" disabled selected>
-            -- Seleziona un comune --
-            </option>
-
-            <option *ngFor="let comune of comuneList" [value]="comune">
-            {{ comune }}
-            </option>
-
-        </select>
-
-    </div>
-
-
-
-  <button
-    class="search-btn"
-    (click)="search()">
-
-    Cerca
-
-  </button>
-
+  </form>
 </div>
-
-
 <div class="table-container">
 
   <table class="energy-table">
@@ -135,10 +66,12 @@
     <thead>
 
       <tr>
+        <th>esercizio</th>
+        <th>data esercizio</th>
         <th>tipologia</th>
         <th>potenza nominale</th>
         <th>tipo produttore</th>
-
+        <th>capacità accumulo (kwh)</th>
       </tr>
 
     </thead>
@@ -146,13 +79,17 @@
     <tbody>
 
       <tr *ngFor="let impianto of impiantiList">
+        <td>{{ impianto.flagEsercizio }}</td>
 
-        <td>{{ impianto.codTipologia }}</td>
+        <td>{{ impianto.dataEntrataEsercizio }}</td>
+
+        <td>{{ impianto.tipologiaImpianto }}</td>
 
         <td>{{ impianto.potenzaNominaleKw }}</td>
 
-        <td>{{ impianto.codCatProd }}</td>
+        <td>{{ impianto.categoriaProduttore }}</td>
 
+        <td>{{ impianto.capacitaAccumuloKwh }}</td>
        
         <td class="azioni">
 
@@ -185,4 +122,4 @@
 
   </table>
 
-</div> -->
+</div>
