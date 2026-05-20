@@ -1,0 +1,6 @@
+export enum StatoImpianto {
+  ATTIVO = 'ATTIVO',
+  IN_MANUTENZIONE = 'IN MANUTENZIONE',
+  DISMESSO = 'DISMESSO',
+  SOSPESO = 'SOSPESO'
+}

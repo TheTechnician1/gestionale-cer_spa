@@ -44,6 +44,7 @@ export class LoginComponent {
   }
 
   guestIn() {
+    this.route.navigate(["/dashboard"]);
     const payload = {
       utente_email: "guest@guest.guest",
       password: "guest",
@@ -63,7 +64,8 @@ export class LoginComponent {
           this.route.navigate(["/dashboard"]);
         } else {
           console.log("Credenziali errate");
-          this.loginError = true;
+          this.loginError = false;
+          
         }
       },
       error: (err) => {

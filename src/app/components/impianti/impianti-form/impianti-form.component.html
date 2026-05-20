@@ -1,1 +1,135 @@
-<p>impianti-form works!</p>
+<form [formGroup]="form" class="form-card mat-elevation-z4">
+
+  <h2 class="title">
+    {{ isEditMode ? 'Modifica Impianto' : 'Nuovo Impianto' }}
+  </h2>
+
+  <div class="grid">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Id Configurazione</mat-label>
+      <input matInput type="number" formControlName="idConfigurazione">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>CER</mat-label>
+      <mat-select formControlName="idCer">
+        <mat-option *ngFor="let cer of cerList" [value]="cer.id">
+          {{ cer.descrizione }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Codice Cabina</mat-label>
+      <input matInput formControlName="codiceCabina">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Flg Esercizio</mat-label>
+      <mat-select formControlName="flgEsercizio">
+        <mat-option value="SI">SI</mat-option>
+        <mat-option value="NO">NO</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Data Entrata Esercizio</mat-label>
+      <input matInput type="date" formControlName="annoAttivazione">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Tipologia</mat-label>
+      <mat-select formControlName="tipologia">
+        <mat-option value="fotovoltaico">Fotovoltaico</mat-option>
+        <mat-option value="agrivoltaico">Agrivoltaico</mat-option>
+        <mat-option value="eolico">Eolico</mat-option>
+        <mat-option value="idroelettrico">Idroelettrico</mat-option>
+        <mat-option value="biomassa">Biomassa</mat-option>
+        <mat-option value="biogas">Biogas</mat-option>
+        <mat-option value="altro">Altro</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Potenza Nominale (kW)</mat-label>
+      <input matInput type="number" formControlName="potenzaNominale">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Flag Accumulo</mat-label>
+      <mat-select formControlName="flgAccumulo">
+        <mat-option value="SI">SI</mat-option>
+        <mat-option value="NO">NO</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Capacità Accumulo (kWh)</mat-label>
+      <input matInput type="number" formControlName="capAccumulo">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Categoria Produttore</mat-label>
+      <input matInput formControlName="tipologiaProduttore">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Regione</mat-label>
+      <input matInput formControlName="regione">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Provincia</mat-label>
+      <input matInput formControlName="provincia">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Comune</mat-label>
+      <input matInput formControlName="comune">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Indirizzo</mat-label>
+      <input matInput formControlName="indirizzo">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Civico</mat-label>
+      <input matInput formControlName="civico">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>CAP</mat-label>
+      <input matInput formControlName="cap">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Stato Impianto</mat-label>
+      <mat-select formControlName="statoImpianto">
+        <mat-option *ngFor="let s of statiImpianto" [value]="s">
+          {{ s }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email Utente</mat-label>
+      <input matInput formControlName="emailUtenteLoggato">
+    </mat-form-field>
+
+  </div>
+
+  <div class="actions">
+
+    <button mat-raised-button color="primary" type="button" (click)="submit()">
+      {{ isEditMode ? 'Modifica Impianto' : 'Salva Impianto' }}
+    </button>
+
+    <button mat-raised-button type="button" (click)="chiudiForm()">
+      Annulla / Chiudi
+    </button>
+
+  </div>
+
+</form>

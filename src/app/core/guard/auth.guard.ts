@@ -8,6 +8,7 @@ export class AuthGuard implements CanActivate {
     private auth: UtenteService,
     private router: Router,
   ) {}
+ 
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
     const isAuth = !!this.auth.currentUser;
@@ -29,4 +30,5 @@ export class AuthGuard implements CanActivate {
 
     return true;
   }
+  
 }
