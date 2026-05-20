@@ -1,1 +1,86 @@
-<p>dati-energetici-ricerca works!</p>
+<div class="dati-energetici-container">
+  <mat-card class="dato-energetico-card" *ngFor="let dato of datiEnergetici">
+    <mat-card-header>
+      <mat-card-title>Dati Energetici - {{ dato.anno }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content class="dato-energetico-grid">
+      <div class="campo">
+        <strong>ID Dati:</strong>
+        <span>{{ dato.idDati }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>ID CER:</strong>
+        <span>{{ dato.idCer }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>ID Config:</strong>
+        <span>{{ dato.idConfig }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Energia prodotta:</strong>
+        <span>{{ dato.energiaProdotta }} kWh</span>
+      </div>
+
+      <div class="campo">
+        <strong>Energia prelevata:</strong>
+        <span>{{ dato.energiaPrelevata }} kWh</span>
+      </div>
+
+      <div class="campo">
+        <strong>Energia immessa:</strong>
+        <span>{{ dato.energiaImmessa }} kWh</span>
+      </div>
+
+      <div class="campo">
+        <strong>Energia condivisa:</strong>
+        <span>{{ dato.energiaCondivisa }} kWh</span>
+      </div>
+
+      <div class="campo">
+        <strong>Energia autoconsumata:</strong>
+        <span>{{ dato.energiaAutoCons }} kWh</span>
+      </div>
+
+      <div class="campo">
+        <strong>Tariffa premium:</strong>
+        <span>{{ dato.tariffaPremium }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Corrispettivo premio:</strong>
+        <span>{{ dato.corrPremioOtt }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Riduzione CO₂:</strong>
+        <span>{{ dato.ridEmCo2 }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Cancellato:</strong>
+        <span>{{ dato.flgCancellazione === "S" ? "Sì" : "No" }}</span>
+      </div>
+
+      <div class="campo">
+        <strong>Email utente:</strong>
+        <span>{{ dato.emailUtenteLoggato }}</span>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-stroked-button color="primary">Dettaglio</button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="modificaDatiEnergetici(dato.idDati)"
+      >
+        Modifica
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -1,27 +1,20 @@
-.form-card {
+.dati-energetici-form-card {
   max-width: 1000px;
-  margin: 30px auto;
-  padding: 24px;
+  margin: 24px auto;
+  padding: 8px;
 }
 
-h2 {
-  margin-bottom: 24px;
-}
-
-.form-grid {
+.dati-energetici-form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+  align-items: start;
 }
 
-.actions {
-  margin-top: 24px;
+mat-card-actions {
+  padding: 16px;
   display: flex;
+  gap: 12px;
   justify-content: flex-end;
-}
-
-@media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
 }
