@@ -92,14 +92,25 @@ export class ImpiantiRicercaComponent {
   ngAfterViewInit(): void {
 
   }
+
   search(): void {
+    //   this.impiantoService.getImpiantiMock().subscribe({
+    //     next:(impianti)=>{
+    //     this.impiantiList = impianti.filter(imp=> imp.attivo === 'S'
+    //       &&(this.formRicercaImpianti.get('cer')?.value === imp.id)
+
+    //               cer : [''],
+    //     cabina : [''],
+    //     regione : [''],
+    //     provincia : [''],
+    //     comune : ['']
+          
+    //     );
+    //   } 
+    // })
   }
 
-
   inserisciDati(): void {
-    // console.log("url:" + this.router.url+'/inserimento-impianto');
-    
-    // this.router.navigate([this.router.url+'/inserimento-impianto']);
     this.router.navigate(['/impianto/form']);
   }
 
