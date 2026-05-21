@@ -1,9 +1,14 @@
 <h2>Dati Energetici Annuali</h2>         
 <mat-divider></mat-divider>
 
- <div class="example-button-row"></div>
-    <button mat-raised-button color="primary">Inserisci</button>
+ <button
+  mat-raised-button
+  color="primary"
+  (click)="inserisciDati()">
 
+  Inserisci
+
+</button>
 <div class="white-box">
 
   <form [formGroup]="formRicerca">

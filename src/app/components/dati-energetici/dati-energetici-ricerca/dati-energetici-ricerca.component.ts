@@ -55,10 +55,10 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
 
   formRicerca!: FormGroup;
 
- // cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
-cerList: CerModel[] = [];
-  //cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
-cabinaList: any[] = [];
+ cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
+//cerList: CerModel[] = [];
+  cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
+//cabinaList: any[] = [];
 
   anniList: number[] = [];
 
@@ -86,85 +86,131 @@ cabinaList: any[] = [];
   //   tariffaPremium: [0],
   //   note: [""]
   // });
-  this.initForm();
-    this.loadCer();
-    this.initAnni();
-}
- private initForm(): void {
-    const currentYear = new Date().getFullYear();
+//   this.initForm();
+//     this.loadCer();
+//     this.initAnni();
+// }
+//  private initForm(): void {
+//     const currentYear = new Date().getFullYear();
 
-    this.formRicerca = this.fb.group({
-      cer: [null, Validators.required],
-      cabina: [null],
-      annoDa: [currentYear - 1, Validators.required],
-      annoA: [currentYear, Validators.required]
-    });
-  }
+//     this.formRicerca = this.fb.group({
+//       cer: [null, Validators.required],
+//       cabina: [null],
+//       annoDa: [currentYear - 1, Validators.required],
+//       annoA: [currentYear, Validators.required]
+//     });
+//   }
 
-    private initAnni(): void {
+//     private initAnni(): void {
+//     const currentYear = new Date().getFullYear();
+
+//     this.anniList = Array.from(
+//       { length: currentYear - 1899 },
+//       (_, i) => currentYear - i
+//     );
+//   }
+
+//    private loadCer(): void {
+//     this.cerService.getCer().subscribe({
+//       next: (res) => {
+//         this.cerList = res;
+//       },
+//       error: (err) => console.error("Errore caricamento CER:", err)
+//     });
+//   }
+
+//  search(): void {
+
+//     if (this.formRicerca.invalid) {
+//       this.formRicerca.markAllAsTouched();
+//       return;
+//     }
+
+//     const filters = this.formRicerca.value;
+
+//     console.log("FILTRI RICERCA:", filters);
+
+//        this.datiEnergeticiService.getDati(filters).subscribe({
+//     next: (res) => {
+//       this.datiEnergetici = res;
+//     },
+//     error: (err) => {
+//       console.error("Errore ricerca:", err);
+//       this.datiEnergetici = [];
+//     }
+//        });
+//        this.cerService.getCer().subscribe({
+//   next: (res) => {
+//     this.cerList = res;
+//   }
+// });
+//  }
+
+//   inserisciDati(): void {
+//     this.router.navigate(['/dati-energetici/form']);
+//   }
+
+//   visualizzaDato(id: number | null): void {
+//     if (!id) return;
+//     this.router.navigate(['/dati-energetici/view', id]);
+//   }
+
+//   modificaDati(id: number | null): void {
+//     if (!id) return;
+//     this.router.navigate(['/dati-energetici/edit', id]);
+//   }
+
+//     eliminaDati(dato: any): void {
+//     this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
+//   }
+
+ 
+
+
+
     const currentYear = new Date().getFullYear();
 
     this.anniList = Array.from(
       { length: currentYear - 1899 },
       (_, i) => currentYear - i
     );
-  }
 
-   private loadCer(): void {
-    this.cerService.getCer().subscribe({
-      next: (res) => {
-        this.cerList = res;
-      },
-      error: (err) => console.error("Errore caricamento CER:", err)
+    this.formRicerca = this.fb.group({
+      cer: ["", Validators.required],
+      cabina: ["", Validators.required],
+      annoDa: [currentYear - 1, Validators.required],
+      annoA: [currentYear - 1, Validators.required]
     });
   }
 
- search(): void {
+  search(): void {
 
     if (this.formRicerca.invalid) {
       this.formRicerca.markAllAsTouched();
       return;
     }
 
-    const filters = this.formRicerca.value;
+    const payload = this.formRicerca.value;
+    console.log("VALORI FORM:", payload);
 
-    console.log("FILTRI RICERCA:", filters);
-
-       this.datiEnergeticiService.getDati(filters).subscribe({
-    next: (res) => {
-      this.datiEnergetici = res;
-    },
-    error: (err) => {
-      console.error("Errore ricerca:", err);
-      this.datiEnergetici = [];
-    }
-       });
-       this.cerService.getCer().subscribe({
-  next: (res) => {
-    this.cerList = res;
-  }
-});
- }
-
-  inserisciDati(): void {
-    this.router.navigate(['/dati-energetici/form']);
+    // MOCK
+    this.datiEnergetici = MOCK_DATI;
   }
 
-  visualizzaDato(id: number | null): void {
-    if (!id) return;
-    this.router.navigate(['/dati-energetici/view', id]);
+  visualizzaDato(idDati: number | null): void {
+
+  if (!idDati) return;
+
+  this.router.navigate(['/dati-energetici/view', idDati]);
+}
+
+  modificaDati(idDati: number | null): void {
+    if (!idDati) return;
+
+    this.router.navigate(['/dati-energetici/edit', idDati]);
   }
 
-  modificaDati(id: number | null): void {
-    if (!id) return;
-    this.router.navigate(['/dati-energetici/edit', id]);
-  }
-
-    eliminaDati(dato: any): void {
-    this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
-  }
-
-   openDialog(dato: DatiEnergetici): void {
+  openDialog(dato: DatiEnergetici): void {
     this.confirmationDialog.open({
       payload: dato
     });
@@ -177,71 +223,15 @@ cabinaList: any[] = [];
   onClosed(reason: DialogCloseReason): void {
     console.log("Chiuso:", reason);
   }
+
+  eliminaDati(dato: any): void {
+    this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
+  }
+
+  inserisciDati(): void {
+    this.router.navigate(['/dati-energetici/form']);
+  }
+
+   
 }
 
-
-//     const currentYear = new Date().getFullYear();
-
-//     this.anniList = Array.from(
-//       { length: currentYear - 1899 },
-//       (_, i) => currentYear - i
-//     );
-
-//     this.formRicerca = this.fb.group({
-//       cer: ["", Validators.required],
-//       cabina: ["", Validators.required],
-//       annoDa: [currentYear - 1, Validators.required],
-//       annoA: [currentYear - 1, Validators.required]
-//     });
-//   }
-
-//   search(): void {
-
-//     if (this.formRicerca.invalid) {
-//       this.formRicerca.markAllAsTouched();
-//       return;
-//     }
-
-//     const payload = this.formRicerca.value;
-//     console.log("VALORI FORM:", payload);
-
-//     // MOCK
-//     this.datiEnergetici = MOCK_DATI;
-//   }
-
-//   visualizzaDato(idDati: number | null): void {
-
-//   if (!idDati) return;
-
-//   this.router.navigate(['/dati-energetici/view', idDati]);
-// }
-
-//   modificaDati(idDati: number | null): void {
-//     if (!idDati) return;
-
-//     this.router.navigate(['/dati-energetici/edit', idDati]);
-//   }
-
-//   openDialog(dato: DatiEnergetici): void {
-//     this.confirmationDialog.open({
-//       payload: dato
-//     });
-//   }
-
-//   onCancel(): void {
-//     console.log("Annullato");
-//   }
-
-//   onClosed(reason: DialogCloseReason): void {
-//     console.log("Chiuso:", reason);
-//   }
-
-//   eliminaDati(dato: any): void {
-//     this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
-//   }
-
-//   inserisciDati(): void {
-//     this.router.navigate(['/dati-energetici/form']);
-
-  
-// }
