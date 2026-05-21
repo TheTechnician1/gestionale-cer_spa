@@ -23,6 +23,8 @@ export interface Impianto {
   emailUtenteLoggato: string | null;
   dataUltimaModifica: Date | null;
   utenteUltimaModifica: string | null;
+  codiceInstallazione: string | null;
+  specificaInstallazione: string | null;
 }
 
 export class ImpiantoModel implements Impianto {
@@ -48,6 +50,8 @@ export class ImpiantoModel implements Impianto {
   emailUtenteLoggato: string | null;
   dataUltimaModifica: Date | null;
   utenteUltimaModifica: string | null;
+  codiceInstallazione: string | null;
+  specificaInstallazione: string | null;
 
   constructor(data?: Partial<Impianto>) {
     this.idImpianto = data?.idImpianto ?? null;
@@ -72,6 +76,8 @@ export class ImpiantoModel implements Impianto {
     this.emailUtenteLoggato = data?.emailUtenteLoggato ?? null;
     this.dataUltimaModifica = data?.dataUltimaModifica ?? null;
     this.utenteUltimaModifica = data?.utenteUltimaModifica ?? null;
+    this.codiceInstallazione = data?.codiceInstallazione ?? null;
+    this.specificaInstallazione = data?.specificaInstallazione ?? null;
   }
 }
 

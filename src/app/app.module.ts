@@ -22,6 +22,7 @@ import { NotAuthorizedComponent } from './core/components/not-authorized/not-aut
 
 import { CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
+import { ImpiantoCreazioneComponent } from './components/impianti/impianto-creazione/impianto-creazione.component';
 
 @NgModule({
   declarations: [

@@ -8,6 +8,10 @@ import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
 import { ConfermaDialogComponent } from "../../dati-energetici/dialog/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator,PageEvent } from '@angular/material/paginator';
+import { Router,ActivatedRoute,NavigationEnd } from "@angular/router";
+import { filter } from 'rxjs/operators';
+import { UtenteService } from "src/app/core/services/utente.service";
+import { Ruolo } from "src/app/core/enum/role.enum";
 
 @Component({
   selector: "app-impianti-ricerca",
@@ -25,10 +29,6 @@ export class ImpiantiRicercaComponent implements OnInit {
   pageSize = 5;
   totalElements = 0;
 
-  mostraForm: boolean = false;
-  impiantoSelezionato: Impianto | null = null;
-  impiantoDettaglio: Impianto | null = null; 
-
   form: FormGroup = new FormGroup({
     idCer: new FormControl(null),
     codiceCabina: new FormControl(null),
@@ -43,101 +43,102 @@ export class ImpiantiRicercaComponent implements OnInit {
     inclusiDisattivati: new FormControl(false)
   });
 
-  onPageChange(event: PageEvent): void {
-  this.pageIndex = event.pageIndex;
-  this.pageSize = event.pageSize;
+  figlioAttivo: boolean = false;
+  isAdmin: boolean = false;
 
-    this.aggiornaPaginazione();
+constructor(
+  private impiantoService: ImpiantoService,
+  private dialog: MatDialog,
+  private router: Router,
+  private route: ActivatedRoute,
+  public utenteService: UtenteService
+) {
 }
-
-aggiornaPaginazione(): void {
-  const startIndex = this.pageIndex * this.pageSize;
-  const endIndex = startIndex + this.pageSize;
-  this.risultatiPaginati =
-    this.risultati.slice(startIndex, endIndex);
-}
-
-  constructor(private impiantoService: ImpiantoService,private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.cerca();
-  }
+  this.isAdmin = this.utenteService.getRole()?.toUpperCase() === 'ADMIN';
+  
+  this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe(() => {
+    this.figlioAttivo = this.route.children.length > 0;
+    if (!this.figlioAttivo) {
+      this.cerca();
+    }
+    
+  });
+
+  this.cerca();
+}
 
   cerca(): void {
-  const payload = this.form.getRawValue();
-  this.impiantoService.getImpianti(payload)
-    .pipe(tap(risposta => {
-        this.risultati = risposta;
-        this.totalElements = risposta.length;
-        this.aggiornaPaginazione();
-      }),
-      catchError(errore => {console.error('Errore backend', errore);
-        this.risultati = [];
-        this.risultatiPaginati = [];
-        this.totalElements = 0;
-        return of([]);
-      })
-
-    )
-    .subscribe();
-}
+    const payload = this.form.getRawValue();
+    this.impiantoService.getImpianti(payload)
+      .pipe(
+        tap(risposta => {
+          this.risultati = risposta;
+          this.totalElements = risposta.length;
+          this.aggiornaPaginazione();
+        }),
+        catchError(errore => {
+          console.error('Errore backend', errore);
+          this.risultati = [];
+          this.risultatiPaginati = [];
+          this.totalElements = 0;
+          return of([]);
+        })
+      )
+      .subscribe();
+  }
 
   reset(): void {
     this.form.reset({ inclusiDisattivati: false });
     this.cerca();
   }
 
+  
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.aggiornaPaginazione();
+  }
+
+  aggiornaPaginazione(): void {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.risultatiPaginati = this.risultati.slice(startIndex, endIndex);
+  }
+
   nuovoImpianto(): void {
-    this.impiantoSelezionato = null;
-    this.impiantoDettaglio = null; 
-    this.mostraForm = true;
+    this.router.navigate(['inserimento-impianto'], { relativeTo: this.route });
   }
 
   modificaImpianto(impianto: Impianto): void {
-    this.impiantoSelezionato = impianto;
-    this.impiantoDettaglio = null; 
-    this.mostraForm = true;
+    this.router.navigate(['modifica-impianto', impianto.idImpianto], { relativeTo: this.route });
   }
 
-  chiudiForm(): void {
-    this.mostraForm = false;
-    this.impiantoSelezionato = null;
-    this.cerca();
-  }
-
-  apriDettaglio(impianto: Impianto): void { 
-    this.impiantoDettaglio = this.impiantoDettaglio?.idImpianto === impianto.idImpianto ? null : impianto;
+  apriDettaglio(impianto: Impianto): void {
+    this.router.navigate(['dettaglio-impianto', impianto.idImpianto], { relativeTo: this.route });
   }
 
   eliminaImpianto(impianto: Impianto): void {
-  if (!impianto.idImpianto) return;
+    if (!impianto.idImpianto) return;
 
-  const dialogRef = this.dialog.open(ConfermaDialogComponent, {
-    width: '400px',
-    data: { codiceCabina: impianto.codiceCabina },
-  });
+    const dialogRef = this.dialog.open(ConfermaDialogComponent, {
+      width: '400px',
+      data: { codiceCabina: impianto.codiceCabina }
+    });
 
-  dialogRef.afterClosed().subscribe((confermato: boolean) => {
-    if (confermato) {
-      this.impiantoService
-        .deleteImpianto(impianto)
-        .subscribe(() => {
-          this.cerca();
+    dialogRef.afterClosed().subscribe((confermato: boolean) => {
+      if (confermato) {
+        this.impiantoService.deleteImpianto(impianto)
+          .subscribe(() => {
+            this.cerca();
+          });
+      }
+    });
+  }
 
-          if (
-            this.mostraForm &&
-            this.impiantoSelezionato?.idImpianto === impianto.idImpianto
-          ) {
-            this.mostraForm = false;
-            this.impiantoSelezionato = null;
-          }
-
-          if (this.impiantoDettaglio?.idImpianto === impianto.idImpianto) {
-            this.impiantoDettaglio = null;
-          }
-        });
-    }
-  });
-}
 
 }

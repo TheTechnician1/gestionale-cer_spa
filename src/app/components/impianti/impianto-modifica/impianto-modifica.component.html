@@ -1,6 +1,6 @@
 <form [formGroup]="form" class="form-card mat-elevation-z4">
 
-  <h2 class="title">Nuovo Impianto</h2>
+  <h2 class="title">{{ isDettaglio ? 'Dettaglio Impianto' : 'Modifica Impianto' }}</h2>
 
   <div class="grid">
 
@@ -125,8 +125,15 @@
   </div>
 
   <div class="actions">
-    <button mat-raised-button color="primary" type="button" (click)="submit()">Salva Impianto</button>
-    <button mat-raised-button type="button" (click)="annulla()">Annulla</button>
+    <button mat-raised-button color="primary" type="button" (click)="submit()" *ngIf="!isDettaglio">
+      Modifica Impianto
+    </button>
+    <button mat-raised-button color="warn" type="button" (click)="elimina()" *ngIf="!isDettaglio">
+      Elimina
+    </button>
+    <button mat-raised-button type="button" (click)="annulla()">
+      {{ isDettaglio ? 'Chiudi' : 'Annulla' }}
+    </button>
   </div>
 
 </form>

@@ -1,11 +1,11 @@
-//import { Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Impianto } from "../../core/interfaces/impianto.model";
 import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
-//import { Observable } from "rxjs";
+import { Observable } from "rxjs";
 
 
-/*
+
 @Injectable({
   providedIn: "root",
 })
@@ -17,9 +17,9 @@ export class ImpiantoService {
     return this.api.postLogin<Impianto[]>(endpoint, payload, options);
   }
 
-  getImpianto(id: number, options: ApiRequestOptions = {}): Observable<Impianto[]> {
+  getImpianto(id: number, options: ApiRequestOptions = {}): Observable<Impianto> {
     const endpoint = `impianto/visualizzazione/${id}`;
-    return this.api.get<Impianto[]>(endpoint, undefined, options);
+    return this.api.get<Impianto>(endpoint, undefined, options);
   }
 
   createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<Impianto> {
@@ -39,12 +39,14 @@ export class ImpiantoService {
     const endpoint = "impianto/cancellazione";
     return this.api.put<Impianto>(endpoint, payload, options);
   }
-}*/
+  
+}
 
 
 
-import { Injectable } from "@angular/core";
+/*import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: "root",
@@ -242,7 +244,7 @@ export class ImpiantoService {
   }
   ];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   getImpianti(payload: any): Observable<Impianto[]> {
   console.log("MOCK GET IMPIANTI", payload);
@@ -314,4 +316,18 @@ createImpianto(payload: Impianto): Observable<Impianto> {
 
   return of(payload);
 }
+getImpiantoById(id: number): Observable<Impianto> {
+  console.log("MOCK GET BY ID", id);
+  const impianto = this.mockImpianti.find(i => i.idImpianto === id);
+  if (impianto) {
+    return of(impianto);
+  }
+  throw new Error(`Impianto con id ${id} non trovato`);
 }
+
+
+getById(id: number) {
+  return this.http.get<Impianto>(`/api/impianti/${id}`);
+}
+}
+*/

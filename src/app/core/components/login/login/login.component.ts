@@ -24,7 +24,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      utente_email: ["", [Validators.required, Validators.email]],
+      utenteEmail: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
       rememberMe: [false],
     });
@@ -46,7 +46,7 @@ export class LoginComponent {
   guestIn() {
     this.route.navigate(["/dashboard"]);
     const payload = {
-      utente_email: "guest@guest.guest",
+      utenteEmail: "guest@guest.guest",
       password: "guest",
     };
 
