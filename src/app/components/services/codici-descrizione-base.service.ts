@@ -16,11 +16,4 @@ export class CodiciDescrizioneBaseService {
     const endpoint = `/codici/${table}`;
     return this.api.get<CodiceDescrizioneBase[]>(endpoint,parameter? {parameter : parameter} : undefined, options);
   }
-
-  getAllCer(options: ApiRequestOptions = {}): Observable<Cer[]>{
-
-    const endpoint = "/cer/ricerca";
-
-    return this.api.post<Cer[]>(endpoint,{},options);
-  }
 }

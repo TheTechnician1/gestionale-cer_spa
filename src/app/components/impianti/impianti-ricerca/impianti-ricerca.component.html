@@ -1,5 +1,5 @@
 
-<h1><a (click)="toForm()">Creazione</a></h1>
+<!-- <h1><a (click)="toForm()">Creazione</a></h1>
 <h2>Impianti</h2>
 <p class="subtitle">Gestione e consultazione impianti</p>
 
@@ -129,4 +129,157 @@
 
   </table>
 
+</div> -->
+
+<h2>Impianti</h2>         
+<mat-divider></mat-divider>
+ <div class="example-button-row"></div>
+    <button mat-raised-button color="primary">Inserisci</button>
+<div class="white-box">
+  <form [formGroup]="formRicercaImpianti" (ngSubmit)="salvataggio()">
+    <div class="form-group">
+      <label for="cer">Cer</label>
+      <select formControlName="cer">
+          <option [ngValue]="null">
+              -- Seleziona Cer --
+          </option>
+          <option *ngFor="let c of cer$ | async"
+              [ngValue]="c">
+                  {{c.ragSociale}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="cabina">Cabina</label>
+      <input
+        type="text"
+        id="cabina"
+        formControlName="cabina">
+    </div>
+    <div class="form-group">
+      <label for="regione">Regione</label>
+      <select formControlName="regione">
+          <option [ngValue]="null">
+              -- Seleziona Regione --
+          </option>
+          <option *ngFor="let r of regioni$ | async"
+              [ngValue]="r">
+                  {{r.descrizione}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="provincia">Provincia</label>
+      <select formControlName="provincia">
+        <option [ngValue]="null">
+          -- Seleziona Provincia --
+        </option>
+        <option *ngFor="let p of provincie$ | async"
+            [ngValue]="p">
+          {{p.descrizione}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="comune">Comune</label>
+      <select formControlName="comune">
+        <option [ngValue]="null">
+          -- Seleziona Comune --
+        </option>
+        <option *ngFor="let c of comuni$ | async"
+            [ngValue]="c">
+          {{c.descrizione}}
+        </option>
+      </select>
+    </div>
+  </form>
 </div>
+
+<div class="table-container">
+  <table mat-table [dataSource]="impiantiList" class="mat-elevation-z8 full-table">
+      <ng-container matColumnDef="codiceCabina">
+        <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.codiceCabina }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="statoImpianto">
+        <th mat-header-cell *matHeaderCellDef>statoImpianto</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.statoImpianto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tipologia">
+        <th mat-header-cell *matHeaderCellDef>Tipologia</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.tipologiaImpianto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="potenzaNominaleKw">
+        <th mat-header-cell *matHeaderCellDef>Potenza nominale</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.potenzaNominaleKw }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="regione">
+        <th mat-header-cell *matHeaderCellDef>Regione</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.regione }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="attivo">
+        <th mat-header-cell *matHeaderCellDef>Attivo</th>
+        <td mat-cell *matCellDef="let dato">{{ dato.attivo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="azioni">
+        <th mat-header-cell *matHeaderCellDef>Azioni</th>
+        <td mat-cell *matCellDef="let dato">
+
+          <mat-icon>
+            find_in_page
+          </mat-icon>
+
+          <mat-icon>
+            edit
+          </mat-icon>
+
+          <mat-icon (click)="openDialog(dato.idImpianto)">
+            delete
+          </mat-icon>
+
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="[
+        'codiceCabina',
+        'statoImpianto',
+        'tipologia',
+        'potenzaNominaleKw',
+        'regione',
+        'attivo',
+        'azioni'
+        ]">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: [
+        'codiceCabina',
+        'statoImpianto',
+        'tipologia',
+        'potenzaNominaleKw',
+        'regione',
+        'attivo',
+        'azioni'
+      ]"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+<app-confirmation-dialog #confirmationDialog
+  [title]="'Elimina elemento'"
+  [description]="'Sei sicuro di voler eliminare questo elemento?'"
+  [confirmText]="'Elimina'"
+  [cancelText]="'Annulla'"
+  (confirm)="eliminaDato()"
+  (cancel)="onCancel()"
+  (closed)="onClosed($event)">>
+</app-confirmation-dialog>

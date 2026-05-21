@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Impianto } from "../../core/interfaces/impianto.model";
+import { Impianto, ImpiantoView } from "../../core/interfaces/impianto.model";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -36,4 +36,73 @@ export class ImpiantoService {
     const endpoint = "impianto/cancellazione";
     return this.api.put<Impianto>(endpoint, payload, options);
   }
+
+  //MOCK CHIAMATE
+  getImpiantiMock(): Observable<ImpiantoView[]>{
+    return of(this.impiantiViewMock);
+  }
+
+  deleteImpiantoMock(id : number | undefined){
+    console.log("Impianto eliminato con successo");
+    this.impiantiViewMock.forEach(imp=>{
+      if(imp.idImpianto === id) { imp.attivo = 'N' }
+    });
+  }
+
+  //MOCK DATI
+  impiantiViewMock: ImpiantoView[] = [
+  {
+    idImpianto: 1,
+    idConfigurazione: 101,
+    codiceCabina: 'CAB-NA-001',
+    tipologiaImpianto: 'Fotovoltaico',
+    statoImpianto: 'ATTIVO',
+    regione: 'Campania',
+    provincia: 'Napoli',
+    comune: 'Napoli',
+    potenzaNominaleKw: 12.5,
+    presenzaAccumulo: 'S',
+    attivo: 'S'
+  },
+  {
+    idImpianto: 2,
+    idConfigurazione: 102,
+    codiceCabina: 'CAB-AQ-014',
+    tipologiaImpianto: 'Eolico',
+    statoImpianto: 'IN_MANUTENZIONE',
+    regione: 'Abruzzo',
+    provincia: 'L’Aquila',
+    comune: 'Avezzano',
+    potenzaNominaleKw: 55,
+    presenzaAccumulo: 'N',
+    attivo: 'N'
+  },
+  {
+    idImpianto: 3,
+    idConfigurazione: 103,
+    codiceCabina: 'CAB-BG-120',
+    tipologiaImpianto: 'Idroelettrico',
+    statoImpianto: 'ATTIVO',
+    regione: 'Lombardia',
+    provincia: 'Bergamo',
+    comune: 'Clusone',
+    potenzaNominaleKw: 120,
+    presenzaAccumulo: 'S',
+    attivo: 'S'
+  },
+  {
+    idImpianto: 4,
+    idConfigurazione: 104,
+    codiceCabina: 'CAB-RM-045',
+    tipologiaImpianto: 'Biomassa',
+    statoImpianto: 'DISATTIVATO',
+    regione: 'Lazio',
+    provincia: 'Roma',
+    comune: 'Roma',
+    potenzaNominaleKw: 75,
+    presenzaAccumulo: 'N',
+    attivo: 'N'
+  }
+];
+
 }

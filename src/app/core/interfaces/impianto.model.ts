@@ -1,4 +1,5 @@
 export interface Impianto {
+  
   idImpianto : number;
   idConfigurazione :  number;
   flagEsercizio : string ;
@@ -21,6 +22,7 @@ export interface Impianto {
 }
 
 export class ImpiantoModel implements Impianto {
+
   idImpianto! : number;
   idConfigurazione! :  number;
   flagEsercizio! : string ;
@@ -47,15 +49,51 @@ export class ImpiantoModel implements Impianto {
 }
 
 export interface CodiceDescrizioneBase {
+
   codice: string;
   descrizione: string;
   specifica: string;
 }
 
 export class CodiceDescrizioneBaseModel implements CodiceDescrizioneBase {
+
   codice!: string;
   descrizione!: string;
   specifica!: string;
+
+  constructor(init?: Partial<CodiceDescrizioneBase>) {
+    Object.assign(this,init);
+  }
+}
+
+export interface ImpiantoView{
+
+  idImpianto : number;
+  idConfigurazione : number;
+  codiceCabina : string;
+  tipologiaImpianto : string;
+  statoImpianto : string;
+  regione : string;
+  provincia : string;
+  comune : string;
+  potenzaNominaleKw : number;
+  presenzaAccumulo : string;
+  attivo : string;
+}
+
+export class ImpiantoViewModel implements ImpiantoView{
+
+  idImpianto! : number;
+  idConfigurazione! : number;
+  codiceCabina! : string;
+  tipologiaImpianto! : string;
+  statoImpianto! : string;
+  regione! : string;
+  provincia! : string;
+  comune! : string;
+  potenzaNominaleKw! : number;
+  presenzaAccumulo! : string;
+  attivo! : string;
 
   constructor(init?: Partial<CodiceDescrizioneBase>) {
     Object.assign(this,init);

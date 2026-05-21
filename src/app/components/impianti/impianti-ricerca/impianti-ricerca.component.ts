@@ -1,20 +1,14 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
-import { Cer } from "src/app/core/interfaces/cer.model";
+import { Cer, CerView } from "src/app/core/interfaces/cer.model";
 import { ImpiantoService } from "../../services/impianto.service";
-
-type FiltroRicerca = {
-  cer: string | null;
-  cabina: string | null;
-  regione: string | null;
-  provincia: string | null;
-  comune: string | null;
-};
+import { ConfirmationDialogComponent, DialogCloseReason } from "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
+import { CerService } from "../../services/cer.service";
 
 @Component({
   selector: "app-impianti-ricerca",
@@ -22,15 +16,18 @@ type FiltroRicerca = {
   styleUrls: ["./impianti-ricerca.component.scss"],
 })
 export class ImpiantiRicercaComponent {
+  @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
 
-  impiantiList : Impianto[] = [];
+  impiantiList : ImpiantoView[] = [];
   regioni$? : Observable<CodiceDescrizioneBase[]>;
   provincie$? : Observable<CodiceDescrizioneBase[]>;
   comuni$? : Observable<CodiceDescrizioneBase[]>;
-  cer$? : Observable<Cer[]>;
+  cer$? : Observable<CerView[]>;
   formRicercaImpianti : FormGroup;
 
   constructor(private codiciDescrizioneBaseService : CodiciDescrizioneBaseService,
+    private impiantoService :ImpiantoService,
+    private cerService : CerService,
     private fb : FormBuilder,
     private router : Router){
       this.formRicercaImpianti = this.fb.group({
@@ -43,70 +40,53 @@ export class ImpiantiRicercaComponent {
 
   }
 
-    ngOnInit(): void {
-      this.cer$ = this.codiciDescrizioneBaseService.getAllCer();
-      this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
-      this.formRicercaImpianti.get('regione')!.valueChanges.subscribe({
-        next:(x : CodiceDescrizioneBase)=>{ 
-          this.formRicercaImpianti.get('provincia')?.setValue(null);
-          this.provincie$ = of([]);
-          this.formRicercaImpianti.get('comune')?.setValue(null);
-          this.comuni$ = of([]);
-          this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
-  
-          this.formRicercaImpianti.get('provincia')?.disable({emitEvent : false});
-  
-          this.provincie$ = x? this.codiciDescrizioneBaseService
-            .getCodiceDescrizioneBase(ComboTables.PROVINCIE, x.codice): of([]);
-          this.provincie$.subscribe({
-            next:(x: CodiceDescrizioneBase[])=>{
-              if(x && x.length> 0){
-                this.formRicercaImpianti.get('provincia')?.enable({emitEvent : false});
-              }
-          }})
-          return of([]);
-        }});
-  
-        this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
-          next:(x : CodiceDescrizioneBase)=>{
-  
-          this.formRicercaImpianti.get('comune')?.setValue(null);
-          this.comuni$ = of([]);
-          this.comuni$ = x? this.codiciDescrizioneBaseService
-            .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
-          this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
-          this.comuni$.subscribe({
-            next:(x: CodiceDescrizioneBase[])=>{
-              if(x && x.length> 0){
-                this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
-              }
-          }})
-          return of([]);
-        }});
+  ngOnInit(): void {
+    this.cer$ = this.cerService.getCerMock();
+    //Dati Ubicazione
+    this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
+    this.formRicercaImpianti.get('regione')!.valueChanges.subscribe({
+      next:(x : CodiceDescrizioneBase)=>{ 
+        this.formRicercaImpianti.get('provincia')?.setValue(null);
+        this.provincie$ = of([]);
+        this.formRicercaImpianti.get('comune')?.setValue(null);
+        this.comuni$ = of([]);
+        this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
 
-      //Mock
-      this.impiantiList = [
-        new ImpiantoModel({  idImpianto : 1,
-          idConfigurazione :  1,
-          flagEsercizio : "S" ,
-          dataEntrataEsercizio : new Date(),
-          tipologiaImpianto : "Eolico",
-          potenzaNominaleKw : 11,
-          presenzaAccumulo : "S",
-          capacitaAccumuloKwh : 12,
-          categoriaProduttore : "Comune",
-          codiceCategoriaProduttore : "030",
-          regione : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          provincia : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          comune : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          indirizzo : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          civico : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          cap : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
-          statoImpianto : "S",
-          attivo : "S",
-          emailUtenteLoggato : "Test"
-        })];
-    }
+        this.formRicercaImpianti.get('provincia')?.disable({emitEvent : false});
+
+        this.provincie$ = x? this.codiciDescrizioneBaseService
+          .getCodiceDescrizioneBase(ComboTables.PROVINCIE, x.codice): of([]);
+        this.provincie$.subscribe({
+          next:(x: CodiceDescrizioneBase[])=>{
+            if(x && x.length> 0){
+              this.formRicercaImpianti.get('provincia')?.enable({emitEvent : false});
+            }
+        }})
+      }});
+
+      this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
+        next:(x : CodiceDescrizioneBase)=>{
+
+        this.formRicercaImpianti.get('comune')?.setValue(null);
+        this.comuni$ = of([]);
+        this.comuni$ = x? this.codiciDescrizioneBaseService
+          .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
+        this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
+        this.comuni$.subscribe({
+          next:(x: CodiceDescrizioneBase[])=>{
+            if(x && x.length> 0){
+              this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
+            }
+        }})
+        return of([]);
+      }});
+
+      this.impiantoService.getImpiantiMock().subscribe({
+        next:(impianti)=>{
+          this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
+        } 
+      })
+  }
 
 
   ngAfterViewInit(): void {
@@ -122,4 +102,31 @@ export class ImpiantiRicercaComponent {
   salvataggio(){
 
   }
+
+  idImpiantoCancellato? : number;
+  openDialog(id: number): void {
+    this.idImpiantoCancellato = id;
+    this.confirmationDialog.open({
+      payload: undefined
+    });
+  }
+
+  onCancel(): void {
+    console.log("Annullato");
+  }
+
+  onClosed(reason: DialogCloseReason): void {
+    console.log("Chiuso:", reason);
+  }
+
+  eliminaDato(){
+    console.log("id cancellato :" + this.idImpiantoCancellato);
+    this.impiantoService.deleteImpiantoMock(this.idImpiantoCancellato);
+    this.impiantoService.getImpiantiMock().subscribe({
+      next:(impianti)=>{
+        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
+      } 
+    })
+  }
+  
 }
