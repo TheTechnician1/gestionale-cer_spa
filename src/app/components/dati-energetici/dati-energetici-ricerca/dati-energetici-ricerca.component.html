@@ -8,8 +8,29 @@
       border-radius: 4px;
     "
   >
-    <h2 style="margin-top: 0; color: #333">Filtri di Ricerca</h2>
-
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      "
+    >
+      <div class="titolo">
+        <h2 style="margin: 0; color: #333; font-weight: 500">
+          Filtri di Ricerca
+        </h2>
+      </div>
+      <div class="nuovo">
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/dati-energetici/inserimento-dati"
+        >
+          <mat-icon>add</mat-icon> Nuovo Dato Energetico
+        </button>
+      </div>
+    </div>
     <div
       style="
         display: grid;
@@ -41,7 +62,10 @@
       </mat-form-field>
     </div>
 
-    <div style="display: flex; gap: 10px; justify-content: center">
+    <div style="display: flex; gap: 10px; justify-content: end">
+      <button mat-stroked-button (click)="resetFiltri()">
+        <mat-icon style="margin-right: 5px">clear</mat-icon> Reset
+      </button>
       <button
         mat-raised-button
         color="primary"
@@ -50,20 +74,8 @@
       >
         <mat-icon style="margin-right: 5px">search</mat-icon> Ricerca
       </button>
-      <button mat-stroked-button (click)="resetFiltri()">
-        <mat-icon style="margin-right: 5px">clear</mat-icon> Reset
-      </button>
     </div>
   </div>
-
-  <app-dati-energetici-form
-    *ngIf="mostraForm"
-    [datiForm]="recordSelezionato"
-    [modalitaVisualizzazione]="visualizzazioneSolaLettura"
-    (chiudi)="chiudiForm()"
-    (cancella)="eliminaDatiLogicamente($event)"
-  >
-  </app-dati-energetici-form>
 
   <div
     class="table mat-elevation-z8"
@@ -75,42 +87,43 @@
         <td mat-cell *matCellDef="let element">{{ element.anno }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="eProdotta">
+      <ng-container matColumnDef="energiaProdotta">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Energia Prodotta
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.eProdotta }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.energiaProdotta }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="ePrelevata">
+      <ng-container matColumnDef="energiaPrelevata">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Energia Prelevata
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.ePrelevata }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.energiaPrelevata }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="eImmessa">
+      <ng-container matColumnDef="energiaImmessa">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Energia Immessa
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.eImmessa }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.energiaImmessa }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="eCondivisa">
+      <ng-container matColumnDef="energiaCondivisa">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Energia Condivisa
         </th>
-        <td mat-cell *matCellDef="let element">{{ element.eCondivisa }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.energiaCondivisa }}
+        </td>
       </ng-container>
 
-      <ng-container matColumnDef="riduzioneCO2">
+      <ng-container matColumnDef="ridEmCo2">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Riduzione CO2</th>
-        <td mat-cell *matCellDef="let element">{{ element.riduzioneCO2 }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="calcoloCO2">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Calcolo CO2</th>
-        <td mat-cell *matCellDef="let element">{{ element.calcoloCO2 }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.ridEmCo2 }}</td>
       </ng-container>
 
       <ng-container matColumnDef="azioni">
@@ -123,22 +136,46 @@
         </th>
 
         <td mat-cell *matCellDef="let element" style="text-align: center">
-          <button
-            mat-icon-button
-            type="button"
-            color="primary"
-            (click)="apriDettaglio(element)"
+          <div
+            style="
+              display: flex;
+              flex-direction: row;
+              gap: 4px;
+              justify-content: center;
+              align-items: center;
+            "
           >
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            type="button"
-            color="accent"
-            (click)="apriModifica(element)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
+            <button
+              mat-icon-button
+              type="button"
+              color="primary"
+              matTooltip="Visualizza scheda"
+              [routerLink]="['/dati-energetici/dettaglio-dati', element.idDati]"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              color="accent"
+              matTooltip="Modifica dati"
+              [routerLink]="['/dati-energetici/modifica-dati', element.idDati]"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              type="button"
+              color="warn"
+              matTooltip="Cancella record"
+              *ngIf="element.idDati"
+              (click)="eliminaDatiLogicamente(element)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </td>
       </ng-container>
 
@@ -147,12 +184,6 @@
     </table>
 
     <div>
-      <div class="table-actions-footer" style="padding: 16px 0">
-        <button mat-raised-button color="primary" (click)="apriNuovo()">
-          <mat-icon>add</mat-icon> Nuovo Dato Energetico
-        </button>
-      </div>
-
       <mat-paginator
         [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons

@@ -19,12 +19,11 @@ export class DatiEnergeticiRicercaComponent {
 
   tableDati: string[] = [
     'anno',
-    'ePrelevata',
-    'eProdotta',
-    'eImmessa',
-    'eCondivisa',
-    'riduzioneCO2',
-    'calcoloCO2',
+    'energiaPrelevata',
+    'energiaProdotta',
+    'energiaImmessa',
+    'energiaCondivisa',
+    'ridEmCo2',
     'azioni',
   ];
 
@@ -78,7 +77,7 @@ export class DatiEnergeticiRicercaComponent {
 
         if (this.filtro.statoScheda) {
           datiFiltrati = datiFiltrati.filter((item) =>
-            item.statoScheda
+            item.flgCancellazione
               ?.toLowerCase()
               .includes(this.filtro.statoScheda.toLowerCase()),
           );

@@ -1,0 +1,13 @@
+<div
+  *ngIf="loading"
+  style="display: flex; justify-content: center; padding: 40px"
+>
+  <mat-spinner radius="20"></mat-spinner>
+</div>
+
+<app-dati-energetici-form
+  *ngIf="!loading"
+  [datiForm]="recordDettaglio"
+  [modalitaVisualizzazione]="true"
+  (chiudi)="tornaIndietro()"
+></app-dati-energetici-form>

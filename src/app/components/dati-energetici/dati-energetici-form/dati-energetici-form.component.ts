@@ -17,21 +17,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './dati-energetici-form.component.html',
   styleUrls: ['./dati-energetici-form.component.scss'],
 })
-export class DatiEnergeticiFormComponent {
-  idModello!: number;
-  modalitaModifica: boolean = false;
+export class DatiEnergeticiFormComponent implements OnChanges {
+  // idModello!: number;
+  // modalitaModifica: boolean = false;
   // modalitaVisualizzazione: boolean = false;
   @Input() datiForm!: DatiEnergetici;
   @Input() modalitaVisualizzazione: boolean = false;
 
+  @Output() salva = new EventEmitter<any>();
   @Output() chiudi = new EventEmitter<void>();
   @Output() cancella = new EventEmitter<DatiEnergetici>();
 
   energiaForm!: FormGroup;
-
-  annullaOChiudi(): void {
-    this.chiudi.emit();
-  }
 
   constructor(
     private datiEnergeticiService: DatiEnergeticiService,
@@ -43,29 +40,31 @@ export class DatiEnergeticiFormComponent {
   private inizializzaFormVuoto() {
     this.energiaForm = this.fb.group({
       idDati: [null],
-      anno: ['', [Validators.required, Validators.pattern('^[0-3][0-9]{3}$')]],
-      eProdotta: [0, [Validators.required, Validators.min(0)]],
-      ePrelevata: [0, [Validators.required, Validators.min(0)]],
-      eImmessa: [0, [Validators.required, Validators.min(0)]],
-      eCondivisa: [0, [Validators.required, Validators.min(0)]],
-      eAutoCons: [0, [Validators.min(0)]],
-      statoScheda: ['ATTIVO'],
+      idCer: [null],
+      idConfigurazione: [null],
+      anno: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+      energiaProdotta: [0, [Validators.required, Validators.min(0)]],
+      energiaPrelevata: [0, [Validators.required, Validators.min(0)]],
+      energiaImmessa: [0, [Validators.required, Validators.min(0)]],
+      energiaCondivisa: [0, [Validators.required, Validators.min(0)]],
+      energiaAutoCons: [0],
+      tariffaPremium: [0],
+      corrPremioOtt: [0],
+      ridEmCo2: [''],
+      flgCancellazione: ['N'],
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['datiForm'] && this.datiForm) {
       this.energiaForm.patchValue(this.datiForm);
+
       if (this.modalitaVisualizzazione) {
         this.energiaForm.disable();
       } else {
         this.energiaForm.enable();
       }
     }
-  }
-
-  gestisciCancellazioneLocale(): void {
-    this.cancella.emit(this.datiForm);
   }
 
   // salvaOggetto(): void {
@@ -91,15 +90,14 @@ export class DatiEnergeticiFormComponent {
     }
 
     const finalPayload: DatiEnergetici = this.energiaForm.getRawValue();
+    this.salva.emit(finalPayload);
+  }
 
-    if (finalPayload.idDati) {
-      this.datiEnergeticiService.editDatiEnergetici(finalPayload).subscribe({
-        next: () => this.chiudi.emit(),
-      });
-    } else {
-      this.datiEnergeticiService.createDatiEnergetici(finalPayload).subscribe({
-        next: () => this.chiudi.emit(),
-      });
-    }
+  annullaOChiudi(): void {
+    this.chiudi.emit();
+  }
+
+  gestisciCancellazioneLocale(): void {
+    this.cancella.emit(this.datiForm);
   }
 }

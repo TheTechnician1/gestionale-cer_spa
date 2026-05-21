@@ -12,12 +12,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfermaDialogComponent } from 'src/app/components/dati-energetici/dialog/dialog.component';
+import { FormInizializzazioneComponent } from 'src/app/components/dati-energetici/form-inizializzazione/form-inizializzazione.component';
+import { FormModificaComponent } from 'src/app/components/dati-energetici/form-modifica/form-modifica.component';
+import { VisualizzaComponent } from 'src/app/components/dati-energetici/visualizza/visualizza.component';
 
 @NgModule({
   declarations: [
     DatiEnergeticiRicercaComponent,
     DatiEnergeticiFormComponent,
     ConfermaDialogComponent,
+    FormInizializzazioneComponent,
+    FormModificaComponent,
+    VisualizzaComponent,
   ],
   schemas: [],
   exports: [],

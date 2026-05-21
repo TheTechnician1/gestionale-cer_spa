@@ -1,0 +1,14 @@
+<div
+  *ngIf="loading"
+  style="display: flex; justify-content: center; padding: 40px"
+>
+  <mat-spinner radius="20"></mat-spinner>
+</div>
+
+<app-dati-energetici-form
+  *ngIf="!loading"
+  [datiForm]="recordDaModificare"
+  [modalitaVisualizzazione]="false"
+  (salva)="aggiornaRecord($event)"
+  (chiudi)="tornaIndietro()"
+></app-dati-energetici-form>
