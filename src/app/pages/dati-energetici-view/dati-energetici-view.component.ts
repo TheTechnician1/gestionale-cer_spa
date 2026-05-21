@@ -1,43 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-const MOCK_DATI = [
-
-  {
-    idDati: 1,
-    cer: 'CER Roma Nord',
-    cabina: 'CAB-001',
-    configurazione: 'Configurazione Lazio',
-    anno: 2025,
-    energiaProdotta: 12000,
-    energiaPrelevata: 3000,
-    energiaImmessa: 5000,
-    energiaCondivisa: 4500,
-    energiaAutoconsumata: 3500,
-    tariffaPremium: 0.12,
-    corrispettivoPremio: 2400,
-    riduzioneCO2: 85,
-    stato: 'OK'
-  },
-
-  {
-    idDati: 2,
-    cer: 'CER Milano',
-    cabina: 'CAB-002',
-    configurazione: 'Configurazione Lombardia',
-    anno: 2024,
-    energiaProdotta: 9000,
-    energiaPrelevata: 2000,
-    energiaImmessa: 4000,
-    energiaCondivisa: 3000,
-    energiaAutoconsumata: 2500,
-    tariffaPremium: 0.10,
-    corrispettivoPremio: 1800,
-    riduzioneCO2: 65,
-    stato: 'DA_VERIFICARE'
-  }
-
-];
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
+import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
+import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 
 @Component({
   selector: 'app-dati-energetici-view',
@@ -46,58 +11,42 @@ const MOCK_DATI = [
 })
 export class DatiEnergeticiViewComponent implements OnInit {
 
-  dettaglio = {
-    cer: 'CER Roma Nord',
-    cabina: 'CAB-001',
-    configurazione: 'Configurazione Lazio',
-    anno: 2025,
-
-    energiaProdotta: 12000,
-    energiaPrelevata: 3000,
-    energiaImmessa: 5000,
-    energiaCondivisa: 4500,
-    energiaAutoconsumata: 3500,
-
-    tariffaPremium: 0.12,
-    corrispettivoPremio: 2400,
-
-    riduzioneCO2: 85,
-
-    stato: 'OK'
-  };
+  dettaglio: DatiEnergeticiView | null = null;
 
   constructor(
-     private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private datiService: DatiEnergeticiService
   ) {}
 
   ngOnInit(): void {
 
-     const id = Number(
-    this.route.snapshot.paramMap.get('id')
-  );
+    const idParam = this.route.snapshot.paramMap.get('id');
 
-  const datoTrovato = MOCK_DATI.find(
-    dato => dato.idDati === id
-  );
+    if (!idParam) {
+      console.error('ID non presente nella rotta');
+      return;
+    }
 
-  if (datoTrovato) {
+    const id = Number(idParam);
 
-    this.dettaglio = datoTrovato;
-
+    this.datiService.getDato(id).subscribe({
+      next: (dato) => {
+        if (dato) {
+          this.dettaglio = dato;
+        } else {
+          console.warn('Dato non trovato');
+          this.dettaglio = null;
+        }
+      },
+      error: (err) => {
+        console.error('Errore caricamento dettaglio:', err);
+        this.dettaglio = null;
+      }
+    });
   }
-}
 
   tornaIndietro(): void {
-
-    window.history.back();
-
+    this.router.navigate(['/dati-energetici']);
   }
-
-  calcolaCO2(): void {
-
-  this.dettaglio.riduzioneCO2 =
-    this.dettaglio.energiaCondivisa * 0.4;
-
 }
-
-  }

@@ -2,58 +2,43 @@
 
   <div class="header">
     <h2>Modifica Dati Energetici</h2>
-    <p>Aggiorna i valori energetici del sistema</p>
+    <p>Aggiorna i dati della scheda</p>
   </div>
-
 
   <div class="grid-3">
 
     <mat-form-field appearance="outline">
-
       <mat-label>Anno</mat-label>
       <input matInput type="number" [(ngModel)]="formData.anno">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Energia prodotta</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.eProdotta">
-    </mat-form-field>
-</div>
-
- <div class="grid-3">
-    <mat-form-field appearance="outline">
-      <mat-label>Energia prelevata</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.ePrelevata">
+      <mat-label>Id CER</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.idCer">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Energia immessa</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.eImmessa">
-    </mat-form-field>
-</div>
-
-<div class="grid-2">
-    <mat-form-field appearance="outline">
-      <mat-label>Energia condivisa</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.eCondivisa">
+      <mat-label>Partita IVA</mat-label>
+      <input matInput [(ngModel)]="formData.partitaIva">
     </mat-form-field>
 
-  
-    <mat-form-field appearance="outline">
-      <mat-label>Autoconsumo</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.eAutoCons">
-    </mat-form-field>
-</div>
+  </div>
 
-<div class="grid-1">
+  <div class="grid-3">
+
     <mat-form-field appearance="outline">
-      <mat-label>Tariffa premium</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.tariffaPremium">
+      <mat-label>Id Configurazione</mat-label>
+      <input matInput type="number" [(ngModel)]="formData.idConfig">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Corrispettivo premio</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.corrPremioOtt">
+      <mat-label>Codice Cabina</mat-label>
+      <input matInput [(ngModel)]="formData.codiceCabina">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Stato Scheda</mat-label>
+      <input matInput [(ngModel)]="formData.statoScheda">
     </mat-form-field>
 
   </div>
@@ -61,13 +46,13 @@
   <div class="grid-2">
 
     <mat-form-field appearance="outline">
-      <mat-label>Riduzione CO₂</mat-label>
-      <input matInput [(ngModel)]="formData.ridEmCo2">
+      <mat-label>Inizio Anno</mat-label>
+      <input matInput [(ngModel)]="formData.inizioAnno">
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Stato</mat-label>
-      <input matInput [(ngModel)]="formData.note">
+      <mat-label>Fine Anno</mat-label>
+      <input matInput [(ngModel)]="formData.fineAnno">
     </mat-form-field>
 
   </div>

@@ -1,14 +1,15 @@
-<div class="detail-container">
+<div class="detail-container" *ngIf="dettaglio as d">
 
-  <!-- HEADER -->
   <div class="header">
 
-    <h1>
-      Dettaglio Dati Energetici
-    </h1>
+    <h1>Dettaglio Dati Energetici</h1>
 
     <p>
-      Anno {{ dettaglio.anno }}
+      Anno {{ d.anno }}
+    </p>
+
+    <p>
+      ID Dati: {{ d.idDati }}
     </p>
 
   </div>
@@ -21,94 +22,63 @@
     <div class="info-grid">
 
       <div>
-        <strong>CER:</strong>
-        {{ dettaglio.cer }}
+        <strong>ID CER:</strong>
+        {{ d.idCer }}
       </div>
 
       <div>
-        <strong>Cabina:</strong>
-        {{ dettaglio.cabina }}
+        <strong>Partita IVA:</strong>
+        {{ d.partitaIva }}
       </div>
 
       <div>
-        <strong>Configurazione:</strong>
-        {{ dettaglio.configurazione }}
+        <strong>Codice Cabina:</strong>
+        {{ d.codiceCabina }}
       </div>
 
       <div>
-        <strong>Stato:</strong>
-        {{ dettaglio.stato }}
+        <strong>Stato Scheda:</strong>
+        {{ d.statoScheda }}
       </div>
 
     </div>
 
   </div>
 
-  <!-- DATI ENERGETICI -->
+  <!-- PERIODI -->
   <div class="card">
 
-    <h2>Dati Energetici</h2>
+    <h2>Periodo</h2>
 
-    <table class="detail-table">
+    <div class="info-grid">
 
-      <tr>
-        <td>Energia prodotta</td>
-        <td>{{ dettaglio.energiaProdotta }}</td>
-      </tr>
+      <div>
+        <strong>Inizio Anno:</strong>
+        {{ d.inizioAnno }}
+      </div>
 
-      <tr>
-        <td>Energia prelevata</td>
-        <td>{{ dettaglio.energiaPrelevata }}</td>
-      </tr>
+      <div>
+        <strong>Fine Anno:</strong>
+        {{ d.fineAnno }}
+      </div>
 
-      <tr>
-        <td>Energia immessa</td>
-        <td>{{ dettaglio.energiaImmessa }}</td>
-      </tr>
-
-      <tr>
-        <td>Energia condivisa</td>
-        <td>{{ dettaglio.energiaCondivisa }}</td>
-      </tr>
-
-      <tr>
-        <td>Energia autoconsumata</td>
-        <td>{{ dettaglio.energiaAutoconsumata }}</td>
-      </tr>
-
-      <tr>
-        <td>Tariffa premium</td>
-        <td>{{ dettaglio.tariffaPremium }}</td>
-      </tr>
-
-      <tr>
-        <td>Corrispettivo premio</td>
-        <td>{{ dettaglio.corrispettivoPremio }}</td>
-      </tr>
-
-      <tr>
-        <td>Riduzione CO₂</td>
-        <td>{{ dettaglio.riduzioneCO2 }}</td>
-      </tr>
-
-    </table>
+    </div>
 
   </div>
 
-  <!-- BOX CO2 -->
+  <!-- BOX INFO -->
   <div class="card">
 
-    <h2>Riduzione CO₂</h2>
+    <h2>Note sistema</h2>
 
     <p>
-      La riduzione della CO₂ viene calcolata
-      sulla base dell’energia condivisa annuale.
+      Stato attuale della scheda: <strong>{{ d.statoScheda }}</strong>
     </p>
 
   </div>
 
-    <button (click)="tornaIndietro()">
-      Torna indietro
-    </button>
+  <button (click)="tornaIndietro()">
+    Torna indietro
+  </button>
 
 </div>

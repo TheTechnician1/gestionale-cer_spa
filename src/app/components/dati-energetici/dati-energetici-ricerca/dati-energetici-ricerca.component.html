@@ -68,60 +68,50 @@
 
 </div>
 
-<!-- TABella MATERIAL -->
 <div class="table-container">
 
   <table mat-table [dataSource]="datiEnergetici" class="mat-elevation-z8 full-table">
 
-    <!-- ANNO -->
     <ng-container matColumnDef="anno">
       <th mat-header-cell *matHeaderCellDef>Anno</th>
       <td mat-cell *matCellDef="let dato">{{ dato.anno }}</td>
     </ng-container>
 
-    <!-- PRODOTTA -->
     <ng-container matColumnDef="eProdotta">
       <th mat-header-cell *matHeaderCellDef>Prodotta</th>
       <td mat-cell *matCellDef="let dato">{{ dato.eProdotta }}</td>
     </ng-container>
 
-    <!-- PRELEVATA -->
     <ng-container matColumnDef="ePrelevata">
       <th mat-header-cell *matHeaderCellDef>Prelevata</th>
       <td mat-cell *matCellDef="let dato">{{ dato.ePrelevata }}</td>
     </ng-container>
 
-    <!-- IMMESSA -->
     <ng-container matColumnDef="eImmessa">
       <th mat-header-cell *matHeaderCellDef>Immessa</th>
       <td mat-cell *matCellDef="let dato">{{ dato.eImmessa }}</td>
     </ng-container>
 
-    <!-- CONDIVISA -->
     <ng-container matColumnDef="eCondivisa">
       <th mat-header-cell *matHeaderCellDef>Condivisa</th>
       <td mat-cell *matCellDef="let dato">{{ dato.eCondivisa }}</td>
     </ng-container>
 
-    <!-- AUTOCONSUMO -->
     <ng-container matColumnDef="eAutoCons">
       <th mat-header-cell *matHeaderCellDef>Autoconsumo</th>
       <td mat-cell *matCellDef="let dato">{{ dato.eAutoCons }}</td>
     </ng-container>
 
-    <!-- TARIFFA -->
     <ng-container matColumnDef="tariffaPremium">
       <th mat-header-cell *matHeaderCellDef>Tariffa</th>
       <td mat-cell *matCellDef="let dato">{{ dato.tariffaPremium }}</td>
     </ng-container>
 
-    <!-- CO2 -->
     <ng-container matColumnDef="ridEmCo2">
       <th mat-header-cell *matHeaderCellDef>CO₂</th>
       <td mat-cell *matCellDef="let dato">{{ dato.ridEmCo2 }}</td>
     </ng-container>
 
-    <!-- STATO -->
     <ng-container matColumnDef="note">
       <th mat-header-cell *matHeaderCellDef>Stato</th>
       <td mat-cell *matCellDef="let dato">
@@ -131,7 +121,6 @@
       </td>
     </ng-container>
 
-    <!-- AZIONI -->
     <ng-container matColumnDef="azioni">
       <th mat-header-cell *matHeaderCellDef>Azioni</th>
       <td mat-cell *matCellDef="let dato">
@@ -151,7 +140,6 @@
       </td>
     </ng-container>
 
-    <!-- HEADER + ROW -->
     <tr mat-header-row *matHeaderRowDef="[
       'anno',
       'eProdotta',
