@@ -1,10 +1,12 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { CodiceDescrizioneBase, Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
+import { Cer } from "src/app/core/interfaces/cer.model";
+import { ImpiantoService } from "../../services/impianto.service";
 
 type FiltroRicerca = {
   cer: string | null;
@@ -25,6 +27,7 @@ export class ImpiantiRicercaComponent {
   regioni$? : Observable<CodiceDescrizioneBase[]>;
   provincie$? : Observable<CodiceDescrizioneBase[]>;
   comuni$? : Observable<CodiceDescrizioneBase[]>;
+  cer$? : Observable<Cer[]>;
   formRicercaImpianti : FormGroup;
 
   constructor(private codiciDescrizioneBaseService : CodiciDescrizioneBaseService,
@@ -41,8 +44,8 @@ export class ImpiantiRicercaComponent {
   }
 
     ngOnInit(): void {
+      this.cer$ = this.codiciDescrizioneBaseService.getAllCer();
       this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
-  
       this.formRicercaImpianti.get('regione')!.valueChanges.subscribe({
         next:(x : CodiceDescrizioneBase)=>{ 
           this.formRicercaImpianti.get('provincia')?.setValue(null);
@@ -80,6 +83,29 @@ export class ImpiantiRicercaComponent {
           }})
           return of([]);
         }});
+
+      //Mock
+      this.impiantiList = [
+        new ImpiantoModel({  idImpianto : 1,
+          idConfigurazione :  1,
+          flagEsercizio : "S" ,
+          dataEntrataEsercizio : new Date(),
+          tipologiaImpianto : "Eolico",
+          potenzaNominaleKw : 11,
+          presenzaAccumulo : "S",
+          capacitaAccumuloKwh : 12,
+          categoriaProduttore : "Comune",
+          codiceCategoriaProduttore : "030",
+          regione : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          provincia : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          comune : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          indirizzo : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          civico : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          cap : new CodiceDescrizioneBaseModel({codice :"",descrizione : "",specifica : ""}),
+          statoImpianto : "S",
+          attivo : "S",
+          emailUtenteLoggato : "Test"
+        })];
     }
 
 
