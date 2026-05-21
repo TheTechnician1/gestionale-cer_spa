@@ -22,6 +22,12 @@ const routes: Routes = [
       import("./core/modules/dati-energetici.module")
         .then(m => m.DatiEnergeticiModule)
   },
+    {
+    path: "impianto",
+    loadChildren: () =>
+      import("./core/modules/impianto.module")
+        .then(m => m.ImpiantoModule)
+  },
 
   {
     path: "login",

@@ -95,8 +95,12 @@ export class ImpiantiRicercaComponent {
   search(): void {
   }
 
-  toForm(){
-    this.router.navigate(['impianto/inserimento-impianto']);
+
+  inserisciDati(): void {
+    // console.log("url:" + this.router.url+'/inserimento-impianto');
+    
+    // this.router.navigate([this.router.url+'/inserimento-impianto']);
+    this.router.navigate(['/impianto/form']);
   }
 
   salvataggio(){

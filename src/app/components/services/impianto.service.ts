@@ -75,7 +75,7 @@ export class ImpiantoService {
     comune: 'Avezzano',
     potenzaNominaleKw: 55,
     presenzaAccumulo: 'N',
-    attivo: 'N'
+    attivo: 'S'
   },
   {
     idImpianto: 3,
@@ -101,7 +101,7 @@ export class ImpiantoService {
     comune: 'Roma',
     potenzaNominaleKw: 75,
     presenzaAccumulo: 'N',
-    attivo: 'N'
+    attivo: 'S'
   }
 ];
 

@@ -1,140 +1,7 @@
-
-<!-- <h1><a (click)="toForm()">Creazione</a></h1>
-<h2>Impianti</h2>
-<p class="subtitle">Gestione e consultazione impianti</p>
-
-<div class="white-box">
-  <form [formGroup]="formRicercaImpianti" (ngSubmit)="salvataggio()">
-    <div class="form-group">
-      <label for="cer">Cer</label>
-      <select formControlName="cer">
-          <option [ngValue]="null">
-              -- Seleziona Cer --
-          </option>
-          <option *ngFor="let c of cer$ | async"
-              [ngValue]="c">
-                  {{c.ragSociale}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="cabina">Cabina</label>
-      <input
-        type="text"
-        id="cabina"
-        formControlName="cabina">
-    </div>
-    <div class="form-group">
-      <label for="regione">Regione</label>
-      <select formControlName="regione">
-          <option [ngValue]="null">
-              -- Seleziona Regione --
-          </option>
-          <option *ngFor="let r of regioni$ | async"
-              [ngValue]="r">
-                  {{r.descrizione}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="provincia">Provincia</label>
-      <select formControlName="provincia">
-        <option [ngValue]="null">
-          -- Seleziona Provincia --
-        </option>
-        <option *ngFor="let p of provincie$ | async"
-            [ngValue]="p">
-          {{p.descrizione}}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="comune">Comune</label>
-      <select formControlName="comune">
-        <option [ngValue]="null">
-          -- Seleziona Comune --
-        </option>
-        <option *ngFor="let c of comuni$ | async"
-            [ngValue]="c">
-          {{c.descrizione}}
-        </option>
-      </select>
-    </div>
-  </form>
-</div>
-
-<div class="table-container">
-
-  <table class="energy-table">
-
-    <thead>
-
-      <tr>
-        <th>esercizio</th>
-        <th>data esercizio</th>
-        <th>tipologia</th>
-        <th>potenza nominale</th>
-        <th>tipo produttore</th>
-        <th>capacità accumulo (kwh)</th>
-      </tr>
-
-    </thead>
-
-    <tbody>
-
-      <tr *ngFor="let impianto of impiantiList">
-        <td>{{ impianto.flagEsercizio }}</td>
-
-        <td>{{ impianto.dataEntrataEsercizio }}</td>
-
-        <td>{{ impianto.tipologiaImpianto }}</td>
-
-        <td>{{ impianto.potenzaNominaleKw }}</td>
-
-        <td>{{ impianto.categoriaProduttore }}</td>
-
-        <td>{{ impianto.capacitaAccumuloKwh }}</td>
-       
-        <td class="azioni">
-
-           <mat-icon >
-            find_in_page
-          </mat-icon>
-
-          <mat-icon>
-            edit
-          </mat-icon>
-
-           <mat-icon>
-            delete
-          </mat-icon>
-         
-
-        </td>
-
-      </tr>
-      
-      <tr *ngIf="!impiantiList?.length">
-
-        <td colspan="11" class="empty-table">
-          Nessun dato disponibile
-        </td>
-
-      </tr>
-
-    </tbody>
-
-  </table>
-
-</div> -->
-
 <h2>Impianti</h2>         
 <mat-divider></mat-divider>
  <div class="example-button-row"></div>
-    <button mat-raised-button color="primary">Inserisci</button>
+    <button mat-raised-button color="primary" (click)="inserisciDati()">Inserisci</button>
 <div class="white-box">
   <form [formGroup]="formRicercaImpianti" (ngSubmit)="salvataggio()">
     <div class="form-group">
@@ -144,7 +11,7 @@
               -- Seleziona Cer --
           </option>
           <option *ngFor="let c of cer$ | async"
-              [ngValue]="c">
+              [ngValue]="c.idCer">
                   {{c.ragSociale}}
           </option>
       </select>
@@ -195,6 +62,13 @@
         </option>
       </select>
     </div>
+    <button
+      type="button"
+      class="search-btn"
+      (click)="search()"
+      [disabled]="formRicercaImpianti.invalid">
+      Cerca
+    </button>
   </form>
 </div>
 
