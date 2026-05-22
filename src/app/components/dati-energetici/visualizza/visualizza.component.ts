@@ -1,55 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 import { DatiEnergeticiService } from '../../services/dati-energetici.service';
-import { DatiEnergeticiFormComponent } from '../dati-energetici-form/dati-energetici-form.component';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
-  selector: 'app-dati-energetici-dettaglio',
-  template: `
-    <div
-      *ngIf="loading"
-      style="display: flex; justify-content: center; padding: 60px;"
-    >
-      <mat-spinner diameter="40"></mat-spinner>
-    </div>
-
-    <app-dati-energetici-form
-      *ngIf="!loading"
-      [datiForm]="recordDettaglio"
-      [modalitaVisualizzazione]="true"
-      (chiudi)="tornaIndietro()"
-    ></app-dati-energetici-form>
-  `,
+  selector: 'app-visualizza',
+  templateUrl: './visualizza.component.html',
+  styleUrls: ['./visualizza.component.scss'],
 })
 export class VisualizzaComponent implements OnInit {
-  recordDettaglio!: DatiEnergetici;
+  idRecord!: number;
   loading = true;
+  recordDettaglio: any = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private service: DatiEnergeticiService,
+    private toast: ToastService,
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.service.getDato(+id).subscribe({
-        next: (data: DatiEnergetici[]) => {
-          if (data && data.length > 0) {
-            this.recordDettaglio = data[0];
-            this.loading = false;
-          } else {
-            this.tornaIndietro();
-          }
-        },
-        error: (err) => {
-          console.error('Errore getDato:', err);
-          this.tornaIndietro();
-        },
-      });
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.idRecord = idParam ? Number(idParam) : 0;
+
+    this.recuperaDettaglio();
+  }
+
+  recuperaDettaglio(): void {
+    if (this.idRecord === 0) {
+      this.toast.error('ID record non valido.');
+      this.loading = false;
+      return;
     }
+
+    this.loading = true;
+    this.service.getDato(this.idRecord).subscribe({
+      next: (res) => {
+        this.recordDettaglio = Array.isArray(res) ? res[0] : res;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Errore getDato:', err);
+        this.toast.error(
+          'Impossibile caricare il dettaglio della scheda energetica',
+        );
+        this.loading = false;
+      },
+    });
   }
 
   tornaIndietro(): void {

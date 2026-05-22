@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatiEnergeticiModel } from 'src/app/core/interfaces/dati-energetici.model';
 import { DatiEnergeticiService } from '../../services/dati-energetici.service';
+import { UtenteService } from 'src/app/core/services/utente.service';
 
 @Component({
   selector: 'app-form-inizializzazione',
@@ -21,6 +22,7 @@ export class FormInizializzazioneComponent implements OnInit {
   constructor(
     private service: DatiEnergeticiService,
     private router: Router,
+    private utenteService: UtenteService,
   ) {}
 
   ngOnInit(): void {
@@ -38,7 +40,8 @@ export class FormInizializzazioneComponent implements OnInit {
   }
 
   salvaNuovoRecord(formValue: any): void {
-    this.service.createDatiEnergetici(formValue).subscribe({
+    const emailLoggato = this.utenteService.currentUser?.utente?.email || '';
+    this.service.createDatiEnergetici(formValue, emailLoggato).subscribe({
       next: () => this.tornaIndietro(),
       error: (err) => console.error('Errore creazione:', err),
     });

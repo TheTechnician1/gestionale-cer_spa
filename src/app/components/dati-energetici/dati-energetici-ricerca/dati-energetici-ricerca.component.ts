@@ -6,6 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfermaDialogComponent } from '../dialog/dialog.component';
+import { UtenteService } from 'src/app/core/services/utente.service';
+import { ToastService } from 'src/app/core/services/toast.service';
+
 @Component({
   selector: 'app-dati-energetici-ricerca',
   templateUrl: './dati-energetici-ricerca.component.html',
@@ -14,6 +17,8 @@ import { ConfermaDialogComponent } from '../dialog/dialog.component';
 export class DatiEnergeticiRicercaComponent {
   constructor(
     private datiEnergeticiService: DatiEnergeticiService,
+    private toast: ToastService,
+    private utenteService: UtenteService,
     private dialog: MatDialog,
   ) {}
 
@@ -65,10 +70,17 @@ export class DatiEnergeticiRicercaComponent {
   // }
 
   caricaDati() {
-    this.datiEnergeticiService.getDati({}).subscribe({
+    // Force backend pagination properties explicitly to uncover hidden constraints
+    const searchParams = {
+      page: 0,
+      size: 100, // Request a massive block size to rule out page clipping
+    };
+
+    this.datiEnergeticiService.getDati(searchParams).subscribe({
       next: (risposta: DatiEnergetici[]) => {
         let datiFiltrati = risposta;
 
+        // Apply local filtering cleanly if fields contain input entries
         if (this.filtro.anno) {
           datiFiltrati = datiFiltrati.filter((item) =>
             item.anno?.toString().includes(this.filtro.anno),
@@ -76,15 +88,26 @@ export class DatiEnergeticiRicercaComponent {
         }
 
         if (this.filtro.statoScheda) {
-          datiFiltrati = datiFiltrati.filter((item) =>
-            item.flgCancellazione
-              ?.toLowerCase()
-              .includes(this.filtro.statoScheda.toLowerCase()),
-          );
+          const userFiltro = this.filtro.statoScheda.toLowerCase();
+          datiFiltrati = datiFiltrati.filter((item) => {
+            const backendState = (item as any).statoScheda || '';
+            const normalizedState = backendState.toLowerCase();
+            if (normalizedState === userFiltro) return true;
+            if (userFiltro.includes('attiv') && normalizedState === 'n')
+              return true;
+            return normalizedState.includes(userFiltro);
+          });
         }
 
         this.dati = datiFiltrati;
-        this.dataSource.data = [...this.dati];
+        this.dataSource.data = this.dati;
+
+        if (this.paginator) {
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      error: (err) => {
+        console.error('Errore griglia dati energetici:', err);
       },
     });
   }
@@ -114,30 +137,31 @@ export class DatiEnergeticiRicercaComponent {
     this.caricaDati();
   }
 
-  eliminaDatiLogicamente(element: DatiEnergetici) {
-    if (!element.idDati) return;
+  eliminaDatiLogicamente(element: any): void {
+    const currentUserState = this.utenteService.currentUser;
 
-    const dialogRef = this.dialog.open(ConfermaDialogComponent, {
-      width: '400px',
-      data: { anno: element.anno },
-    });
+    const emailLoggato =
+      currentUserState?.utente?.mail || currentUserState?.mail || '';
 
-    dialogRef.afterClosed().subscribe((confermato: boolean) => {
-      if (confermato) {
-        this.datiEnergeticiService
-          .deleteDatiEnergetici(element.idDati!)
-          .subscribe(() => {
-            this.caricaDati();
+    if (!emailLoggato) {
+      this.toast.error(
+        'Impossibile procedere: Email utente loggato non trovata.',
+      );
+      return;
+    }
 
-            if (
-              this.mostraForm &&
-              this.recordSelezionato?.idDati === element.idDati
-            ) {
-              this.mostraForm = false;
-            }
-          });
-      }
-    });
+    this.datiEnergeticiService
+      .deleteDatiEnergetici(element.idDati!, emailLoggato)
+      .subscribe({
+        next: () => {
+          this.toast.success('Record disattivato con successo!');
+          this.caricaDati();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toast.error('Errore durante la cancellazione del record');
+        },
+      });
   }
 
   apriNuovo() {
