@@ -27,14 +27,14 @@ export class ImpiantoService {
 
   //CHIAMATE BACK
 
-  getAllImpianti(options: ApiRequestOptions = {}): Observable<any[]> {
+  getAllImpianti(options: ApiRequestOptions = {}): Observable<ImpiantoView[]> {
     const endpoint = "api/impianti";
     return this.api.postLogin<ImpiantoView[]>(endpoint, {}, options);
   }
 
-  createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any> {
+  createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<string> {
     const endpoint = "api/impianti/create";
-    return this.api.post<Impianto>(endpoint, payload, options);
+    return this.api.post<string>(endpoint, payload, options);
   }
 
   deleteImpianto(id : number | undefined, email : string,options: ApiRequestOptions = {}): Observable<any> {

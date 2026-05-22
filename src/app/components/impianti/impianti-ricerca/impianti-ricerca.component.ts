@@ -20,6 +20,11 @@ export class ImpiantiRicercaComponent {
   @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
 
   impiantiList : ImpiantoView[] = [];
+  tipologieImpianto$? : Observable<CodiceDescrizioneBase[]>;
+  statiImpianto$? : Observable<CodiceDescrizioneBase[]>;
+
+
+
   regioni$? : Observable<CodiceDescrizioneBase[]>;
   provincie$? : Observable<CodiceDescrizioneBase[]>;
   comuni$? : Observable<CodiceDescrizioneBase[]>;
@@ -33,17 +38,30 @@ export class ImpiantiRicercaComponent {
     private fb : FormBuilder,
     private router : Router){
       this.formRicercaImpianti = this.fb.group({
-        cer : [''],
-        cabina : [''],
+        idConfigurazione : [''],
+        idCer : [''],
+        codiceCabina : [''],
+        tipologiaImpianto : [''],
+        statoImpianto : [''],
         regione : [''],
         provincia : [''],
-        comune : ['']
+        comune : [''],
+        potenzaNominaleKw : [''],
+        presenzaAccumulo : [''],
+        attivo : ['']
       });
 
   }
 
   ngOnInit(): void {
+    //FORM OPZIONI CER
     this.cer$ = this.cerService.getCerMock();
+
+    //FORM OPZIONI TIPOLOGIA IMPIANTO
+    this.tipologieImpianto$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.TIPOLOGIA, "");
+    //FORM OPZIONI STATO IMPIANTO
+    this.statiImpianto$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.STATO, "");
+
     //FORM OPZIONI REGIONE
     this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
     //FORM OPZIONI PROVINCIA
@@ -66,29 +84,29 @@ export class ImpiantiRicercaComponent {
             }
         }})
       }});
-      //FORM OPZIONI COMUNE
-      this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
-        next:(x : CodiceDescrizioneBase)=>{
+    //FORM OPZIONI COMUNE
+    this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
+      next:(x : CodiceDescrizioneBase)=>{
 
-        this.formRicercaImpianti.get('comune')?.setValue(null);
-        this.comuni$ = of([]);
-        this.comuni$ = x? this.codiciDescrizioneBaseService
-          .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
-        this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
-        this.comuni$.subscribe({
-          next:(x: CodiceDescrizioneBase[])=>{
-            if(x && x.length> 0){
-              this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
-            }
-        }})
-        return of([]);
-      }});
+      this.formRicercaImpianti.get('comune')?.setValue(null);
+      this.comuni$ = of([]);
+      this.comuni$ = x? this.codiciDescrizioneBaseService
+        .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
+      this.formRicercaImpianti.get('comune')?.disable({emitEvent : false});
+      this.comuni$.subscribe({
+        next:(x: CodiceDescrizioneBase[])=>{
+          if(x && x.length> 0){
+            this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
+          }
+      }})
+      return of([]);
+    }});
 
-      this.impiantoService.getImpiantiMock().subscribe({
-        next:(impianti)=>{
-          this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
-        } 
-      })
+    this.impiantoService.getImpiantiMock().subscribe({
+      next:(impianti)=>{
+        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
+      } 
+    })
   }
 
 

@@ -167,14 +167,13 @@ export class ImpiantiFormComponent {
     console.log(JSON.stringify(nuovoImpianto));
 
     this.impiantoService.createImpianto(nuovoImpianto).subscribe({
-      next: (x: Impianto) =>{
-         this.router.navigate(['/impianto/visualizza']);
+      next: (x: string) =>{   
+        alert(x);
+        this.router.navigate(['/impianto']);
       },
       error: (err)=>{
         alert("Errore durante la creazione dell'impianto. Riprova più tardi.");
       }
     });
-
-    
   }
 }
