@@ -1,4 +1,133 @@
 <div class="dati-energetici-container">
+  <div class="azioni-lista">
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      (click)="toggleInserimento()"
+    >
+      Inserisci nuovo
+    </button>
+
+    <button
+      mat-stroked-button
+      color="primary"
+      type="button"
+      (click)="toggleFiltri()"
+    >
+      Filtri
+    </button>
+  </div>
+
+  <mat-card class="inserimento-card" *ngIf="mostraInserimento">
+    <mat-card-header>
+      <mat-card-title>Nuovi Dati Energetici</mat-card-title>
+    </mat-card-header>
+
+    <form [formGroup]="formInserimento" class="filtri-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>ID CER</mat-label>
+        <input matInput type="number" formControlName="idCer" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Anno</mat-label>
+        <mat-select formControlName="anno">
+          <mat-option *ngFor="let a of anni" [value]="a">{{ a }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia prodotta</mat-label>
+        <input matInput type="number" formControlName="eProdotta" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia prelevata</mat-label>
+        <input matInput type="number" formControlName="ePrelevata" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia immessa</mat-label>
+        <input matInput type="number" formControlName="eImmessa" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia condivisa</mat-label>
+        <input matInput type="number" formControlName="eCondivisa" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Energia autoconsumata</mat-label>
+        <input matInput type="number" formControlName="eAutoCons" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tariffa premium</mat-label>
+        <input matInput type="number" step="0.01" formControlName="tariffaPremium" />
+      </mat-form-field>
+    </form>
+
+    <mat-card-actions align="end">
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="salvaNuovo()"
+      >
+        Salva
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="filtri-card" *ngIf="mostraFiltri">
+    <form [formGroup]="form" class="filtri-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Anno</mat-label>
+        <mat-select formControlName="anno">
+          <mat-option [value]="null">Tutti</mat-option>
+          <mat-option *ngFor="let a of anni" [value]="a">{{ a }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID CER</mat-label>
+        <input matInput type="number" formControlName="idCer" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID Configurazione</mat-label>
+        <input matInput type="number" formControlName="idConfig" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Stato scheda</mat-label>
+        <input matInput type="text" formControlName="statoScheda" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Inizio anno</mat-label>
+        <input matInput type="text" formControlName="inizioAnno" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fine anno</mat-label>
+        <input matInput type="text" formControlName="fineAnno" />
+      </mat-form-field>
+    </form>
+
+    <mat-card-actions align="end">
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="cercaDatiEnergetici()"
+      >
+        Cerca
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
   <mat-card class="dato-energetico-card" *ngFor="let dato of datiEnergetici">
     <mat-card-header>
       <mat-card-title>Dati Energetici - {{ dato.anno }}</mat-card-title>
@@ -16,70 +145,62 @@
       </div>
 
       <div class="campo">
-        <strong>ID Config:</strong>
-        <span>{{ dato.idConfig }}</span>
-      </div>
-
-      <div class="campo">
         <strong>Energia prodotta:</strong>
-        <span>{{ dato.energiaProdotta }} kWh</span>
+        <span>{{ dato.eProdotta }} kWh</span>
       </div>
 
       <div class="campo">
         <strong>Energia prelevata:</strong>
-        <span>{{ dato.energiaPrelevata }} kWh</span>
+        <span>{{ dato.ePrelevata }} kWh</span>
       </div>
 
       <div class="campo">
         <strong>Energia immessa:</strong>
-        <span>{{ dato.energiaImmessa }} kWh</span>
+        <span>{{ dato.eImmessa }} kWh</span>
       </div>
 
       <div class="campo">
         <strong>Energia condivisa:</strong>
-        <span>{{ dato.energiaCondivisa }} kWh</span>
+        <span>{{ dato.eCondivisa }} kWh</span>
       </div>
 
       <div class="campo">
         <strong>Energia autoconsumata:</strong>
-        <span>{{ dato.energiaAutoCons }} kWh</span>
+        <span>{{ dato.eAutoCons }} kWh</span>
       </div>
 
       <div class="campo">
         <strong>Tariffa premium:</strong>
         <span>{{ dato.tariffaPremium }}</span>
       </div>
-
-      <div class="campo">
-        <strong>Corrispettivo premio:</strong>
-        <span>{{ dato.corrPremioOtt }}</span>
-      </div>
-
-      <div class="campo">
-        <strong>Riduzione CO₂:</strong>
-        <span>{{ dato.ridEmCo2 }}</span>
-      </div>
-
-      <div class="campo">
-        <strong>Cancellato:</strong>
-        <span>{{ dato.flgCancellazione === "S" ? "Sì" : "No" }}</span>
-      </div>
-
-      <div class="campo">
-        <strong>Email utente:</strong>
-        <span>{{ dato.emailUtenteLoggato }}</span>
-      </div>
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-stroked-button color="primary">Dettaglio</button>
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="dettaglioDatiEnergetici(dato.idDati ?? null)"
+      >
+        Dettaglio
+      </button>
+
       <button
         mat-flat-button
         color="primary"
         type="button"
-        (click)="modificaDatiEnergetici(dato.idDati)"
+        (click)="modificaDatiEnergetici(dato.idDati ?? null)"
       >
         Modifica
+      </button>
+
+      <button
+        mat-stroked-button
+        color="warn"
+        type="button"
+        (click)="eliminaDato(dato.idDati ?? null)"
+      >
+        Elimina
       </button>
     </mat-card-actions>
   </mat-card>

@@ -1,7 +1,13 @@
 <div class="impianti-container">
-
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    (click)="inserisciNuovo()"
+  >
+    Inserisci nuovo
+  </button>
   <mat-card class="impianto-card" *ngFor="let impianto of impianti">
-
     <mat-card-header>
       <mat-card-title>
         {{ impianto.tipologia }}
@@ -9,11 +15,9 @@
     </mat-card-header>
 
     <mat-card-content class="impianto-grid">
-
-
       <div class="campo">
         <strong>Potenza:</strong>
-      <span>{{ impianto.potenzaNominale }} kW</span>
+        <span>{{ impianto.potenzaNominale }} kW</span>
       </div>
 
       <div class="campo">
@@ -43,21 +47,36 @@
 
       <div class="campo">
         <strong>Accumulo:</strong>
-        <span>{{ impianto.flgAccumulo ? 'Sì' : 'No' }}</span>
+        <span>{{ impianto.flgAccumulo ? "Sì" : "No" }}</span>
       </div>
-
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-stroked-button color="primary">
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="dettaglioImpianto(impianto.id)"
+      >
         Dettaglio
       </button>
 
-      <button mat-flat-button color="primary"type="button"(click)="modificaImpianto(impianto.id)">
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        (click)="modificaImpianto(impianto.id)"
+      >
         Modifica
       </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        type="button"
+        (click)="eliminaImpianto(impianto.id)"
+      >
+        Elimina
+      </button>
     </mat-card-actions>
-
   </mat-card>
-
 </div>

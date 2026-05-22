@@ -56,3 +56,30 @@ mat-card-actions {
 	padding: 16px;
 	border-top: 1px solid #e5e7eb;
 }
+.azioni-lista {
+	grid-column: 1 / -1;
+	display: flex;
+	gap: 12px;
+}
+
+.inserimento-card {
+	grid-column: 1 / -1;
+	border-radius: 16px;
+	padding: 16px;
+}
+.dato-energetico-card mat-card-actions {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+}
+.filtri-card {
+	grid-column: 1 / -1;
+	border-radius: 16px;
+	padding: 16px;
+}
+
+.filtri-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+}

@@ -1,17 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface ImpiantoDettaglioView {
-  id: string;
-  tipologia: string;
-  potenzaNominale: number;
-  regione: string;
-  comune: string;
-  indirizzo: string;
-  cap: string;
-  partitaIva: string;
-  accumulo: boolean;
-}
+import { ImpiantoService, Impianto } from '../../services/impianto.service';
 
 @Component({
   selector: 'app-dettaglio',
@@ -20,31 +9,30 @@ interface ImpiantoDettaglioView {
 })
 export class DettaglioComponent implements OnInit {
   idImpianto: string | null = null;
-  impianto: ImpiantoDettaglioView | null = null;
+  impianto: Impianto | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private impiantoService: ImpiantoService,
   ) {}
+
   ngOnInit(): void {
     this.idImpianto = this.route.snapshot.paramMap.get('id');
-    this.loadMockDettaglio();
+    this.caricaImpianto();
   }
 
-  private loadMockDettaglio(): void {
-    const id = this.idImpianto ?? 'N/D';
+  private caricaImpianto(): void {
+    const id = Number(this.idImpianto);
 
-    this.impianto = {
-      id,
-      tipologia: 'Fotovoltaico',
-      potenzaNominale: 12.5,
-      regione: 'Lazio',
-      comune: 'Roma',
-      indirizzo: 'Via Appia 15',
-      cap: '00179',
-      partitaIva: '12345678901',
-      accumulo: true,
-    };
+    this.impiantoService.getById(id).subscribe({
+      next: (impianto) => {
+        this.impianto = impianto ?? null;
+      },
+      error: (err) => {
+        console.error('Errore caricamento impianto:', err);
+      },
+    });
   }
 
   vaiAModifica(): void {
@@ -53,6 +41,7 @@ export class DettaglioComponent implements OnInit {
     }
     this.router.navigate(['/impianto/modifica-impianto', this.idImpianto]);
   }
+
   tornaAllaLista(): void {
     this.router.navigate(['/impianto']);
   }

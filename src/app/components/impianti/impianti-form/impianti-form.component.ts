@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ImpiantoService } from '../../services/impianto.service';
 
 @Component({
   selector: 'app-impianti-form',
@@ -13,14 +14,14 @@ export class ImpiantiFormComponent implements OnInit {
   isEditMode = false;
   idImpianto: string | null = null;
 
-  constructor( private fb: FormBuilder, private route: ActivatedRoute,) {}
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private impiantoService: ImpiantoService,
+  ) {}
 
   ngOnInit(): void {
-
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
-    
-
     this.buildForm();
 
     this.idImpianto = this.route.snapshot.paramMap.get('id');
@@ -28,26 +29,10 @@ export class ImpiantiFormComponent implements OnInit {
 
     if (this.isEditMode) {
       this.titoloPagina = 'Modifica Impianto';
-      this.loadMockForEdit();
+      this.caricaImpianto();
     } else {
       this.titoloPagina = 'Nuovo Impianto';
     }
-
-  }
-
-  private loadMockForEdit(): void {
-    const impiantoMock = {
-      tipologia: 'Fotovoltaico',
-      potenzaNominale: 12.5,
-      regione: 'Lazio',
-      comune: 'Roma',
-      indirizzo: 'Via Appia',
-      cap: '00179',
-      partitaIva: '12345678901',
-      flgAccumulo: true,
-    };
-
-    this.impiantoForm.patchValue(impiantoMock);
   }
 
   private buildForm(): void {
@@ -63,13 +48,46 @@ export class ImpiantiFormComponent implements OnInit {
     });
   }
 
+  private caricaImpianto(): void {
+    const id = Number(this.idImpianto);
+
+    this.impiantoService.getById(id).subscribe({
+      next: (impianto) => {
+        if (!impianto) {
+          return;
+        }
+        this.impiantoForm.patchValue(impianto);
+      },
+      error: (err) => {
+        console.error('Errore caricamento impianto:', err);
+      },
+    });
+  }
+
   salvaBozza(): void {
     if (this.impiantoForm.invalid) {
       this.impiantoForm.markAllAsTouched();
       return;
     }
 
-    console.log('valori form impianto:', this.impiantoForm.value);
+    const impianto = this.impiantoForm.value;
+
+    if (this.isEditMode) {
+      const id = Number(this.idImpianto);
+      this.impiantoService.modifica(id, impianto).subscribe({
+        next: () => this.tornaAllaLista(),
+        error: (err) => console.error('Errore modifica:', err),
+      });
+    } else {
+      this.impiantoService.inserisci(impianto).subscribe({
+        next: () => this.tornaAllaLista(),
+        error: (err) => console.error('Errore inserimento:', err),
+      });
+    }
+  }
+
+  private tornaAllaLista(): void {
+    this.router.navigate(['/impianto']);
   }
 
   resetForm(): void {
