@@ -41,6 +41,8 @@ export class DatiEnergeticiRicercaComponent {
   filtro = {
     anno: '',
     statoScheda: '',
+    idCer: '',
+    idConfigurazione: '',
   };
 
   mostraForm: boolean = false;
@@ -99,6 +101,20 @@ export class DatiEnergeticiRicercaComponent {
           });
         }
 
+        if (this.filtro.idCer) {
+          datiFiltrati = datiFiltrati.filter((item) =>
+            item.idCer?.toString().includes(this.filtro.idCer),
+          );
+        }
+
+        if (this.filtro.idConfigurazione) {
+          datiFiltrati = datiFiltrati.filter((item) =>
+            item.idConfigurazione
+              ?.toString()
+              .includes(this.filtro.idConfigurazione),
+          );
+        }
+
         this.dati = datiFiltrati;
         this.dataSource.data = this.dati;
 
@@ -116,6 +132,8 @@ export class DatiEnergeticiRicercaComponent {
     this.filtro = {
       anno: '',
       statoScheda: '',
+      idCer: '',
+      idConfigurazione: '',
     };
     this.caricaDati();
   }

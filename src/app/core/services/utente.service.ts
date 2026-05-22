@@ -37,7 +37,6 @@ export class UtenteService {
   }
 
   getRole(): RoleType | null {
-    // 1. Grab the raw current state value
     const state = this.userSubject.value as any;
 
     if (!state) {
@@ -47,7 +46,6 @@ export class UtenteService {
 
     console.log('getRole(): Stato utente corrente caricato:', state);
 
-    // 2. Safely dig into the exact JSON keys matching your backend payload
     if (state.utente && state.utente.ruolo) {
       console.log(
         'getRole(): Ruolo estratto con successo ->',
@@ -56,7 +54,6 @@ export class UtenteService {
       return state.utente.ruolo as RoleType;
     }
 
-    // Fallback for flat object structures
     return state.ruolo ?? null;
   }
 
@@ -69,10 +66,9 @@ export class UtenteService {
     options: ApiRequestOptions = {},
   ): Observable<any> {
     const endpoint = 'api/auth/login';
-    return this.apiService.postLogin<any>(endpoint, payload, options).pipe(
-      // 🚀 Save the RAW backend payload directly instead of instantiating the old model class
-      tap((userData) => this.persistUser(userData)),
-    );
+    return this.apiService
+      .postLogin<any>(endpoint, payload, options)
+      .pipe(tap((userData) => this.persistUser(userData)));
   }
 
   logout(): void {
@@ -91,7 +87,6 @@ export class UtenteService {
     if (!raw) return null;
 
     try {
-      // 🚀 Return the raw parsed JSON directly to keep the exact backend object tree intact
       return JSON.parse(raw);
     } catch {
       localStorage.removeItem(this.storageKey);

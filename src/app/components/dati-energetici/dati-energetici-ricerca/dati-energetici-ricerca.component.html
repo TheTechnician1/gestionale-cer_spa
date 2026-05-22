@@ -40,6 +40,27 @@
       "
     >
       <mat-form-field appearance="fill">
+        <mat-label>ID CER</mat-label>
+        <input
+          [(ngModel)]="filtro.idCer"
+          matInput
+          type="number"
+          placeholder="Es. 43"
+          (keyup.enter)="caricaDati()"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ID Configurazione</mat-label>
+        <input
+          [(ngModel)]="filtro.idConfigurazione"
+          matInput
+          type="number"
+          placeholder="Es. 105"
+          (keyup.enter)="caricaDati()"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Anno</mat-label>
         <input
           [(ngModel)]="filtro.anno"
