@@ -24,6 +24,7 @@ export class ImpiantiFormComponent {
   tipologieImpianto$? : Observable<CodiceDescrizioneBase[]>;
   codiciCategoriaProduttore$? : Observable<CodiceDescrizioneBase[]>;
   tipologieSitoInstallazione$? : Observable<CodiceDescrizioneBase[]>;
+  statiImpianto$? : Observable<CodiceDescrizioneBase[]>;
 
   regioni$? : Observable<CodiceDescrizioneBase[]>;
   provincie$? : Observable<CodiceDescrizioneBase[]>;
@@ -76,6 +77,8 @@ export class ImpiantiFormComponent {
     this.tipologieSitoInstallazione$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.INSTALLAZIONE,"")
     //FORM OPZIONI REGIONE
     this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
+    //FORM OPZIONI STATO IMPIANTO
+    this.statiImpianto$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.STATO, "");
     //FORM OPZIONI PROVINCIA
     this.formImpianto.get('regione')!.valueChanges.subscribe({
       next:(x : CodiceDescrizioneBase)=>{ 

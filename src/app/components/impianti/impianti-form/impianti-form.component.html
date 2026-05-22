@@ -215,10 +215,15 @@
 
     <div class="form-group">
       <label for="statoImpianto">Stato Impianto</label>
-      <input
-        type="text"
-        id="statoImpianto"
-        formControlName="statoImpianto">
+      <select formControlName="statoImpianto">
+          <option [ngValue]="null">
+              -- Seleziona stato impianto --
+          </option>
+          <option *ngFor="let c of statiImpianto$ | async"
+              [ngValue]="c.descrizione">
+                  {{c.descrizione}}
+          </option>
+      </select>
     </div>
 
     <div class="form-group">

@@ -9,6 +9,7 @@ import { Cer, CerView } from "src/app/core/interfaces/cer.model";
 import { ImpiantoService } from "../../services/impianto.service";
 import { ConfirmationDialogComponent, DialogCloseReason } from "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CerService } from "../../services/cer.service";
+import { UtenteService } from "src/app/core/services/utente.service";
 
 @Component({
   selector: "app-impianti-ricerca",
@@ -28,6 +29,7 @@ export class ImpiantiRicercaComponent {
   constructor(private codiciDescrizioneBaseService : CodiciDescrizioneBaseService,
     private impiantoService :ImpiantoService,
     private cerService : CerService,
+    private utenteService : UtenteService,
     private fb : FormBuilder,
     private router : Router){
       this.formRicercaImpianti = this.fb.group({
@@ -42,8 +44,9 @@ export class ImpiantiRicercaComponent {
 
   ngOnInit(): void {
     this.cer$ = this.cerService.getCerMock();
-    //Dati Ubicazione
+    //FORM OPZIONI REGIONE
     this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
+    //FORM OPZIONI PROVINCIA
     this.formRicercaImpianti.get('regione')!.valueChanges.subscribe({
       next:(x : CodiceDescrizioneBase)=>{ 
         this.formRicercaImpianti.get('provincia')?.setValue(null);
@@ -63,7 +66,7 @@ export class ImpiantiRicercaComponent {
             }
         }})
       }});
-
+      //FORM OPZIONI COMUNE
       this.formRicercaImpianti.get('provincia')!.valueChanges.subscribe({
         next:(x : CodiceDescrizioneBase)=>{
 
@@ -136,7 +139,14 @@ export class ImpiantiRicercaComponent {
 
   eliminaDato(){
     console.log("id cancellato :" + this.idImpiantoCancellato);
-    this.impiantoService.deleteImpiantoMock(this.idImpiantoCancellato);
+    this.impiantoService.deleteImpianto(this.idImpiantoCancellato, this.utenteService.currentUser?.mail ?? '').subscribe({
+      next:(x)=>{
+        console.log("Impianto eliminato con successo");
+        this.impiantoService.getImpiantiMock().subscribe({
+
+        });
+      }
+    });
     this.impiantoService.getImpiantiMock().subscribe({
       next:(impianti)=>{
         this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');

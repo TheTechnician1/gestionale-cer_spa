@@ -19,24 +19,30 @@ export class ImpiantoService {
     return this.api.get<Impianto[]>(endpoint, undefined, options);
   }
 
-  createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<Impianto> {
-    console.log("sto creando");
-    
-    const endpoint = "api/impianto/create";
-    return this.api.post<Impianto>(endpoint, payload, options);
-  }
-
   editImpianto(payload: Impianto, options: ApiRequestOptions = {}) {
     console.log("Impianto modificato con successo");
     const endpoint = "impianto/modifica";
     return this.api.put<Impianto>(endpoint, payload, options);
   }
 
-  deleteImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<Impianto> {
-    console.log("Impianto eliminato con successo");
-    const endpoint = "impianto/cancellazione";
-    return this.api.put<Impianto>(endpoint, payload, options);
+  //CHIAMATE BACK
+
+  getAllImpianti(options: ApiRequestOptions = {}): Observable<any[]> {
+    const endpoint = "api/impianti";
+    return this.api.postLogin<ImpiantoView[]>(endpoint, {}, options);
   }
+
+  createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any> {
+    const endpoint = "api/impianti/create";
+    return this.api.post<Impianto>(endpoint, payload, options);
+  }
+
+  deleteImpianto(id : number | undefined, email : string,options: ApiRequestOptions = {}): Observable<any> {
+    console.log("Impianto eliminato con successo");
+    const endpoint = `api/impianti/delete/${id}`;
+    return this.api.put<Impianto>(endpoint, {email : email}, options);
+  }
+
 
   //MOCK CHIAMATE
   getImpiantiMock(): Observable<ImpiantoView[]>{

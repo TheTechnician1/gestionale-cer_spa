@@ -6,7 +6,8 @@ export enum ComboTables {
 	INSTALLAZIONE = "INSTALLAZIONE",
 	PRODUTTORE = "PRODUTTORE",
 	TIPOLOGIA = "TIPOLOGIA",
-	TIPO_UTENTE = "TIPO_UTENTE"
+	TIPO_UTENTE = "TIPO_UTENTE",
+	STATO = "STATO",
 }
 
 export type ComboTable = ComboTables;
