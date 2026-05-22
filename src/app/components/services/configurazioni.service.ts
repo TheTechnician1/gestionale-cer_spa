@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ConfigurazioneView } from 'src/app/core/interfaces/configurazione.model';
+import { ApiRequestOptions, ApiService } from 'src/app/core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigurazioniService {
 
-  constructor() { }
+  constructor(private api : ApiService) { }
+
+  //CHIAMATE BACK
+  getAllConfigurazione(options: ApiRequestOptions = {}) : Observable<ConfigurazioneView[]>{
+    const endpoint = 'configurazione/ricerca';
+    return this.api.post<ConfigurazioneView[]>(endpoint, {}, options);
+  }
 
   //MOCK CHIAMATE
   getConfigurazioneMock() : Observable<ConfigurazioneView[]>{

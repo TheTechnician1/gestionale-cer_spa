@@ -5,19 +5,33 @@
 
     <div class="form-group">
       <label for="idConfigurazione">Configurazione</label>
-      <input
-        type="number"
-        id="idConfigurazione"
-        formControlName="idConfigurazione">
+      <select formControlName="idConfigurazione">
+          <option [ngValue]="null">
+              -- Seleziona Configurazione --
+          </option>
+          <option *ngFor="let c of configurazioni$ | async"
+              [ngValue]="c.idConfig">
+                  {{c.ragioneSociale}}
+          </option>
+      </select>
     </div>
 
     <div class="form-group">
-      <label for="flagEsercizio">Flag Esercizio</label>
-      <input
-        type="text"
-        id="flagEsercizio"
-        formControlName="flagEsercizio">
+      <label for="flagEsercizio">Esercizio</label>
+      <select formControlName="flagEsercizio">
+          <option [ngValue]="null">
+              -- Seleziona stato esercizio --
+          </option>
+          <option [ngValue]="'SI'">
+            S
+          </option>
+          <option [ngValue]="'NO'">
+            N
+          </option>
+
+      </select>
     </div>
+    
 
     <div class="form-group">
       <label for="dataEntrataEsercizio">Data Entrata Esercizio</label>
@@ -28,11 +42,24 @@
     </div>
 
     <div class="form-group">
-      <label for="tipologiaImpianto">Tipologia Impianto</label>
+      <label for="tipologiaImpianto">Tipologia</label>
+      <select formControlName="tipologiaImpianto">
+          <option [ngValue]="null">
+              -- Seleziona tipologia impianto --
+          </option>
+          <option *ngFor="let t of tipologieImpianto$ | async"
+              [ngValue]="t.descrizione">
+                  {{t.descrizione}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="specificaTipologiaImpianto">
+      <label for="specificaTipologiaImpianto">Specifica tipologia impianto</label>
       <input
         type="text"
-        id="tipologiaImpianto"
-        formControlName="tipologiaImpianto">
+        id="specificaTipologiaImpianto"
+        formControlName="specificaTipologiaImpianto">
     </div>
 
     <div class="form-group">
@@ -45,10 +72,17 @@
 
     <div class="form-group">
       <label for="presenzaAccumulo">Presenza Accumulo</label>
-      <input
-        type="text"
-        id="presenzaAccumulo"
-        formControlName="presenzaAccumulo">
+      <select formControlName="presenzaAccumulo">
+          <option [ngValue]="null">
+              -- Seleziona presenza accumulo --
+          </option>
+          <option [ngValue]="'S'">
+            S
+          </option>
+          <option [ngValue]="'N'">
+            N
+          </option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -61,18 +95,59 @@
 
     <div class="form-group">
       <label for="categoriaProduttore">Categoria Produttore</label>
-      <input
-        type="text"
-        id="categoriaProduttore"
-        formControlName="categoriaProduttore">
+      <select formControlName="categoriaProduttore">
+          <option [ngValue]="null">
+              -- Seleziona categoria produttore --
+          </option>
+          <option [ngValue]="'S'">
+            S
+          </option>
+          <option [ngValue]="'N'">
+            N
+          </option>
+      </select>
     </div>
 
     <div class="form-group">
       <label for="codiceCategoriaProduttore">Codice Categoria Produttore</label>
+      <select formControlName="codiceCategoriaProduttore">
+          <option [ngValue]="null">
+              -- Seleziona produttore --
+          </option>
+          <option *ngFor="let c of codiciCategoriaProduttore$ | async"
+              [ngValue]="c.descrizione">
+                  {{c.descrizione}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="specificaCategoriaProduttore">
+      <label for="specificaCategoriaProduttore">Specifica categoria produttore</label>
       <input
         type="text"
-        id="codiceCategoriaProduttore"
-        formControlName="codiceCategoriaProduttore">
+        id="specificaCategoriaProduttore"
+        formControlName="specificaCategoriaProduttore">
+    </div>
+
+    <div class="form-group">
+      <label for="tipologiaSitoInstallazione">Tipologia sito installazione</label>
+      <select formControlName="tipologiaSitoInstallazione">
+          <option [ngValue]="null">
+              -- Seleziona tipologia installazione --
+          </option>
+          <option *ngFor="let t of tipologieSitoInstallazione$ | async"
+              [ngValue]="t.descrizione">
+                  {{t.descrizione}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="specificaSitoInstallazione">
+      <label for="specificaSitoInstallazione">Specifica tipologia installazione</label>
+      <input
+        type="text"
+        id="specificaSitoInstallazione"
+        formControlName="specificaSitoInstallazione">
     </div>
 
     <div class="form-group">
@@ -154,15 +229,7 @@
         formControlName="attivo">
     </div>
 
-    <div class="form-group">
-      <label for="emailUtenteLoggato">Email Utente</label>
-      <input
-        type="email"
-        id="emailUtenteLoggato"
-        formControlName="emailUtenteLoggato">
-    </div>
-
-    <button type="submit"       class="search-btn">
+    <button type="submit" class="search-btn" [disabled]="formImpianto.invalid">
       Salva
     </button>
   </form>

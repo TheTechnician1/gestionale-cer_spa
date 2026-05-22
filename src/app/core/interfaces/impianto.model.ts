@@ -1,6 +1,5 @@
 export interface Impianto {
   
-  idImpianto : number;
   idConfigurazione :  number;
   flagEsercizio : string ;
   dataEntrataEsercizio : Date;
@@ -10,6 +9,10 @@ export interface Impianto {
   capacitaAccumuloKwh : number;
   categoriaProduttore : string;
   codiceCategoriaProduttore : string;
+  specificaTipologiaImpianto : string;
+  specificaCategoriaProduttore : string;
+  tipologiaSitoInstallazione : string;
+  specificaSitoInstallazione : string;
   regione : CodiceDescrizioneBase;
   provincia : CodiceDescrizioneBase;
   comune : CodiceDescrizioneBase;
@@ -23,7 +26,6 @@ export interface Impianto {
 
 export class ImpiantoModel implements Impianto {
 
-  idImpianto! : number;
   idConfigurazione! :  number;
   flagEsercizio! : string ;
   dataEntrataEsercizio! : Date 
@@ -33,6 +35,10 @@ export class ImpiantoModel implements Impianto {
   capacitaAccumuloKwh! : number ;
   categoriaProduttore! : string ;
   codiceCategoriaProduttore! : string ;
+  specificaTipologiaImpianto! : string;
+  specificaCategoriaProduttore! : string;
+  tipologiaSitoInstallazione! : string;
+  specificaSitoInstallazione! : string;
   regione! : CodiceDescrizioneBase ;
   provincia! : CodiceDescrizioneBase ;
   comune! : CodiceDescrizioneBase ;

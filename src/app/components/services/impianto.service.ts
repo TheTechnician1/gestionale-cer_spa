@@ -20,8 +20,9 @@ export class ImpiantoService {
   }
 
   createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<Impianto> {
-    console.log("Impianto creato con successo");
-    const endpoint = "impianto/inserimento";
+    console.log("sto creando");
+    
+    const endpoint = "api/impianto/create";
     return this.api.post<Impianto>(endpoint, payload, options);
   }
 
