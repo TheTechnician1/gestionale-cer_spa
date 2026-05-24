@@ -1,6 +1,6 @@
 import { Component, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, of } from "rxjs";
+import { delay, map, Observable, of, switchMap } from "rxjs";
 import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoSearchFilterModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -21,11 +21,9 @@ import { ConfigurazioniService } from "../../services/configurazioni.service";
 export class ImpiantiRicercaComponent {
   @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
 
-  impiantiList : ImpiantoView[] = [];
+  impiantiList$ : Observable<ImpiantoView[]> = of([]);
   tipologieImpianto$? : Observable<CodiceDescrizioneBase[]>;
   statiImpianto$? : Observable<CodiceDescrizioneBase[]>;
-
-
 
   regioni$? : Observable<CodiceDescrizioneBase[]>;
   provincie$? : Observable<CodiceDescrizioneBase[]>;
@@ -52,12 +50,17 @@ export class ImpiantiRicercaComponent {
         comune : [''],
         potenzaNominaleKw : [''],
         presenzaAccumulo : [''],
-        attivo : ['']
+        attivo : [{value:'', disabled : true}]
       });
 
   }
 
   ngOnInit(): void {
+    //ABILITAZIONE CAMPO ATTIVO SOLO PER ADMIN
+    console.log("Role:" + this.utenteService.getRole());
+    
+    this.utenteService.getRole()=== "ADMIN" ? this.formRicercaImpianti.get('attivo')?.enable() : this.formRicercaImpianti.get('attivo')?.disable();
+
     //FORM OPZIONI CER
     this.cer$ = this.cerService.getAllCer();
     //FORM CONFIGURAZIONI
@@ -108,11 +111,9 @@ export class ImpiantiRicercaComponent {
     }});
 
     //RECUPERO IMPIANTI
-    this.impiantoService.getAllImpianti().subscribe({
-      next:(impianti)=>{
-        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
-      } 
-    })
+    this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
+      map(impianti => impianti.filter(imp=> imp.attivo === "S"))
+    );
   }
 
 
@@ -137,21 +138,14 @@ export class ImpiantiRicercaComponent {
       this.formRicercaImpianti.get('comune')?.value ? { comune: this.formRicercaImpianti.get('comune')?.value } : {},
       this.formRicercaImpianti.get('potenzaNominaleKw')?.value != null ? { potenzaNominaleKw: this.formRicercaImpianti.get('potenzaNominaleKw')?.value } : {},
       this.formRicercaImpianti.get('presenzaAccumulo')?.value ? { presenzaAccumulo: this.formRicercaImpianti.get('presenzaAccumulo')?.value } : {},
-      this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {}
+      this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "S"}
     ];
-    this.impiantoService.getImpiantiFilter(filter).subscribe({
-      next:(impianti)=>{
-        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
-      } 
-    })
+
+    this.impiantiList$ = this.impiantoService.getImpiantiFilter(filter);
   }
 
   inserisciDati(): void {
     this.router.navigate(['/impianto/form']);
-  }
-
-  salvataggio(){
-
   }
 
   idImpiantoCancellato? : number;
@@ -175,16 +169,14 @@ export class ImpiantiRicercaComponent {
     this.impiantoService.deleteImpianto(this.idImpiantoCancellato, this.utenteService.currentUser?.mail ?? '').subscribe({
       next:(x)=>{
         console.log("Impianto eliminato con successo");
-        this.impiantoService.getAllImpianti().subscribe({
-
-        });
+        this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
+          map(impianti => impianti.filter(imp=> imp.attivo === this.formRicercaImpianti.get('attivo')?.value ? this.formRicercaImpianti.get('attivo')?.value : "S"))
+        );
       }
     });
-    this.impiantoService.getAllImpianti().subscribe({
-      next:(impianti)=>{
-        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
-      } 
-    })
+    this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
+      map(impianti => impianti.filter(imp=> imp.attivo === this.formRicercaImpianti.get('attivo')?.value ? this.formRicercaImpianti.get('attivo')?.value : "S"))
+    );
   }
   
 }
