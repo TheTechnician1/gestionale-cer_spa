@@ -1,14 +1,14 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ImpiantoService } from "../../services/impianto.service";
-import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoEdit, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
 import { Observable, of, startWith, switchMap } from "rxjs";
 import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
 import { ConfigurazioniService } from "../../services/configurazioni.service";
 import { UtenteService } from "src/app/core/services/utente.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-impianti-form",
@@ -18,6 +18,11 @@ import { Router } from "@angular/router";
 export class ImpiantiFormComponent {
 
   formImpianto : FormGroup;
+
+  //MODALITA MODIFICA
+  idEdit? : number | null;
+  editedImpianto$? : Observable<ImpiantoEdit>;
+  flagModifica : boolean = false;
 
   //OBSERVABLE FORM
   configurazioni$? : Observable<ConfigurazioneView[]>;
@@ -40,6 +45,7 @@ export class ImpiantiFormComponent {
     private configurazioniService : ConfigurazioniService,
     private utenteService : UtenteService,
     private router : Router,
+    private route: ActivatedRoute,
     private codiciDescrizioneBaseService : CodiciDescrizioneBaseService){
     this.formImpianto = this.fb.group({
       idConfigurazione : ['',Validators.required],
@@ -67,6 +73,47 @@ export class ImpiantiFormComponent {
   }
 
   ngOnInit(): void {
+
+    //VERIFICA INSERIMENTO/MODIFICA
+    if(this.router.url.includes("edit")){
+      this.idEdit = Number(this.route.snapshot.paramMap.get('id'));
+      if(this.idEdit){
+        this.editedImpianto$ = this.impiantoService.getImpiantoById(this.idEdit);
+        if(!this.editedImpianto$){
+          alert("Impianto non trovato");
+          this.router.navigate(['/impianti']);
+        }
+        this.flagModifica = true;
+        this.editedImpianto$.subscribe({
+          next:(x: ImpiantoEdit)=>{
+            this.formImpianto.patchValue({
+              idConfigurazione: x.idConfigurazione,
+              flagEsercizio: x.flagEsercizio,
+              dataEntrataEsercizio: x.dataEntrataEsercizio,
+              tipologiaImpianto: x.tipologiaImpianto,
+              potenzaNominaleKw: x.potenzaNominaleKw,
+              presenzaAccumulo: x.presenzaAccumulo,
+              capacitaAccumuloKwh: x.capacitaAccumuloKwh,
+              categoriaProduttore: x.categoriaProduttore,
+              codiceCategoriaProduttore: x.codiceCategoriaProduttore,
+              specificaTipologiaImpianto: x.specificaTipologiaImpianto,
+              specificaCategoriaProduttore: x.specificaCategoriaProduttore,
+              tipologiaSitoInstallazione: x.tipologiaSitoInstallazione,
+              specificaSitoInstallazione: x.specificaSitoInstallazione,
+              regione: x.regione,
+              provincia: x.provincia,
+              comune: x.comune,
+              indirizzo: x.indirizzo,
+              civico: x.civico,
+              cap: x.cap,
+              statoImpianto: x.statoImpianto,
+              attivo: x.attivo
+            });
+          }
+        });
+      }
+    }
+
     //FORM OPZIONI CONFIGURAZIONI
     this.configurazioni$ = this.configurazioniService.getAllConfigurazione();
     //FORM OPZIONI TIPOLOGIE IMPIANTO
@@ -135,8 +182,8 @@ export class ImpiantiFormComponent {
         this.specificaSitoInstallazione = x === 'Altro (specificare)'? true : false;
       }
     });
-
   }
+
 
   salvataggio(){
     const nuovoImpianto : Impianto = new ImpiantoModel ({
@@ -176,4 +223,5 @@ export class ImpiantiFormComponent {
       }
     });
   }
+
 }

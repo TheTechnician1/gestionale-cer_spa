@@ -57,6 +57,10 @@ export class ApiService {
     return this.request<T>("DELETE", path, undefined, "json", { ...options, params });
   }
 
+  deleteText(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<string> {
+    return this.request<string>("DELETE", path, undefined, "text", { ...options, params });
+  }
+
   private request<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, body?: any, responseType: "json" | "text" = "json", options: ApiRequestOptions = {}): Observable<T> {
     const url = this.buildUrl(path);
     const context = new HttpContext().set(SKIP_HTTP_SNACKBAR, options.skipToast ?? false);

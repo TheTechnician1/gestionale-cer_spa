@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Impianto, ImpiantoSearchFilter, ImpiantoView } from "../../core/interfaces/impianto.model";
+import { Impianto, ImpiantoEdit, ImpiantoSearchFilter, ImpiantoView } from "../../core/interfaces/impianto.model";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
 import { Observable, of } from "rxjs";
 
@@ -19,11 +19,6 @@ export class ImpiantoService {
   //   return this.api.get<Impianto[]>(endpoint, undefined, options);
   // }
 
-  editImpianto(payload: Impianto, options: ApiRequestOptions = {}) {
-    console.log("Impianto modificato con successo");
-    const endpoint = "impianto/modifica";
-    return this.api.put<Impianto>(endpoint, payload, options);
-  }
 
   //CHIAMATE BACK
 
@@ -38,16 +33,27 @@ export class ImpiantoService {
     return this.api.get<ImpiantoView[]>(endpoint, Object.assign({}, ...filter), options);
   }
 
+  getImpiantoById(id: number, options: ApiRequestOptions = {}): Observable<ImpiantoEdit> {
+    const endpoint = `api/impianti/${id}`;
+    return this.api.get<ImpiantoEdit>(endpoint, undefined, options);
+  }
+
 
   createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<string> {
     const endpoint = "api/impianti/create";
-    return this.api.post<string>(endpoint, payload, options);
+    return this.api.postText(endpoint, payload, options);
   }
 
-  deleteImpianto(id : number | undefined, email : string,options: ApiRequestOptions = {}): Observable<any> {
+  editImpianto(id : number | undefined, payload: Impianto, options: ApiRequestOptions = {}) {
+    console.log("Impianto modificato con successo");
+    const endpoint = `api/impianti/edit/${id}`;
+    return this.api.putText(endpoint, payload, options);
+  }
+
+  deleteImpianto(id : number | undefined, email : string ,options: ApiRequestOptions = {}): Observable<string> {
     console.log("Impianto eliminato con successo");
     const endpoint = `api/impianti/delete/${id}`;
-    return this.api.put<Impianto>(endpoint, {email : email}, options);
+    return this.api.deleteText(endpoint, {email : email}, options);
   }
 
 

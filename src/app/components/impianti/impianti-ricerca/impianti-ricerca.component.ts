@@ -112,7 +112,7 @@ export class ImpiantiRicercaComponent {
 
     //RECUPERO IMPIANTI
     this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
-      map(impianti => impianti.filter(imp=> imp.attivo === "S"))
+      map(impianti => impianti.filter(imp=> imp.attivo === "N"))
     );
   }
 
@@ -138,7 +138,7 @@ export class ImpiantiRicercaComponent {
       this.formRicercaImpianti.get('comune')?.value ? { comune: this.formRicercaImpianti.get('comune')?.value } : {},
       this.formRicercaImpianti.get('potenzaNominaleKw')?.value != null ? { potenzaNominaleKw: this.formRicercaImpianti.get('potenzaNominaleKw')?.value } : {},
       this.formRicercaImpianti.get('presenzaAccumulo')?.value ? { presenzaAccumulo: this.formRicercaImpianti.get('presenzaAccumulo')?.value } : {},
-      this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "S"}
+      this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "N"}
     ];
 
     this.impiantiList$ = this.impiantoService.getImpiantiFilter(filter);
@@ -146,6 +146,10 @@ export class ImpiantiRicercaComponent {
 
   inserisciDati(): void {
     this.router.navigate(['/impianto/form']);
+  }
+
+  editaDati(id: number): void {
+    this.router.navigate([`/impianto/edit/${id}`]);
   }
 
   idImpiantoCancellato? : number;
@@ -169,14 +173,12 @@ export class ImpiantiRicercaComponent {
     this.impiantoService.deleteImpianto(this.idImpiantoCancellato, this.utenteService.currentUser?.mail ?? '').subscribe({
       next:(x)=>{
         console.log("Impianto eliminato con successo");
-        this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
-          map(impianti => impianti.filter(imp=> imp.attivo === this.formRicercaImpianti.get('attivo')?.value ? this.formRicercaImpianti.get('attivo')?.value : "S"))
-        );
+        this.search();
+      },
+      error:(err)=>{
+        console.log("Errore nell'eliminazione dell'impianto");
       }
     });
-    this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
-      map(impianti => impianti.filter(imp=> imp.attivo === this.formRicercaImpianti.get('attivo')?.value ? this.formRicercaImpianti.get('attivo')?.value : "S"))
-    );
   }
   
 }

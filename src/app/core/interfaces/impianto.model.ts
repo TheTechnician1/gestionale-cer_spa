@@ -142,3 +142,67 @@ export class ImpiantoSearchFilterModel implements ImpiantoSearchFilter{
     Object.assign(this,init);
   } 
 }
+
+export interface ImpiantoEdit{
+  idImpianto : number;
+  idConfigurazione : number;
+  flagEsercizio : string;
+  dataEntrataEsercizio : Date;
+  tipologiaImpianto : string;
+  potenzaNominaleKw : number;
+  presenzaAccumulo : string;
+  capacitaAccumuloKwh : number;
+  categoriaProduttore : string;
+  codiceCategoriaProduttore : string;
+  specificaTipologiaImpianto : string;
+  specificaCategoriaProduttore : string;
+  tipologiaSitoInstallazione : string;
+  specificaSitoInstallazione : string;
+  regione : CodiceDescrizioneBase;
+  provincia : CodiceDescrizioneBase;
+  comune : CodiceDescrizioneBase;
+  indirizzo : CodiceDescrizioneBase;
+  civico : CodiceDescrizioneBase;
+  cap : CodiceDescrizioneBase;
+  statoImpianto : string;
+  attivo : string;
+  specTipologia : string;
+  specCatProduttore : string;
+  tipologiaSitoInst : string;
+  specSitoInst : string;
+}
+
+export class ImpiantoEditModel implements ImpiantoEdit{
+  idImpianto! : number;
+  idConfigurazione! : number;
+  flagEsercizio! : string;
+  dataEntrataEsercizio! : Date;
+  tipologiaImpianto! : string;
+  potenzaNominaleKw! : number;
+  presenzaAccumulo! : string;
+  capacitaAccumuloKwh! : number;
+  categoriaProduttore! : string;
+  codiceCategoriaProduttore! : string;
+  specificaTipologiaImpianto! : string;
+  specificaCategoriaProduttore! : string;
+  tipologiaSitoInstallazione! : string;
+  specificaSitoInstallazione! : string  ;
+  regione! : CodiceDescrizioneBase;
+  provincia! : CodiceDescrizioneBase;
+  comune! : CodiceDescrizioneBase ;
+  indirizzo! : CodiceDescrizioneBase;
+  civico! : CodiceDescrizioneBase;
+  cap! : CodiceDescrizioneBase;
+  statoImpianto! : string;
+  attivo! : string;
+  specTipologia! : string;
+  specCatProduttore! : string;
+  tipologiaSitoInst! : string ;
+  specSitoInst! : string; 
+
+  constructor(init?: Partial<ImpiantoEdit>) { 
+    Object.assign(this,init);
+  }
+
+}
+
