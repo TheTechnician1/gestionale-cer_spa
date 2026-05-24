@@ -27,9 +27,10 @@ import { A11yModule } from "@angular/cdk/a11y";
 import { MatIconModule } from '@angular/material/icon';
 import { DatiEnergeticiEditComponent } from './pages/dati-energetici-edit/dati-energetici-edit.component';
 import { DatiEnergeticiViewComponent } from './pages/dati-energetici-view/dati-energetici-view.component';
+import { ImpiantiViewComponent } from './components/impianti/impianti-view/impianti-view.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, DatiEnergeticiEditComponent, DatiEnergeticiViewComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, DatiEnergeticiEditComponent, DatiEnergeticiViewComponent, ImpiantiViewComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,   MatIconModule,  FormsModule,  HttpClientModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

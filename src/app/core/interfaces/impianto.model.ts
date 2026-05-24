@@ -143,7 +143,7 @@ export class ImpiantoSearchFilterModel implements ImpiantoSearchFilter{
   } 
 }
 
-export interface ImpiantoEdit{
+export interface ImpiantoById{
   idImpianto : number;
   idConfigurazione : number;
   flagEsercizio : string;
@@ -172,7 +172,7 @@ export interface ImpiantoEdit{
   specSitoInst : string;
 }
 
-export class ImpiantoEditModel implements ImpiantoEdit{
+export class ImpiantoByIdModel implements ImpiantoById{
   idImpianto! : number;
   idConfigurazione! : number;
   flagEsercizio! : string;
@@ -200,9 +200,74 @@ export class ImpiantoEditModel implements ImpiantoEdit{
   tipologiaSitoInst! : string ;
   specSitoInst! : string; 
 
-  constructor(init?: Partial<ImpiantoEdit>) { 
+  constructor(init?: Partial<ImpiantoById>) { 
+    Object.assign(this,init);
+  }
+}
+
+export interface ImpiantoEdit {
+
+  idConfigurazione: number;
+  flagEsercizio: string;
+  dataEntrataEsercizio: string;
+  tipologiaImpianto: string;
+  potenzaNominaleKw: number;
+  presenzaAccumulo: string;
+  capacitaAccumuloKwh: number;
+  categoriaProduttore: string;
+  codiceCategoriaProduttore: string;
+  specificaTipologiaImpianto: string;
+  specificaCategoriaProduttore: string;
+  tipologiaSitoInstallazione: string;
+  specificaSitoInstallazione: string;
+  regione: CodiceDescrizioneBase;
+  provincia: CodiceDescrizioneBase;
+  comune: CodiceDescrizioneBase;
+  indirizzo: CodiceDescrizioneBase;
+  civico: CodiceDescrizioneBase;
+   cap: CodiceDescrizioneBase;
+  statoImpianto: string;
+  attivo: string;
+  specTipologia: string;
+  specCatProduttore: string;
+  tipologiaSitoInst: string;
+  specSitoInst: string;
+  emailUtenteLoggato: string;
+}
+
+export class ImpiantoEditModel implements ImpiantoEdit {
+
+  idConfigurazione!: number;
+  flagEsercizio!: string;
+  dataEntrataEsercizio!: string;
+  tipologiaImpianto!: string;
+  potenzaNominaleKw!: number;
+  presenzaAccumulo!: string;
+  capacitaAccumuloKwh!: number;
+  categoriaProduttore!: string;
+  codiceCategoriaProduttore!: string;
+  specificaTipologiaImpianto!: string;
+  specificaCategoriaProduttore!: string;
+  tipologiaSitoInstallazione!: string;
+  specificaSitoInstallazione!: string;
+  regione!: CodiceDescrizioneBase;
+  provincia!: CodiceDescrizioneBase;
+  comune!: CodiceDescrizioneBase;
+  indirizzo!: CodiceDescrizioneBase;
+  civico!: CodiceDescrizioneBase;
+  cap!: CodiceDescrizioneBase;
+  statoImpianto!: string;
+  attivo!: string;
+  specTipologia!: string;
+  specCatProduttore!: string;
+  tipologiaSitoInst!: string;
+  specSitoInst!: string;
+  emailUtenteLoggato!: string;  
+
+  constructor(init?: Partial<ImpiantoEdit>) {
     Object.assign(this,init);
   }
 
 }
+
 

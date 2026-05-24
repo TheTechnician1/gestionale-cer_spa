@@ -1,0 +1,127 @@
+<div class="detail-container" *ngIf="impianto$ | async as i">
+
+  <div class="header">
+
+    <h1>Dettaglio impianto</h1>
+
+    <p>
+        Data entrata esercizio: {{ i.dataEntrataEsercizio }}
+    </p>
+
+    <p>
+        Esercizio: {{ i.flagEsercizio }}
+    </p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Informazioni Generali</h2>
+
+        <div class="info-grid">
+
+            <div>
+              <strong>Tipologia impianto:</strong>
+              {{ i.tipologiaImpianto }}
+            </div>
+
+            <div *ngIf="i.specificaTipologiaImpianto">
+                <strong>Specifica tipologia impianto:</strong>
+                {{ i.specificaTipologiaImpianto }}
+            </div>
+
+            <div>
+                <strong>Categoria produttore:</strong>
+                {{ i.codiceCategoriaProduttore }}
+            </div>
+
+            <div *ngIf="i.specificaCategoriaProduttore">
+                <strong>Specifica categoria produttore:</strong>
+                {{ i.specificaCategoriaProduttore }}
+            </div>
+
+            <div>
+                <strong>Tipologia sito installazione:</strong>
+                {{ i.tipologiaSitoInstallazione }}
+            </div>
+
+            <div *ngIf="i.specificaSitoInstallazione">
+                <strong>Specifica sito installazione:</strong>
+                {{ i.specificaSitoInstallazione }}
+            </div>
+
+            <div>
+                <strong>Stato impianto:</strong>
+                {{ i.statoImpianto }}
+            </div>
+        </div>
+    </div>
+     <!-- Dati tecnici -->
+    <div class="card">
+
+        <h2>Dati tecnici</h2>
+
+        <div class="info-grid">
+
+            <div>
+              <strong>Potenza nominale (kW):</strong>
+              {{ i.potenzaNominaleKw }}
+            </div>
+
+            <div>
+              <strong>presenzaAccumulo:</strong>
+              {{ i.presenzaAccumulo }}
+            </div>
+
+            <div>
+              <strong>Capacità accumulo (kWh):</strong>
+              {{ i.capacitaAccumuloKwh }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Dati Posizione -->
+    <div class="card">
+
+        <h2>Dati posizione</h2>
+
+        <div class="info-grid">
+
+            <div>
+              <strong>Regione:</strong>
+              {{ i.regione }}
+            </div>
+
+            <div>
+              <strong>Provincia:</strong>
+              {{ i.provincia }}
+            </div>
+
+            <div>
+              <strong>Comune:</strong>
+              {{ i.comune }}
+            </div>
+
+            <div>
+              <strong>Indirizzo:</strong>
+              {{ i.indirizzo }}
+            </div>
+
+            <div>
+              <strong>Civico:</strong>
+              {{ i.civico }}
+            </div>
+
+            <div>
+              <strong>Cap:</strong>
+              {{ i.cap }}
+            </div>
+        </div>
+    </div>    
+
+
+
+    <button (click)="tornaIndietro()">
+        Torna indietro
+    </button>
+</div>

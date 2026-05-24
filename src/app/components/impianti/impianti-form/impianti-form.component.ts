@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ImpiantoService } from "../../services/impianto.service";
-import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoEdit, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
+import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoById, ImpiantoEdit, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
 import { Observable, of, startWith, switchMap } from "rxjs";
@@ -21,7 +21,7 @@ export class ImpiantiFormComponent {
 
   //MODALITA MODIFICA
   idEdit? : number | null;
-  editedImpianto$? : Observable<ImpiantoEdit>;
+  editedImpianto$? : Observable<ImpiantoById>;
   flagModifica : boolean = false;
 
   //OBSERVABLE FORM
@@ -85,7 +85,7 @@ export class ImpiantiFormComponent {
         }
         this.flagModifica = true;
         this.editedImpianto$.subscribe({
-          next:(x: ImpiantoEdit)=>{
+          next:(x: ImpiantoById)=>{
             this.formImpianto.patchValue({
               idConfigurazione: x.idConfigurazione,
               flagEsercizio: x.flagEsercizio,
@@ -186,42 +186,82 @@ export class ImpiantiFormComponent {
 
 
   salvataggio(){
-    const nuovoImpianto : Impianto = new ImpiantoModel ({
-      idConfigurazione :  Number(this.formImpianto.get('idConfigurazione')?.value),
-      flagEsercizio : this.formImpianto.get('flagEsercizio')?.value,
-      dataEntrataEsercizio : this.formImpianto.get('dataEntrataEsercizio')?.value,
-      tipologiaImpianto : this.formImpianto.get('tipologiaImpianto')?.value,
-      potenzaNominaleKw : this.formImpianto.get('potenzaNominaleKw')?.value,
-      presenzaAccumulo : this.formImpianto.get('presenzaAccumulo')?.value,
-      capacitaAccumuloKwh : this.formImpianto.get('capacitaAccumuloKwh')?.value,
-      categoriaProduttore : this.formImpianto.get('categoriaProduttore')?.value,
-      codiceCategoriaProduttore : this.formImpianto.get('codiceCategoriaProduttore')?.value,
-      specificaTipologiaImpianto : this.formImpianto.get('specificaTipologiaImpianto')?.value,
-      specificaCategoriaProduttore : this.formImpianto.get('specificaCategoriaProduttore')?.value,
-      tipologiaSitoInstallazione : this.formImpianto.get('tipologiaSitoInstallazione')?.value,
-      specificaSitoInstallazione : this.formImpianto.get('specificaSitoInstallazione')?.value,
-      regione : this.formImpianto.get('regione')?.value,
-      provincia : this.formImpianto.get('provincia')?.value,
-      comune : this.formImpianto.get('comune')?.value,
-      indirizzo : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('indirizzo')?.value, specifica: ''}),
-      civico : new CodiceDescrizioneBaseModel({codice:'',descrizione: this.formImpianto.get('civico')?.value, specifica : ''}),
-      cap : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('cap')?.value, specifica: ''}),
-      statoImpianto : this.formImpianto.get('statoImpianto')?.value,
-      attivo : this.formImpianto.get('attivo')?.value,
-      emailUtenteLoggato : this.utenteService.currentUser?.mail ?? ''
-    });
-    console.log("utente creatore: " + this.utenteService.currentUser?.mail);
-    console.log(JSON.stringify(nuovoImpianto));
+    if(!this.flagModifica){
+      const nuovoImpianto : Impianto = new ImpiantoModel ({
+        idConfigurazione :  Number(this.formImpianto.get('idConfigurazione')?.value),
+        flagEsercizio : this.formImpianto.get('flagEsercizio')?.value,
+        dataEntrataEsercizio : this.formImpianto.get('dataEntrataEsercizio')?.value,
+        tipologiaImpianto : this.formImpianto.get('tipologiaImpianto')?.value,
+        potenzaNominaleKw : this.formImpianto.get('potenzaNominaleKw')?.value,
+        presenzaAccumulo : this.formImpianto.get('presenzaAccumulo')?.value,
+        capacitaAccumuloKwh : this.formImpianto.get('capacitaAccumuloKwh')?.value,
+        categoriaProduttore : this.formImpianto.get('categoriaProduttore')?.value,
+        codiceCategoriaProduttore : this.formImpianto.get('codiceCategoriaProduttore')?.value,
+        specificaTipologiaImpianto : this.formImpianto.get('specificaTipologiaImpianto')?.value,
+        specificaCategoriaProduttore : this.formImpianto.get('specificaCategoriaProduttore')?.value,
+        tipologiaSitoInstallazione : this.formImpianto.get('tipologiaSitoInstallazione')?.value,
+        specificaSitoInstallazione : this.formImpianto.get('specificaSitoInstallazione')?.value,
+        regione : this.formImpianto.get('regione')?.value,
+        provincia : this.formImpianto.get('provincia')?.value,
+        comune : this.formImpianto.get('comune')?.value,
+        indirizzo : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('indirizzo')?.value, specifica: ''}),
+        civico : new CodiceDescrizioneBaseModel({codice:'',descrizione: this.formImpianto.get('civico')?.value, specifica : ''}),
+        cap : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('cap')?.value, specifica: ''}),
+        statoImpianto : this.formImpianto.get('statoImpianto')?.value,
+        attivo : this.formImpianto.get('attivo')?.value,
+        emailUtenteLoggato : this.utenteService.currentUser?.mail ?? ''
+      });
+      console.log("utente creatore: " + this.utenteService.currentUser?.mail);
+      console.log(JSON.stringify(nuovoImpianto));
 
-    this.impiantoService.createImpianto(nuovoImpianto).subscribe({
-      next: (x: string) =>{   
-        alert(x);
-        this.router.navigate(['/impianto']);
-      },
-      error: (err)=>{
-        alert("Errore durante la creazione dell'impianto. Riprova più tardi.");
-      }
-    });
+      this.impiantoService.createImpianto(nuovoImpianto).subscribe({
+        next: (x: string) =>{   
+          alert(x);
+          this.router.navigate(['/impianto']);
+        },
+        error: (err)=>{
+          alert("Errore durante la creazione dell'impianto. Riprova più tardi.");
+        }
+      });
+    } else {
+      const impiantoModificato : ImpiantoEdit = {
+        idConfigurazione: Number(this.formImpianto.get('idConfigurazione')?.value),
+        flagEsercizio: this.formImpianto.get('flagEsercizio')?.value,
+        dataEntrataEsercizio: this.formImpianto.get('dataEntrataEsercizio')?.value,
+        tipologiaImpianto: this.formImpianto.get('tipologiaImpianto')?.value,
+        potenzaNominaleKw: this.formImpianto.get('potenzaNominaleKw')?.value,
+        presenzaAccumulo: this.formImpianto.get('presenzaAccumulo')?.value,
+        capacitaAccumuloKwh: this.formImpianto.get('capacitaAccumuloKwh')?.value,
+        categoriaProduttore: this.formImpianto.get('categoriaProduttore')?.value,
+        codiceCategoriaProduttore: this.formImpianto.get('codiceCategoriaProduttore')?.value,
+        specificaTipologiaImpianto: this.formImpianto.get('specificaTipologiaImpianto')?.value,
+        specificaCategoriaProduttore: this.formImpianto.get('specificaCategoriaProduttore')?.value,
+        tipologiaSitoInstallazione: this.formImpianto.get('tipologiaSitoInstallazione')?.value,
+        specificaSitoInstallazione: this.formImpianto.get('specificaSitoInstallazione')?.value,
+        regione: this.formImpianto.get('regione')?.value,
+        provincia: this.formImpianto.get('provincia')?.value,
+        comune: this.formImpianto.get('comune')?.value,
+        indirizzo: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('indirizzo')?.value, specifica: '' }),
+        civico: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('civico')?.value, specifica: '' }),
+        cap: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('cap')?.value, specifica: '' }),
+        statoImpianto: this.formImpianto.get('statoImpianto')?.value,
+        attivo: this.formImpianto.get('attivo')?.value,
+        emailUtenteLoggato: this.utenteService.currentUser?.mail ?? '',
+        specTipologia: this.formImpianto.get('specificaTipologiaImpianto')?.value,
+        specCatProduttore: this.formImpianto.get('specificaCategoriaProduttore')?.value,
+        tipologiaSitoInst: this.formImpianto.get('tipologiaSitoInstallazione')?.value,
+        specSitoInst: this.formImpianto.get('specificaSitoInstallazione')?.value
+      };
+      this.impiantoService.editImpianto(this.idEdit!, impiantoModificato).subscribe({
+        next: (x: string) => {
+          console.log("modifica impianto con id: " + this.idEdit);
+          this.router.navigate(['/impianto']);
+        },
+        error: (err) => {
+          alert("Errore durante la modifica dell'impianto. Riprova più tardi.");
+        }
+      });
+    }
   }
 
 }

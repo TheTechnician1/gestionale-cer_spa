@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Impianto, ImpiantoEdit, ImpiantoSearchFilter, ImpiantoView } from "../../core/interfaces/impianto.model";
+import { Impianto, ImpiantoById, ImpiantoEdit, ImpiantoSearchFilter, ImpiantoView } from "../../core/interfaces/impianto.model";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
 import { Observable, of } from "rxjs";
 
@@ -33,18 +33,17 @@ export class ImpiantoService {
     return this.api.get<ImpiantoView[]>(endpoint, Object.assign({}, ...filter), options);
   }
 
-  getImpiantoById(id: number, options: ApiRequestOptions = {}): Observable<ImpiantoEdit> {
+  getImpiantoById(id: number, options: ApiRequestOptions = {}): Observable<ImpiantoById> {
     const endpoint = `api/impianti/${id}`;
-    return this.api.get<ImpiantoEdit>(endpoint, undefined, options);
+    return this.api.get<ImpiantoById>(endpoint, undefined, options);
   }
-
 
   createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<string> {
     const endpoint = "api/impianti/create";
     return this.api.postText(endpoint, payload, options);
   }
 
-  editImpianto(id : number | undefined, payload: Impianto, options: ApiRequestOptions = {}) {
+  editImpianto(id : number | undefined, payload: ImpiantoEdit, options: ApiRequestOptions = {}) {
     console.log("Impianto modificato con successo");
     const endpoint = `api/impianti/edit/${id}`;
     return this.api.putText(endpoint, payload, options);

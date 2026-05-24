@@ -152,6 +152,10 @@ export class ImpiantiRicercaComponent {
     this.router.navigate([`/impianto/edit/${id}`]);
   }
 
+  visualizzaDati(id: number): void {
+    this.router.navigate([`/impianto/view/${id}`]);
+  }
+
   idImpiantoCancellato? : number;
   openDialog(id: number): void {
     this.idImpiantoCancellato = id;
