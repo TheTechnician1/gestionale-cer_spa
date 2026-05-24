@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api.service';
+import { ApiRequestOptions, ApiService } from 'src/app/core/services/api.service';
 import { Cer, CerView } from 'src/app/core/interfaces/cer.model';
 
 @Injectable({
@@ -13,16 +13,10 @@ export class CerService {
 
   constructor(
     private http: HttpClient,
-    private apiService :ApiService
+    private api :ApiService
   ) {}
 
-  getCer(): Observable<any> {
 
-    return this.http.get(
-      `${this.apiUrl}/cer`
-    );
-
-  }
 
   postCer(body: any): Observable<any> {
 
@@ -37,6 +31,12 @@ export class CerService {
       `${this.apiUrl}/cer/${id}`,
       body
     );
+  }
+
+  //CHIAMATE BACKEND
+  getAllCer( options: ApiRequestOptions = {}): Observable<CerView[]> {
+    const endpoint = "cer/ricerca";
+    return this.api.post<CerView[]>(endpoint, {}, options);
   }
 
   //MOCK CHIAMATE

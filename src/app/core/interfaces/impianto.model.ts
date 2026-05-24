@@ -75,6 +75,7 @@ export class CodiceDescrizioneBaseModel implements CodiceDescrizioneBase {
 export interface ImpiantoView{
 
   idImpianto : number;
+  idCer: number;
   idConfigurazione : number;
   codiceCabina : string;
   tipologiaImpianto : string;
@@ -90,6 +91,7 @@ export interface ImpiantoView{
 export class ImpiantoViewModel implements ImpiantoView{
 
   idImpianto! : number;
+  idCer! : number;
   idConfigurazione! : number;
   codiceCabina! : string;
   tipologiaImpianto! : string;
@@ -106,3 +108,37 @@ export class ImpiantoViewModel implements ImpiantoView{
   }
 }
 
+
+export interface ImpiantoSearchFilter{
+  idImpianto : number;
+  idConfigurazione : number ;
+  idCer : number ;
+  codiceCabina : string ;
+  tipologiaImpianto : string ;
+  statoImpianto : string ;
+  regione : string ;
+  provincia : string ;
+  comune : string ;
+  potenzaNominaleKw : number ;
+  presenzaAccumulo : string ;
+  attivo : string ;
+}
+
+export class ImpiantoSearchFilterModel implements ImpiantoSearchFilter{
+  idImpianto! : number ;
+  idConfigurazione! : number ;
+  idCer! : number ;
+  codiceCabina! : string ;
+  tipologiaImpianto! : string ;
+  statoImpianto! : string ;
+  regione! : string ;
+  provincia! : string ;
+  comune! : string ;
+  potenzaNominaleKw! : number ;
+  presenzaAccumulo! : string ;
+  attivo! : string ;  
+  
+  constructor(init?: Partial<ImpiantoSearchFilter>) {
+    Object.assign(this,init);
+  } 
+}

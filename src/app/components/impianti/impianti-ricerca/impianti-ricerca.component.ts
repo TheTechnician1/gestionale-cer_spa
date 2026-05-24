@@ -1,7 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, of } from "rxjs";
-import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
+import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoSearchFilterModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
@@ -10,6 +10,8 @@ import { ImpiantoService } from "../../services/impianto.service";
 import { ConfirmationDialogComponent, DialogCloseReason } from "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CerService } from "../../services/cer.service";
 import { UtenteService } from "src/app/core/services/utente.service";
+import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
+import { ConfigurazioniService } from "../../services/configurazioni.service";
 
 @Component({
   selector: "app-impianti-ricerca",
@@ -29,11 +31,13 @@ export class ImpiantiRicercaComponent {
   provincie$? : Observable<CodiceDescrizioneBase[]>;
   comuni$? : Observable<CodiceDescrizioneBase[]>;
   cer$? : Observable<CerView[]>;
+  configurazioni$? : Observable<ConfigurazioneView[]>;
   formRicercaImpianti : FormGroup;
 
   constructor(private codiciDescrizioneBaseService : CodiciDescrizioneBaseService,
     private impiantoService :ImpiantoService,
     private cerService : CerService,
+    private configurazioneService : ConfigurazioniService,
     private utenteService : UtenteService,
     private fb : FormBuilder,
     private router : Router){
@@ -55,7 +59,9 @@ export class ImpiantiRicercaComponent {
 
   ngOnInit(): void {
     //FORM OPZIONI CER
-    this.cer$ = this.cerService.getCerMock();
+    this.cer$ = this.cerService.getAllCer();
+    //FORM CONFIGURAZIONI
+    this.configurazioni$ = this.configurazioneService.getAllConfigurazione();
 
     //FORM OPZIONI TIPOLOGIA IMPIANTO
     this.tipologieImpianto$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.TIPOLOGIA, "");
@@ -99,10 +105,10 @@ export class ImpiantiRicercaComponent {
             this.formRicercaImpianti.get('comune')?.enable({emitEvent : false});
           }
       }})
-      return of([]);
     }});
 
-    this.impiantoService.getImpiantiMock().subscribe({
+    //RECUPERO IMPIANTI
+    this.impiantoService.getAllImpianti().subscribe({
       next:(impianti)=>{
         this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
       } 
@@ -114,21 +120,30 @@ export class ImpiantiRicercaComponent {
 
   }
 
-  search(): void {
-    //   this.impiantoService.getImpiantiMock().subscribe({
-    //     next:(impianti)=>{
-    //     this.impiantiList = impianti.filter(imp=> imp.attivo === 'S'
-    //       &&(this.formRicercaImpianti.get('cer')?.value === imp.id)
-
-    //               cer : [''],
-    //     cabina : [''],
-    //     regione : [''],
-    //     provincia : [''],
-    //     comune : ['']
-          
-    //     );
-    //   } 
-    // })
+  search() {
+    //RECUPERO IMPIANTI
+    console.log("ricerca");
+    
+    let filter : Record<string, string | number | boolean>[] = [];
+    filter = [
+      this.formRicercaImpianti.get('idImpianto')?.value != null ? { idImpianto: this.formRicercaImpianti.get('idImpianto')?.value } : {},
+      this.formRicercaImpianti.get('idConfigurazione')?.value != null ? { idConfigurazione: this.formRicercaImpianti.get('idConfigurazione')?.value } : {},
+      this.formRicercaImpianti.get('idCer')?.value != null ? { idCer: this.formRicercaImpianti.get('idCer')?.value } : {},
+      this.formRicercaImpianti.get('codiceCabina')?.value ? { codiceCabina: this.formRicercaImpianti.get('codiceCabina')?.value } : {},
+      this.formRicercaImpianti.get('tipologiaImpianto')?.value ? { tipologiaImpianto: this.formRicercaImpianti.get('tipologiaImpianto')?.value } : {},
+      this.formRicercaImpianti.get('statoImpianto')?.value ? { statoImpianto: this.formRicercaImpianti.get('statoImpianto')?.value } : {},
+      this.formRicercaImpianti.get('regione')?.value ? { regione: this.formRicercaImpianti.get('regione')?.value } : {},
+      this.formRicercaImpianti.get('provincia')?.value ? { provincia: this.formRicercaImpianti.get('provincia')?.value } : {},
+      this.formRicercaImpianti.get('comune')?.value ? { comune: this.formRicercaImpianti.get('comune')?.value } : {},
+      this.formRicercaImpianti.get('potenzaNominaleKw')?.value != null ? { potenzaNominaleKw: this.formRicercaImpianti.get('potenzaNominaleKw')?.value } : {},
+      this.formRicercaImpianti.get('presenzaAccumulo')?.value ? { presenzaAccumulo: this.formRicercaImpianti.get('presenzaAccumulo')?.value } : {},
+      this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {}
+    ];
+    this.impiantoService.getImpiantiFilter(filter).subscribe({
+      next:(impianti)=>{
+        this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
+      } 
+    })
   }
 
   inserisciDati(): void {
@@ -160,12 +175,12 @@ export class ImpiantiRicercaComponent {
     this.impiantoService.deleteImpianto(this.idImpiantoCancellato, this.utenteService.currentUser?.mail ?? '').subscribe({
       next:(x)=>{
         console.log("Impianto eliminato con successo");
-        this.impiantoService.getImpiantiMock().subscribe({
+        this.impiantoService.getAllImpianti().subscribe({
 
         });
       }
     });
-    this.impiantoService.getImpiantiMock().subscribe({
+    this.impiantoService.getAllImpianti().subscribe({
       next:(impianti)=>{
         this.impiantiList = impianti.filter(imp=> imp.attivo === 'S');
       } 

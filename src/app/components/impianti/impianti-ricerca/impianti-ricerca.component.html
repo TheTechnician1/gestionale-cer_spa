@@ -1,12 +1,15 @@
 <h2>Impianti</h2>         
 <mat-divider></mat-divider>
- <div class="example-button-row"></div>
-    <button mat-raised-button color="primary" (click)="inserisciDati()">Inserisci</button>
+<div class="example-button-row">
+  <button mat-raised-button color="primary" (click)="inserisciDati()">
+    Inserisci
+  </button>
+</div>
 <div class="white-box">
   <form [formGroup]="formRicercaImpianti" (ngSubmit)="salvataggio()">
     <div class="form-group">
-      <label for="cer">Cer</label>
-      <select formControlName="cer">
+      <label for="idCer">Cer</label>
+      <select formControlName="idCer">
           <option [ngValue]="null">
               -- Seleziona Cer --
           </option>
@@ -18,12 +21,51 @@
     </div>
 
     <div class="form-group">
-      <label for="cabina">Cabina</label>
-      <input
-        type="text"
-        id="cabina"
-        formControlName="cabina">
+      <label for="idConfigurazione">Configurazione</label>
+      <select formControlName="idConfigurazione">
+          <option [ngValue]="null">
+              -- Seleziona Configurazione --
+          </option>
+          <option *ngFor="let c of configurazioni$ | async"
+              [ngValue]="c.idConfig">
+                  {{c.ragioneSociale}}
+          </option>
+      </select>
     </div>
+
+    <div class="form-group">
+      <label for="codiceCabina">Codice cabina</label>
+      <input formControlName="codiceCabina" type="text" class="form-control">
+    </div>
+
+
+    <div class="form-group">
+      <label for="tipoologiaImpianto">Tipologia impianto</label>
+      <select formControlName="tipologiaImpianto">
+          <option [ngValue]="null">
+              -- Seleziona Tipologia --
+          </option>
+          <option *ngFor="let t of tipologieImpianto$ | async"
+              [ngValue]="t.descrizione">
+                  {{t.descrizione}}
+          </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="statoImpianto">Stato impianto</label>
+      <select formControlName="statoImpianto">
+          <option [ngValue]="null">
+              -- Seleziona Stato --
+          </option>
+          <option *ngFor="let s of statiImpianto$ | async"
+              [ngValue]="s.descrizione">
+                  {{s.descrizione}}
+          </option>
+      </select>
+    </div>
+
+
     <div class="form-group">
       <label for="regione">Regione</label>
       <select formControlName="regione">
@@ -62,11 +104,46 @@
         </option>
       </select>
     </div>
+
+    <div class="form-group">
+      <label for="potenzaNominaleKw">Potenza nominale (kW)</label>
+      <input formControlName="potenzaNominaleKw" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="presenzaAccumulo">Presenza Accumulo</label>
+      <select formControlName="presenzaAccumulo">
+          <option [ngValue]="null">
+              -- Seleziona presenza accumulo --
+          </option>
+          <option [ngValue]="'S'">
+            S
+          </option>
+          <option [ngValue]="'N'">
+            N
+          </option>
+      </select>
+    </div>
+
+    <!-- <div class="form-group" ngIf="false">
+      <label for="Attivo">Attivo</label>
+      <select formControlName="attivo">
+          <option [ngValue]="null">
+              -- Seleziona attivo --
+          </option>
+          <option [ngValue]="'S'">
+            S
+          </option>
+          <option [ngValue]="'N'">
+            N
+          </option>
+      </select>
+    </div> -->
+
     <button
       type="button"
       class="search-btn"
-      (click)="search()"
-      [disabled]="formRicercaImpianti.invalid">
+      (click)="search()">
       Cerca
     </button>
   </form>
@@ -142,10 +219,10 @@
         'azioni'
       ]"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
                  showFirstLastButtons
                  aria-label="Select page of periodic elements">
-  </mat-paginator>
+  </mat-paginator> -->
 </div>
 
 <app-confirmation-dialog #confirmationDialog
