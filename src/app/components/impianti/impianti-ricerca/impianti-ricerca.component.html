@@ -149,79 +149,70 @@
 </div>
 
 <div class="table-container">
-  <table mat-table [dataSource]="impiantiList$" class="mat-elevation-z8 full-table">
-      <ng-container matColumnDef="codiceCabina">
-        <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.codiceCabina }}</td>
-      </ng-container>
 
-      <ng-container matColumnDef="statoImpianto">
-        <th mat-header-cell *matHeaderCellDef>statoImpianto</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.statoImpianto }}</td>
-      </ng-container>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-table">
 
-      <ng-container matColumnDef="tipologia">
-        <th mat-header-cell *matHeaderCellDef>Tipologia</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.tipologiaImpianto }}</td>
-      </ng-container>
+    <ng-container matColumnDef="codiceCabina">
+      <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.codiceCabina }}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="potenzaNominaleKw">
-        <th mat-header-cell *matHeaderCellDef>Potenza nominale</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.potenzaNominaleKw }}</td>
-      </ng-container>
+    <ng-container matColumnDef="statoImpianto">
+      <th mat-header-cell *matHeaderCellDef>statoImpianto</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.statoImpianto }}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="regione">
-        <th mat-header-cell *matHeaderCellDef>Regione</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.regione }}</td>
-      </ng-container>
+    <ng-container matColumnDef="tipologia">
+      <th mat-header-cell *matHeaderCellDef>Tipologia</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.tipologiaImpianto }}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="attivo">
-        <th mat-header-cell *matHeaderCellDef>Attivo</th>
-        <td mat-cell *matCellDef="let dato">{{ dato.attivo }}</td>
-      </ng-container>
+    <ng-container matColumnDef="potenzaNominaleKw">
+      <th mat-header-cell *matHeaderCellDef>Potenza nominale</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.potenzaNominaleKw }}</td>
+    </ng-container>
 
-      <ng-container matColumnDef="azioni">
-        <th mat-header-cell *matHeaderCellDef>Azioni</th>
-        <td mat-cell *matCellDef="let dato">
+    <ng-container matColumnDef="regione">
+      <th mat-header-cell *matHeaderCellDef>Regione</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.regione }}</td>
+    </ng-container>
 
-          <mat-icon (click)="visualizzaDati(dato.idImpianto)">
-            find_in_page
-          </mat-icon>
+    <ng-container matColumnDef="attivo">
+      <th mat-header-cell *matHeaderCellDef>Attivo</th>
+      <td mat-cell *matCellDef="let dato">{{ dato.attivo }}</td>
+    </ng-container>
 
-          <mat-icon (click)="editaDati(dato.idImpianto)">
-            edit
-          </mat-icon>
+    <ng-container matColumnDef="azioni">
+      <th mat-header-cell *matHeaderCellDef>Azioni</th>
+      <td mat-cell *matCellDef="let dato">
 
-          <mat-icon (click)="openDialog(dato.idImpianto)">
-            delete
-          </mat-icon>
+        <mat-icon (click)="visualizzaDati(dato.idImpianto)">
+          find_in_page
+        </mat-icon>
 
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="[
-        'codiceCabina',
-        'statoImpianto',
-        'tipologia',
-        'potenzaNominaleKw',
-        'regione',
-        'attivo',
-        'azioni'
-        ]">
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: [
-        'codiceCabina',
-        'statoImpianto',
-        'tipologia',
-        'potenzaNominaleKw',
-        'regione',
-        'attivo',
-        'azioni'
-      ]"></tr>
+        <mat-icon (click)="editaDati(dato.idImpianto)">
+          edit
+        </mat-icon>
+
+        <mat-icon (click)="openDialog(dato.idImpianto)">
+          delete
+        </mat-icon>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
   </table>
-  <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
-  </mat-paginator> -->
+
+  <mat-paginator
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons>
+  </mat-paginator>
+
 </div>
 
 <app-confirmation-dialog #confirmationDialog

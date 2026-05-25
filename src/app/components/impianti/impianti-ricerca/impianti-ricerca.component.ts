@@ -1,6 +1,6 @@
-import { Component, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { delay, map, Observable, of, switchMap } from "rxjs";
+import { delay, map, Observable, of, switchMap, tap } from "rxjs";
 import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoSearchFilterModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -12,14 +12,29 @@ import { CerService } from "../../services/cer.service";
 import { UtenteService } from "src/app/core/services/utente.service";
 import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
 import { ConfigurazioniService } from "../../services/configurazioni.service";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-impianti-ricerca",
   templateUrl: "./impianti-ricerca.component.html",
   styleUrls: ["./impianti-ricerca.component.scss"],
 })
-export class ImpiantiRicercaComponent {
+export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
   @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  dataSource = new MatTableDataSource<ImpiantoView>;
+  displayedColumns: string[] = [
+    'codiceCabina',
+    'statoImpianto',
+    'tipologia',
+    'potenzaNominaleKw',
+    'regione',
+    'attivo',
+    'azioni'
+  ];
+
 
   impiantiList$ : Observable<ImpiantoView[]> = of([]);
   tipologieImpianto$? : Observable<CodiceDescrizioneBase[]>;
@@ -39,6 +54,7 @@ export class ImpiantiRicercaComponent {
     private utenteService : UtenteService,
     private fb : FormBuilder,
     private router : Router){
+
       this.formRicercaImpianti = this.fb.group({
         idConfigurazione : [''],
         idCer : [''],
@@ -111,14 +127,19 @@ export class ImpiantiRicercaComponent {
     }});
 
     //RECUPERO IMPIANTI
-    this.impiantiList$ = this.impiantoService.getAllImpianti().pipe(
-      map(impianti => impianti.filter(imp=> imp.attivo === "N"))
-    );
+    this.loadData();
   }
 
 
   ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+  }
 
+  loadData(): void {
+    this.impiantoService.getAllImpianti().subscribe(impianti => {
+      const filtrati = impianti.filter(i => i.attivo === 'N');
+      this.dataSource.data = filtrati;
+    });
   }
 
   search() {
@@ -141,7 +162,7 @@ export class ImpiantiRicercaComponent {
       this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "N"}
     ];
 
-    this.impiantiList$ = this.impiantoService.getImpiantiFilter(filter);
+    this.loadData();
   }
 
   inserisciDati(): void {
