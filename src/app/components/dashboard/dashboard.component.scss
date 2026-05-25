@@ -63,3 +63,79 @@ button {
 .span-h2 {
   padding-right: 10px;
 }
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+
+  transition: all 0.2s ease;
+  border-left: 4px solid #3b82f6;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+}
+
+.kpi-icon {
+  font-size: 26px;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.kpi-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.kpi-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.kpi-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-3px);
+}
+
+/* COLORI */
+.kpi-card.blue { border-left: 4px solid #3b82f6; }
+.kpi-card.green { border-left: 4px solid #10b981; }
+.kpi-card.purple { border-left: 4px solid #8b5cf6; }
+.kpi-card.orange { border-left: 4px solid #f59e0b; }
+.kpi-card.red { border-left: 4px solid #ef4444; }

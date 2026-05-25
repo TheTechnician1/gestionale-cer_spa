@@ -5,6 +5,7 @@ import { MatSort, Sort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from '@angular/router';
+import { DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
 
 @Component({
   selector: "app-dashboard",
@@ -25,6 +26,14 @@ export class DashboardComponent implements OnInit {
   dataSource = new MatTableDataSource(this.cer);
   sortedData: any[] | undefined;
 
+  dashboard: DashboardInterfaces | null = null;
+
+animatedComunita = 0;
+animatedImpianti = 0;
+animatedUtenti = 0;
+animatedIncentivi = 0;
+animatedValore = 0;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -42,6 +51,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.loadCERS();
+     this.loadKPI();
   }
 
   ngAfterViewInit() {
@@ -89,5 +99,45 @@ export class DashboardComponent implements OnInit {
     }
      
   }
+
+  animateValue(target: number, setter: (val: number) => void, duration = 800) {
+  const start = 0;
+  const increment = target / (duration / 16);
+
+  let current = start;
+
+  const step = () => {
+    current += increment;
+
+    if (current >= target) {
+      setter(target);
+      return;
+    }
+
+    setter(Math.floor(current));
+    requestAnimationFrame(step);
+  };
+
+  step();
+}
+
+loadKPI() {
+  this.dashboardService.getSummary().subscribe({
+   next: (res: any) => {
+
+  console.log("RAW:", res);
+
+  const data = res?.result || res?.data || res;
+
+  this.dashboard = data;
+
+  this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
+this.animateValue(res.impiantiTotali || 0, v => this.animatedImpianti = v);
+this.animateValue(res.configurazioniAttive || 0, v => this.animatedUtenti = v);
+this.animateValue(res.incentivi || 0, v => this.animatedIncentivi = v);
+this.animateValue(res.energiaProdotta || 0, v => this.animatedValore = v);
+}
+  });
+}
  
 }
