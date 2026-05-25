@@ -1,5 +1,5 @@
 export interface DatiEnergetici {
-  idDati: number | null;
+  idDati: number| null;
   idCer: number | null;
   idConfig: number| null;
   anno: number | null;
@@ -17,7 +17,7 @@ export interface DatiEnergetici {
 }
 
 export class DatiEnergeticiModel implements DatiEnergetici {
-  idDati: number | null;
+  idDati: number|null;
   idCer: number | null;
   idConfig: number| null;
   anno: number | null;
@@ -34,7 +34,7 @@ export class DatiEnergeticiModel implements DatiEnergetici {
   note: String| null
 
   constructor(data?: Partial<DatiEnergetici>) {
-    this.idDati = data?.idDati ?? null;
+  this.idDati = data?.idDati ?? null;
     this.idCer = data?.idCer ?? null;
     this.idConfig= data?.idConfig ?? null;
     this.anno = data?.anno ?? null;

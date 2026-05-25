@@ -9,7 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from "@angular/router";
+import { CommonModule } from '@angular/common';
+
 
 @NgModule({
   declarations: [DatiEnergeticiRicercaComponent, DatiEnergeticiFormComponent],
@@ -22,6 +25,8 @@ import { RouterModule } from "@angular/router";
 MatFormFieldModule,
 MatInputModule,
 MatButtonModule,
-  MatSnackBarModule],
+MatIconModule,
+  MatSnackBarModule,
+CommonModule],
 })
 export class DatiEnergeticiModule {}

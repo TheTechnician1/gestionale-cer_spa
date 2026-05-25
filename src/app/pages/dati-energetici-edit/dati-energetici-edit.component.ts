@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
-import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
 
@@ -13,60 +12,80 @@ import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view
 export class DatiEnergeticiEditComponent implements OnInit {
 
   form!: FormGroup;
-  formData: DatiEnergeticiView  | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private service: DatiEnergeticiService,
     private fb: FormBuilder,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
 
-    // 🔧 FORM INIT
     this.form = this.fb.group({
-      idDati: [null],
-      anno: [null, Validators.required],
-      idCer: [null, Validators.required],
-      partitaIva: [null],
-      idConfig: [null],
-      codiceCabina: [null],
-      statoScheda: [null],
-      inizioAnno: [null],
-      fineAnno: [null]
+   idSchedaEnergetica: [''],
+  idCer: [''],
+  idConfigurazione: [''],
+  annoRiferimento: [''],
+  energiaProdottaMhw: [''],
+  energiaPrelevataMhw: [''],
+  energiaImmessaMhw: [''],
+  energiaCondivisaMhw: [''],
+  energiaAutoconsumataMhw: [''],
+  tariffaPremioEuro: [''],
+  corrispettivoPremioEuro: [''],
+  riduzioneCo2Ton: [''],
+  calcoloCo2Automatico: [''],
+  note: [''],
+  attivo: [{value :'', disabled : true }],
+  emailUtenteLoggato: ['']
     });
 
-    // 🔧 ID ROUTE
-    const idParam = this.route.snapshot.paramMap.get('id');
-    const id = idParam ? Number(idParam) : null;
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!id || isNaN(id)) {
       console.warn('ID non valido');
+      this.router.navigate(['/dati-energetici']);
       return;
     }
 
-    // 🔧 LOAD DATI
     this.service.getDato(id).subscribe({
-      next: (res) => {
+  next: (res: DatiEnergeticiView) => {
 
-        console.log('RISPOSTA API:', res);
+    console.log('EDIT DATA:', res);
 
-        if (res) {
-          this.formData = res;
+    this.form.patchValue({
+      idSchedaEnergetica: res.idSchedaEnergetica,
+      annoRiferimento: res.annoRiferimento,
+      idCer: res.idCer,
+      idConfigurazione: res.idConfigurazione,
 
-          // ✔ POPOLA FORM
-          this.form.patchValue(res);
-        }
+      energiaProdottaMhw: res.energiaProdottaMhw,
+      energiaPrelevataMhw: res.energiaPrelevataMhw,
+      energiaImmessaMhw: res.energiaImmessaMhw,
+      energiaCondivisaMhw: res.energiaCondivisaMhw,
+      energiaAutoconsumataMhw: res.energiaAutoconsumataMhw,
 
-      },
-      error: (err) => {
-        console.error('Errore caricamento dettaglio', err);
-      }
+      tariffaPremioEuro: res.tariffaPremioEuro,
+      corrispettivoPremioEuro: res.corrispettivoPremioEuro,
+
+      riduzioneCo2Ton: res.riduzioneCo2Ton,
+      calcoloCo2Automatico: res.calcoloCo2Automatico,
+
+      note: res.note,
+      attivo: res.attivo,
+      emailUtenteLoggato: res.emailUtenteLoggato
     });
+
+  },
+  error: (err) => {
+    console.error('Errore caricamento edit', err);
+  }
+});
+     
   }
 
-  // 💾 SALVATAGGIO
   salvaModifica(): void {
 
     if (this.form.invalid) {
@@ -74,19 +93,30 @@ export class DatiEnergeticiEditComponent implements OnInit {
       return;
     }
 
-    const payload: DatiEnergetici = this.form.value;
+    const payload = this.form.getRawValue();
 
-    this.service.editDatiEnergetici(payload).subscribe({
-      next: (res) => {
+    this.service.putDato(payload.idDati, payload).subscribe({
 
-        console.log('Salvato:', res);
+      next: () => {
 
         this.toastService.success('✅ Modifiche salvate con successo');
 
+        this.router.navigate(['/dati-energetici']);
+
       },
+
       error: (err) => {
-        console.error('Errore salvataggio:', err);
+
+        console.error('Errore salvataggio', err);
+
+        this.toastService.error('❌ Errore durante il salvataggio');
+
       }
+
     });
+  }
+
+  back(): void {
+    this.router.navigate(['/dati-energetici']);
   }
 }

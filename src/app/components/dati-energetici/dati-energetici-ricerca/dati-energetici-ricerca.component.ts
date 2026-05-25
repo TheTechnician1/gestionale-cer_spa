@@ -1,50 +1,20 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { DialogCloseReason } from
+"src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
-import { DatiEnergetici } from "src/app/core/interfaces/dati-energetici.model";
-import { DatiEnergeticiService } from "../../services/dati-energetici.service";
-import { ConfirmationDialogComponent, DialogCloseReason } from "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
 import { CerService } from "../../services/cer.service";
-import { CerModel } from "src/app/core/interfaces/cer.model";
+import { DatiEnergeticiService } from "../../services/dati-energetici.service";
 
-const MOCK_DATI: DatiEnergetici[] = [
-  {
-    idDati: 1,
-    idCer: 2,
-    idConfig: 3,
-    anno: 2024,
-    eProdotta: 120,
-    ePrelevata: 80,
-    eImmessa: 40,
-    eCondivisa: 60,
-    eAutoCons: 50,
-    tariffaPremium: 12,
-    corrPremioOtt: 45,
-    ridEmCo2: "12",
-    calcoloCo2Automatic: 13,
-    note: "OK",
-    flgCancellazione: null
-  },
-  {
-    idDati: 2,
-    idCer: 4,
-    idConfig: 5,
-    anno: 2023,
-    eProdotta: 110,
-    ePrelevata: 70,
-    eImmessa: 39,
-    eCondivisa: 55,
-    eAutoCons: 48,
-    tariffaPremium: 11,
-    corrPremioOtt: 42,
-    ridEmCo2: "11",
-    calcoloCo2Automatic: 13,
-    note: "DA_VERIFICARE",
-    flgCancellazione: null
-  }
-];
+import { CerModel, CerView } from "src/app/core/interfaces/cer.model";
+import { DatiEnergetici } from "src/app/core/interfaces/dati-energetici.model";
 
+import { MatTableDataSource } from "@angular/material/table";
+import { map, Observable, of, tap } from "rxjs";
+import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
+import { ConfigurazioniService } from "../../services/configurazioni.service";
+import { DatiEnergeticiView } from "src/app/core/interfaces/dati-energetici-view";
 
 @Component({
   selector: "app-dati-energetici-ricerca",
@@ -55,183 +25,130 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
 
   formRicerca!: FormGroup;
 
- cerList: string[] = ["CER Milano", "CER Roma", "CER Torino"];
-//cerList: CerModel[] = [];
-  cabinaList: string[] = ["Cabina Milano", "Cabina Roma", "Cabina Torino"];
-//cabinaList: any[] = [];
+  cerList$?: Observable<CerView[]>;
+  configurazioniList$? : Observable<ConfigurazioneView[]>;
+  datiEnergetici$? : Observable<DatiEnergeticiView[]>;
 
+  cabinaList: any[] = [];
   anniList: number[] = [];
 
-  datiEnergetici: DatiEnergetici[] = [];
 
-  @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
 
   constructor(
     private fb: FormBuilder,
+    private cerService: CerService,
+    private configurazioniService : ConfigurazioniService,
     private datiEnergeticiService: DatiEnergeticiService,
-    private router: Router,
-    private cerService: CerService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.initForm();
+    this.initAnni();
+    this.cerList$ = this.cerService.getAllCer();
+    this.formRicerca.get("idCer")?.valueChanges.subscribe(idCer => {
+      this.configurazioniList$=of([]);
+      this.formRicerca.get("idCabina")?.setValue(null);
+      this.formRicerca.get("idCabina")?.disable({emitEvent:false});
 
-  // this.form = this.fb.group({
-  //   idCer: [null, Validators.required],
-  //   anno: [new Date().getFullYear(), Validators.required],
-  //   eProdotta: [0, Validators.required],
-  //   ePrelevata: [0],
-  //   eImmessa: [0],
-  //   eCondivisa: [0],
-  //   eAutoCons: [0],
-  //   tariffaPremium: [0],
-  //   note: [""]
-  // });
-//   this.initForm();
-//     this.loadCer();
-//     this.initAnni();
-// }
-//  private initForm(): void {
-//     const currentYear = new Date().getFullYear();
+      if (idCer) {
+        this.configurazioniList$ = this.configurazioniService
+          .getAllConfigurazione()
+          .pipe(
+            map(imp =>imp.filter(i=> i.idCer===idCer)),
+            tap(x=> x.forEach(y=>console.log("cabina:"+ y.codiceCabina)))
+          );
+        this.configurazioniList$.subscribe({
+          next : (x)=>{
+            if(x && x.length>0){
+              this.formRicerca.get("idCabina")?.enable({emitEvent:false});
+            }
+          }
+        });
+      }else{
+        this.configurazioniList$=of([]);
+      }
+    });
+  }
 
-//     this.formRicerca = this.fb.group({
-//       cer: [null, Validators.required],
-//       cabina: [null],
-//       annoDa: [currentYear - 1, Validators.required],
-//       annoA: [currentYear, Validators.required]
-//     });
-//   }
+  private initForm(): void {
+    const currentYear = new Date().getFullYear();
 
-//     private initAnni(): void {
-//     const currentYear = new Date().getFullYear();
+    this.formRicerca = this.fb.group({
+      annoRiferimento: [''],
+      idCer:[''],
+      idCabina: [{value :'', disabled : true }],
+      partitaIva: [''],
+      codiceCabina: [''],
+      attivo: [{value :'', disabled : true }],
+    
+    });
 
-//     this.anniList = Array.from(
-//       { length: currentYear - 1899 },
-//       (_, i) => currentYear - i
-//     );
-//   }
+  }
 
-//    private loadCer(): void {
-//     this.cerService.getCer().subscribe({
-//       next: (res) => {
-//         this.cerList = res;
-//       },
-//       error: (err) => console.error("Errore caricamento CER:", err)
-//     });
-//   }
-
-//  search(): void {
-
-//     if (this.formRicerca.invalid) {
-//       this.formRicerca.markAllAsTouched();
-//       return;
-//     }
-
-//     const filters = this.formRicerca.value;
-
-//     console.log("FILTRI RICERCA:", filters);
-
-//        this.datiEnergeticiService.getDati(filters).subscribe({
-//     next: (res) => {
-//       this.datiEnergetici = res;
-//     },
-//     error: (err) => {
-//       console.error("Errore ricerca:", err);
-//       this.datiEnergetici = [];
-//     }
-//        });
-//        this.cerService.getCer().subscribe({
-//   next: (res) => {
-//     this.cerList = res;
-//   }
-// });
-//  }
-
-//   inserisciDati(): void {
-//     this.router.navigate(['/dati-energetici/form']);
-//   }
-
-//   visualizzaDato(id: number | null): void {
-//     if (!id) return;
-//     this.router.navigate(['/dati-energetici/view', id]);
-//   }
-
-//   modificaDati(id: number | null): void {
-//     if (!id) return;
-//     this.router.navigate(['/dati-energetici/edit', id]);
-//   }
-
-//     eliminaDati(dato: any): void {
-//     this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
-//   }
-
- 
-
-
-
+  private initAnni(): void {
     const currentYear = new Date().getFullYear();
 
     this.anniList = Array.from(
       { length: currentYear - 1899 },
       (_, i) => currentYear - i
     );
-
-    this.formRicerca = this.fb.group({
-      cer: ["", Validators.required],
-      cabina: ["", Validators.required],
-      annoDa: [currentYear - 1, Validators.required],
-      annoA: [currentYear - 1, Validators.required]
-    });
   }
 
-  search(): void {
-
-    if (this.formRicerca.invalid) {
-      this.formRicerca.markAllAsTouched();
-      return;
-    }
-
-    const payload = this.formRicerca.value;
-    console.log("VALORI FORM:", payload);
-
-    // MOCK
-    this.datiEnergetici = MOCK_DATI;
+  private loadCer(): void {
+    this.cerService.getCerRicerca();
   }
 
-  visualizzaDato(idDati: number | null): void {
+ search(): void {
 
-  if (!idDati) return;
+  
+    let filter : Record<string, string | number | boolean>[] = [];
+    filter = [
+      this.formRicerca.get('annoRiferimento')?.value ? { annoRiferimento: this.formRicerca.get('annoRiferimento')?.value } : {},
+      this.formRicerca.get('idCer')?.value ? { idCer: this.formRicerca.get('idCer')?.value } : {},
+      this.formRicerca.get('idCabina')?.value ? { idCabina: this.formRicerca.get('idCabina')?.value } : {},
+      this.formRicerca.get('partitaIva')?.value ? { partitaIva: this.formRicerca.get('partitaIva')?.value } : {},
+      this.formRicerca.get('codiceCabina')?.value ? { codiceCabina: this.formRicerca.get('codiceCabina')?.value } : {},
+      this.formRicerca.get('attivo')?.value ? { attivo: this.formRicerca.get('attivo')?.value } : {attivo: "N"}
+    
+    ];
 
-  this.router.navigate(['/dati-energetici/view', idDati]);
-}
-
-  modificaDati(idDati: number | null): void {
-    if (!idDati) return;
-
-    this.router.navigate(['/dati-energetici/edit', idDati]);
-  }
-
-  openDialog(dato: DatiEnergetici): void {
-    this.confirmationDialog.open({
-      payload: dato
-    });
-  }
-
-  onCancel(): void {
-    console.log("Annullato");
-  }
-
-  onClosed(reason: DialogCloseReason): void {
-    console.log("Chiuso:", reason);
-  }
-
-  eliminaDati(dato: any): void {
-    this.datiEnergetici = this.datiEnergetici.filter(d => d !== dato.payload);
+    this.datiEnergetici$ = this.datiEnergeticiService.getDatiFilter(filter);
   }
 
   inserisciDati(): void {
-    this.router.navigate(['/dati-energetici/form']);
+    this.router.navigate(["/dati-energetici/form"]);
   }
 
-   
+  visualizzaDato(id: number | null): void {
+    if (!id) return;
+    this.router.navigate(["/dati-energetici/view", id]);
+  }
+
+  modificaDati(id: number | null): void {
+    if (!id) return;
+    this.router.navigate(["/dati-energetici/edit", id]);
+  }
+
+eliminaDati(dato: any): void {
+
+  this.datiEnergetici$ = this.datiEnergetici$?.pipe(
+
+    map(lista =>
+      lista.filter(
+        d => d.idSchedaEnergetica !== dato.idDati
+        )
+    )
+
+  );
+
 }
 
+  onCancel(): void {
+  console.log("Dialog annullato");
+}
+
+onClosed(reason: DialogCloseReason): void {
+  console.log("Dialog chiuso:", reason);
+}
+}

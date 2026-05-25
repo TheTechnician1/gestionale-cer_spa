@@ -2,6 +2,7 @@ import { NgModule, ErrorHandler, Component } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -28,10 +29,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { DatiEnergeticiEditComponent } from './pages/dati-energetici-edit/dati-energetici-edit.component';
 import { DatiEnergeticiViewComponent } from './pages/dati-energetici-view/dati-energetici-view.component';
 import { ImpiantiViewComponent } from './components/impianti/impianti-view/impianti-view.component';
+import { DatiEnergeticiView } from "./core/interfaces/dati-energetici-view";
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, DatiEnergeticiEditComponent, DatiEnergeticiViewComponent, ImpiantiViewComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,   MatIconModule,  FormsModule,  HttpClientModule],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, DatiEnergeticiEditComponent, DatiEnergeticiViewComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,  MatIconModule,  FormsModule,  HttpClientModule, MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+  CommonModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -1,66 +1,125 @@
-<mat-card class="edit-card" *ngIf="formData">
+<mat-card class="edit-card" *ngIf="form">
 
   <div class="header">
     <h2>Modifica Dati Energetici</h2>
     <p>Aggiorna i dati della scheda</p>
   </div>
 
-  <div class="grid-3">
+  <form [formGroup]="form" (ngSubmit)="salvaModifica()">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Anno</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.anno">
-    </mat-form-field>
+    <div class="grid-3">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Id CER</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.idCer">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Anno</mat-label>
+        <input matInput type="number" formControlName="annoRiferimento">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Partita IVA</mat-label>
-      <input matInput [(ngModel)]="formData.partitaIva">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>ID CER</mat-label>
+        <input matInput type="number" formControlName="idCer">
+      </mat-form-field>
 
-  </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Scheda Energetica</mat-label>
+        <input matInput formControlName="idSchedaEnergetica">
+      </mat-form-field>
 
-  <div class="grid-3">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Id Configurazione</mat-label>
-      <input matInput type="number" [(ngModel)]="formData.idConfig">
-    </mat-form-field>
+    <div class="grid-3">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Codice Cabina</mat-label>
-      <input matInput [(ngModel)]="formData.codiceCabina">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Id Configurazione</mat-label>
+        <input matInput type="number" formControlName="idConfigurazione">
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Stato Scheda</mat-label>
-      <input matInput [(ngModel)]="formData.statoScheda">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label> energiaProdottaMhw</mat-label>
+        <input matInput formControlName=" energiaProdottaMhw">
+      </mat-form-field>
 
-  </div>
+      <mat-form-field appearance="outline">
+        <mat-label>energiaPrelevataMhw</mat-label>
+        <input matInput formControlName="energiaPrelevataMhw">
+      </mat-form-field>
 
-  <div class="grid-2">
+    </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Inizio Anno</mat-label>
-      <input matInput [(ngModel)]="formData.inizioAnno">
-    </mat-form-field>
+    <div class="grid-2">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Fine Anno</mat-label>
-      <input matInput [(ngModel)]="formData.fineAnno">
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>energiaImmessaMhw</mat-label>
+        <input matInput formControlName="energiaImmessaMhw">
+      </mat-form-field>
 
-  </div>
+      <mat-form-field appearance="outline">
+        <mat-label>energiaCondivisaMhw</mat-label>
+        <input matInput formControlName="energiaCondivisaMhw">
+      </mat-form-field>
 
-  <div class="actions">
-    <button mat-raised-button color="primary" (click)="salvaModifica()">
-      Salva modifiche
-    </button>
-  </div>
+      <mat-form-field appearance="outline">
+        <mat-label>energiaAutoconsumataMhw</mat-label>
+        <input matInput formControlName="energiaAutoconsumataMhw">
+      </mat-form-field>
+      </div>
+
+      <div>
+      <mat-form-field appearance="outline">
+        <mat-label>tariffaPremioEuro</mat-label>
+        <input matInput formControlName="tariffaPremioEuro">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>corrispettivoPremioEuro</mat-label>
+        <input matInput formControlName="corrispettivoPremioEuro">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>riduzioneCo2Ton</mat-label>
+        <input matInput formControlName="riduzioneCo2Ton">
+      </mat-form-field>
+
+    </div>
+
+    <div>
+        <mat-form-field appearance="outline">
+        <mat-label>calcoloCo2Automatico</mat-label>
+        <input matInput formControlName="calcoloCo2Automatico">
+      </mat-form-field>
+
+        <mat-form-field appearance="outline">
+        <mat-label>note</mat-label>
+        <input matInput formControlName="note">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>emailUtenteLoggato</mat-label>
+        <input matInput formControlName="emailUtenteLoggato">
+      </mat-form-field>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit">
+
+        Salva modifiche
+      </button>
+
+      <button
+        mat-raised-button
+        type="button"
+        (click)="back()">
+
+        Indietro
+      </button>
+
+    </div>
+
+  </form>
 
 </mat-card>

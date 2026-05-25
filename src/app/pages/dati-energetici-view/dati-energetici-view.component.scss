@@ -57,3 +57,39 @@
   gap: 12px;
 
 }
+
+.detail-container {
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.section {
+  margin: 20px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.item {
+  padding: 8px;
+  border-radius: 6px;
+  background: #f5f5f5;
+}
+
+.label {
+  font-weight: 600;
+  display: block;
+  font-size: 12px;
+  color: #666;
+}
+
+.value {
+  font-size: 14px;
+}
+
+.note {
+  font-style: italic;
+}

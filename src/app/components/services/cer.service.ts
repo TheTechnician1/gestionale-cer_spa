@@ -44,6 +44,14 @@ export class CerService {
     return of(this.cerViewMock);
   }
 
+  getCerRicerca(): Observable<any> {
+
+  return this.api.get<any>(
+    'cer/ricerca'
+  );
+}
+
+
   //MOCK DATI
   cerViewMock: CerView[] = [
   {
@@ -103,5 +111,6 @@ export class CerService {
     referente: 'Anna Neri'
   }
 ];
+
 
 }

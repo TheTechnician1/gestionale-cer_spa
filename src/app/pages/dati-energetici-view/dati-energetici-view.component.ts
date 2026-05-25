@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, map } from 'rxjs';
 import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
 import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
-import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 
 @Component({
   selector: 'app-dati-energetici-view',
@@ -11,7 +11,7 @@ import { DatiEnergetici } from 'src/app/core/interfaces/dati-energetici.model';
 })
 export class DatiEnergeticiViewComponent implements OnInit {
 
-  dettaglio: DatiEnergeticiView | null = null;
+  dettaglio$!: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,29 +21,26 @@ export class DatiEnergeticiViewComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    if (!idParam) {
-      console.error('ID non presente nella rotta');
+    if (!id || isNaN(id)) {
+      console.error('ID non valido');
+      this.router.navigate(['/dati-energetici']);
       return;
     }
 
-    const id = Number(idParam);
+    this.dettaglio$ = this.datiService.getDatiById(id).pipe(
+      map((res: any[]) => {
 
-    this.datiService.getDato(id).subscribe({
-      next: (dato) => {
-        if (dato) {
-          this.dettaglio = dato;
-        } else {
-          console.warn('Dato non trovato');
-          this.dettaglio = null;
+        console.log('RISPOSTA API:', res);
+
+        if (!res || res.length === 0) {
+          return null;
         }
-      },
-      error: (err) => {
-        console.error('Errore caricamento dettaglio:', err);
-        this.dettaglio = null;
-      }
-    });
+
+        return res[0];
+      })
+    );
   }
 
   tornaIndietro(): void {

@@ -1,84 +1,88 @@
-<div class="detail-container" *ngIf="dettaglio as d">
+<mat-card class="detail-card" *ngIf="dettaglio$ | async as d; else noData">
 
   <div class="header">
 
-    <h1>Dettaglio Dati Energetici</h1>
+    <div>
+      <h1>Dettaglio Energetico</h1>
+      <p class="subtitle">Anno {{ d.anno }}</p>
+    </div>
 
-    <p>
-      Anno {{ d.anno }}
-    </p>
-
-    <p>
-      ID Dati: {{ d.idDati }}
-    </p>
-
-  </div>
-
-  <!-- INFO GENERALI -->
-  <div class="card">
-
-    <h2>Informazioni Generali</h2>
-
-    <div class="info-grid">
-
-      <div>
-        <strong>ID CER:</strong>
-        {{ d.idCer }}
-      </div>
-
-      <div>
-        <strong>Partita IVA:</strong>
-        {{ d.partitaIva }}
-      </div>
-
-      <div>
-        <strong>Codice Cabina:</strong>
-        {{ d.codiceCabina }}
-      </div>
-
-      <div>
-        <strong>Stato Scheda:</strong>
-        {{ d.statoScheda }}
-      </div>
-
+    <div class="badge" [class.active]="d.attivo === 'S'">
+      {{ d.attivo === 'S' ? 'ATTIVO' : 'NON ATTIVO' }}
     </div>
 
   </div>
 
-  <!-- PERIODI -->
-  <div class="card">
+  <mat-divider></mat-divider>
 
-    <h2>Periodo</h2>
+  <div class="grid">
 
-    <div class="info-grid">
+    <div class="card-box">
+      <h3>Identificativi</h3>
+      <p><b>ID:</b> {{ d.idDati }}</p>
+      <p><b>CER:</b> {{ d.idCer }}</p>
+      <p><b>Cabina:</b> {{ d.idCabina }}</p>
+      <p><b>IVA:</b> {{ d.partitaIva || 'N/D' }}</p>
+    </div>
 
-      <div>
-        <strong>Inizio Anno:</strong>
-        {{ d.inizioAnno }}
+    <div class="card-box energy">
+      <h3>Energia</h3>
+
+      <div class="energy-item">
+        <span>Prodotta</span>
+        <b>{{ d.eProdotta }}</b>
       </div>
 
-      <div>
-        <strong>Fine Anno:</strong>
-        {{ d.fineAnno }}
+      <div class="energy-item">
+        <span>Prelevata</span>
+        <b>{{ d.ePrelevata }}</b>
+      </div>
+
+      <div class="energy-item">
+        <span>Immessa</span>
+        <b>{{ d.eImmessa }}</b>
+      </div>
+
+      <div class="energy-item">
+        <span>Condivisa</span>
+        <b>{{ d.eCondivisa }}</b>
       </div>
 
     </div>
 
+    <div class="card-box economy">
+      <h3>Economico</h3>
+      <p><b>Tariffa:</b> {{ d.tariffaPremioEuro || 0 }} €</p>
+      <p><b>Corrispettivo:</b> {{ d.corrispettivoPremioEuro || 0 }} €</p>
+    </div>
+
+    <div class="card-box environment">
+      <h3>Ambiente</h3>
+      <p><b>CO₂:</b> {{ d.riduzioneCo2Ton || 0 }}</p>
+      <p><b>Auto calcolo:</b> {{ d.calcoloCo2Automatico ? 'Sì' : 'No' }}</p>
+    </div>
+
   </div>
 
-  <!-- BOX INFO -->
-  <div class="card">
+  <mat-divider></mat-divider>
 
-    <h2>Note sistema</h2>
-
-    <p>
-      Stato attuale della scheda: <strong>{{ d.statoScheda }}</strong>
-    </p>
-
+  <div class="notes">
+    <h3>Note</h3>
+    <p>{{ d.note || 'Nessuna nota disponibile' }}</p>
   </div>
 
-  <button (click)="tornaIndietro()">
-    Torna indietro
-  </button>
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="tornaIndietro()">
+      Torna indietro
+    </button>
+  </div>
 
-</div>
+</mat-card>
+
+<ng-template #noData>
+  <mat-card>
+    <mat-card-content>
+      Nessun dato disponibile
+    </mat-card-content>
+  </mat-card>
+</ng-template>
