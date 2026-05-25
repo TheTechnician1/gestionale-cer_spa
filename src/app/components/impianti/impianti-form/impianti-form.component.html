@@ -177,7 +177,7 @@
               -- Seleziona Provincia --
           </option>
           <option *ngFor="let p of provincie$ | async"
-              [ngValue]="p">
+              [ngValue]="p.descrizione">
                   {{p.descrizione}}
           </option>
       </select>

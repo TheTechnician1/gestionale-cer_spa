@@ -127,16 +127,16 @@ export class ImpiantiRicercaComponent {
     
     let filter : Record<string, string | number | boolean>[] = [];
     filter = [
-      this.formRicercaImpianti.get('idImpianto')?.value != null ? { idImpianto: this.formRicercaImpianti.get('idImpianto')?.value } : {},
-      this.formRicercaImpianti.get('idConfigurazione')?.value != null ? { idConfigurazione: this.formRicercaImpianti.get('idConfigurazione')?.value } : {},
-      this.formRicercaImpianti.get('idCer')?.value != null ? { idCer: this.formRicercaImpianti.get('idCer')?.value } : {},
+      this.formRicercaImpianti.get('idImpianto')?.value ? { idImpianto: this.formRicercaImpianti.get('idImpianto')?.value } : {},
+      this.formRicercaImpianti.get('idConfigurazione')?.value  ? { idConfigurazione: this.formRicercaImpianti.get('idConfigurazione')?.value } : {},
+      this.formRicercaImpianti.get('idCer')?.value  ? { idCer: this.formRicercaImpianti.get('idCer')?.value } : {},
       this.formRicercaImpianti.get('codiceCabina')?.value ? { codiceCabina: this.formRicercaImpianti.get('codiceCabina')?.value } : {},
       this.formRicercaImpianti.get('tipologiaImpianto')?.value ? { tipologiaImpianto: this.formRicercaImpianti.get('tipologiaImpianto')?.value } : {},
       this.formRicercaImpianti.get('statoImpianto')?.value ? { statoImpianto: this.formRicercaImpianti.get('statoImpianto')?.value } : {},
       this.formRicercaImpianti.get('regione')?.value ? { regione: this.formRicercaImpianti.get('regione')?.value } : {},
       this.formRicercaImpianti.get('provincia')?.value ? { provincia: this.formRicercaImpianti.get('provincia')?.value } : {},
       this.formRicercaImpianti.get('comune')?.value ? { comune: this.formRicercaImpianti.get('comune')?.value } : {},
-      this.formRicercaImpianti.get('potenzaNominaleKw')?.value != null ? { potenzaNominaleKw: this.formRicercaImpianti.get('potenzaNominaleKw')?.value } : {},
+      this.formRicercaImpianti.get('potenzaNominaleKw')?.value ? { potenzaNominaleKw: this.formRicercaImpianti.get('potenzaNominaleKw')?.value } : {},
       this.formRicercaImpianti.get('presenzaAccumulo')?.value ? { presenzaAccumulo: this.formRicercaImpianti.get('presenzaAccumulo')?.value } : {},
       this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "N"}
     ];

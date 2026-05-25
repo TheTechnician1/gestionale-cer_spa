@@ -149,12 +149,12 @@ export class ImpiantiFormComponent {
       }});
     //FORM OPZIONI COMUNE
     this.formImpianto.get('provincia')!.valueChanges.subscribe({
-      next:(x : CodiceDescrizioneBase)=>{
+      next:(x : string)=>{
 
       this.formImpianto.get('comune')?.setValue(null);
       this.comuni$ = of([]);
       this.comuni$ = x? this.codiciDescrizioneBaseService
-        .getCodiceDescrizioneBase(ComboTables.COMUNI, x.codice): of([]);
+        .getCodiceDescrizioneBase(ComboTables.COMUNI, x): of([]);
       this.formImpianto.get('comune')?.disable({emitEvent : false});
       this.comuni$.subscribe({
         next:(x: CodiceDescrizioneBase[])=>{
@@ -204,9 +204,9 @@ export class ImpiantiFormComponent {
         regione : this.formImpianto.get('regione')?.value,
         provincia : this.formImpianto.get('provincia')?.value,
         comune : this.formImpianto.get('comune')?.value,
-        indirizzo : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('indirizzo')?.value, specifica: ''}),
-        civico : new CodiceDescrizioneBaseModel({codice:'',descrizione: this.formImpianto.get('civico')?.value, specifica : ''}),
-        cap : new CodiceDescrizioneBaseModel({codice : '',descrizione: this.formImpianto.get('cap')?.value, specifica: ''}),
+        indirizzo : this.formImpianto.get('indirizzo')?.value,
+        civico : this.formImpianto.get('civico')?.value,
+        cap : this.formImpianto.get('cap')?.value,
         statoImpianto : this.formImpianto.get('statoImpianto')?.value,
         attivo : this.formImpianto.get('attivo')?.value,
         emailUtenteLoggato : this.utenteService.currentUser?.mail ?? ''
@@ -241,9 +241,9 @@ export class ImpiantiFormComponent {
         regione: this.formImpianto.get('regione')?.value,
         provincia: this.formImpianto.get('provincia')?.value,
         comune: this.formImpianto.get('comune')?.value,
-        indirizzo: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('indirizzo')?.value, specifica: '' }),
-        civico: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('civico')?.value, specifica: '' }),
-        cap: new CodiceDescrizioneBaseModel({ codice: '', descrizione: this.formImpianto.get('cap')?.value, specifica: '' }),
+        indirizzo: this.formImpianto.get('indirizzo')?.value,
+        civico: this.formImpianto.get('civico')?.value,
+        cap: this.formImpianto.get('cap')?.value,
         statoImpianto: this.formImpianto.get('statoImpianto')?.value,
         attivo: this.formImpianto.get('attivo')?.value,
         emailUtenteLoggato: this.utenteService.currentUser?.mail ?? '',
