@@ -1,0 +1,106 @@
+<div *ngIf="isLoading" style="margin: 20px; padding: 20px">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<div
+  *ngIf="!isLoading"
+  class="form-card mat-elevation-z4"
+  style="margin: 20px; padding: 20px; background: #fdfdfd; border-radius: 4px"
+>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <h2>Modifica Anagrafica CER (ID: {{ idCer }})</h2>
+
+    <div
+      class="filtro"
+      style="
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 16px;
+      "
+    >
+      <mat-form-field appearance="fill">
+        <mat-label>Ragione Sociale</mat-label>
+        <input formControlName="ragSociale" matInput type="text" />
+        <mat-error *ngIf="editForm.get('ragSociale')?.hasError('required')"
+          >Obbligatorio</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Forma Giuridica</mat-label>
+        <input formControlName="formaGiuridica" matInput type="text" />
+        <mat-error *ngIf="editForm.get('formaGiuridica')?.hasError('required')"
+          >Obbligatorio</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Codice Fiscale</mat-label>
+        <input
+          formControlName="codFisc"
+          matInput
+          type="text"
+          style="text-transform: uppercase"
+        />
+        <mat-error *ngIf="editForm.get('codFisc')?.hasError('required')"
+          >Obbligatorio</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Partita IVA</mat-label>
+        <input formControlName="pIva" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Comune</mat-label>
+        <input formControlName="comune" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Provincia</mat-label>
+        <input
+          formControlName="provincia"
+          matInput
+          type="text"
+          maxLength="2"
+          style="text-transform: uppercase"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Regione</mat-label>
+        <input formControlName="regione" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Referente Principale</mat-label>
+        <input formControlName="referente" matInput type="text" />
+      </mat-form-field>
+    </div>
+
+    <div
+      class="button-actions"
+      style="margin-top: 20px; display: flex; gap: 8px"
+    >
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="editForm.invalid || isSaving"
+      >
+        Salva Modifiche
+      </button>
+
+      <button
+        mat-raised-button
+        type="button"
+        [disabled]="isSaving"
+        (click)="cancel()"
+      >
+        Indietro / Chiudi
+      </button>
+    </div>
+  </form>
+</div>

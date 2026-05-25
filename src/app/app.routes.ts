@@ -6,6 +6,8 @@ import { LoginComponent } from './core/components/login/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { UtenteComponent } from './core/components/utente/utente.component';
 import { NotAuthorizedComponent } from './core/components/not-authorized/not-authorized.component';
+import { DettaglioCerComponent } from './components/cer/dettaglio-cer/dettaglio-cer.component';
+import { ModificaCerComponent } from './components/cer/modifica-cer/modifica-cer.component';
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   {
@@ -18,6 +20,18 @@ export const FULL_LAYOUT_ROUTES: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     data: { role: ['ADMIN', 'GEST', 'GUEST'] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cer/dettaglio-cer/:id',
+    component: DettaglioCerComponent,
+    data: { role: ['ADMIN', 'GEST', 'GUEST'] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cer/modifica-cer/:id',
+    component: ModificaCerComponent,
+    data: { role: ['ADMIN', 'GEST'] },
     canActivate: [AuthGuard],
   },
   {

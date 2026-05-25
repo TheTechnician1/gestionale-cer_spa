@@ -1,0 +1,87 @@
+<div *ngIf="isLoading" style="margin: 20px; padding: 20px">
+  <mat-spinner diameter="40"></mat-spinner>
+</div>
+
+<div
+  *ngIf="!isLoading && cerData"
+  class="form-card mat-elevation-z4"
+  style="margin: 20px; padding: 20px; background: #fdfdfd; border-radius: 4px"
+>
+  <h2>Visualizzazione Dati Scheda CER (ID: {{ idCer }})</h2>
+
+  <div
+    style="
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    "
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Ragione Sociale</mat-label>
+      <input [value]="cerData.ragSociale" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Forma Giuridica</mat-label>
+      <input [value]="cerData.formaGiuridica" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Codice Fiscale</mat-label>
+      <input
+        [value]="cerData.codFisc"
+        matInput
+        readonly
+        style="text-transform: uppercase"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Partita IVA</mat-label>
+      <input [value]="cerData.pIva || ''" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Comune</mat-label>
+      <input [value]="cerData.comune" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Provincia</mat-label>
+      <input [value]="cerData.provincia" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Regione</mat-label>
+      <input [value]="cerData.regione" matInput readonly />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Referente Principale</mat-label>
+      <input [value]="cerData.referente || ''" matInput readonly />
+    </mat-form-field>
+  </div>
+
+  <div class="button-actions" style="margin-top: 20px; display: flex; gap: 8px">
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      [routerLink]="['/cer/modifica-cer', idCer]"
+    >
+      Modifica Dati
+    </button>
+    <button mat-raised-button type="button" (click)="goBack()">
+      Indietro / Chiudi
+    </button>
+  </div>
+</div>
+
+<div
+  *ngIf="!isLoading && !cerData"
+  style="margin: 20px"
+  class="alert alert-warning"
+>
+  Nessun dato trovato per la Comunità Energetica richiesta.
+</div>

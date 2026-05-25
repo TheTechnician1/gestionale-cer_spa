@@ -44,7 +44,13 @@ export class UtenteService {
       return null;
     }
 
-    console.log('getRole(): Stato utente corrente caricato:', state);
+    // 📝 TEMP DEBUGGING LOGS: Look at these in your browser developer console (F12)
+    console.log('--- AUTHENTICATION GUARD CHECK ---');
+    console.log('Full State Object:', state);
+    console.log('Is there an inner utente?:', !!state.utente);
+    if (state.utente)
+      console.log('Inner Utente Role Field:', state.utente.ruolo);
+    console.log('----------------------------------');
 
     if (state.utente && state.utente.ruolo) {
       console.log(
