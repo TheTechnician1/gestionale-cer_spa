@@ -113,9 +113,10 @@ export class ImpiantiFormComponent implements OnInit {
   caricaConfigurazioni(idCer: number): void {
     this.configurazioneService.ricercaConfigurazione({ idCer }).subscribe({
       next: (data) => {
+        console.log("configurazioniiii", data);
         this.configurazioniList = (data ?? []).map((c: any) => ({
-          id: c.idConfigurazione,
-          descrizione: c.codiceCabina ?? c.ragioneSociale ?? c.idConfigurazione,
+          id: c.idConfig,
+          descrizione: c.codiceCabina ?? c.ragioneSociale ?? c.idConfig,
           codiceCabina: c.codiceCabina
         }));
 

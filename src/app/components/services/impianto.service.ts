@@ -2,10 +2,10 @@ import { Injectable } from "@angular/core";
 import { Impianto } from "../../core/interfaces/impianto.model";
 import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
-import { Observable } from "rxjs";
+//import { Observable } from "rxjs";
 
 
-
+/*
 @Injectable({
   providedIn: "root",
 })
@@ -42,12 +42,12 @@ createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<a
   return this.api.post<any>(endpoint, payload, { ...options, params: { emailUtenteLoggato: email ?? '' } });
 }
 }
+*/
 
 
 
-/*
-import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+//import { Injectable } from "@angular/core";
+ import { Observable, of } from "rxjs";
 import { HttpClient } from '@angular/common/http';
 //import { Impianto } from "src/app/core/interfaces/impianto.model";
 //import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
@@ -208,4 +208,3 @@ export class ImpiantoService {
   }
 }
 
-*/

@@ -28,7 +28,7 @@ export const DATI_ENERGETICI_ROUTES: Routes = [
   {
     path: 'dettaglio-dati/:id',
     component: VisualizzaComponent,
-    data: { role: ['ADMIN', 'GEST'] },
+    data: { role: ['ADMIN', 'GEST', 'GUEST'] },
     canActivate: [AuthGuard],
   },
 ];

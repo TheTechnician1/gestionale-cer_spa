@@ -113,6 +113,9 @@ export class ImpiantiModificaComponent implements OnInit {
           });
         }
 
+        console.log('isDettaglio:', this.isDettaglio);
+console.log('datiEnergetici:', this.datiEnergetici);
+
         this.form.get('idImpianto')?.disable();
         this.form.get('idCer')?.disable();
         this.form.get('idConfigurazione')?.disable();
@@ -171,7 +174,7 @@ export class ImpiantiModificaComponent implements OnInit {
       .subscribe();
   }
 
-  apriDettaglioDati(idDati: number): void {
+ apriDettaglioDati(idDati: number): void {
   this.router.navigate(['/dati-energetici/dettaglio-dati', idDati]);
 }
 

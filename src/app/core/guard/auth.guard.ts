@@ -24,6 +24,9 @@ export class AuthGuard implements CanActivate {
 
     const userRole = this.auth.getRole() as string | null;
 
+console.log('Ruolo utente:', userRole);
+console.log('Ruoli permessi:', allowedRoles);
+
     if (!userRole || !allowedRoles.includes(userRole)) {
       return this.router.createUrlTree(["/not-authorized"]);
     }

@@ -6,11 +6,11 @@ import { ApiRequestOptions, ApiService } from 'src/app/core/services/api.service
   providedIn: 'root'
 })
 export class ConfigurazioneService {
-  /*
+  
      private mockConfigurazioni: any[] = [
-  { idConfigurazione: 200, codiceCabina: 'ABC123DEF45', idCer: 100 },
-  { idConfigurazione: 201, codiceCabina: 'XYZ987LMN12', idCer: 101 },
-  { idConfigurazione: 202, codiceCabina: 'KLM456QWE78', idCer: 102 },
+  { idConfig: 200, codiceCabina: 'ABC123DEF45', idCer: 100 },
+  { idConfig: 201, codiceCabina: 'XYZ987LMN12', idCer: 101 },
+  { idConfig: 202, codiceCabina: 'KLM456QWE78', idCer: 102 },
 
   ];
 
@@ -28,7 +28,7 @@ export class ConfigurazioneService {
     return this.api.get<any[]>(endpoint, undefined, options);
   }
 }
-*/
+/*
   constructor(private api: ApiService) {}
 
   ricercaConfigurazione(payload: any, options: ApiRequestOptions = {}): Observable<any[]> {
@@ -41,3 +41,4 @@ export class ConfigurazioneService {
     return this.api.get<any[]>(endpoint, undefined, options);
   }
 }
+*/

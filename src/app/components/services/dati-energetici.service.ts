@@ -16,7 +16,7 @@ import { UtenteService } from 'src/app/core/services/utente.service';
 export class DatiEnergeticiService {
   private readonly basePath = 'api/dati-energetici';
 
-  public USE_MOCK_DATA = false;
+  public USE_MOCK_DATA = true;
 
   private mockDatabase: DatiEnergetici[] = [];
 
@@ -258,26 +258,7 @@ export class DatiEnergeticiService {
     return this.api.get<boolean>(`${this.basePath}/check`, params);
   }
 
-  // --- metodi privati
-
-  private initializeMockDatabase(): void {
-  const configurazioni = [200, 201, 202];
-  const cer = [100, 101, 102];
-  for (let i = 1; i <= 6; i++) {
-    this.mockDatabase.push(
-      new DatiEnergeticiModel({
-        idDati: i,
-        anno: (2019 + i).toString(),
-        idCer: cer[i % 3],
-        idConfigurazione: configurazioni[i % 3],
-        energiaProdotta: Math.floor(Math.random() * 500) + 100,
-        energiaPrelevata: Math.floor(Math.random() * 400) + 50,
-        energiaImmessa: Math.floor(Math.random() * 300) + 30,
-        energiaCondivisa: Math.floor(Math.random() * 200) + 10,
-        energiaAutoCons: Math.floor(Math.random() * 150) + 5,
-        ridEmCo2: `${(Math.random() * 15).toFixed(2)}`,
-        flgCancellazione: 'N',
-      }),
+ private initializeMockDatabase(): void {
     const rawBackendJson = [
       { idDati: 1, anno: '2025', idCer: 42, idConfig: 46, statoScheda: 'N' },
       { idDati: 2, anno: '2012', idCer: 43, idConfig: 1, statoScheda: 'N' },
@@ -290,6 +271,8 @@ export class DatiEnergeticiService {
       { idDati: 10, anno: '2025', idCer: 45, idConfig: 45, statoScheda: 'N' },
       { idDati: 12, anno: '2025', idCer: 41, idConfig: 1, statoScheda: 'N' },
       { idDati: 13, anno: '2025', idCer: 42, idConfig: 1, statoScheda: 'S' },
+      { idDati: 21, anno: '2024', idCer: 42, idConfig: 202, statoScheda: 'N' },
+      { idDati: 22, anno: '2025', idCer: 42, idConfig: 202, statoScheda: 'N' },
     ];
 
     this.mockDatabase = rawBackendJson.map(
@@ -309,7 +292,6 @@ export class DatiEnergeticiService {
         }),
     );
   }
-}
 
   private fallbackSingleMock(id: number): DatiEnergetici {
     return new DatiEnergeticiModel({
