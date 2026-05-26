@@ -23,6 +23,7 @@ export class DatiEnergeticiService {
   constructor(
     private http: HttpClient,
     private api: ApiService,
+    private utenteService: UtenteService,
   ) {
     this.initializeMockDatabase();
   }
@@ -132,6 +133,9 @@ export class DatiEnergeticiService {
   /**
    * POST /api/dati-energetici
    */
+  /**
+   * POST /api/dati-energetici
+   */
   createDatiEnergetici(
     payload: any,
     emailLoggato: string,
@@ -164,23 +168,29 @@ export class DatiEnergeticiService {
       return of('Record inizializzato con successo (MOCK)!');
     }
 
+    // 1. Run your existing converter safely
     const backendPayload = this.convertToBackendDto(payload, emailLoggato);
-    return this.api.postText(
-      `${this.basePath}/inserimento`,
+
+    console.log('FINAL PAYLOAD OUTBOUND FORWARD TO HTTP PORT:', backendPayload);
+
+    // 2. Use raw http.post directly instead of this.api.postText to bypass the wrapper dropping the email
+    return this.http.post(
+      `http://localhost:8081/${this.basePath}/inserimento`,
       backendPayload,
-      options,
+      { responseType: 'text' },
     );
   }
 
   /**
    * PUT /api/dati-energetici/{id}
    */
-  editDatiEnergetici(
-    id: number,
-    payload: any,
-    emailLoggato: string,
-    options: ApiRequestOptions = {},
-  ): Observable<string> {
+  editDatiEnergetici(id: number, payload: any, email: string): Observable<any> {
+    let resolvedEmail = email;
+    if (!resolvedEmail) {
+      const userState = this.utenteService.currentUser;
+      resolvedEmail = userState?.utente?.mail || userState?.mail || '';
+    }
+
     if (this.USE_MOCK_DATA) {
       console.warn(
         `⚠️ DatiEnergeticiService: Simulating Modification locally for ID: ${id}`,
@@ -197,11 +207,13 @@ export class DatiEnergeticiService {
       return of('Modifica completata con successo (MOCK)!');
     }
 
-    const backendPayload = this.convertToBackendDto(payload, emailLoggato);
-    return this.api.putText(
-      `${this.basePath}/${id}/modifica`,
-      backendPayload,
-      options,
+    const backendBody = this.convertToBackendDto(payload, email);
+    return this.http.put(
+      `http://localhost:8081/api/dati-energetici/${id}/modifica`,
+      backendBody,
+      {
+        responseType: 'text',
+      },
     );
   }
 
@@ -213,7 +225,7 @@ export class DatiEnergeticiService {
    */
   deleteDatiEnergetici(
     id: number,
-    emailLoggato: string,
+    email: string,
     options: ApiRequestOptions = {},
   ): Observable<string> {
     if (this.USE_MOCK_DATA) {
@@ -227,15 +239,17 @@ export class DatiEnergeticiService {
       return of('Record eliminato logicamente (MOCK)');
     }
 
-    const queryParams = new HttpParams().set(
-      'emailUtenteLoggato',
-      emailLoggato,
-    );
+    // const queryParams = new HttpParams().set(
+    //   'emailUtenteLoggato',
+    //   emailLoggato,
+    // );
 
-    return this.http.delete(`${this.basePath}/${id}/disattiva`, {
-      params: queryParams,
-      responseType: 'text',
-    });
+    return this.http.delete(
+      `http://localhost:8081/api/dati-energetici/${id}/disattiva?emailUtenteLoggato=${email}`,
+      {
+        responseType: 'text',
+      },
+    );
   }
 
   /**
@@ -309,22 +323,111 @@ export class DatiEnergeticiService {
     });
   }
 
-  private convertToBackendDto(model: DatiEnergetici, emailLoggato: string) {
-    return {
-      idSchedaEnergetica: model.idDati,
-      idCer: model.idCer,
-      idConfigurazione: model.idConfigurazione,
-      annoRiferimento: model.anno,
-      energiaProdottaMwh: model.energiaProdotta,
-      energiaPrelevataMwh: model.energiaPrelevata,
-      energiaImmessaMwh: model.energiaImmessa,
-      energiaCondivisaMwh: model.energiaCondivisa,
-      energiaAutoconsumataMwh: model.energiaAutoCons,
-      tariffaPremioEuro: model.tariffaPremium,
-      corrispettivoPremioEuro: model.corrPremioOtt,
-      riduzioneCo2Ton: model.ridEmCo2,
+  private convertToBackendDto(
+    model: DatiEnergetici | any,
+    emailLoggato?: string,
+  ): any {
+    let finalEmail = typeof emailLoggato === 'string' ? emailLoggato : '';
+
+    if (!finalEmail || finalEmail.trim() === '') {
+      const userState = this.utenteService?.currentUser;
+      finalEmail =
+        userState?.utente?.email ||
+        userState?.utente?.mail ||
+        userState?.email ||
+        userState?.mail ||
+        '';
+    }
+
+    if (!finalEmail || finalEmail.trim() === '') {
+      finalEmail = 'tastymeat@example.com';
+    }
+
+    const outboundPayload = {
+      idSchedaEnergetica: model.idDati
+        ? Number(model.idDati)
+        : model.idSchedaEnergetica
+          ? Number(model.idSchedaEnergetica)
+          : 0,
+      idCer: model.idCer ? Number(model.idCer) : 0,
+      idConfigurazione: model.idConfigurazione
+        ? Number(model.idConfigurazione)
+        : 0,
+
+      annoRiferimento: model.anno
+        ? model.anno.toString()
+        : model.annoRiferimento
+          ? model.annoRiferimento.toString()
+          : '2023',
+
+      energiaProdottaMwh:
+        model.energiaProdotta !== undefined && model.energiaProdotta !== null
+          ? Number(model.energiaProdotta)
+          : model.energiaProdottaMwh
+            ? Number(model.energiaProdottaMwh)
+            : 0,
+      energiaPrelevataMwh:
+        model.energiaPrelevata !== undefined && model.energiaPrelevata !== null
+          ? Number(model.energiaPrelevata)
+          : model.energiaPrelevataMwh
+            ? Number(model.energiaPrelevataMwh)
+            : 0,
+      energiaImmessaMwh:
+        model.energiaImmessa !== undefined && model.energiaImmessa !== null
+          ? Number(model.energiaImmessa)
+          : model.energiaImmessaMwh
+            ? Number(model.energiaImmessaMwh)
+            : 0,
+      energiaCondivisaMwh:
+        model.energiaCondivisa !== undefined && model.energiaCondivisa !== null
+          ? Number(model.energiaCondivisa)
+          : model.energiaCondivisaMwh
+            ? Number(model.energiaCondivisaMwh)
+            : 0,
+
+      energiaAutoconsumataMwh:
+        model.energiaAutoCons !== undefined &&
+        model.energiaAutoCons !== null &&
+        model.energiaAutoCons !== 0
+          ? Number(model.energiaAutoCons)
+          : model.energiaAutoconsumataMwh
+            ? Number(model.energiaAutoconsumataMwh)
+            : Math.max(
+                0,
+                Number(model.energiaProdotta || model.energiaProdottaMwh || 0) -
+                  Number(model.energiaImmessa || model.energiaImmessaMwh || 0),
+              ),
+
+      tariffaPremioEuro:
+        model.tariffaPremium !== undefined && model.tariffaPremium !== null
+          ? Number(model.tariffaPremium)
+          : model.tariffaPremioEuro
+            ? Number(model.tariffaPremioEuro)
+            : 0.0,
+      corrispettivoPremioEuro:
+        model.corrPremioOtt !== undefined && model.corrPremioOtt !== null
+          ? Number(model.corrPremioOtt)
+          : model.corrispettivoPremioEuro
+            ? Number(model.corrispettivoPremioEuro)
+            : 0.0,
+
+      riduzioneCo2Ton: model.ridEmCo2
+        ? model.ridEmCo2.toString()
+        : model.riduzioneCo2Ton
+          ? model.riduzioneCo2Ton.toString()
+          : '0.00',
+
+      calcoloCo2Automatico: model.calcoloCo2Automatico ?? true,
+      note: model.note ?? '',
       flgCancellazione: model.flgCancellazione ?? 'N',
-      emailUtenteLoggato: emailLoggato,
+
+      emailUtenteLoggato: finalEmail,
     };
+
+    console.log(
+      'VERIFIED RAW PAYLOAD DEPARTING SERVICE MAPPER:',
+      outboundPayload,
+    );
+    return outboundPayload;
   }
 }
