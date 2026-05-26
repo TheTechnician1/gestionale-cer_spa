@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -53,24 +53,29 @@ export type ChartOptions = {
 export class DonutChartComponent {
   @Input() values : number[] = [];
   @Input() labels : string[] = [];
-  public chartOptions: Partial<ChartOptions> = {
-    series: this.values,
-    chart: {
-      type: 'donut',
-    },
-    labels: this.labels,
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200,
-          },
-          legend: {
-            position: 'bottom',
+  
+  public chartOptions: Partial<ChartOptions> = {};
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.chartOptions = {
+      series: this.values,
+      chart: {
+        type: 'donut',
+      },
+      labels: this.labels,
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: 'bottom',
+            },
           },
         },
-      },
-    ],
-  };
+      ],
+    };
+  }
 }
