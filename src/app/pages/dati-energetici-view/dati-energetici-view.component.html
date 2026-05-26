@@ -15,51 +15,88 @@
 
   <mat-divider></mat-divider>
 
-  <div class="grid">
+  <div class="page">
 
-    <div class="card-box">
-      <h3>Identificativi</h3>
-      <p><b>ID:</b> {{ d.idDati }}</p>
-      <p><b>CER:</b> {{ d.idCer }}</p>
-      <p><b>Cabina:</b> {{ d.idCabina }}</p>
-      <p><b>IVA:</b> {{ d.partitaIva || 'N/D' }}</p>
-    </div>
+    <div class="grid">
 
-    <div class="card-box energy">
-      <h3>Energia</h3>
+      <div class="card-box">
+        <h3>Identificativi</h3>
 
-      <div class="energy-item">
-        <span>Prodotta</span>
-        <b>{{ d.eProdotta }}</b>
+        <div class="info-row">
+          <span>ID</span>
+          <strong>{{ d.idDati }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>CER</span>
+          <strong>{{ d.configurazioneCer?.cer?.ragSociale || 'N/D' }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Cabina</span>
+          <strong>{{ d.configurazioneCer?.codiceCabina || 'N/D' }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>IVA</span>
+          <strong>{{ d.configurazioneCer?.cer?.pIva || 'N/D' }}</strong>
+        </div>
       </div>
 
-      <div class="energy-item">
-        <span>Prelevata</span>
-        <b>{{ d.ePrelevata }}</b>
+      <div class="card-box">
+        <h3>Energia</h3>
+
+        <div class="energy-item">
+          <span>Prodotta</span>
+          <strong>{{ d.eProdotta }}</strong>
+        </div>
+
+        <div class="energy-item">
+          <span>Prelevata</span>
+          <strong>{{ d.ePrelevata }}</strong>
+        </div>
+
+        <div class="energy-item">
+          <span>Immessa</span>
+          <strong>{{ d.eImmessa }}</strong>
+        </div>
+
+        <div class="energy-item">
+          <span>Condivisa</span>
+          <strong>{{ d.eCondivisa }}</strong>
+        </div>
       </div>
 
-      <div class="energy-item">
-        <span>Immessa</span>
-        <b>{{ d.eImmessa }}</b>
+      <div class="card-box">
+        <h3>Economico</h3>
+
+        <div class="info-row">
+          <span>Tariffa</span>
+          <strong>{{ d.tariffaPremioEuro || 0 }} €</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Corrispettivo</span>
+          <strong>{{ d.corrispettivoPremioEuro || 0 }} €</strong>
+        </div>
       </div>
 
-      <div class="energy-item">
-        <span>Condivisa</span>
-        <b>{{ d.eCondivisa }}</b>
+      <div class="card-box">
+        <h3>Ambiente</h3>
+
+        <div class="info-row">
+          <span>CO₂</span>
+          <strong>{{ d.riduzioneCo2Ton || 0 }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Auto calcolo</span>
+          <strong>
+            {{ d.calcoloCo2Automatico ? 'Sì' : 'No' }}
+          </strong>
+        </div>
       </div>
 
-    </div>
-
-    <div class="card-box economy">
-      <h3>Economico</h3>
-      <p><b>Tariffa:</b> {{ d.tariffaPremioEuro || 0 }} €</p>
-      <p><b>Corrispettivo:</b> {{ d.corrispettivoPremioEuro || 0 }} €</p>
-    </div>
-
-    <div class="card-box environment">
-      <h3>Ambiente</h3>
-      <p><b>CO₂:</b> {{ d.riduzioneCo2Ton || 0 }}</p>
-      <p><b>Auto calcolo:</b> {{ d.calcoloCo2Automatico ? 'Sì' : 'No' }}</p>
     </div>
 
   </div>

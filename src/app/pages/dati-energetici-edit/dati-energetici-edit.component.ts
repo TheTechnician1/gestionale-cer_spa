@@ -11,6 +11,7 @@ import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view
 })
 export class DatiEnergeticiEditComponent implements OnInit {
 
+  id? : number;
   form!: FormGroup;
 
   constructor(
@@ -42,15 +43,15 @@ export class DatiEnergeticiEditComponent implements OnInit {
   emailUtenteLoggato: ['']
     });
 
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
 
-    if (!id || isNaN(id)) {
+    if (!this.id || isNaN(this.id)) {
       console.warn('ID non valido');
       this.router.navigate(['/dati-energetici']);
       return;
     }
 
-    this.service.getDato(id).subscribe({
+    this.service.getDato(this.id).subscribe({
   next: (res: DatiEnergeticiView) => {
 
     console.log('EDIT DATA:', res);
@@ -95,7 +96,7 @@ export class DatiEnergeticiEditComponent implements OnInit {
 
     const payload = this.form.getRawValue();
 
-    this.service.putDato(payload.idDati, payload).subscribe({
+    this.service.putDato(this.id, payload).subscribe({
 
       next: () => {
 

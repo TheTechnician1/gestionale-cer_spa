@@ -21,7 +21,7 @@ export class HttpStatusInterceptor implements HttpInterceptor {
           return;
         }
 
-        this.toastService.showFromHttpSuccess(req, event);
+        // this.toastService.showFromHttpSuccess(req, event);
       }),
       catchError((error: HttpErrorResponse) => {
         if (!skipToast) {

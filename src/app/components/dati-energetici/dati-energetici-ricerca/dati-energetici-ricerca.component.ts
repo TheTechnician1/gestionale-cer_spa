@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { DialogCloseReason } from
+import { ConfirmationDialogComponent, DialogCloseReason } from
 "src/app/shared/components/confirmation-dialog/confirmation-dialog.component";
 
 import { CerService } from "../../services/cer.service";
@@ -22,6 +22,9 @@ import { DatiEnergeticiView } from "src/app/core/interfaces/dati-energetici-view
   styleUrls: ["./dati-energetici-ricerca.component.scss"],
 })
 export class DatiEnergeticiRicercaComponent implements OnInit {
+
+  @ViewChild("confirmationDialog") confirmationDialog!: ConfirmationDialogComponent;
+
 
   formRicerca!: FormGroup;
 
@@ -132,11 +135,14 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
 
 eliminaDati(dato: any): void {
 
+    console.log("PEPPINO COMPLETO", dato);
+  console.log("PEPPINO IMP", dato.payload?.idSchedaEnergetica);
+
   this.datiEnergetici$ = this.datiEnergetici$?.pipe(
 
     map(lista =>
       lista.filter(
-        d => d.idSchedaEnergetica !== dato.idDati
+        d => d.idSchedaEnergetica !== dato.payload?.idSchedaEnergetica
         )
     )
 
@@ -144,8 +150,14 @@ eliminaDati(dato: any): void {
 
 }
 
-  onCancel(): void {
-  console.log("Dialog annullato");
+openDialog(dato: DatiEnergetici): void {
+    this.confirmationDialog.open({
+      payload: dato,
+    });
+  }
+
+  onCancel(event: any): void {
+  console.log("Dialog annullato", event);
 }
 
 onClosed(reason: DialogCloseReason): void {

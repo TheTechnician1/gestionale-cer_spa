@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { DatiEnergetici } from "src/app/core/interfaces/dati-energetici.model";
 import { CerService } from "../../services/cer.service";
+import { DatiEnergeticiService } from "../../services/dati-energetici.service";
 
 @Component({
   selector: "app-dati-energetici-form",
@@ -23,21 +24,29 @@ export class DatiEnergeticiFormComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-     private cerService: CerService 
+     private cerService: CerService,
+     private datiService: DatiEnergeticiService
   ) {}
 
   ngOnInit(): void {
 
     this.form = this.fb.group({
-      idCer: [null, Validators.required],
-      anno: [new Date().getFullYear(), Validators.required],
-      eProdotta: [0, Validators.required],
-      ePrelevata: [0],
-      eImmessa: [0],
-      eCondivisa: [0],
-      eAutoCons: [0],
-      tariffaPremium: [0],
-      note: [""]
+      idSchedaEnergetica:[''],
+      idCer:[''],
+      idConfigurazione:[''],
+      annoRiferimento: [''],
+      energiaProdottaMhw: [''],
+      energiaCondivisaMhw:[''],
+      energiaPrelevataMhw: [''],
+      energiaImmessaMhw: [''],
+      corrispettivoPremioEuro: [''],
+      riduzioneCo2Ton: [''],
+      energiaAutoconsumataMhw: [''],
+      calcoloCo2Automatico: [''],
+      attivo: [''],
+      tariffaPremioEuro: [''],
+      note: [""],
+      emailUtenteLoggato: ['']
     });
 
 
@@ -81,17 +90,40 @@ save(): void {
     return;
   }
 
-  const payload = {
-    ...this.form.value,
-    idDati: this.idDati 
-  };
+  // const payload = {
+  //   ...this.form.value,
+  //   idDati: this.idDati
+  // };
+  const v = this.form.value;
 
-  console.log("paylod:"+payload);
-  
+const payload = {
+  ...v,
+
+  idSchedaEnergetica: this.idDati,
+
+  idCer: v.idCer ? Number(v.idCer) : null,
+
+  energiaProdottaMhw: Number(v.energiaProdottaMhw) || 0,
+  energiaPrelevataMhw: Number(v.energiaPrelevataMhw) || 0,
+  energiaImmessaMhw: Number(v.energiaImmessaMhw) || 0,
+  energiaCondivisaMhw: Number(v.energiaCondivisaMhw) || 0,
+  energiaAutoconsumataMhw: Number(v.energiaAutoconsumataMhw) || 0,
+
+  tariffaPremioEuro: Number(v.tariffaPremioEuro) || 0,
+
+  calcoloCo2Automatico: v.calcoloCo2Automatico === true,
+
+  riduzioneCo2Ton: v.riduzioneCo2Ton || null,
+
+  note: v.note || null,
+  attivo: v.attivo || "S"
+};
+
+  console.log("payload:", payload);
 
   const request$ = this.isEdit
     ? this.cerService.putCer(this.idDati!, payload)
-    : this.cerService.getCerRicerca();
+    : this.datiService.createDatiEnergetici(payload);
 
   request$.subscribe({
     next: () => {

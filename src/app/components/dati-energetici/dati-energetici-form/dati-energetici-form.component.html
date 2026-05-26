@@ -13,60 +13,100 @@
 
       <div class="grid">
 
-         <div class="grid-3">
-       <mat-form-field appearance="outline">
-  <mat-label>CER</mat-label>
-  <input matInput formControlName="idCer">
-</mat-form-field>
+        <div class="grid-3">
+          <mat-form-field appearance="outline">
+            <mat-label>CER associata</mat-label>
+            <input matInput type="number" formControlName="idCer">
+          </mat-form-field>
+        </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Anno</mat-label>
-          <input matInput type="number" formControlName="anno">
+          <input matInput type="number" formControlName="annoRiferimento">
         </mat-form-field>
-        </div>
 
+      </div>
 
-        <div class="grid-2">
+      <div class="grid-2">
+
         <mat-form-field appearance="outline">
           <mat-label>Energia Prodotta</mat-label>
-          <input matInput type="number" formControlName="eProdotta">
+          <input matInput type="number" formControlName="energiaProdottaMhw">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Energia Prelevata</mat-label>
-          <input matInput type="number" formControlName="ePrelevata">
+          <input matInput type="number" formControlName="energiaPrelevataMhw">
         </mat-form-field>
-        </div>
+
+      </div>
+
+      <div class="grid-2">
 
         <mat-form-field appearance="outline">
           <mat-label>Energia Immessa</mat-label>
-          <input matInput type="number" formControlName="eImmessa">
+          <input matInput type="number" formControlName="energiaImmessaMhw">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Energia Condivisa</mat-label>
-          <input matInput type="number" formControlName="eCondivisa">
+          <input matInput type="number" formControlName="energiaCondivisaMhw">
         </mat-form-field>
 
-        <div class="grid-1">
+      </div>
+
+      <div class="grid-1">
 
         <mat-form-field appearance="outline">
           <mat-label>Autoconsumo</mat-label>
-          <input matInput type="number" formControlName="eAutoCons">
+          <input matInput type="number" formControlName="energiaAutoconsumataMhw">
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Tariffa Premium</mat-label>
-          <input matInput type="number" formControlName="tariffaPremium">
-        </mat-form-field>
-        </div>
-
-        <mat-form-field appearance="outline" class="full">
-               <mat-label>Stato</mat-label>
-          <textarea matInput rows="3" formControlName="note"></textarea>
+          <input matInput type="number" formControlName="tariffaPremioEuro">
         </mat-form-field>
 
       </div>
+      <div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Configurazione</mat-label>
+          <input matInput type="number" formControlName="idConfigurazione">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+        <mat-label>Riduzione Co2</mat-label>
+        <textarea matInput rows="3" formControlName="riduzioneCo2Ton"></textarea>
+      </mat-form-field>
+
+        </div>
+
+         <div>
+       <mat-form-field appearance="outline">
+          <mat-label>Corrispettivo Premio Euro</mat-label>
+          <input matInput type="number" formControlName="corrispettivoPremioEuro">
+        </mat-form-field>
+
+          <mat-form-field appearance="outline">
+          <mat-label>Energia Condivisa</mat-label>
+          <input matInput type="number" formControlName="energiaCondivisaMhw">
+        </mat-form-field>
+
+        </div>
+<div>
+
+  <mat-form-field appearance="outline" class="full">
+        <mat-label>Email</mat-label>
+        <textarea matInput rows="3" formControlName="emailUtenteLoggato"></textarea>
+      </mat-form-field>
+      </div>
+
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Note</mat-label>
+        <textarea matInput rows="3" formControlName="note"></textarea>
+      </mat-form-field>
 
     </form>
 

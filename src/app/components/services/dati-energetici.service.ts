@@ -95,7 +95,7 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
   ): Observable<DatiEnergeticiView> {
 
     const endpoint =
-      `datiEnergetici/visualizza/${id}`;
+      `/api/dati-energetici/${id}`;
 
     return this.api.get<
       DatiEnergeticiView
@@ -114,6 +114,8 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
     options
   );
 }
+
+
   // =========================================
   // VERSIONE MOCK COMMENTATA
   // =========================================
@@ -148,18 +150,16 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
   createDatiEnergetici(
     payload: DatiEnergetici,
     options: ApiRequestOptions = {}
-  ): Observable<DatiEnergetici> {
+  ): Observable<string> {
 
     console.log(
       "Dati Energetici creati con successo"
     );
 
     const endpoint =
-      "datiEnergetici/inserimento";
+      "/api/dati-energetici/create";
 
-    return this.api.post<
-      DatiEnergetici
-    >(
+    return this.api.postText(
       endpoint,
       payload,
       options
@@ -172,7 +172,7 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
   // =========================================
 
   putDato(
-    id: number,
+    id: number | undefined,
     payload: DatiEnergetici,
     options: ApiRequestOptions = {}
   ): Observable<DatiEnergetici> {
@@ -183,8 +183,8 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
     );
 
     const endpoint =
-      `datiEnergetici/modifica/${id}`;
-
+      `api/dati-energetici/edit/${id}`;
+    console.log("filtro inviato al back: " + JSON.stringify(payload));
     return this.api.put<
       DatiEnergetici
     >(
@@ -194,6 +194,19 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
     );
 
   }
+
+  getById(
+  id: number,
+  options: ApiRequestOptions = {}
+): Observable<DatiEnergetici> {
+
+  const endpoint =
+    `/api/dati-energetici/{id}`;
+
+  return this.api.get<DatiEnergetici>(
+    endpoint
+  );
+}
 
   // =========================================
   // VERSIONE MOCK COMMENTATA

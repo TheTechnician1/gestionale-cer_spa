@@ -232,7 +232,8 @@
           edit
         </mat-icon>
 
-        <mat-icon (click)="eliminaDati(dato)">
+        <!-- (click)="eliminaDati(dato)" -->
+        <mat-icon  (click)="openDialog(dato)">
           delete
         </mat-icon>
 
@@ -284,6 +285,6 @@
   [confirmText]="'Elimina'"
   [cancelText]="'Annulla'"
   (confirm)="eliminaDati($event)"
-  (cancel)="onCancel()"
+  (cancel)="onCancel($event)"
   (closed)="onClosed($event)">
 </app-confirmation-dialog>
