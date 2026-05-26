@@ -40,6 +40,27 @@
       "
     >
       <mat-form-field appearance="fill">
+        <mat-label>ID CER</mat-label>
+        <input
+          [(ngModel)]="filtro.idCer"
+          matInput
+          type="number"
+          placeholder="Es. 43"
+          (keyup.enter)="caricaDati()"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>ID Configurazione</mat-label>
+        <input
+          [(ngModel)]="filtro.idConfigurazione"
+          matInput
+          type="number"
+          placeholder="Es. 105"
+          (keyup.enter)="caricaDati()"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
         <mat-label>Anno</mat-label>
         <input
           [(ngModel)]="filtro.anno"
@@ -63,6 +84,18 @@
     </div>
 
     <div style="display: flex; gap: 10px; justify-content: end">
+      <div class="button-filtro">
+        <button
+          mat-stroked-button
+          [color]="isMockMode ? 'warn' : 'accent'"
+          type="button"
+          style="margin-right: 12px; font-weight: 600"
+          (click)="toggleMockMode()"
+        >
+          <mat-icon>{{ isMockMode ? "toggle_on" : "toggle_off" }}</mat-icon>
+          Modalità: {{ isMockMode ? "MOCK SANDBOX" : "LIVE SERVER" }}
+        </button>
+      </div>
       <button mat-stroked-button (click)="resetFiltri()">
         <mat-icon style="margin-right: 5px">clear</mat-icon> Reset
       </button>
@@ -158,7 +191,6 @@
             <button
               mat-icon-button
               type="button"
-              color="primary"
               matTooltip="Visualizza scheda"
               [routerLink]="['/dati-energetici/dettaglio-dati', element.idDati]"
             >
@@ -168,7 +200,6 @@
             <button
               mat-icon-button
               type="button"
-              color="accent"
               matTooltip="Modifica dati"
               [routerLink]="['/dati-energetici/modifica-dati', element.idDati]"
             >
@@ -176,11 +207,8 @@
             </button>
 
             <button
-              mat-icon-button
-              type="button"
-              color="warn"
-              matTooltip="Cancella record"
-              *ngIf="element.idDati"
+              *ngIf="!isGuest"
+              mat-button
               (click)="eliminaDatiLogicamente(element)"
             >
               <mat-icon>delete</mat-icon>

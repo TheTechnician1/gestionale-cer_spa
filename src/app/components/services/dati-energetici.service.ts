@@ -7,7 +7,8 @@ import {
 } from '../../core/interfaces/dati-energetici.model';
 import { ApiRequestOptions, ApiService } from '../../core/services/api.service';
 import { Observable, map, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtenteService } from 'src/app/core/services/utente.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,11 +16,14 @@ import { HttpClient } from '@angular/common/http';
 export class DatiEnergeticiService {
   private readonly basePath = 'api/dati-energetici';
 
-  private readonly USE_MOCK_DATA = true;
+  public USE_MOCK_DATA = false;
 
   private mockDatabase: DatiEnergetici[] = [];
 
-  constructor(private api: ApiService) {
+  constructor(
+    private http: HttpClient,
+    private api: ApiService,
+  ) {
     this.initializeMockDatabase();
   }
 
@@ -41,7 +45,7 @@ export class DatiEnergeticiService {
     return this.api
       .get<
         VistaDatiEnergeticiDto[]
-      >(`${this.basePath}/ricerca-dati`, payload, options)
+      >(`${this.basePath}/ricerca`, payload, options)
       .pipe(
         map((dtos: VistaDatiEnergeticiDto[]) =>
           dtos.map(
@@ -51,7 +55,14 @@ export class DatiEnergeticiService {
                 anno: dto.anno,
                 idCer: dto.idCer,
                 idConfigurazione: dto.idConfig,
-                flgCancellazione: 'N',
+                flgCancellazione: dto.statoScheda === 'S' ? 'S' : 'N',
+
+                energiaProdotta: dto.energiaProdottaMwh ?? null,
+                energiaPrelevata: dto.energiaPrelevataMwh ?? null,
+                energiaImmessa: dto.energiaImmessaMwh ?? null,
+                energiaCondivisa: dto.energiaCondivisaMwh ?? null,
+                energiaAutoCons: dto.energiaAutoconsumataMwh ?? null,
+                ridEmCo2: dto.riduzioneCo2Ton ?? null,
               }),
           ),
         ),
@@ -59,7 +70,7 @@ export class DatiEnergeticiService {
   }
 
   /**
-   * Generates a structural dataset matching your exact frontend expectations
+   *
    */
   private generateMockList(): DatiEnergetici[] {
     const mockRecords: DatiEnergetici[] = [];
@@ -90,33 +101,32 @@ export class DatiEnergeticiService {
    */
   getDato(id: number): Observable<DatiEnergetici> {
     if (this.USE_MOCK_DATA) {
-      console.warn(
-        `⚠️ DatiEnergeticiService: Fetching mock record for ID: ${id}`,
-      );
       const record = this.mockDatabase.find((item) => item.idDati === id);
       return of(record || this.fallbackSingleMock(id));
     }
 
-    return this.api.get<DatiVisualizzaDto>(`${this.basePath}/${id}`).pipe(
-      map(
-        (dto: DatiVisualizzaDto) =>
-          new DatiEnergeticiModel({
-            idDati: dto.idSchedaEnergetica,
-            idCer: dto.configurazioneCer?.idCer ?? null,
-            idConfigurazione: dto.configurazioneCer?.idConfigurazione ?? null,
-            anno: dto.annoRiferimento,
-            energiaProdotta: dto.energiaProdottaMwh,
-            energiaPrelevata: dto.energiaPrelevataMwh,
-            energiaImmessa: dto.energiaImmessaMwh,
-            energiaCondivisa: dto.energiaCondivisaMwh,
-            energiaAutoCons: dto.energiaAutoconsumataMwh,
-            tariffaPremium: dto.tariffaPremioEuro,
-            corrPremioOtt: dto.corrispettivoPremioEuro,
-            ridEmCo2: dto.riduzioneCo2Ton,
-            flgCancellazione: 'N',
-          }),
-      ),
-    );
+    return this.api
+      .get<DatiVisualizzaDto>(`${this.basePath}/${id}/visualizza`)
+      .pipe(
+        map(
+          (dto: DatiVisualizzaDto) =>
+            new DatiEnergeticiModel({
+              idDati: dto.idSchedaEnergetica,
+              idCer: dto.configurazioneCer?.idCer ?? null,
+              idConfigurazione: dto.configurazioneCer?.idConfigurazione ?? null,
+              anno: dto.annoRiferimento,
+              energiaProdotta: dto.energiaProdottaMwh,
+              energiaPrelevata: dto.energiaPrelevataMwh,
+              energiaImmessa: dto.energiaImmessaMwh,
+              energiaCondivisa: dto.energiaCondivisaMwh,
+              energiaAutoCons: dto.energiaAutoconsumataMwh,
+              tariffaPremium: dto.tariffaPremioEuro,
+              corrPremioOtt: dto.corrispettivoPremioEuro,
+              ridEmCo2: dto.riduzioneCo2Ton,
+              flgCancellazione: 'N',
+            }),
+        ),
+      );
   }
 
   /**
@@ -155,7 +165,11 @@ export class DatiEnergeticiService {
     }
 
     const backendPayload = this.convertToBackendDto(payload, emailLoggato);
-    return this.api.postText(this.basePath, backendPayload, options);
+    return this.api.postText(
+      `${this.basePath}/inserimento`,
+      backendPayload,
+      options,
+    );
   }
 
   /**
@@ -184,31 +198,44 @@ export class DatiEnergeticiService {
     }
 
     const backendPayload = this.convertToBackendDto(payload, emailLoggato);
-    return this.api.putText(`${this.basePath}/${id}`, backendPayload, options);
+    return this.api.putText(
+      `${this.basePath}/${id}/modifica`,
+      backendPayload,
+      options,
+    );
   }
 
   /**
    * DELETE /api/dati-energetici/{id}?emailUtenteLoggato=...
    */
+  /**
+   * DELETE /api/dati-energetici/{id}/disattiva?emailUtenteLoggato=...
+   */
   deleteDatiEnergetici(
     id: number,
     emailLoggato: string,
     options: ApiRequestOptions = {},
-  ): Observable<any> {
+  ): Observable<string> {
     if (this.USE_MOCK_DATA) {
       console.warn(
         `⚠️ DatiEnergeticiService: Simulating Deletion locally for ID: ${id}`,
       );
-
       const index = this.mockDatabase.findIndex((item) => item.idDati === id);
       if (index !== -1) {
         this.mockDatabase[index].flgCancellazione = 'S';
       }
-      return of({ messaggio: 'Record eliminato logicamente (MOCK)' });
+      return of('Record eliminato logicamente (MOCK)');
     }
 
-    const params = { emailUtenteLoggato: emailLoggato };
-    return this.api.delete(`${this.basePath}/${id}`, params, options);
+    const queryParams = new HttpParams().set(
+      'emailUtenteLoggato',
+      emailLoggato,
+    );
+
+    return this.http.delete(`${this.basePath}/${id}/disattiva`, {
+      params: queryParams,
+      responseType: 'text',
+    });
   }
 
   /**
@@ -251,6 +278,35 @@ export class DatiEnergeticiService {
         ridEmCo2: `${(Math.random() * 15).toFixed(2)}`,
         flgCancellazione: 'N',
       }),
+    const rawBackendJson = [
+      { idDati: 1, anno: '2025', idCer: 42, idConfig: 46, statoScheda: 'N' },
+      { idDati: 2, anno: '2012', idCer: 43, idConfig: 1, statoScheda: 'N' },
+      { idDati: 3, anno: '2023', idCer: 44, idConfig: 1, statoScheda: 'S' },
+      { idDati: 4, anno: '2025', idCer: 45, idConfig: 1, statoScheda: 'N' },
+      { idDati: 5, anno: '2026', idCer: 41, idConfig: 46, statoScheda: 'N' },
+      { idDati: 7, anno: '2025', idCer: 42, idConfig: 45, statoScheda: 'N' },
+      { idDati: 8, anno: '2025', idCer: 43, idConfig: 45, statoScheda: 'N' },
+      { idDati: 9, anno: '2025', idCer: 44, idConfig: 1, statoScheda: 'N' },
+      { idDati: 10, anno: '2025', idCer: 45, idConfig: 45, statoScheda: 'N' },
+      { idDati: 12, anno: '2025', idCer: 41, idConfig: 1, statoScheda: 'N' },
+      { idDati: 13, anno: '2025', idCer: 42, idConfig: 1, statoScheda: 'S' },
+    ];
+
+    this.mockDatabase = rawBackendJson.map(
+      (item) =>
+        new DatiEnergeticiModel({
+          idDati: item.idDati,
+          anno: item.anno,
+          idCer: item.idCer,
+          idConfigurazione: item.idConfig,
+          flgCancellazione: item.statoScheda,
+          energiaProdotta: Math.floor(Math.random() * 400) + 100,
+          energiaPrelevata: Math.floor(Math.random() * 300) + 50,
+          energiaImmessa: Math.floor(Math.random() * 200) + 20,
+          energiaCondivisa: Math.floor(Math.random() * 100) + 10,
+          energiaAutoCons: Math.floor(Math.random() * 50) + 5,
+          ridEmCo2: `${(Math.random() * 10).toFixed(2)}`,
+        }),
     );
   }
 }
@@ -258,15 +314,15 @@ export class DatiEnergeticiService {
   private fallbackSingleMock(id: number): DatiEnergetici {
     return new DatiEnergeticiModel({
       idDati: id,
-      anno: '2026',
-      idCer: 43,
-      idConfigurazione: 45,
-      energiaProdotta: 150,
-      energiaPrelevata: 120,
-      energiaImmessa: 95,
-      energiaCondivisa: 45,
-      energiaAutoCons: 30,
-      ridEmCo2: '2.45',
+      anno: '2025',
+      idCer: 42,
+      idConfigurazione: 46,
+      energiaProdotta: 250,
+      energiaPrelevata: 180,
+      energiaImmessa: 140,
+      energiaCondivisa: 85,
+      energiaAutoCons: 40,
+      ridEmCo2: '4.20',
       flgCancellazione: 'N',
     });
   }

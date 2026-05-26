@@ -19,10 +19,13 @@ import { LoginComponent } from './core/components/login/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrazioneUtenteComponent } from './core/components/login/registrazione-utente/registrazione-utente.component';
 import { NotAuthorizedComponent } from './core/components/not-authorized/not-authorized.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
-
+import { DettaglioCerComponent } from './components/cer/dettaglio-cer/dettaglio-cer.component';
+import { ModificaCerComponent } from './components/cer/modifica-cer/modifica-cer.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { A11yModule } from '@angular/cdk/a11y';
     LoginComponent,
     DashboardComponent,
     NotAuthorizedComponent,
+    DettaglioCerComponent,
+    ModificaCerComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +50,8 @@ import { A11yModule } from '@angular/cdk/a11y';
     TranslateRootModule,
     CdkOverlayOrigin,
     A11yModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

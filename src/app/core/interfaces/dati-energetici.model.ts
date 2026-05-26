@@ -57,6 +57,13 @@ export interface VistaDatiEnergeticiDto {
   statoScheda: string;
   inizioAnno: string;
   fineAnno: string;
+
+  energiaProdottaMwh: number | null;
+  energiaPrelevataMwh: number | null;
+  energiaImmessaMwh: number | null;
+  energiaCondivisaMwh: number | null;
+  energiaAutoconsumataMwh: number | null;
+  riduzioneCo2Ton: string | null;
 }
 
 export interface DatiVisualizzaDto {
