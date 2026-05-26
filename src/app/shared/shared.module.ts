@@ -31,6 +31,8 @@ import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { FormControlErrorComponent } from "./components/form-control-error/form-control-error.component";
 import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
 import { ToastSnackbarComponent } from "./components/toast-snackbar/toast-snackbar.component";
+import { DonutChartComponent } from './components/donut-chart/donut-chart.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -57,11 +59,12 @@ export const MATERIAL_MODULES = [
   MatGridListModule,
   MatBadgeModule,
   MatButtonToggleModule,
+  NgApexchartsModule
 ];
 
 @NgModule({
-  declarations: [FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent],
+  declarations: [FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, DonutChartComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, ...MATERIAL_MODULES],
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, ...MATERIAL_MODULES],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, ...MATERIAL_MODULES, DonutChartComponent, NgApexchartsModule],
 })
 export class SharedModule {}
