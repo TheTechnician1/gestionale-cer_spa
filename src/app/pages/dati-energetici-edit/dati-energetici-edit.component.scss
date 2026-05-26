@@ -1,59 +1,48 @@
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
-
 .edit-card {
-  max-width: 1100px;
-  margin: 20px auto;
+  max-width: 900px;
+  margin: 40px auto;
   padding: 24px;
   border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 }
 
 .header h2 {
   margin: 0;
+  font-size: 26px;
   font-weight: 600;
 }
 
 .header p {
-  margin: 4px 0 16px;
-  color: #64748b;
+  margin-top: 6px;
+  color: #6b7280;
 }
 
-.section-title {
-  margin-top: 20px;
-  margin-bottom: 10px;
+.form {
+  margin-top: 24px;
 }
 
-.grid-2,
-.grid-3 {
+/* 🔥 FLEX (NON SI ROMPE MAI) */
+.row {
+  display: flex;
   gap: 16px;
   margin-bottom: 16px;
 }
 
-.grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+.row mat-form-field {
+  flex: 1;
+  min-width: 0;
 }
 
+/* FULL WIDTH */
+.full {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* ACTIONS */
 .actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.divider-wrapper {
-  padding: 16px 0;
-}
-
-mat-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-mat-divider {
-  margin: 24px 0;
-}
-
-.success-snackbar{
-  color:  #3634a5 !important;
+  gap: 12px;
+  margin-top: 24px;
 }
