@@ -1,18 +1,20 @@
-<form [formGroup]="form" class="form-card mat-elevation-z4">
+<form [formGroup]="form">
 
   <h2 class="title">{{ isDettaglio ? 'Dettaglio Impianto' : 'Modifica Impianto' }}</h2>
 
   <div class="grid">
 
     <mat-form-field appearance="fill">
-      <mat-label>Id Configurazione</mat-label>
-      <input matInput type="number" formControlName="idConfigurazione">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
       <mat-label>CER</mat-label>
       <mat-select formControlName="idCer">
         <mat-option *ngFor="let cer of cerList" [value]="cer.id">{{ cer.descrizione }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Configurazione</mat-label>
+      <mat-select formControlName="idConfigurazione">
+        <mat-option *ngFor="let conf of configurazioniList" [value]="conf.id">{{ conf.descrizione }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -60,52 +62,52 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('capAccumulo')?.value !== null">
       <mat-label>Capacità Accumulo (kWh)</mat-label>
       <input matInput type="number" formControlName="capAccumulo">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('tipologiaProduttore')?.value !== null">
       <mat-label>Categoria Produttore</mat-label>
       <input matInput formControlName="tipologiaProduttore">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('regione')?.value !== null">
       <mat-label>Regione</mat-label>
       <input matInput formControlName="regione">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('provincia')?.value !== null">
       <mat-label>Provincia</mat-label>
       <input matInput formControlName="provincia">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('comune')?.value !== null">
       <mat-label>Comune</mat-label>
       <input matInput formControlName="comune">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('indirizzo')?.value !== null">
       <mat-label>Indirizzo</mat-label>
       <input matInput formControlName="indirizzo">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('civico')?.value !== null">
       <mat-label>Civico</mat-label>
       <input matInput formControlName="civico">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('cap')?.value !== null">
       <mat-label>CAP</mat-label>
       <input matInput formControlName="cap">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('codiceInstallazione')?.value !== null">
       <mat-label>Codice installazione</mat-label>
       <input matInput formControlName="codiceInstallazione">
     </mat-form-field>
 
-     <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" *ngIf="form.get('specificaInstallazione')?.value !== null">
       <mat-label>Specifica installazione</mat-label>
       <input matInput formControlName="specificaInstallazione">
     </mat-form-field>
@@ -117,11 +119,36 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Email Utente</mat-label>
-      <input matInput formControlName="emailUtenteLoggato">
-    </mat-form-field>
+  </div>
 
+  <div *ngIf="isDettaglio && datiEnergetici.length > 0" style="margin-top: 20px;">
+    <h3>Dati Energetici Collegati</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Anno</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Energia Prodotta</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Energia Condivisa</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Energia Autoconsumo</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">CO2 Evitata</th>
+      <th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of datiEnergetici">
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">{{ d.anno }}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">{{ d.energiaProdotta }}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">{{ d.energiaCondivisa }}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">{{ d.energiaAutoCons }}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">{{ d.ridEmCo2 }}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">
+        <button mat-icon-button type="button" (click)="apriDettaglioDati(d.idDati)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
   </div>
 
   <div class="actions">

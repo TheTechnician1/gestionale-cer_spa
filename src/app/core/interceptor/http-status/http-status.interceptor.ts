@@ -16,32 +16,30 @@ export class HttpStatusInterceptor implements HttpInterceptor {
     const skipToast = req.context.get(SKIP_HTTP_SNACKBAR);
 
     return next.handle(req).pipe(
-      tap((event) => {
-        if (skipToast || !(event instanceof HttpResponse)) {
-          return;
-        }
+  catchError((error: HttpErrorResponse) => {
 
-        this.toastService.showFromHttpSuccess(req, event);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        if (!skipToast) {
-          this.toastService.showFromHttpError(req, error);
-        }
+    if (!skipToast) {
+      this.toastService.showFromHttpError(req, error);
+    }
 
-        if (error.status === 401) {
-          this.router.navigateByUrl("/login");
-        } else if (error.status === 403) {
-          this.router.navigateByUrl("/not-authorized");
-        } else if (error.status === 404) {
-          console.warn("Risorsa non trovata (404).", error);
-        } else if (error.status >= 500) {
-          console.error("Errore server (5xx).", error);
-        } else {
-          console.error("Errore HTTP.", error);
-        }
+    if (error.status === 401) {
+      this.router.navigateByUrl('/login');
 
-        return throwError(() => error);
-      }),
-    );
+    } else if (error.status === 403) {
+      this.router.navigateByUrl('/not-authorized');
+
+    } else if (error.status === 404) {
+      console.warn('Risorsa non trovata (404).', error);
+
+    } else if (error.status >= 500) {
+      console.error('Errore server (5xx).', error);
+
+    } else {
+      console.error('Errore HTTP.', error);
+    }
+
+    return throwError(() => error);
+  })
+);
   }
 }

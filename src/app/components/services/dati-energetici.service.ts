@@ -234,25 +234,26 @@ export class DatiEnergeticiService {
   // --- metodi privati
 
   private initializeMockDatabase(): void {
-    const states = ['N', 'N', 'N'];
-    for (let i = 1; i <= 12; i++) {
-      this.mockDatabase.push(
-        new DatiEnergeticiModel({
-          idDati: i,
-          anno: (2014 + i).toString(),
-          idCer: 40 + i,
-          idConfigurazione: 100 + i,
-          energiaProdotta: Math.floor(Math.random() * 500) + 100,
-          energiaPrelevata: Math.floor(Math.random() * 400) + 50,
-          energiaImmessa: Math.floor(Math.random() * 300) + 30,
-          energiaCondivisa: Math.floor(Math.random() * 200) + 10,
-          energiaAutoCons: Math.floor(Math.random() * 150) + 5,
-          ridEmCo2: `${(Math.random() * 15).toFixed(2)}`,
-          flgCancellazione: states[i % 3],
-        }),
-      );
-    }
+  const configurazioni = [200, 201, 202];
+  const cer = [100, 101, 102];
+  for (let i = 1; i <= 6; i++) {
+    this.mockDatabase.push(
+      new DatiEnergeticiModel({
+        idDati: i,
+        anno: (2019 + i).toString(),
+        idCer: cer[i % 3],
+        idConfigurazione: configurazioni[i % 3],
+        energiaProdotta: Math.floor(Math.random() * 500) + 100,
+        energiaPrelevata: Math.floor(Math.random() * 400) + 50,
+        energiaImmessa: Math.floor(Math.random() * 300) + 30,
+        energiaCondivisa: Math.floor(Math.random() * 200) + 10,
+        energiaAutoCons: Math.floor(Math.random() * 150) + 5,
+        ridEmCo2: `${(Math.random() * 15).toFixed(2)}`,
+        flgCancellazione: 'N',
+      }),
+    );
   }
+}
 
   private fallbackSingleMock(id: number): DatiEnergetici {
     return new DatiEnergeticiModel({

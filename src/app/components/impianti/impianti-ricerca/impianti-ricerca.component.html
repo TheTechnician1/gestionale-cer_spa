@@ -2,12 +2,12 @@
 
   <ng-container *ngIf="!figlioAttivo">
 
-   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-  <h2 style="margin: 0">Ricerca Impianti</h2>
-  <button mat-raised-button color="primary" type="button" (click)="nuovoImpianto()">
-    <mat-icon>add</mat-icon> Nuovo Impianto
-  </button>
-</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="margin: 0">Ricerca Impianti</h2>
+      <button mat-raised-button color="primary" type="button" (click)="nuovoImpianto()" *ngIf="isAdmin || isGest">
+        <mat-icon>add</mat-icon> Nuovo Impianto
+      </button>
+    </div>
 
     <form [formGroup]="form" (ngSubmit)="cerca()" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
 
@@ -19,6 +19,11 @@
             {{ cer.descrizione }}
           </mat-option>
         </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Configurazione</mat-label>
+        <input matInput formControlName="idConfigurazione">
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -83,25 +88,29 @@
       </mat-form-field>
 
       <div style="display: flex; align-items: center; justify-content: space-between; grid-column: 1 / -1; margin-top:10px;">
-  <mat-checkbox *ngIf="isAdmin" formControlName="inclusiDisattivati">Includi disattivati</mat-checkbox>
-  <div style="display:flex; gap:10px;">
-     <button mat-raised-button type="button" (click)="reset()">
-      <mat-icon>close</mat-icon> Reset
-    </button>
-    <button mat-raised-button color="primary" type="submit">
-      <mat-icon>search</mat-icon> Cerca
-    </button>
-  </div>
-</div>
+        <mat-checkbox *ngIf="isAdmin" formControlName="inclusiDisattivati">Includi disattivati</mat-checkbox>
+        <div style="display:flex; gap:10px;">
+          <button mat-raised-button type="button" (click)="reset()">
+            <mat-icon>close</mat-icon> Reset
+          </button>
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon>search</mat-icon> Ricerca
+          </button>
+        </div>
+      </div>
 
     </form>
-
 
     <table mat-table [dataSource]="risultatiPaginati" class="mat-elevation-z8" style="margin-top:20px; width:100%;">
 
       <ng-container matColumnDef="idImpianto">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let i">{{ i.idImpianto }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="idCer">
+        <th mat-header-cell *matHeaderCellDef>CER</th>
+        <td mat-cell *matCellDef="let i">{{ i.idCer }}</td>
       </ng-container>
 
       <ng-container matColumnDef="codiceCabina">
@@ -137,20 +146,20 @@
       <ng-container matColumnDef="azioni">
         <th mat-header-cell *matHeaderCellDef>Azioni</th>
         <td mat-cell *matCellDef="let i">
-           <button mat-icon-button type="button" (click)="apriDettaglio(i)">
+          <button mat-icon-button type="button" (click)="apriDettaglio(i)">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-icon-button type="button" (click)="modificaImpianto(i)">
+          <button mat-icon-button type="button" (click)="modificaImpianto(i)" *ngIf="isAdmin || isGest">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button type="button" (click)="eliminaImpianto(i)">
+          <button mat-icon-button type="button" (click)="eliminaImpianto(i)" *ngIf="isAdmin">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="['idImpianto','codiceCabina','tipologia','potenza','stato','regione','comune','azioni']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['idImpianto','codiceCabina','tipologia','potenza','stato','regione','comune','azioni']"></tr>
+      <tr mat-header-row *matHeaderRowDef="['idImpianto','idCer','codiceCabina','tipologia','potenza','stato','regione','comune','azioni']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['idImpianto','idCer','codiceCabina','tipologia','potenza','stato','regione','comune','azioni']"></tr>
 
     </table>
 

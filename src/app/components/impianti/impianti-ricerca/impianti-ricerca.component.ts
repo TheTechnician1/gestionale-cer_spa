@@ -7,8 +7,8 @@ import { Impianto } from "src/app/core/interfaces/impianto.model";
 import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
 import { ConfermaDialogComponent } from "../../dati-energetici/dialog/dialog.component";
 import { MatDialog } from "@angular/material/dialog";
-import { MatPaginator,PageEvent } from '@angular/material/paginator';
-import { Router,ActivatedRoute,NavigationEnd } from "@angular/router";
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { filter } from 'rxjs/operators';
 import { UtenteService } from "src/app/core/services/utente.service";
 import { Ruolo } from "src/app/core/enum/role.enum";
@@ -31,6 +31,7 @@ export class ImpiantiRicercaComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     idCer: new FormControl(null),
+    idConfigurazione: new FormControl(null),
     codiceCabina: new FormControl(null),
     tipologia: new FormControl(null),
     statoImpianto: new FormControl(null),
@@ -45,35 +46,37 @@ export class ImpiantiRicercaComponent implements OnInit {
 
   figlioAttivo: boolean = false;
   isAdmin: boolean = false;
+  isGest: boolean = false;
 
-constructor(
-  private impiantoService: ImpiantoService,
-  private dialog: MatDialog,
-  private router: Router,
-  private route: ActivatedRoute,
-  public utenteService: UtenteService
-) {
-}
+  constructor(
+    private impiantoService: ImpiantoService,
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    private utenteService: UtenteService
+  ) {}
 
   ngOnInit(): void {
-  this.isAdmin = this.utenteService.getRole()?.toUpperCase() === 'ADMIN';
-  
-  this.router.events.pipe(
-    filter(event => event instanceof NavigationEnd)
-  ).subscribe(() => {
-    this.figlioAttivo = this.route.children.length > 0;
-    if (!this.figlioAttivo) {
-      this.cerca();
-    }
-    
-  });
+    this.isAdmin = this.utenteService.getRole()?.toUpperCase() === Ruolo.ADMIN.toUpperCase();
+    this.isGest = this.utenteService.getRole()?.toUpperCase() === Ruolo.GEST.toUpperCase();
 
-  this.cerca();
-}
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.figlioAttivo = this.route.children.length > 0;
+      if (!this.figlioAttivo) {
+        this.cerca();
+      }
+    });
+
+    this.cerca();
+  }
 
   cerca(): void {
-    const payload = this.form.getRawValue();
-    this.impiantoService.getImpianti(payload)
+    let cleanedPayload = Object.fromEntries(
+      Object.entries(this.form.getRawValue()).filter(([_, value]) => value !== null && value !== '')
+    );
+    this.impiantoService.getImpianti(cleanedPayload)
       .pipe(
         tap(risposta => {
           this.risultati = risposta;
@@ -95,8 +98,6 @@ constructor(
     this.form.reset({ inclusiDisattivati: false });
     this.cerca();
   }
-
-  
 
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
@@ -139,6 +140,4 @@ constructor(
       }
     });
   }
-
-
 }
