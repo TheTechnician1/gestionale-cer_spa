@@ -56,7 +56,106 @@ mat-card-actions {
   padding: 16px;
   border-top: 1px solid #e5e7eb;
 }
-.impianti-container > button {
+.azioni-lista {
 	grid-column: 1 / -1;
-	justify-self: start;
+	display: flex;
+	gap: 12px;
+}
+
+.filtri-card {
+	grid-column: 1 / -1;
+	border-radius: 16px;
+	padding: 16px;
+}
+
+.filtri-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.tabella-lista {
+	grid-column: 1 / -1;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+}
+
+.tabella-impianti {
+	width: 100%;
+	background: #ffffff;
+}
+
+.tabella-impianti th.mat-header-cell {
+	font-weight: 700;
+	color: #374151;
+	background: #f1f5fb;
+	white-space: nowrap;
+}
+
+.tabella-impianti td.mat-cell,
+.tabella-impianti th.mat-header-cell {
+	padding: 10px 12px;
+}
+
+.tabella-impianti tr.mat-row:hover {
+	background: #f8fafc;
+}
+
+.col-num {
+	text-align: right;
+	white-space: nowrap;
+}
+
+.azioni-cella {
+	white-space: nowrap;
+	text-align: right;
+}
+
+.cella-vuota {
+	padding: 24px;
+	text-align: center;
+	color: #6b7280;
+}
+
+// Badge stato impianto
+.stato-badge {
+	display: inline-block;
+	padding: 2px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	background: #e5e7eb;
+	color: #374151;
+}
+.stato-badge[data-stato="ATTIVO"] {
+	background: #dcfce7;
+	color: #15803d;
+}
+.stato-badge[data-stato="IN_MANUTENZIONE"] {
+	background: #fef9c3;
+	color: #a16207;
+}
+.stato-badge[data-stato="SOSPESO"] {
+	background: #ffedd5;
+	color: #c2410c;
+}
+.stato-badge[data-stato="DISMESSO"] {
+	background: #fee2e2;
+	color: #b91c1c;
+}
+
+.card-header {
+	display: flex;
+	align-items: center;
+}
+
+.card-header .mat-mdc-card-title,
+.card-header mat-card-title {
+	margin: 0;
+}
+
+.card-menu-btn {
+	margin-left: auto;
 }

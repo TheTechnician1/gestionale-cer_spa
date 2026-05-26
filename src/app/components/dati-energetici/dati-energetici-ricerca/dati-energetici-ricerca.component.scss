@@ -83,3 +83,57 @@ mat-card-actions {
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 16px;
 }
+
+.tabella-lista {
+	grid-column: 1 / -1;
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+}
+
+.tabella-dati {
+	width: 100%;
+	background: #ffffff;
+}
+
+.tabella-dati th.mat-header-cell {
+	font-weight: 700;
+	color: #374151;
+	background: #f1f5fb;
+	white-space: nowrap;
+}
+
+.tabella-dati td.mat-cell,
+.tabella-dati th.mat-header-cell {
+	padding: 10px 12px;
+}
+
+.tabella-dati tr.mat-row:hover {
+	background: #f8fafc;
+}
+
+.azioni-cella {
+	white-space: nowrap;
+	text-align: right;
+}
+
+.cella-vuota {
+	padding: 24px;
+	text-align: center;
+	color: #6b7280;
+}
+
+.card-header {
+	display: flex;
+	align-items: center;
+}
+
+.card-header .mat-mdc-card-title,
+.card-header mat-card-title {
+	margin: 0;
+}
+
+.card-menu-btn {
+	margin-left: auto;
+}

@@ -1,82 +1,222 @@
 <div class="impianti-container">
-  <button
-    mat-flat-button
-    color="primary"
-    type="button"
-    (click)="inserisciNuovo()"
+  <div class="azioni-lista">
+    <button mat-flat-button color="primary" type="button" (click)="inserisciNuovo()">
+      Inserisci nuovo
+    </button>
+
+    <button mat-stroked-button color="primary" type="button" (click)="toggleFiltri()">
+      Filtri
+    </button>
+
+    <button mat-stroked-button color="primary" type="button" (click)="toggleVista()">
+      <mat-icon>{{ vistaLista ? "grid_view" : "view_list" }}</mat-icon>
+      {{ vistaLista ? "Vista card" : "Vista lista" }}
+    </button>
+  </div>
+
+  <mat-card class="filtri-card" *ngIf="mostraFiltri">
+    <form [formGroup]="form" class="filtri-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipologia</mat-label>
+        <input matInput type="text" formControlName="tipologiaImpianto" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Stato</mat-label>
+        <mat-select formControlName="statoImpianto">
+          <mat-option [value]="null">Tutti</mat-option>
+          <mat-option *ngFor="let s of stati" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Codice cabina</mat-label>
+        <input matInput type="text" formControlName="codiceCabina" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>ID CER</mat-label>
+        <input matInput type="number" formControlName="idCer" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Regione</mat-label>
+        <input matInput type="text" formControlName="regione" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Provincia</mat-label>
+        <input matInput type="text" formControlName="provincia" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comune</mat-label>
+        <input matInput type="text" formControlName="comune" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Accumulo</mat-label>
+        <mat-select formControlName="presenzaAccumulo">
+          <mat-option [value]="null">Tutti</mat-option>
+          <mat-option value="S">Sì</mat-option>
+          <mat-option value="N">No</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <mat-card-actions align="end">
+      <button mat-flat-button color="primary" type="button" (click)="filtraImpianti()">
+        Cerca
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card
+    class="impianto-card"
+    *ngFor="let impianto of impianti"
+    [hidden]="vistaLista"
   >
-    Inserisci nuovo
-  </button>
-  <mat-card class="impianto-card" *ngFor="let impianto of impianti">
-    <mat-card-header>
-      <mat-card-title>
-        {{ impianto.tipologia }}
-      </mat-card-title>
+    <mat-card-header class="card-header">
+      <mat-card-title>{{ impianto.tipologiaImpianto }}</mat-card-title>
+
+      <button
+        mat-icon-button
+        class="card-menu-btn"
+        type="button"
+        [matMenuTriggerFor]="menuAzioni"
+        aria-label="Azioni impianto"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menuAzioni="matMenu">
+        <button mat-menu-item type="button" (click)="dettaglioImpianto(impianto.idImpianto)">
+          <mat-icon>visibility</mat-icon>
+          <span>Dettaglio</span>
+        </button>
+        <button mat-menu-item type="button" (click)="modificaImpianto(impianto.idImpianto)">
+          <mat-icon>edit</mat-icon>
+          <span>Modifica</span>
+        </button>
+        <button mat-menu-item type="button" [matMenuTriggerFor]="menuStatoCard">
+          <mat-icon>swap_horiz</mat-icon>
+          <span>Cambia stato</span>
+        </button>
+        <button mat-menu-item type="button" (click)="eliminaImpianto(impianto.idImpianto)">
+          <mat-icon color="warn">delete</mat-icon>
+          <span>Elimina</span>
+        </button>
+      </mat-menu>
+
+      <mat-menu #menuStatoCard="matMenu">
+        <button
+          mat-menu-item
+          type="button"
+          *ngFor="let s of stati"
+          [disabled]="s === impianto.statoImpianto"
+          (click)="cambiaStato(impianto.idImpianto, s)"
+        >
+          {{ s }}
+        </button>
+      </mat-menu>
     </mat-card-header>
 
     <mat-card-content class="impianto-grid">
       <div class="campo">
-        <strong>Potenza:</strong>
-        <span>{{ impianto.potenzaNominale }} kW</span>
+        <strong>Codice cabina:</strong>
+        <span>{{ impianto.codiceCabina }}</span>
       </div>
-
+      <div class="campo">
+        <strong>Stato:</strong>
+        <span>{{ impianto.statoImpianto }}</span>
+      </div>
+      <div class="campo">
+        <strong>Potenza:</strong>
+        <span>{{ impianto.potenzaNominaleKw }} kW</span>
+      </div>
       <div class="campo">
         <strong>Regione:</strong>
         <span>{{ impianto.regione }}</span>
       </div>
-
+      <div class="campo">
+        <strong>Provincia:</strong>
+        <span>{{ impianto.provincia }}</span>
+      </div>
       <div class="campo">
         <strong>Comune:</strong>
         <span>{{ impianto.comune }}</span>
       </div>
-
-      <div class="campo">
-        <strong>Indirizzo:</strong>
-        <span>{{ impianto.indirizzo }}</span>
-      </div>
-
-      <div class="campo">
-        <strong>CAP:</strong>
-        <span>{{ impianto.cap }}</span>
-      </div>
-
-      <div class="campo">
-        <strong>Partita IVA:</strong>
-        <span>{{ impianto.partitaIva }}</span>
-      </div>
-
       <div class="campo">
         <strong>Accumulo:</strong>
-        <span>{{ impianto.flgAccumulo ? "Sì" : "No" }}</span>
+        <span>{{ impianto.presenzaAccumulo === "S" ? "Sì" : "No" }}</span>
       </div>
     </mat-card-content>
-
-    <mat-card-actions align="end">
-      <button
-        mat-stroked-button
-        color="primary"
-        type="button"
-        (click)="dettaglioImpianto(impianto.id)"
-      >
-        Dettaglio
-      </button>
-
-      <button
-        mat-flat-button
-        color="primary"
-        type="button"
-        (click)="modificaImpianto(impianto.id)"
-      >
-        Modifica
-      </button>
-      <button
-        mat-stroked-button
-        color="warn"
-        type="button"
-        (click)="eliminaImpianto(impianto.id)"
-      >
-        Elimina
-      </button>
-    </mat-card-actions>
   </mat-card>
+
+  <div class="tabella-lista" *ngIf="vistaLista">
+    <table mat-table [dataSource]="impianti" class="mat-elevation-z2 tabella-impianti">
+      <ng-container matColumnDef="codiceCabina">
+        <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.codiceCabina || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="tipologiaImpianto">
+        <th mat-header-cell *matHeaderCellDef>Tipologia</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.tipologiaImpianto || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="statoImpianto">
+        <th mat-header-cell *matHeaderCellDef>Stato</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.statoImpianto || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="regione">
+        <th mat-header-cell *matHeaderCellDef>Regione</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.regione || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="provincia">
+        <th mat-header-cell *matHeaderCellDef>Provincia</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.provincia || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="comune">
+        <th mat-header-cell *matHeaderCellDef>Comune</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.comune || "—" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="potenzaNominaleKw">
+        <th mat-header-cell *matHeaderCellDef>Potenza</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.potenzaNominaleKw }} kW</td>
+      </ng-container>
+      <ng-container matColumnDef="presenzaAccumulo">
+        <th mat-header-cell *matHeaderCellDef>Accumulo</th>
+        <td mat-cell *matCellDef="let impianto">{{ impianto.presenzaAccumulo === "S" ? "Sì" : "No" }}</td>
+      </ng-container>
+      <ng-container matColumnDef="azioni">
+        <th mat-header-cell *matHeaderCellDef>Azioni</th>
+        <td mat-cell *matCellDef="let impianto" class="azioni-cella">
+          <button mat-icon-button type="button" (click)="dettaglioImpianto(impianto.idImpianto)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="modificaImpianto(impianto.idImpianto)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button type="button" [matMenuTriggerFor]="menuStatoRiga">
+            <mat-icon>swap_horiz</mat-icon>
+          </button>
+          <mat-menu #menuStatoRiga="matMenu">
+            <button
+              mat-menu-item
+              *ngFor="let s of stati"
+              [disabled]="s === impianto.statoImpianto"
+              (click)="cambiaStato(impianto.idImpianto, s)"
+            >
+              {{ s }}
+            </button>
+          </mat-menu>
+          <button mat-icon-button color="warn" type="button" (click)="eliminaImpianto(impianto.idImpianto)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colonneLista"></tr>
+      <tr mat-row *matRowDef="let row; columns: colonneLista"></tr>
+    </table>
+  </div>
 </div>

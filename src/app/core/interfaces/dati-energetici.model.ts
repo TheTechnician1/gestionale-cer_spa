@@ -54,3 +54,72 @@ export class DatiEnergeticiModel implements DatiEnergetici {
     this.emailUtenteLoggato = data?.emailUtenteLoggato ?? null;
   }
 }
+
+// ===== DTO allineati a Swagger (Case Study 2) =====
+
+export interface ConfigurazioneBase {
+  idConfigurazione?: number;
+  idCer?: number;
+  codiceCabina?: string;
+  [key: string]: unknown;
+}
+
+// GET /api/dati-energetici/  (VistaDatiEnergeticiDTO)
+export interface DatiEnergeticiVista {
+  idSchedaEnergetica: number;
+  idCer: number;
+  idConfigurazione: number;
+  partitaIva: string;
+  codiceCabina: string;
+  annoRiferimento: string;
+  attivo: string;
+}
+
+// Filtri ricerca (query params Swagger)
+export interface DatiEnergeticiFiltro {
+  idSchedaEnergetica?: number | null;
+  annoRiferimento?: string | null;
+  idCer?: number | null;
+  partitaIva?: string | null;
+  idConfigurazione?: number | null;
+  codiceCabina?: string | null;
+  attivo?: string | null;
+}
+
+// GET /api/dati-energetici/{id}  (DatiVisualizza)
+export interface DatiEnergeticiDettaglio {
+  idDati: number;
+  anno: string;
+  geteProdotta: number;
+  getePrelevata: number;
+  geteImmessa: number;
+  geteCondivisa: number;
+  geteAutoCons: number;
+  tariffaPremium: number;
+  corrPremioOtt: number;
+  ridEmCo2: string;
+  statoScheda: string;
+  calcoloCo2Automatico: boolean;
+  note: string;
+  configurazioneCer: ConfigurazioneBase;
+}
+
+// POST /create e PUT /edit/{id}  (DatiRequestDTO)
+export interface DatiEnergeticiRequest {
+  idSchedaEnergetica?: number;
+  idCer: number;
+  idConfigurazione: number;
+  annoRiferimento: string;
+  energiaProdottaMhw: number;
+  energiaPrelevataMhw: number;
+  energiaImmessaMhw: number;
+  energiaCondivisaMhw: number;
+  energiaAutoconsumataMhw: number;
+  tariffaPremioEuro: number;
+  corrispettivoPremioEuro: number;
+  riduzioneCo2Ton: string;
+  calcoloCo2Automatico: boolean;
+  note: string;
+  attivo: string;
+  // emailUtenteLoggato aggiunto in automatico da ApiService.post/put
+}

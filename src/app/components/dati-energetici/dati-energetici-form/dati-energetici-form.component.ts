@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DatiEnergeticiService } from '../../services/dati-energetici.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  CerLista,
+  DatiEnergeticiService,
+} from '../../services/dati-energetici.service';
+import { PermessiService } from '../../../core/services/permessi.service';
+import { DatiEnergeticiRequest } from '../../../core/interfaces/dati-energetici.model';
 
 @Component({
   selector: 'app-dati-energetici-form',
@@ -15,219 +21,189 @@ export class DatiEnergeticiFormComponent implements OnInit {
   isDettaglio = false;
   idDatiEnergetici: string | null = null;
 
+  anni: string[] = ['2020', '2021', '2022', '2023', '2024', '2025', '2026'];
+
+  cers: CerLista[] = [];
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private datiEnergeticiService: DatiEnergeticiService,
+    private snackBar: MatSnackBar,
+    public permessi: PermessiService,
   ) {}
 
-  // se id presente andiamo in modifica senno in inserimento
   ngOnInit(): void {
     this.idDatiEnergetici = this.route.snapshot.paramMap.get('id');
-    this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.idDatiEnergetici;
     this.isDettaglio = this.router.url.includes('dettaglio-dati');
 
     this.datiForm = this.fb.group({
-      idDati: [0],
       idCer: [null, Validators.required],
-      idConfig: [null, Validators.required],
-      anno: ['', Validators.required],
-      energiaProdotta: [0, Validators.required],
-      energiaPrelevata: [0, Validators.required],
-      energiaImmessa: [0, Validators.required],
-      energiaCondivisa: [0, Validators.required],
-      energiaAutoCons: [0, Validators.required],
-      tariffaPremium: [0.1, Validators.required],
-      corrPremioOtt: [0.1, Validators.required],
-      ridEmCo2: ['', Validators.required],
-      flgCancellazione: ['N'],
-      emailUtenteLoggato: ['', Validators.required],
+      idConfigurazione: [null, Validators.required],
+      annoRiferimento: [null, Validators.required],
+      energiaProdottaMhw: [0, [Validators.required, Validators.min(0)]],
+      energiaPrelevataMhw: [0, [Validators.required, Validators.min(0)]],
+      energiaImmessaMhw: [0, [Validators.required, Validators.min(0)]],
+      energiaCondivisaMhw: [0, [Validators.required, Validators.min(0)]],
+      energiaAutoconsumataMhw: [0, [Validators.required, Validators.min(0)]],
+      tariffaPremioEuro: [0, [Validators.required, Validators.min(0)]],
+      corrispettivoPremioEuro: [0, [Validators.required, Validators.min(0)]],
+      riduzioneCo2Ton: [''],
+      calcoloCo2Automatico: [true],
+      note: [''],
     });
+
     if (this.isEditMode) {
       this.titoloPagina = this.isDettaglio
         ? 'Dettaglio Dati Energetici'
         : 'Modifica Dati Energetici';
       this.caricaDato();
     }
+
+    // carica la lista CER per la tendina (doc 8.1 / 14.2: prima CER poi config)
+    this.datiEnergeticiService.ricercaCer().subscribe({
+      next: (res) => (this.cers = res ?? []),
+      error: (err) => console.error('Errore caricamento CER:', err),
+    });
+
+    // se il calcolo CO2 è automatico, il campo riduzione non è editabile (doc 9.4)
+    this.datiForm.get('calcoloCo2Automatico')?.valueChanges.subscribe((auto) => {
+      const rid = this.datiForm.get('riduzioneCo2Ton');
+      if (auto) {
+        rid?.disable({ emitEvent: false });
+      } else if (!this.isDettaglio) {
+        rid?.enable({ emitEvent: false });
+      }
+    });
   }
+
   private caricaDato(): void {
     const id = Number(this.idDatiEnergetici);
-    this.datiEnergeticiService.getDatoById(id).subscribe({
+    this.datiEnergeticiService.getById(id).subscribe({
       next: (dato) => {
-        if (!dato) {
-          return;
-        }
+        if (!dato) return;
         this.datiForm.patchValue({
-          idDati: dato.idDati,
-          idCer: dato.idCer,
-          anno: dato.anno,
-          energiaProdotta: dato.eProdotta,
-          energiaPrelevata: dato.ePrelevata,
-          energiaImmessa: dato.eImmessa,
-          energiaCondivisa: dato.eCondivisa,
-          energiaAutoCons: dato.eAutoCons,
-          tariffaPremium: dato.tariffaPremium,
+          idCer: dato.configurazioneCer?.idCer ?? null,
+          idConfigurazione: dato.configurazioneCer?.idConfigurazione ?? null,
+          annoRiferimento: dato.anno,
+          energiaProdottaMhw: dato.geteProdotta,
+          energiaPrelevataMhw: dato.getePrelevata,
+          energiaImmessaMhw: dato.geteImmessa,
+          energiaCondivisaMhw: dato.geteCondivisa,
+          energiaAutoconsumataMhw: dato.geteAutoCons,
+          tariffaPremioEuro: dato.tariffaPremium,
+          corrispettivoPremioEuro: dato.corrPremioOtt,
+          riduzioneCo2Ton: dato.ridEmCo2,
+          calcoloCo2Automatico: dato.calcoloCo2Automatico,
+          note: dato.note,
         });
         if (this.isDettaglio) {
           this.datiForm.disable();
         }
       },
-      error: (err) => {
-        console.error('Errore caricamento dato', err);
-      },
+      error: (err) => console.error('Errore caricamento dato', err),
     });
   }
-  salva(): void {
-    if (this.isDettaglio) {
-      return;
+
+  private buildPayload(): DatiEnergeticiRequest {
+    const v = this.datiForm.getRawValue();
+    const payload: DatiEnergeticiRequest = {
+      idCer: v.idCer,
+      idConfigurazione: v.idConfigurazione,
+      annoRiferimento: v.annoRiferimento,
+      energiaProdottaMhw: v.energiaProdottaMhw,
+      energiaPrelevataMhw: v.energiaPrelevataMhw,
+      energiaImmessaMhw: v.energiaImmessaMhw,
+      energiaCondivisaMhw: v.energiaCondivisaMhw,
+      energiaAutoconsumataMhw: v.energiaAutoconsumataMhw,
+      tariffaPremioEuro: v.tariffaPremioEuro,
+      corrispettivoPremioEuro: v.corrispettivoPremioEuro,
+      riduzioneCo2Ton: v.riduzioneCo2Ton ?? '',
+      calcoloCo2Automatico: v.calcoloCo2Automatico,
+      note: v.note ?? '',
+      attivo: 'S',
+    };
+    if (this.isEditMode) {
+      payload.idSchedaEnergetica = Number(this.idDatiEnergetici);
     }
+    return payload;
+  }
+
+  salva(): void {
+    if (this.isDettaglio) return;
     if (this.datiForm.invalid) {
       this.datiForm.markAllAsTouched();
       return;
     }
-    const v = this.datiForm.value;
-    const dato = {
-      idDati: v.idDati,
-      idCer: v.idCer,
-      anno: v.anno,
-      eProdotta: v.energiaProdotta,
-      ePrelevata: v.energiaPrelevata,
-      eImmessa: v.energiaImmessa,
-      eCondivisa: v.energiaCondivisa,
-      eAutoCons: v.energiaAutoCons,
-      tariffaPremium: v.tariffaPremium,
-      calcoloCo2Automatico: 0,
-    };
+
+    const payload = this.buildPayload();
+
     if (this.isEditMode) {
       const id = Number(this.idDatiEnergetici);
-      this.datiEnergeticiService.modifica(id, dato).subscribe({
+      this.datiEnergeticiService.modifica(id, payload).subscribe({
         next: () => this.tornaAllaLista(),
         error: (err) => console.error('Errore modifica:', err),
       });
-    } else {
-      this.datiEnergeticiService.inserisci(dato).subscribe({
-        next: () => this.tornaAllaLista(),
-        error: (err) => console.error('Errore inserimento:', err),
-      });
+      return;
     }
+
+    // In INSERIMENTO: prima controllo che non esista già una scheda
+    // per la stessa configurazione/anno (doc 14.2).
+    this.datiEnergeticiService
+      .checkDuplicato(payload.idConfigurazione, payload.annoRiferimento)
+      .subscribe({
+        next: (res) => {
+          if (res.duplicato) {
+            this.snackBar.open(
+              res.messaggio ||
+                'Esiste già una scheda energetica per questa configurazione e questo anno.',
+              'OK',
+              { duration: 5000 },
+            );
+            return;
+          }
+          this.datiEnergeticiService.inserisci(payload).subscribe({
+            next: () => this.tornaAllaLista(),
+            error: (err) => console.error('Errore inserimento:', err),
+          });
+        },
+        error: (err) => {
+          // se il check fallisce, procedo comunque con l'inserimento
+          console.warn('Check duplicato fallito, procedo:', err);
+          this.datiEnergeticiService.inserisci(payload).subscribe({
+            next: () => this.tornaAllaLista(),
+            error: (e) => console.error('Errore inserimento:', e),
+          });
+        },
+      });
   }
-  private tornaAllaLista(): void {
+
+  tornaAllaLista(): void {
     this.router.navigate(['/dati-energetici']);
   }
+
   isInvalid(field: string): boolean {
     const control = this.datiForm.get(field);
     return !!control && control.invalid && control.touched;
   }
+
   resetForm(): void {
     this.datiForm.reset({
-      idDati: 0,
       idCer: null,
-      idConfig: null,
-      anno: '',
-      energiaProdotta: 0,
-      energiaPrelevata: 0,
-      energiaImmessa: 0,
-      energiaCondivisa: 0,
-      energiaAutoCons: 0,
-      tariffaPremium: 0.1,
-      corrPremioOtt: 0.1,
-      ridEmCo2: '',
-      flgCancellazione: 'N',
-      emailUtenteLoggato: '',
+      idConfigurazione: null,
+      annoRiferimento: null,
+      energiaProdottaMhw: 0,
+      energiaPrelevataMhw: 0,
+      energiaImmessaMhw: 0,
+      energiaCondivisaMhw: 0,
+      energiaAutoconsumataMhw: 0,
+      tariffaPremioEuro: 0,
+      corrispettivoPremioEuro: 0,
+      riduzioneCo2Ton: '',
+      calcoloCo2Automatico: true,
+      note: '',
     });
   }
 }
-
-// export class DatiEnergeticiFormComponent implements OnInit {
-//   datiForm!: FormGroup;
-//   titoloPagina = 'Nuovi Dati Energetici';
-//   isEditMode = false;
-//   idDatiEnergetici: string | null = null;
-
-//   constructor(
-//     private fb: FormBuilder,
-//     private route: ActivatedRoute,
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.idDatiEnergetici = this.route.snapshot.paramMap.get('id');
-//     this.isEditMode = !!this.idDatiEnergetici;
-
-//     this.datiForm = this.fb.group({
-//       idDati: [0],
-//       idCer: [null, Validators.required],
-//       idConfig: [null, Validators.required],
-//       anno: ['', Validators.required],
-//       energiaProdotta: [0, Validators.required],
-//       energiaPrelevata: [0, Validators.required],
-//       energiaImmessa: [0, Validators.required],
-//       energiaCondivisa: [0, Validators.required],
-//       energiaAutoCons: [0, Validators.required],
-//       tariffaPremium: [0.1, Validators.required],
-//       corrPremioOtt: [0.1, Validators.required],
-//       ridEmCo2: ['', Validators.required],
-//       flgCancellazione: ['N'],
-//       emailUtenteLoggato: ['', Validators.required],
-//     });
-
-//     if (this.isEditMode) {
-//       this.titoloPagina = 'Modifica Dati Energetici';
-//       this.loadMockForEdit();
-//     }
-//   }
-
-//   private loadMockForEdit(): void {
-//     const datiMock = {
-//       // idCer: 101,
-//       // idConfig: 1001,
-//       // anno: '2023',
-//       // energiaProdotta: 125000,
-//       // energiaPrelevata: 83000,
-//       // energiaImmessa: 42000,
-//       // energiaCondivisa: 31000,
-//       // energiaAutoCons: 52000,
-//       // tariffaPremium: 0.12,
-//       // corrPremioOtt: 0.08,
-//       // ridEmCo2: '18 tonnellate',
-//       // flgCancellazione: 'N',
-//       // emailUtenteLoggato: 'admin@cer.it',
-//     };
-
-//     this.datiForm.patchValue(datiMock);
-//   }
-
-//   salva(): void {
-//     if (this.datiForm.invalid) {
-//       this.datiForm.markAllAsTouched();
-//       return;
-//     }
-//     const body = this.datiForm.value;
-//     console.log(body);
-//   }
-
-//   isInvalid(field: string): boolean {
-//     const control = this.datiForm.get(field);
-//     return !!control && control.invalid && control.touched;
-//   }
-
-//   resetForm(): void {
-//     this.datiForm.reset({
-//       idDati: 0,
-//       idCer: null,
-//       idConfig: null,
-//       anno: '',
-//       energiaProdotta: 0,
-//       energiaPrelevata: 0,
-//       energiaImmessa: 0,
-//       energiaCondivisa: 0,
-//       energiaAutoCons: 0,
-//       tariffaPremium: 0.1,
-//       corrPremioOtt: 0.1,
-//       ridEmCo2: '',
-//       flgCancellazione: 'N',
-//       emailUtenteLoggato: '',
-//     });
-//   }
-// }

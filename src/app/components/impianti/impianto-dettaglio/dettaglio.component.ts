@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ImpiantoService, Impianto } from '../../services/impianto.service';
+import { ImpiantoService } from '../../services/impianto.service';
+import { ImpiantoDettaglio } from '../../../core/interfaces/impianto.model';
 
 @Component({
   selector: 'app-dettaglio',
@@ -9,7 +10,7 @@ import { ImpiantoService, Impianto } from '../../services/impianto.service';
 })
 export class DettaglioComponent implements OnInit {
   idImpianto: string | null = null;
-  impianto: Impianto | null = null;
+  impianto: ImpiantoDettaglio | null = null;
 
   constructor(
     private route: ActivatedRoute,

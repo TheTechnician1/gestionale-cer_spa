@@ -1,240 +1,93 @@
-// import { Injectable } from '@angular/core';
-// import { DatiEnergetici } from '../../core/interfaces/dati-energetici.model';
-// import { ApiRequestOptions, ApiService } from '../../core/services/api.service';
-// import { Observable } from 'rxjs';
-// import { HttpClient } from '@angular/common/http';
-
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { ApiService } from '../../core/services/api.service';
 import { StorageService } from '../../core/services/storage.service';
+import { UtenteLogin } from '../../core/interfaces/utente.model';
+import {
+  DatiEnergeticiVista,
+  DatiEnergeticiDettaglio,
+  DatiEnergeticiRequest,
+  DatiEnergeticiFiltro,
+} from '../../core/interfaces/dati-energetici.model';
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class DatiEnergeticiService {
-//   getDatiEnergetici() {
-//     throw new Error('Method not implemented.');
-//   }
-//   constructor(private api: ApiService) {}
-
-//   getDati(
-//     payload: any,
-//     options: ApiRequestOptions = {},
-//   ): Observable<DatiEnergetici[]> {
-//     const endpoint = 'datiEnergetici/ricerca';y
-//     return this.api.postLogin<DatiEnergetici[]>(endpoint, payload, options);
-//   }
-
-//   getDato(
-//     id: number,
-//     options: ApiRequestOptions = {},
-//   ): Observable<DatiEnergetici[]> {
-//     const endpoint = `datiEnergetici/visualizza/${id}`;
-//     return this.api.get<DatiEnergetici[]>(endpoint, undefined, options);
-//   }
-
-//   createDatiEnergetici(
-//     payload: DatiEnergetici,
-//     options: ApiRequestOptions = {},
-//   ): Observable<DatiEnergetici> {
-//     console.log('Dati Energetici creati con successo');
-//     const endpoint = 'datiEnergetici/inserimento';
-//     return this.api.post<DatiEnergetici>(endpoint, payload, options);
-//   }
-
-//   editDatiEnergetici(payload: DatiEnergetici, options: ApiRequestOptions = {}) {
-//     console.log('Dati Energetici modificati con successo');
-//     const endpoint = 'datiEnergetici/modifica';
-//     return this.api.put<DatiEnergetici>(endpoint, payload, options);
-//   }
-
-//   deleteDatiEnergetici(
-//     payload: any,
-//     options: ApiRequestOptions = {},
-//   ): Observable<DatiEnergetici> {
-//     console.log('Dati Energetici eliminati con successo');
-//     const endpoint = 'datiEnergetici/disattiva';
-//     return this.api.put<DatiEnergetici>(endpoint, payload, options);
-//   }
-// }
-
-// creiamo un interfaccia per definire l'oggetto che ci arriva per sostituire il backend
-export interface DatiEnergetici {
-  idDati: number;
-  idCer: number;
-  anno: string;
-  eProdotta: number;
-  ePrelevata: number;
-  eImmessa: number;
-  eCondivisa: number;
-  eAutoCons: number;
-  tariffaPremium: number;
-  calcoloCo2Automatico: number;
-}
-
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class DatiEnergeticiService {
-  private datiMock: DatiEnergetici[] = [
-    {
-      idDati: 1,
-      idCer: 101,
-      anno: '2024',
-      eProdotta: 12000,
-      ePrelevata: 5000,
-      eImmessa: 7000,
-      eCondivisa: 4500,
-      eAutoCons: 3000,
-      tariffaPremium: 0.12,
-      calcoloCo2Automatico: 1800,
-    },
-    {
-      idDati: 2,
-      idCer: 102,
-      anno: '2025',
-      eProdotta: 15000,
-      ePrelevata: 6000,
-      eImmessa: 9000,
-      eCondivisa: 5200,
-      eAutoCons: 4000,
-      tariffaPremium: 0.14,
-      calcoloCo2Automatico: 2200,
-    },
-  ];
+  constructor(
+    private api: ApiService,
+    private storage: StorageService,
+  ) {}
 
-  private readonly RITARDO_RETE = 300;
-  // simulo delay per far finta sia collegato al back
-
-  // chiave con cui salvo/leggo i dati nel localStorage
-  private readonly STORAGE_KEY = 'datiEnergetici';
-
-  constructor(private storage: StorageService) {
-    // all'avvio guardo se ci sono gia dati salvati nel localStorage
-    const salvati = this.storage.getLocal<DatiEnergetici[]>(this.STORAGE_KEY);
-    if (salvati) {
-      // se ci sono, parto da quelli (cosi sopravvivono al refresh)
-      this.datiMock = salvati;
-    } else {
-      // se non ci sono, salvo i dati iniziali la prima volta
-      this.persisti();
-    }
+  private emailUtente(): string {
+    return this.storage.getLocal<UtenteLogin>('utente')?.mail ?? '';
   }
 
-  // scrive lo stato attuale dei dati nel localStorage
-  private persisti(): void {
-    this.storage.setLocal(this.STORAGE_KEY, this.datiMock);
+  private buildParams(
+    f: DatiEnergeticiFiltro = {},
+  ): Record<string, string | number | boolean> {
+    const params: Record<string, string | number | boolean> = {};
+    Object.entries(f).forEach(([k, v]) => {
+      if (v !== null && v !== undefined && v !== '') {
+        params[k] = v as string | number | boolean;
+      }
+    });
+    return params;
   }
 
-  ricerca(payload: any): Observable<DatiEnergetici[]> {
-    const endpoint = 'datiEnergetici/ricerca';
-    console.log('[MOCK] POST', endpoint, payload);
-
-    // versione da scommentare con backend
-    // return this.api.postLogin<DatiEnergetici[]>(endpoint, payload);
-
-    let risultati = this.datiMock;
-
-    if (payload?.anno) {
-      risultati = risultati.filter((d) => d.anno === payload.anno);
-    }
-    if (payload?.idCer) {
-      risultati = risultati.filter((d) => d.idCer === Number(payload.idCer));
-    }
-
-    return of(risultati).pipe(delay(this.RITARDO_RETE));
+  // GET /api/dati-energetici/
+  ricerca(filtro: DatiEnergeticiFiltro = {}): Observable<DatiEnergeticiVista[]> {
+    return this.api.get<DatiEnergeticiVista[]>(
+      'api/dati-energetici/',
+      this.buildParams(filtro),
+    );
   }
 
-  getDatoById(id: number): Observable<DatiEnergetici | undefined> {
-    const endpoint = 'datiEnergetici/visualizza/${id}';
-    console.log('[MOck] get', endpoint);
-
-    // da scommentare con backend attivo
-    // return this.api.get<DatiEnergetici>(endpoint);
-
-    const dato = this.datiMock.find((d) => d.idDati === id);
-    return of(dato).pipe(delay(this.RITARDO_RETE));
+  // GET /api/dati-energetici/{id}
+  getById(id: number): Observable<DatiEnergeticiDettaglio> {
+    return this.api.get<DatiEnergeticiDettaglio>(`api/dati-energetici/${id}`);
   }
 
-  inserisci(dato: DatiEnergetici): Observable<DatiEnergetici> {
-    const endpoint = 'datiEnergetici/inserimento';
-    console.log('[MOCK] POST', endpoint, dato);
-
-    // da scommentare con backend
-    // return this.api.post<DatiEnergetici>(endpoint,dato);
-    // id robusto: prendo l'id piu alto presente e aggiungo 1
-    const prossimoId =
-      this.datiMock.length > 0
-        ? Math.max(...this.datiMock.map((d) => d.idDati)) + 1
-        : 1;
-    const nuovo: DatiEnergetici = {
-      ...dato,
-      idDati: prossimoId,
-    };
-    this.datiMock.push(nuovo);
-    this.persisti();
-    return of(nuovo).pipe(delay(this.RITARDO_RETE));
+  // POST /api/dati-energetici/create
+  inserisci(payload: DatiEnergeticiRequest): Observable<string> {
+    return this.api.postText('api/dati-energetici/create', { ...payload });
   }
 
-  modifica(id: number, dato: DatiEnergetici): Observable<DatiEnergetici> {
-    const endpoint = 'datiEnergetici/modifica';
-    console.log('[MOCK] PUT', endpoint, dato);
-
-    // da scommentare con backend
-    // return this.api.put<DatiEnergetici>(endpoint, { ...dato, idDati: id });
-
-    const index = this.datiMock.findIndex((d) => d.idDati === id);
-    if (index !== -1) {
-      this.datiMock[index] = { ...dato, idDati: id };
-      this.persisti();
-    }
-    return of(this.datiMock[index]).pipe(delay(this.RITARDO_RETE));
+  // PUT /api/dati-energetici/edit/{id}
+  modifica(id: number, payload: DatiEnergeticiRequest): Observable<string> {
+    return this.api.putText(`api/dati-energetici/edit/${id}`, { ...payload });
   }
-  elimina(id: number): Observable<boolean> {
-    const endpoint = 'datiEnergetici/disattiva';
-    console.log('[MOCK] PUT', endpoint, id);
 
-    // da scommentare con backend
-    // return this.api.put<boolean>(endpoint, { idDati: id });
+  // DELETE /api/dati-energetici/delete/{id}?email=...  (cancellazione logica)
+  elimina(id: number): Observable<string> {
+    return this.api.deleteText(`api/dati-energetici/delete/${id}`, {
+      email: this.emailUtente(),
+    });
+  }
 
-    this.datiMock = this.datiMock.filter((d) => d.idDati !== id);
-    this.persisti();
-    return of(true).pipe(delay(this.RITARDO_RETE));
+  // GET /api/dati-energetici/check?idConfigurazione=&anno=
+  // Risposta in TESTO. Convenzione: se contiene "Nessuna scheda" -> nessun
+  // duplicato; altrimenti scheda già presente.
+  checkDuplicato(
+    idConfigurazione: number,
+    anno: string,
+  ): Observable<{ duplicato: boolean; messaggio: string }> {
+    return this.api
+      .getText('api/dati-energetici/check', { idConfigurazione, anno })
+      .pipe(
+        map((testo) => ({
+          duplicato: !testo.toLowerCase().includes('nessuna'),
+          messaggio: testo,
+        })),
+      );
+  }
+
+  // POST /cer/ricerca  -> lista CER (per popolare la tendina nel form)
+  ricercaCer(): Observable<CerLista[]> {
+    return this.api.postLogin<CerLista[]>('cer/ricerca', {});
   }
 }
 
-//   dettaglio(id: number): Observable<DatiEnergetici | undefined> {
-//     return of(this.datiMock.find((d) => d.idDati === id));
-//   }
-//   inserisci(dato: DatiEnergetici): Observable<DatiEnergetici> {
-//     const nuovo = {
-//       ...dato,
-//       // SPREAD operator REST operator
-//       // Serve a prendere gli elementi dentro qualcosa e “spargerli”.
-//       // raccoglie più valori insieme.
-
-//       idDati: this.datiMock.length + 1,
-//     };
-//     this.datiMock.push(nuovo);
-//     return of(nuovo);
-//   }
-//   modifica(id: number, dato: DatiEnergetici): Observable<DatiEnergetici> {
-//     const index = this.datiMock.findIndex((d) => d.idDati === id);
-//     if (index !== -1) {
-//       this.datiMock[index] = {
-//         ...dato,
-//         idDati: id,
-//       };
-//     }
-//     return of(this.datiMock[index]);
-//   }
-//   getDatoById(id: number): Observable<DatiEnergetici | undefined> {
-//     return of(this.datiMock.find((dato) => dato.idDati === id));
-//   }
-//   elimina(id: number): Observable<boolean> {
-//     this.datiMock = this.datiMock.filter(
-//       (d: DatiEnergetici) => d.idDati !== id,
-//     );
-//     return of(true);
-//   }
+// Forma minima della CER usata per popolare la tendina
+export interface CerLista {
+  idCer: number;
+  ragSociale: string;
+}
