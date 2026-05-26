@@ -11,7 +11,7 @@ import { CerModel, CerView } from "src/app/core/interfaces/cer.model";
 import { DatiEnergetici } from "src/app/core/interfaces/dati-energetici.model";
 
 import { MatTableDataSource } from "@angular/material/table";
-import { map, Observable, of, tap } from "rxjs";
+import { debounceTime, distinctUntilChanged, map, Observable, of, switchMap, tap } from "rxjs";
 import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
 import { ConfigurazioniService } from "../../services/configurazioni.service";
 import { DatiEnergeticiView } from "src/app/core/interfaces/dati-energetici-view";
@@ -72,6 +72,17 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
         this.configurazioniList$=of([]);
       }
     });
+
+    
+  this.formRicerca.valueChanges
+  .pipe(
+    debounceTime(500),
+    distinctUntilChanged()
+  )
+  .subscribe(res => {
+    this.search();
+  });
+
   }
 
   private initForm(): void {
@@ -102,6 +113,7 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     this.cerService.getCerRicerca();
   }
 
+
  search(): void {
 
   
@@ -119,9 +131,9 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     this.datiEnergetici$ = this.datiEnergeticiService.getDatiFilter(filter);
   }
 
-  inserisciDati(): void {
-    this.router.navigate(["/dati-energetici/form"]);
-  }
+  // inserisciDati(): void {
+  //   this.router.navigate(["/dati-energetici/form"]);
+  // }
 
   visualizzaDato(id: number | null): void {
     if (!id) return;
