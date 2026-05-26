@@ -78,20 +78,34 @@ export class DatiEnergeticiRicercaComponent {
     };
 
     this.datiEnergeticiService.getDati(searchParams).subscribe({
-      next: (risposta: DatiEnergetici[]) => {
+      next: (risposta: DatiEnergetici[] | any[]) => {
         let datiFiltrati = [...risposta];
 
-        if (this.filtro.anno) {
-          datiFiltrati = datiFiltrati.filter((item) =>
-            item.anno?.toString().trim().includes(this.filtro.anno.trim()),
-          );
+        if (!this.filtro.statoScheda || this.filtro.statoScheda.trim() === '') {
+          datiFiltrati = datiFiltrati.filter((item) => {
+            const flag = item.flgCancellazione || item.flgCancellato || 'N';
+            const stato = item.statoScheda || '';
+
+            return (
+              flag.toUpperCase().trim() !== 'S' &&
+              !stato.toUpperCase().includes('CANC')
+            );
+          });
         }
 
-        if (this.filtro.statoScheda) {
+        if (this.filtro.anno && this.filtro.anno.trim() !== '') {
+          const targetAnno = this.filtro.anno.toString().trim();
+          datiFiltrati = datiFiltrati.filter((item) => {
+            const valAnno = item.anno || item.annoRiferimento || '';
+            return valAnno.toString().trim().includes(targetAnno);
+          });
+        }
+
+        if (this.filtro.statoScheda && this.filtro.statoScheda.trim() !== '') {
           const userFiltro = this.filtro.statoScheda.toLowerCase().trim();
           datiFiltrati = datiFiltrati.filter((item) => {
             const backendState =
-              item.flgCancellazione || (item as any).statoScheda || '';
+              item.flgCancellazione || item.statoScheda || 'N';
             const normalizedState = backendState.toLowerCase().trim();
 
             if (normalizedState === userFiltro) return true;
@@ -104,18 +118,19 @@ export class DatiEnergeticiRicercaComponent {
         }
 
         if (this.filtro.idCer) {
-          datiFiltrati = datiFiltrati.filter((item) =>
-            item.idCer?.toString().trim().includes(this.filtro.idCer.trim()),
-          );
+          const targetCer = this.filtro.idCer.toString().trim();
+          datiFiltrati = datiFiltrati.filter((item) => {
+            const valCer = item.idCer || item.idDatiCer || '';
+            return valCer.toString().trim().includes(targetCer);
+          });
         }
 
         if (this.filtro.idConfigurazione) {
-          datiFiltrati = datiFiltrati.filter((item) =>
-            item.idConfigurazione
-              ?.toString()
-              .trim()
-              .includes(this.filtro.idConfigurazione.trim()),
-          );
+          const targetConfig = this.filtro.idConfigurazione.toString().trim();
+          datiFiltrati = datiFiltrati.filter((item) => {
+            const valConfig = item.idConfigurazione || item.idConfig || '';
+            return valConfig.toString().trim().includes(targetConfig);
+          });
         }
 
         this.dati = datiFiltrati;

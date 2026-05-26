@@ -40,7 +40,21 @@ export class FormInizializzazioneComponent implements OnInit {
   }
 
   salvaNuovoRecord(formValue: any): void {
-    const emailLoggato = this.utenteService.currentUser?.utente?.email || '';
+    const currentUserState = this.utenteService.currentUser;
+    const emailLoggato =
+      currentUserState?.utente?.mail ||
+      currentUserState?.utente?.email ||
+      currentUserState?.mail ||
+      currentUserState?.email ||
+      '';
+
+    if (!emailLoggato) {
+      console.error('Missing authentication context state signature.');
+      return;
+    }
+
+    console.log('Component passing raw form values to service:', formValue);
+
     this.service.createDatiEnergetici(formValue, emailLoggato).subscribe({
       next: () => this.tornaIndietro(),
       error: (err) => console.error('Errore creazione:', err),

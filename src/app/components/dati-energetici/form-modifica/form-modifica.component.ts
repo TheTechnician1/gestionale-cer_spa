@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatiEnergeticiService } from '../../services/dati-energetici.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { UtenteService } from 'src/app/core/services/utente.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-form-modifica',
@@ -51,24 +52,50 @@ export class FormModificaComponent implements OnInit {
     });
   }
 
-  aggiornaRecord(formBody: any): void {
-    this.loading = true;
+  aggiornaRecord(datiFormEmessi: any) {
+    const currentRecordId =
+      this.idRecord || Number(this.route.snapshot.paramMap.get('id'));
 
-    // 3. Extract the logged-in user email string safely from the nested session payload
-    const emailLoggato = this.utenteService.currentUser?.utente?.email || '';
+    // 🔍 DEBUG LOG: Print the user state to trace the exact email property name
+    console.log(
+      '=== DEBUG MODIFICA USER STATE ===',
+      this.utenteService.currentUser,
+    );
 
-    // 4. Pass the emailLoggato string as the 3rd argument to clear the signature requirements
+    const userState = this.utenteService.currentUser;
+
+    // Dynamic property fallback checking
+    const email =
+      userState?.utente?.email ||
+      userState?.utente?.mail ||
+      userState?.email ||
+      userState?.mail ||
+      '';
+
+    console.log('=== RESOLVED EMAIL FOR BACKEND ===', email);
+
+    if (!email) {
+      this.toast.error(
+        'Impossibile procedere: Email utente loggato non trovata.',
+      );
+      return;
+    }
+
+    const finalFormPayload = {
+      ...this.recordDaModificare,
+      ...datiFormEmessi,
+    };
+
     this.service
-      .editDatiEnergetici(this.idRecord, formBody, emailLoggato)
+      .editDatiEnergetici(currentRecordId, finalFormPayload, email)
       .subscribe({
-        next: (messaggio) => {
-          this.toast.success(messaggio || 'Modifica completata con successo!');
+        next: (res) => {
+          this.toast.success('Record aggiornato con successo!');
           this.tornaIndietro();
         },
         error: (err) => {
-          console.error(err);
-          this.toast.error('Errore durante il salvataggio delle modifiche');
-          this.loading = false;
+          console.error('Validation failure payload detail:', err);
+          this.toast.error('Errore durante la modifica del record.');
         },
       });
   }
