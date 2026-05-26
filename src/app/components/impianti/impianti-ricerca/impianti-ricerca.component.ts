@@ -162,7 +162,9 @@ export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
       this.formRicercaImpianti.get('attivo')?.value ? { attivo: this.formRicercaImpianti.get('attivo')?.value } : {attivo: "N"}
     ];
 
-    this.loadData();
+    this.impiantoService.getImpiantiFilter(filter).subscribe(impianti => {
+      this.dataSource.data = impianti;
+    });
   }
 
   inserisciDati(): void {
@@ -201,9 +203,10 @@ export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
         this.search();
       },
       error:(err)=>{
-        console.log("Errore nell'eliminazione dell'impianto");
+        alert("Errore nell'eliminazione dell'impianto");
       }
     });
+    this.search();
   }
   
 }

@@ -9,9 +9,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ImpiantiViewComponent } from "src/app/components/impianti/impianti-view/impianti-view.component";
 
 @NgModule({
-  declarations: [ImpiantiRicercaComponent, ImpiantiFormComponent],
+  declarations: [ImpiantiRicercaComponent, ImpiantiFormComponent, ImpiantiViewComponent],
   schemas: [],
   exports: [],
   imports: [SharedModule, ImpiantoRoutingModule, MatCardModule,

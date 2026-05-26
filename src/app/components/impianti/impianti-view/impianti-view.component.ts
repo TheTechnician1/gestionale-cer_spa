@@ -18,14 +18,18 @@ export class ImpiantiViewComponent {
 
   ngOnInit(): void {
     this.idImpianto = Number(this.route.snapshot.paramMap.get('id'));
-    if(this.idImpianto){
+    if(!this.idImpianto){
+      alert("Impianto non trovato");
+      this.router.navigate(['/impianto']);
+    } else {
       this.impianto$ = this.impiantoService.getImpiantoById(this.idImpianto);
-      if(!this.impianto$){
-        alert("Impianto non trovato");
-        this.router.navigate(['/impianti']);
-      }
+      this.impianto$.subscribe({
+        error: (err) => {
+          alert("Impianto non trovato");
+          this.router.navigate(['/impianto']);
+        }
+      });
     }
-    this.impianto$ = this.impiantoService.getImpiantoById(this.idImpianto); 
   }
 
   tornaIndietro(): void {
