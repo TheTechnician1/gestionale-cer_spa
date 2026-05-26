@@ -131,9 +131,9 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     this.datiEnergetici$ = this.datiEnergeticiService.getDatiFilter(filter);
   }
 
-  // inserisciDati(): void {
-  //   this.router.navigate(["/dati-energetici/form"]);
-  // }
+  inserisciDati(): void {
+    this.router.navigate(["/dati-energetici/form"]);
+  }
 
   visualizzaDato(id: number | null): void {
     if (!id) return;

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
+import { DatiEnergeticiModel } from 'src/app/core/interfaces/dati-energetici.model';
 
 @Component({
   selector: 'app-dati-energetici-edit',
@@ -65,14 +66,12 @@ export class DatiEnergeticiEditComponent implements OnInit {
       energiaProdottaMhw: res.energiaProdottaMhw,
       energiaPrelevataMhw: res.energiaPrelevataMhw,
       energiaImmessaMhw: res.energiaImmessaMhw,
-      energiaCondivisaMhw: res.energiaCondivisaMhw,
       energiaAutoconsumataMhw: res.energiaAutoconsumataMhw,
 
       tariffaPremioEuro: res.tariffaPremioEuro,
       corrispettivoPremioEuro: res.corrispettivoPremioEuro,
 
       riduzioneCo2Ton: res.riduzioneCo2Ton,
-      calcoloCo2Automatico: res.calcoloCo2Automatico,
 
       note: res.note,
       attivo: res.attivo,

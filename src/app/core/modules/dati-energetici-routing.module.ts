@@ -32,7 +32,9 @@ const routes: Routes = [
 
   {
     path: "form",
-    component: DatiEnergeticiFormComponent
+    component: DatiEnergeticiFormComponent,
+        data: { role: ["ADMIN"] },
+    canActivate: [AuthGuard] 
   }
 
 ];

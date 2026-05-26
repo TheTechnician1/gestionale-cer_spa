@@ -1,283 +1,300 @@
-<h2>Dati Energetici Annuali</h2>
+  <h2>Dati Energetici Annuali</h2>
 
-<mat-divider></mat-divider>
-
-<button mat-raised-button color="primary" (click)="inserisciDati()">
-  Inserisci
-</button>
-
-<div class="white-box">
-
-  <form [formGroup]="formRicerca">
-
-    <!-- =========================
-         CER
-    ========================== -->
-    <div class="form-group">
-
-      <label>Seleziona CER</label>
-
-      <select formControlName="idCer">
-
-        <option [ngValue]="null">
-          -- Seleziona CER --
-        </option>
-
-        <option
-          *ngFor="let cer of (cerList$ | async) ?? []"
-          [ngValue]="cer.idCer">
-
-          {{ cer.ragSociale }}
-
-        </option>
-
-      </select>
-
-    </div>
-
-    <!-- =========================
-         CABINA
-    ========================== -->
-    <div class="form-group">
-
-      <label>Seleziona Cabina</label>
-
-      <select formControlName="idCabina">
-
-        <option [ngValue]="null">
-          -- Seleziona Cabina --
-        </option>
-
-        <option
-          *ngFor="let cabina of (configurazioniList$ | async) ?? []"
-          [ngValue]="cabina.idConfig">
-
-          {{ cabina.codiceCabina }}
-
-        </option>
-
-      </select>
-
-    </div>
-
-    <!-- =========================
-         ANNO
-    ========================== -->
-    <div class="form-group">
-
-      <label>Anno</label>
-
-      <select formControlName="annoRiferimento">
-
-        <option [ngValue]="null">
-          -- Seleziona Anno --
-        </option>
-
-        <option
-          *ngFor="let anno of anniList"
-          [ngValue]="anno">
-
-          {{ anno }}
-
-        </option>
-
-      </select>
-
-    </div>
-
-    <!-- =========================
-         SEARCH BUTTON
-    ========================== -->
     <button
-      type="button"
-      class="search-btn"
-      (click)="search()"
-      [disabled]="
-        !formRicerca.get('idCer')?.value ||
-        !formRicerca.get('idCabina')?.value
-      ">
+      mat-raised-button
+      color="primary"
+      (click)="inserisciDati()">
 
-      Cerca
+      <mat-icon>add</mat-icon>
+
+      Inserisci
 
     </button>
 
-  </form>
+  <div>
+
+  <p class="subtitle">
+    Ricerca e gestione dati energetici
+  </p>
 
 </div>
 
-<!-- =========================
-     TABLE
-========================== -->
-<div
-  class="table-container"
-  *ngIf="(datiEnergetici$ | async) as dati">
+  <!-- FILTRI -->
+  <div class="filter-card">
 
-  <!-- Nessun dato -->
-  <div *ngIf="dati.length === 0">
-    Nessun dato trovato
+    <form [formGroup]="formRicerca" class="filters-grid">
+
+      <!-- CER -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>CER</mat-label>
+
+        <mat-select formControlName="idCer">
+
+          <mat-option [value]="null">
+            Tutti
+          </mat-option>
+
+          <mat-option
+            *ngFor="let cer of (cerList$ | async) ?? []"
+            [value]="cer.idCer">
+
+            {{ cer.ragSociale }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <!-- CABINA -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>Cabina</mat-label>
+
+        <mat-select formControlName="idCabina">
+
+          <mat-option [value]="null">
+            Tutte
+          </mat-option>
+
+          <mat-option
+            *ngFor="let cabina of (configurazioniList$ | async) ?? []"
+            [value]="cabina.idConfig">
+
+            {{ cabina.codiceCabina }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <!-- ANNO -->
+      <mat-form-field appearance="outline">
+
+        <mat-label>Anno</mat-label>
+
+        <mat-select formControlName="annoRiferimento">
+
+          <mat-option [value]="null">
+            Tutti
+          </mat-option>
+
+          <mat-option
+            *ngFor="let anno of anniList"
+            [value]="anno">
+
+            {{ anno }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+    </form>
+
   </div>
 
-  <!-- TABLE -->
-  <table
-    *ngIf="dati.length > 0"
-    mat-table
-    [dataSource]="dati"
-    class="mat-elevation-z8 full-table">
+  <!-- TABELLA -->
+  <div
+    class="table-card"
+    *ngIf="(datiEnergetici$ | async) as dati">
 
-    <!-- ANNO -->
-    <ng-container matColumnDef="annoRiferimento">
+    <!-- EMPTY -->
+    <div
+      class="empty-state"
+      *ngIf="dati.length === 0">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Anno
-      </th>
+      Nessun dato trovato
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.annoRiferimento }}
-      </td>
+    </div>
 
-    </ng-container>
+    <!-- TABLE -->
+    <table
+      *ngIf="dati.length > 0"
+      mat-table
+      [dataSource]="dati"
+      class="full-table">
 
-    <!-- SCHEDA -->
-    <ng-container matColumnDef="idSchedaEnergetica">
+      <!-- ANNO -->
+      <ng-container matColumnDef="annoRiferimento">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Scheda Energetica
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          Anno
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.idSchedaEnergetica }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.annoRiferimento }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- CER -->
-    <ng-container matColumnDef="idCer">
+      <!-- SCHEDA -->
+      <ng-container matColumnDef="idSchedaEnergetica">
 
-      <th mat-header-cell *matHeaderCellDef>
-        CER
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          Scheda
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.idCer }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.idSchedaEnergetica }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- PARTITA IVA -->
-    <ng-container matColumnDef="partitaIva">
+      <!-- CER -->
+      <ng-container matColumnDef="idCer">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Partita IVA
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          CER
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.partitaIva }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.idCer }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- CONFIGURAZIONE -->
-    <ng-container matColumnDef="idConfigurazione">
+      <!-- PARTITA IVA -->
+      <ng-container matColumnDef="partitaIva">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Configurazione
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          P.IVA
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.idConfigurazione }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.partitaIva }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- CABINA -->
-    <ng-container matColumnDef="idCabina">
+      <!-- CONFIG -->
+      <ng-container matColumnDef="idConfigurazione">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Cabina
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          Config.
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.idCabina }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.idConfigurazione }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- ATTIVO -->
-    <ng-container matColumnDef="attivo">
+      <!-- CABINA -->
+      <ng-container matColumnDef="idCabina">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Stato
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          Cabina
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
-        {{ dato.attivo }}
-      </td>
+        <td mat-cell *matCellDef="let dato">
+          {{ dato.idCabina }}
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- AZIONI -->
-    <ng-container matColumnDef="azioni">
+      <!-- STATO -->
+      <ng-container matColumnDef="attivo">
 
-      <th mat-header-cell *matHeaderCellDef>
-        Azioni
-      </th>
+        <th mat-header-cell *matHeaderCellDef>
+          Stato
+        </th>
 
-      <td mat-cell *matCellDef="let dato">
+        <td mat-cell *matCellDef="let dato">
 
-        <mat-icon (click)="visualizzaDato(dato.idSchedaEnergetica)">
-          find_in_page
-        </mat-icon>
+          <span
+            class="status-badge"
+            [class.active]="dato.attivo">
 
-        <mat-icon (click)="modificaDati(dato.idSchedaEnergetica)">
-          edit
-        </mat-icon>
+            {{ dato.attivo ? 'Attivo' : 'Disattivo' }}
 
-        <!-- (click)="eliminaDati(dato)" -->
-        <mat-icon  (click)="openDialog(dato)">
-          delete
-        </mat-icon>
+          </span>
 
-      </td>
+        </td>
 
-    </ng-container>
+      </ng-container>
 
-    <!-- HEADER -->
-    <tr
-      mat-header-row
-      *matHeaderRowDef="[
-        'annoRiferimento',
-        'idSchedaEnergetica',
-        'idCer',
-        'partitaIva',
-        'idConfigurazione',
-        'idCabina',
-        'attivo',
-        'azioni'
-      ]">
-    </tr>
+      <!-- AZIONI -->
+      <ng-container matColumnDef="azioni">
 
-    <!-- ROW -->
-    <tr
-      mat-row
-      *matRowDef="let row; columns: [
-        'annoRiferimento',
-        'idSchedaEnergetica',
-        'idCer',
-        'partitaIva',
-        'idConfigurazione',
-        'idCabina',
-        'attivo',
-        'azioni'
-      ]">
-    </tr>
+        <th mat-header-cell *matHeaderCellDef>
+          Azioni
+        </th>
 
-  </table>
+        <td mat-cell *matCellDef="let dato">
 
-</div>
+          <div class="actions">
 
-<!-- =========================
-     DIALOG
-========================== -->
+            <button
+              mat-icon-button
+              (click)="visualizzaDato(dato.idSchedaEnergetica)">
+
+              <mat-icon>visibility</mat-icon>
+
+            </button>
+
+            <button
+              mat-icon-button
+              (click)="modificaDati(dato.idSchedaEnergetica)">
+
+              <mat-icon>edit</mat-icon>
+
+            </button>
+
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="openDialog(dato)">
+
+              <mat-icon>delete</mat-icon>
+
+            </button>
+
+          </div>
+
+        </td>
+
+      </ng-container>
+
+      <!-- HEADER -->
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'annoRiferimento',
+          'idSchedaEnergetica',
+          'idCer',
+          'partitaIva',
+          'idConfigurazione',
+          'idCabina',
+          'attivo',
+          'azioni'
+        ]">
+      </tr>
+
+      <!-- ROW -->
+      <tr
+        mat-row
+        *matRowDef="let row; columns: [
+          'annoRiferimento',
+          'idSchedaEnergetica',
+          'idCer',
+          'partitaIva',
+          'idConfigurazione',
+          'idCabina',
+          'attivo',
+          'azioni'
+        ]">
+      </tr>
+
+    </table>
+
+  </div>
+
+
+<!-- DIALOG -->
 <app-confirmation-dialog
   #confirmationDialog
   [title]="'Elimina elemento'"
