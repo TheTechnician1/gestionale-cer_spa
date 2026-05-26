@@ -32,7 +32,10 @@
 }
 
 .node-icon {
+  flex-shrink: 0;
+  width: 24px;
   margin-right: 8px;
+  text-align: center;
   color: var(--brand-blue-600);
 }
 
@@ -53,6 +56,10 @@
 
 .tree-inset {
   margin-left: 24px;
+}
+
+.tree-hidden {
+  display: none;
 }
 
 .node-row:hover,

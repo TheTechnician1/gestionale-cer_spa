@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { ImpiantoService } from '../../services/impianto.service';
 import {
   ImpiantoVista,
   STATI_IMPIANTO,
 } from '../../../core/interfaces/impianto.model';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-impianti-ricerca',
@@ -14,6 +18,7 @@ import {
 })
 export class ImpiantiRicercaComponent implements OnInit {
   impianti: ImpiantoVista[] = [];
+  dataSource = new MatTableDataSource<ImpiantoVista>([]);
   stati = STATI_IMPIANTO;
 
   form: FormGroup;
@@ -32,8 +37,20 @@ export class ImpiantiRicercaComponent implements OnInit {
     'azioni',
   ];
 
+  // La tabella sta dentro *ngIf: con i setter colleghiamo paginator e sort
+  // appena vengono creati (quando si passa alla vista lista).
+  @ViewChild(MatPaginator) set paginator(p: MatPaginator) {
+    if (p) this.dataSource.paginator = p;
+  }
+  @ViewChild(MatSort) set sort(s: MatSort) {
+    if (s) this.dataSource.sort = s;
+  }
+
+  @ViewChild('dlgElimina') private dlgElimina!: ConfirmationDialogComponent;
+
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private impiantoService: ImpiantoService,
     private fb: FormBuilder,
   ) {
@@ -51,12 +68,34 @@ export class ImpiantiRicercaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const valoreSalvato = localStorage.getItem('vistaLista');
+    if (valoreSalvato !== null) {
+      this.vistaLista = JSON.parse(valoreSalvato);
+    }
+    // Pre-filtri da queryParams (es. click sui KPI della dashboard).
+    const qp = this.route.snapshot.queryParamMap;
+    const patch: Record<string, string | number> = {};
+    qp.keys.forEach((k) => {
+      if (this.form.contains(k)) {
+        const v = qp.get(k);
+        if (v !== null && v !== '') {
+          patch[k] = isNaN(Number(v)) ? v : Number(v);
+        }
+      }
+    });
+    if (Object.keys(patch).length > 0) {
+      this.form.patchValue(patch);
+      this.mostraFiltri = true; // mostro il pannello così l'utente vede cos'è filtrato
+    }
     this.cercaImpianti();
   }
 
   cercaImpianti(): void {
     this.impiantoService.ricerca(this.form.value).subscribe({
-      next: (res) => (this.impianti = res ?? []),
+      next: (res) => {
+        this.impianti = res ?? [];
+        this.dataSource.data = this.impianti;
+      },
       error: (err) => console.error('Errore caricamento impianti:', err),
     });
   }
@@ -64,11 +103,29 @@ export class ImpiantiRicercaComponent implements OnInit {
   filtraImpianti(): void {
     this.cercaImpianti();
   }
+
+  /** Svuota tutti i filtri e ricarica la lista intera. */
+  resetFiltri(): void {
+    this.form.reset({
+      idCer: null,
+      codiceCabina: null,
+      tipologiaImpianto: null,
+      statoImpianto: null,
+      regione: null,
+      provincia: null,
+      comune: null,
+      presenzaAccumulo: null,
+      attivo: null,
+    });
+    this.cercaImpianti();
+  }
+
   toggleFiltri(): void {
     this.mostraFiltri = !this.mostraFiltri;
   }
   toggleVista(): void {
     this.vistaLista = !this.vistaLista;
+    localStorage.setItem('vistaLista', JSON.stringify(this.vistaLista));
   }
 
   inserisciNuovo(): void {
@@ -81,8 +138,13 @@ export class ImpiantiRicercaComponent implements OnInit {
     this.router.navigate(['/impianto/modifica-impianto', id]);
   }
 
-  eliminaImpianto(id: number): void {
-    this.impiantoService.elimina(id).subscribe({
+  /** Apre dialog di conferma prima della cancellazione logica. */
+  chiediElimina(id: number): void {
+    this.dlgElimina.open(id);
+  }
+
+  onConfermaElimina(id: unknown): void {
+    this.impiantoService.elimina(Number(id)).subscribe({
       next: () => this.cercaImpianti(),
       error: (err) => console.error('Errore eliminazione:', err),
     });

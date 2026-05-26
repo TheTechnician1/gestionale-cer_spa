@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImpiantoService } from '../../services/impianto.service';
 import { PermessiService } from '../../../core/services/permessi.service';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import {
   CodiceDescrizioneBase,
   ImpiantoDettaglio,
@@ -24,6 +25,8 @@ export class ImpiantiFormComponent implements OnInit {
   // dettaglio caricato in modifica: serve a preservare i "codice" dei
   // CodiceDescrizioneBase quando rimandiamo i dati al backend.
   private dettaglioCaricato?: ImpiantoDettaglio;
+
+  @ViewChild('dlgReset') private dlgReset!: ConfirmationDialogComponent;
 
   stati = STATI_IMPIANTO;
   tipologie = [
@@ -55,7 +58,7 @@ export class ImpiantiFormComponent implements OnInit {
       this.caricaImpianto();
     }
 
-    // capacità accumulo obbligatoria solo se presenzaAccumulo = SI (doc 4.3)
+    // capacità accumulo obbligatoria solo se presenzaAccumulo = S
     this.impiantoForm.get('presenzaAccumulo')?.valueChanges.subscribe((v) => {
       const capacita = this.impiantoForm.get('capacitaAccumuloKwh');
       if (v === 'S') {
@@ -117,17 +120,20 @@ export class ImpiantiFormComponent implements OnInit {
   }
 
   // Costruisce un CodiceDescrizioneBase preservando il "codice" originale
-  // ricevuto dal backend (in modifica). In inserimento il codice non c'è
-  // ancora: andrà popolato dalle liste /codici quando saranno disponibili.
+  // ricevuto dal backend (in modifica). Se non c'è né originale né codice
+  // reale (ancora niente /codici disponibile), torniamo null: il backend
+  // ESPLODE 500 se gli passiamo un CodiceDescrizioneBase con codice vuoto.
   private toCodice(
     valore: string | null,
-    originale?: CodiceDescrizioneBase,
-  ): CodiceDescrizioneBase {
-    return {
-      codice: originale?.codice ?? '',
-      descrizione: valore ?? '',
-      specifica: originale?.specifica,
-    };
+    originale?: CodiceDescrizioneBase | null,
+  ): CodiceDescrizioneBase | null {
+    if (originale) {
+      return {
+        ...originale,
+        descrizione: valore ?? originale.descrizione ?? '',
+      };
+    }
+    return null;
   }
 
   private buildPayload(): ImpiantoRequest {
@@ -184,7 +190,13 @@ export class ImpiantiFormComponent implements OnInit {
     this.router.navigate(['/impianto']);
   }
 
-  resetForm(): void {
+  /** Chiede conferma prima di svuotare il form. */
+  chiediReset(): void {
+    this.dlgReset.open();
+  }
+
+  /** Eseguito al "Conferma" del dialog: svuota davvero il form. */
+  onConfermaReset(): void {
     this.impiantoForm.reset({
       flagEsercizio: 'SI',
       presenzaAccumulo: 'N',

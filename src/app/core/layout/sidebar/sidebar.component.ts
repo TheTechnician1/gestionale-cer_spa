@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { isEmptyArray } from '../../util/collection.util';
 import { UtenteService } from '../../services/utente.service';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { LocalizedString } from '@angular/compiler';
+import { distinctUntilChanged, map, Subscription } from 'rxjs';
 
 interface NavItem {
   label: string;
@@ -106,20 +104,31 @@ const NAV_ITEMS: NavItem[] = [
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   treeControl = new NestedTreeControl<NavItem>((node) => node.children);
   dataSource = new MatTreeNestedDataSource<NavItem>();
-  dataSource$ = this.authService.user$.pipe(
-    map((user) => {
-      const role = user?.ruolo ?? null;
-      const ds = new MatTreeNestedDataSource<NavItem>();
-      ds.data = this.filterNavItems(NAV_ITEMS, role);
-      return ds;
-    }),
-  );
+
+  private sub?: Subscription;
+
   constructor(private authService: UtenteService) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+    // Costruisce l'albero UNA SOLA VOLTA per ruolo: i riferimenti dei nodi
+    // restano stabili, così il treeControl mantiene l'espansione e i toggle
+    // continuano a funzionare anche dopo nuove emissioni di user$.
+    this.sub = this.authService.user$
+      .pipe(
+        map((user) => user?.ruolo ?? null),
+        distinctUntilChanged(),
+      )
+      .subscribe((role) => {
+        this.dataSource.data = this.filterNavItems(NAV_ITEMS, role);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
   hasChild = (_: number, node: NavItem) =>
     !!node.children && node.children.length > 0;

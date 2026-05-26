@@ -17,7 +17,7 @@
 
       <div class="info-item">
         <span class="label">Potenza nominale (kW)</span>
-        <span class="value">{{ impianto.potenzaNominaleKw }}</span>
+        <span class="value">{{ impianto.potenzaNominaleKw | number:'1.0-2' }}</span>
       </div>
 
       <div class="info-item">
@@ -37,7 +37,7 @@
 
       <div class="info-item" *ngIf="impianto.presenzaAccumulo === 'S'">
         <span class="label">Capacità accumulo (kWh)</span>
-        <span class="value">{{ impianto.capacitaAccumuloKwh }}</span>
+        <span class="value">{{ impianto.capacitaAccumuloKwh | number:'1.0-2' }}</span>
       </div>
 
       <div class="info-item">
@@ -52,29 +52,29 @@
 
       <div class="info-item">
         <span class="label">Regione</span>
-        <span class="value">{{ impianto.regione.descrizione }}</span>
+        <span class="value">{{ impianto.regione?.descrizione }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Provincia</span>
-        <span class="value">{{ impianto.provincia.descrizione }}</span>
+        <span class="value">{{ impianto.provincia?.descrizione }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Comune</span>
-        <span class="value">{{ impianto.comune.descrizione }}</span>
+        <span class="value">{{ impianto.comune?.descrizione }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Indirizzo</span>
         <span class="value">
-          {{ impianto.indirizzo.descrizione }} {{ impianto.civico.descrizione }}
+          {{ impianto.indirizzo?.descrizione }} {{ impianto.civico?.descrizione }}
         </span>
       </div>
 
       <div class="info-item">
         <span class="label">CAP</span>
-        <span class="value">{{ impianto.cap.descrizione }}</span>
+        <span class="value">{{ impianto.cap?.descrizione }}</span>
       </div>
     </div>
   </mat-card-content>

@@ -59,12 +59,14 @@ export interface ImpiantoDettaglio {
   specificaCategoriaProduttore: string;
   tipologiaSitoInstallazione: string;
   specificaSitoInstallazione: string;
-  regione: CodiceDescrizioneBase;
-  provincia: CodiceDescrizioneBase;
-  comune: CodiceDescrizioneBase;
-  indirizzo: CodiceDescrizioneBase;
-  civico: CodiceDescrizioneBase;
-  cap: CodiceDescrizioneBase;
+  // Possono arrivare null dal backend e vanno rimandati null se non abbiamo
+  // il codice reale (altrimenti il backend risponde 500).
+  regione: CodiceDescrizioneBase | null;
+  provincia: CodiceDescrizioneBase | null;
+  comune: CodiceDescrizioneBase | null;
+  indirizzo: CodiceDescrizioneBase | null;
+  civico: CodiceDescrizioneBase | null;
+  cap: CodiceDescrizioneBase | null;
   statoImpianto: string;
   attivo: string;
 }

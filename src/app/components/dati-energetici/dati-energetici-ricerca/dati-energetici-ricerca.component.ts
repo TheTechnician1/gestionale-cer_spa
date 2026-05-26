@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -45,6 +45,7 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
   constructor(
     private datiEnergeticiService: DatiEnergeticiService,
     private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     public permessi: PermessiService,
   ) {
@@ -58,6 +59,25 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const valoreSalvato = localStorage.getItem('vistaLista');
+    if (valoreSalvato !== null) {
+      this.vistaLista = JSON.parse(valoreSalvato);
+    }
+    // Pre-filtri da queryParams (es. click sui KPI della dashboard).
+    const qp = this.route.snapshot.queryParamMap;
+    const patch: Record<string, string | number> = {};
+    qp.keys.forEach((k) => {
+      if (this.form.contains(k)) {
+        const v = qp.get(k);
+        if (v !== null && v !== '') {
+          patch[k] = isNaN(Number(v)) ? v : Number(v);
+        }
+      }
+    });
+    if (Object.keys(patch).length > 0) {
+      this.form.patchValue(patch);
+      this.mostraFiltri = true;
+    }
     this.cercaDatiEnergetici();
   }
 
@@ -75,12 +95,25 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     this.cercaDatiEnergetici();
   }
 
+  /** Svuota tutti i filtri e ricarica la lista intera. */
+  resetFiltri(): void {
+    this.form.reset({
+      annoRiferimento: null,
+      idCer: null,
+      idConfigurazione: null,
+      codiceCabina: null,
+      partitaIva: null,
+    });
+    this.cercaDatiEnergetici();
+  }
+
   toggleFiltri(): void {
     this.mostraFiltri = !this.mostraFiltri;
   }
 
   toggleVista(): void {
     this.vistaLista = !this.vistaLista;
+    localStorage.setItem('vistaLista', JSON.stringify(this.vistaLista));
   }
 
   inserisciNuovo(): void {

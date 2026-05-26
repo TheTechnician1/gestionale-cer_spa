@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
@@ -24,6 +25,8 @@ export class DatiEnergeticiFormComponent implements OnInit {
   anni: string[] = ['2020', '2021', '2022', '2023', '2024', '2025', '2026'];
 
   cers: CerLista[] = [];
+
+  @ViewChild('dlgReset') private dlgReset!: ConfirmationDialogComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -62,13 +65,13 @@ export class DatiEnergeticiFormComponent implements OnInit {
       this.caricaDato();
     }
 
-    // carica la lista CER per la tendina (doc 8.1 / 14.2: prima CER poi config)
+    // carica la lista CER per popolare la tendina
     this.datiEnergeticiService.ricercaCer().subscribe({
       next: (res) => (this.cers = res ?? []),
       error: (err) => console.error('Errore caricamento CER:', err),
     });
 
-    // se il calcolo CO2 è automatico, il campo riduzione non è editabile (doc 9.4)
+    // se il calcolo CO2 è automatico, il campo riduzione non è editabile
     this.datiForm.get('calcoloCo2Automatico')?.valueChanges.subscribe((auto) => {
       const rid = this.datiForm.get('riduzioneCo2Ton');
       if (auto) {
@@ -150,7 +153,7 @@ export class DatiEnergeticiFormComponent implements OnInit {
     }
 
     // In INSERIMENTO: prima controllo che non esista già una scheda
-    // per la stessa configurazione/anno (doc 14.2).
+    // per la stessa configurazione/anno.
     this.datiEnergeticiService
       .checkDuplicato(payload.idConfigurazione, payload.annoRiferimento)
       .subscribe({
@@ -189,7 +192,13 @@ export class DatiEnergeticiFormComponent implements OnInit {
     return !!control && control.invalid && control.touched;
   }
 
-  resetForm(): void {
+  /** Chiede conferma prima di svuotare il form. */
+  chiediReset(): void {
+    this.dlgReset.open();
+  }
+
+  /** Eseguito al "Conferma" del dialog. */
+  onConfermaReset(): void {
     this.datiForm.reset({
       idCer: null,
       idConfigurazione: null,

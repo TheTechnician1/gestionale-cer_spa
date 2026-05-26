@@ -42,8 +42,16 @@ export class DatiEnergeticiService {
   }
 
   // GET /api/dati-energetici/{id}
-  getById(id: number): Observable<DatiEnergeticiDettaglio> {
-    return this.api.get<DatiEnergeticiDettaglio>(`api/dati-energetici/${id}`);
+  // Il backend ritorna un ARRAY anche se l'id punta a un singolo record:
+  // estraiamo il primo elemento per usarlo come oggetto.
+  getById(id: number): Observable<DatiEnergeticiDettaglio | null> {
+    return this.api
+      .get<DatiEnergeticiDettaglio[] | DatiEnergeticiDettaglio>(
+        `api/dati-energetici/${id}`,
+      )
+      .pipe(
+        map((res) => (Array.isArray(res) ? (res[0] ?? null) : (res ?? null))),
+      );
   }
 
   // POST /api/dati-energetici/create

@@ -97,7 +97,7 @@ export class ToastService {
       return {
         type: inferredType,
         title,
-        message: "Operazione completata con successo.",
+        message: this.defaultSuccessMessage(request.method),
         statusCode: response.status,
       };
     }
@@ -113,10 +113,17 @@ export class ToastService {
   private buildErrorToast(_request: HttpRequest<unknown>, error: HttpErrorResponse): ToastMessage {
     const payload = this.readPayload(error.error);
 
-    const title = this.pickFirstString(payload, ["titolo", "title", "messageTitle", "error", "errore"]) ?? this.defaultErrorTitle(error.status);
-    const payloadMessage = this.pickFirstString(payload, ["messaggio", "message", "descrizione", "description", "dettaglio", "detail", "testo", "text"]);
+    // Titolo più umano in base allo status, niente "Errore richiesta".
+    const title =
+      this.pickFirstString(payload, ["titolo", "title", "messageTitle"]) ??
+      this.defaultErrorTitle(error.status);
+
+    // Messaggio: se il backend ne fornisce uno specifico lo uso (è la cosa
+    // più informativa), altrimenti suggerisco all'utente cosa fare in base
+    // al codice HTTP.
+    const payloadMessage = this.pickFirstString(payload, ["messaggio", "message", "descrizione", "description", "dettaglio", "detail", "testo", "text", "error", "errore"]);
     const textBodyMessage = this.extractTextBody(error.error);
-    const fallbackMessage = error.message || "Si e verificato un errore durante la richiesta.";
+    const fallbackMessage = this.defaultErrorMessage(error.status);
 
     return {
       type: this.resolveToastType(payload["status"] ?? payload["type"] ?? error.status, error.status, true),
@@ -128,38 +135,99 @@ export class ToastService {
 
   private defaultSuccessTitle(method: string): string {
     if (method === "POST") {
-      return "Inserimento completato";
+      return "Salvato";
     }
 
     if (method === "PUT" || method === "PATCH") {
-      return "Modifica completata";
+      return "Modifiche salvate";
     }
 
     if (method === "DELETE") {
-      return "Cancellazione completata";
+      return "Eliminato";
     }
 
-    return "Operazione completata";
+    return "Tutto a posto";
+  }
+
+  private defaultSuccessMessage(method: string): string {
+    if (method === "POST") {
+      return "Elemento creato correttamente. Lo trovi nella lista.";
+    }
+
+    if (method === "PUT" || method === "PATCH") {
+      return "Le modifiche sono state applicate.";
+    }
+
+    if (method === "DELETE") {
+      return "L'elemento è stato eliminato. Aggiorna la lista per vedere i risultati.";
+    }
+
+    return "Operazione completata.";
   }
 
   private defaultErrorTitle(statusCode: number): string {
+    if (statusCode === 0) {
+      return "Server non raggiungibile";
+    }
+
     if (statusCode === 401) {
-      return "Non autenticato";
+      return "Sessione scaduta";
     }
 
     if (statusCode === 403) {
-      return "Accesso negato";
+      return "Operazione non permessa";
     }
 
     if (statusCode === 404) {
-      return "Risorsa non trovata";
+      return "Elemento non trovato";
+    }
+
+    if (statusCode === 409) {
+      return "Conflitto con i dati";
+    }
+
+    if (statusCode === 400 || statusCode === 422) {
+      return "Dati non validi";
     }
 
     if (statusCode >= 500) {
-      return "Errore server";
+      return "Servizio non disponibile";
     }
 
-    return "Errore richiesta";
+    return "Operazione non riuscita";
+  }
+
+  /** Messaggio di "cosa fare adesso" per ogni codice HTTP. */
+  private defaultErrorMessage(statusCode: number): string {
+    if (statusCode === 0) {
+      return "Impossibile contattare il server. Controlla la connessione e riprova.";
+    }
+
+    if (statusCode === 401) {
+      return "La sessione è scaduta o non sei autenticato. Effettua di nuovo il login per continuare.";
+    }
+
+    if (statusCode === 403) {
+      return "Il tuo ruolo non permette questa operazione. Se serve l'accesso, contatta un amministratore.";
+    }
+
+    if (statusCode === 404) {
+      return "L'elemento richiesto non esiste o è stato rimosso. Aggiorna la pagina e riprova.";
+    }
+
+    if (statusCode === 409) {
+      return "Esiste già un elemento con questi dati. Modifica i valori e riprova.";
+    }
+
+    if (statusCode === 400 || statusCode === 422) {
+      return "Alcuni campi non sono corretti. Controlla i dati inseriti e riprova.";
+    }
+
+    if (statusCode >= 500) {
+      return "Il server ha avuto un problema. Riprova fra qualche istante; se persiste avvisa l'assistenza.";
+    }
+
+    return "Operazione non completata. Riprova fra poco.";
   }
 
   private readPayload(raw: unknown): Record<string, unknown> {

@@ -89,7 +89,7 @@
       *ngIf="!isDettaglio && permessi.puoModificare()"
       mat-stroked-button
       type="button"
-      (click)="resetForm()"
+      (click)="chiediReset()"
     >
       Reset
     </button>
@@ -105,3 +105,12 @@
     </button>
   </mat-card-actions>
 </mat-card>
+
+<app-confirmation-dialog
+  #dlgReset
+  title="Conferma reset"
+  description="Vuoi davvero svuotare tutti i campi del form? I dati inseriti verranno persi."
+  confirmText="Reset"
+  cancelText="Annulla"
+  (confirm)="onConfermaReset()"
+></app-confirmation-dialog>
