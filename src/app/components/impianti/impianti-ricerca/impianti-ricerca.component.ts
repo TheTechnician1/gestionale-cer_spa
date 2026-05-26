@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { delay, map, Observable, of, switchMap, tap } from "rxjs";
+import { debounceTime, delay, distinctUntilChanged, map, Observable, of, switchMap, tap } from "rxjs";
 import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoModel, ImpiantoSearchFilterModel, ImpiantoView } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -125,6 +125,15 @@ export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
           }
       }})
     }});
+    this.formRicercaImpianti.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+      )
+      .subscribe(() => {
+        this.search();
+      });
+
 
     //RECUPERO IMPIANTI
     this.loadData();
