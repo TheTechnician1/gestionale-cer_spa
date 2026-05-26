@@ -7,6 +7,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { Router } from '@angular/router';
 import { DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
 
+
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
@@ -19,77 +20,78 @@ export class DashboardComponent implements OnInit {
     private router: Router,
   ) {}
 
-  tableCER: string[] = ["ragSociale", "codFisc", "pIva", "comune", "provincia", "regione", "azioni"];
+  // tableCER: string[] = ["ragSociale", "codFisc", "pIva", "comune", "provincia", "regione", "azioni"];
 
-  cer: any[] = [];
+  // cer: any[] = [];
 
-  dataSource = new MatTableDataSource(this.cer);
-  sortedData: any[] | undefined;
+  // dataSource = new MatTableDataSource(this.cer);
+  // sortedData: any[] | undefined;
 
   dashboard: DashboardInterfaces | null = null;
 
 animatedComunita = 0;
 animatedImpianti = 0;
-animatedUtenti = 0;
+animatedConfigurazioniAttive = 0;
 animatedIncentivi = 0;
 animatedValore = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  
 
-  filtro = {
-    ragSociale: "",
-    codFisc: "",
-    pIva: "",
-    comune: "",
-    provincia: "",
-    regione: "",
-  };
+  // filtro = {
+  //   ragSociale: "",
+  //   codFisc: "",
+  //   pIva: "",
+  //   comune: "",
+  //   provincia: "",
+  //   regione: "",
+  // };
 
-  listaFiltrata = [...this.cer];
-  isFiltering = false;
+  // listaFiltrata = [...this.cer];
+  // isFiltering = false;
 
   ngOnInit() {
-    this.loadCERS();
+    // this.loadCERS();
      this.loadKPI();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.sort = this.sort;
+  //   this.dataSource.paginator = this.paginator;
+  // }
 
-  loadCERS() {
-    this.dashboardService.getDati(this.filtro).subscribe({
-      next: (cer) => {
-        this.cer = cer;
-        this.dataSource.data = [...this.cer];
-        this.listaFiltrata = [...this.cer];
-      },
-      error: (error) => {
-        console.error("Login error", error);
-      },
-    });
-  }
+  // loadCERS() {
+  //   this.dashboardService.getDati(this.filtro).subscribe({
+  //     next: (cer) => {
+  //       this.cer = cer;
+  //       this.dataSource.data = [...this.cer];
+  //       this.listaFiltrata = [...this.cer];
+  //     },
+  //     error: (error) => {
+  //       console.error("Login error", error);
+  //     },
+  //   });
+  // }
 
-  filtraCER() {
-    this.isFiltering = true;
-    this.loadCERS();
-  }
+  // filtraCER() {
+  //   this.isFiltering = true;
+  //   this.loadCERS();
+  // }
 
-  resetFiltro() {
-    this.isFiltering = false;
-    this.filtro = {
-      ragSociale: "",
-      codFisc: "",
-      pIva: "",
-      comune: "",
-      provincia: "",
-      regione: "",
-    };
-    this.listaFiltrata = [...this.cer];
-    this.loadCERS();
-  }
+  // resetFiltro() {
+  //   this.isFiltering = false;
+  //   this.filtro = {
+  //     ragSociale: "",
+  //     codFisc: "",
+  //     pIva: "",
+  //     comune: "",
+  //     provincia: "",
+  //     regione: "",
+  //   };
+  //   this.listaFiltrata = [...this.cer];
+  //   this.loadCERS();
+  // }
 
   sortData(sortState: Sort) {
     if (sortState.direction) {
@@ -131,9 +133,9 @@ loadKPI() {
 
   this.dashboard = data;
 
-  this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
+this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
 this.animateValue(res.impiantiTotali || 0, v => this.animatedImpianti = v);
-this.animateValue(res.configurazioniAttive || 0, v => this.animatedUtenti = v);
+this.animateValue(res.configurazioniAttive || 0, v => this.animatedConfigurazioniAttive = v);
 this.animateValue(res.incentivi || 0, v => this.animatedIncentivi = v);
 this.animateValue(res.energiaProdotta || 0, v => this.animatedValore = v);
 }

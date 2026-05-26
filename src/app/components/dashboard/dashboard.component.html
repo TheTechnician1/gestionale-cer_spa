@@ -1,3 +1,4 @@
+<h2>Dashboard Comunità Energetiche</h2>
 <div class="kpi-grid">
 
   <div class="kpi-card blue">
@@ -19,8 +20,8 @@
   <div class="kpi-card purple">
     <div class="kpi-icon">👥</div>
     <div class="kpi-content">
-      <div class="kpi-value">{{ animatedUtenti }}</div>
-      <div class="kpi-label">Utenti</div>
+      <div class="kpi-value">{{ animatedConfigurazioniAttive }}</div>
+      <div class="kpi-label">Configurazioni Attive</div>
     </div>
   </div>
 
@@ -38,22 +39,26 @@
       <div class="kpi-value">{{ animatedValore }}</div>
       <div class="kpi-label">Valore Incentivi €</div>
     </div>
-  </div>
 
+    
+  </div>
+<app-donut-chart [values] = [2,3] [labels]="['a','b']"></app-donut-chart>
 </div>
 
 
-<!-- HEADER -->
-<div>
+  
+
+
+
+<!-- <div>
   <div class="h3-header">
     <h1>
-      <span [matBadge]="cer.length" matBadgeOverlap="true" class="span-h2">
+      <span [matBadge]="totaleCer.length" matBadgeOverlap="true" class="span-h2">
         {{ "app.dashboard-title" | translate }}
       </span>
     </h1>
   </div>
 
-  <!-- FILTRI -->
   <div class="filtro" rows="3">
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>{{'app.title' | translate}}</mat-label>
@@ -97,7 +102,6 @@
   </div>
 </div>
 
-<!-- TABELLA -->
 <div class="table">
   <table mat-table [dataSource]="isFiltering ? listaFiltrata : dataSource"
          matSort (matSortChange)="sortData($event)"
@@ -156,4 +160,4 @@
     [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons>
   </mat-paginator>
-</div>
+</div> -->

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
 import { Observable } from "rxjs";
-import { DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
+import { DashboardEnergetica, DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -14,7 +14,7 @@ export class DashboardService {
     return this.api.postLogin<any[]>(endpoint, payload, options);
   }
 
-  getSummary(anno?: number, anno2?: number): Observable<DashboardInterfaces> {
+  getSummary(anno?: number, anno2?: number): Observable<DashboardEnergetica> {
     const endpoint = "/api/dashboard/summary";
 
     const params: any = {};
@@ -22,6 +22,6 @@ export class DashboardService {
     if (anno != null) params.anno = anno;
     if (anno2 != null) params.anno2 = anno2;
 
-    return this.api.get<DashboardInterfaces>(endpoint, { params });
+    return this.api.get<DashboardEnergetica>(endpoint, { params });
   }
 }
