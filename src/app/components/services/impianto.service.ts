@@ -61,7 +61,6 @@ export class ImpiantoService {
     });
   }
 
-  // CAMBIO STATO senza PATCH: leggo il dettaglio, cambio solo statoImpianto, rifaccio la PUT
   cambiaStato(id: number, nuovoStato: string): Observable<string> {
     return this.getById(id).pipe(
       switchMap((dett) => {

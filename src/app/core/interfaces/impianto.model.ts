@@ -16,7 +16,6 @@ export const STATI_IMPIANTO: StatoImpianto[] = [
   'DISMESSO',
 ];
 
-// LISTA -> GET /api/impianti/ (VistaImpiantoResponseDTO)
 export interface ImpiantoVista {
   idImpianto: number;
   idCer: number;
@@ -28,11 +27,10 @@ export interface ImpiantoVista {
   provincia: string;
   comune: string;
   potenzaNominaleKw: number;
-  presenzaAccumulo: string; // 'SI'/'NO'
+  presenzaAccumulo: string;
   attivo: string;
 }
 
-// Filtri ricerca
 export interface ImpiantoFiltro {
   idCer?: number | null;
   idConfigurazione?: number | null;
@@ -43,10 +41,9 @@ export interface ImpiantoFiltro {
   provincia?: string | null;
   comune?: string | null;
   presenzaAccumulo?: string | null;
-  attivo?: string | null; // "includi disattivati" (solo ADM)
+  attivo?: string | null;
 }
 
-// DETTAGLIO -> GET /api/impianti/{id} (ImpiantoResponseDTO)
 export interface ImpiantoDettaglio {
   idImpianto: number;
   idConfigurazione: number;
@@ -72,7 +69,7 @@ export interface ImpiantoDettaglio {
   attivo: string;
 }
 
-// CREATE/EDIT -> ImpiantoRequestDTO / UpdateImpiantoDTO
-export interface ImpiantoRequest extends Omit<ImpiantoDettaglio, 'idImpianto'> {
-  // emailUtenteLoggato aggiunto in automatico da ApiService.post/put
-}
+export interface ImpiantoRequest extends Omit<
+  ImpiantoDettaglio,
+  'idImpianto'
+> {}

@@ -55,8 +55,6 @@ export class DatiEnergeticiModel implements DatiEnergetici {
   }
 }
 
-// ===== DTO allineati a Swagger (Case Study 2) =====
-
 export interface ConfigurazioneBase {
   idConfigurazione?: number;
   idCer?: number;
@@ -64,7 +62,6 @@ export interface ConfigurazioneBase {
   [key: string]: unknown;
 }
 
-// GET /api/dati-energetici/  (VistaDatiEnergeticiDTO)
 export interface DatiEnergeticiVista {
   idSchedaEnergetica: number;
   idCer: number;
@@ -75,7 +72,6 @@ export interface DatiEnergeticiVista {
   attivo: string;
 }
 
-// Filtri ricerca (query params Swagger)
 export interface DatiEnergeticiFiltro {
   idSchedaEnergetica?: number | null;
   annoRiferimento?: string | null;
@@ -86,7 +82,6 @@ export interface DatiEnergeticiFiltro {
   attivo?: string | null;
 }
 
-// GET /api/dati-energetici/{id}  (DatiVisualizza)
 export interface DatiEnergeticiDettaglio {
   idDati: number;
   anno: string;
@@ -104,7 +99,6 @@ export interface DatiEnergeticiDettaglio {
   configurazioneCer: ConfigurazioneBase;
 }
 
-// POST /create e PUT /edit/{id}  (DatiRequestDTO)
 export interface DatiEnergeticiRequest {
   idSchedaEnergetica?: number;
   idCer: number;
@@ -121,5 +115,4 @@ export interface DatiEnergeticiRequest {
   calcoloCo2Automatico: boolean;
   note: string;
   attivo: string;
-  // emailUtenteLoggato aggiunto in automatico da ApiService.post/put
 }

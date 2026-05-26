@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ImpiantoService } from '../../services/impianto.service';
-import { ImpiantoVista, STATI_IMPIANTO } from '../../../core/interfaces/impianto.model';
+import {
+  ImpiantoVista,
+  STATI_IMPIANTO,
+} from '../../../core/interfaces/impianto.model';
 
 @Component({
   selector: 'app-impianti-ricerca',
@@ -79,7 +82,6 @@ export class ImpiantiRicercaComponent implements OnInit {
   }
 
   eliminaImpianto(id: number): void {
-    // TODO (doc 14.2): conferma con SharedConfirmDialog prima di procedere
     this.impiantoService.elimina(id).subscribe({
       next: () => this.cercaImpianti(),
       error: (err) => console.error('Errore eliminazione:', err),
