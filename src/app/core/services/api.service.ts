@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpContext, HttpParams } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { APP_SETTINGS } from "../config/app-settings";
-import { StorageService } from "./storage.service";
-import { UtenteLogin } from "../interfaces/utente.model";
-import { SKIP_HTTP_SNACKBAR } from "../interceptor/http-status/http-snackbar.context";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpContext, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { APP_SETTINGS } from '../config/app-settings';
+import { StorageService } from './storage.service';
+import { UtenteLogin } from '../interfaces/utente.model';
+import { SKIP_HTTP_SNACKBAR } from '../interceptor/http-status/http-snackbar.context';
 
 export interface ApiRequestOptions {
   params?: Record<string, string | number | boolean>;
   skipToast?: boolean;
 }
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly baseUrl = APP_SETTINGS.apiBaseUrl;
 
@@ -20,85 +20,153 @@ export class ApiService {
     private api: StorageService,
   ) {}
 
-  get<T>(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("GET", path, undefined, "json", { ...options, params });
+  get<T>(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    return this.request<T>('GET', path, undefined, 'json', {
+      ...options,
+      params,
+    });
   }
 
-  postLogin<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("POST", path, body, "json", options);
+  getText(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    options: ApiRequestOptions = {},
+  ): Observable<string> {
+    return this.request<string>('GET', path, undefined, 'text', {
+      ...options,
+      params,
+    });
   }
 
-  post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<T>("POST", path, body, "json", options);
+  postLogin<T>(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    return this.request<T>('POST', path, body, 'json', options);
   }
 
-  postText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("POST", path, body, "text", options);
+  post<T>(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>('utente')?.mail;
+    return this.request<T>('POST', path, body, 'json', options);
   }
 
-  put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<T>("PUT", path, body, "json", options);
+  postText(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<string> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>('utente')?.mail;
+    return this.request<string>('POST', path, body, 'text', options);
   }
 
-  putDelete<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
-    return this.request<T>("PUT", path, body, "json", options);
+  deleteText(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    options: ApiRequestOptions = {},
+  ): Observable<string> {
+    return this.request<string>('DELETE', path, undefined, 'text', {
+      ...options,
+      params,
+    });
   }
 
-  putText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("PUT", path, body, "text", options);
+  put<T>(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>('utente')?.mail;
+    return this.request<T>('PUT', path, body, 'json', options);
   }
 
-  delete<T>(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("DELETE", path, undefined, "json", { ...options, params });
+  putDelete<T>(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    body.codiceFiscale =
+      this.api.getLocal<UtenteLogin>('utente')?.codiceFiscale;
+    return this.request<T>('PUT', path, body, 'json', options);
   }
 
-  private request<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, body?: any, responseType: "json" | "text" = "json", options: ApiRequestOptions = {}): Observable<T> {
+  putText(
+    path: string,
+    body: any,
+    options: ApiRequestOptions = {},
+  ): Observable<string> {
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>('utente')?.mail;
+    return this.request<string>('PUT', path, body, 'text', options);
+  }
+
+  delete<T>(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
+    return this.request<T>('DELETE', path, undefined, 'json', {
+      ...options,
+      params,
+    });
+  }
+
+  private request<T>(
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    path: string,
+    body?: any,
+    responseType: 'json' | 'text' = 'json',
+    options: ApiRequestOptions = {},
+  ): Observable<T> {
     const url = this.buildUrl(path);
-    const context = new HttpContext().set(SKIP_HTTP_SNACKBAR, options.skipToast ?? false);
+    const context = new HttpContext().set(
+      SKIP_HTTP_SNACKBAR,
+      options.skipToast ?? false,
+    );
     const params = this.buildParams(options.params);
 
-    if (responseType === "text") {
+    if (responseType === 'text') {
       const textOptions = {
         context,
         params,
-        responseType: "text" as const,
+        responseType: 'text' as const,
       };
 
       switch (method) {
-        case "GET":
+        case 'GET':
           return this.http.get(url, textOptions) as Observable<T>;
-        case "POST":
+        case 'POST':
           return this.http.post(url, body, textOptions) as Observable<T>;
-        case "PUT":
+        case 'PUT':
           return this.http.put(url, body, textOptions) as Observable<T>;
-        case "DELETE":
+        case 'DELETE':
           return this.http.delete(url, textOptions) as Observable<T>;
         default:
           throw new Error(`Metodo HTTP non supportato: ${method}`);
       }
-
-      
     }
 
     const jsonOptions = {
       context,
       params,
-      responseType: "json" as const,
+      responseType: 'json' as const,
     };
 
     switch (method) {
-      case "GET":
+      case 'GET':
         return this.http.get<T>(url, jsonOptions);
-      case "POST":
+      case 'POST':
         return this.http.post<T>(url, body, jsonOptions);
-      case "PUT":
+      case 'PUT':
         return this.http.put<T>(url, body, jsonOptions);
-      case "DELETE":
+      case 'DELETE':
         return this.http.delete<T>(url, jsonOptions);
     }
 
@@ -106,13 +174,18 @@ export class ApiService {
   }
 
   private buildUrl(path: string): string {
-    const trimmedBase = this.baseUrl.replace(/\/+$/, "");
-    const trimmedPath = path.replace(/^\/+/, "");
+    const trimmedBase = this.baseUrl.replace(/\/+$/, '');
+    const trimmedPath = path.replace(/^\/+/, '');
     return `${trimmedBase}/${trimmedPath}`;
   }
 
-  private buildParams(params?: Record<string, string | number | boolean>): HttpParams | undefined {
+  private buildParams(
+    params?: Record<string, string | number | boolean>,
+  ): HttpParams | undefined {
     if (!params) return undefined;
-    return Object.entries(params).reduce((acc, [key, value]) => acc.set(key, String(value)), new HttpParams());
+    return Object.entries(params).reduce(
+      (acc, [key, value]) => acc.set(key, String(value)),
+      new HttpParams(),
+    );
   }
 }

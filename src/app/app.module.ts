@@ -1,7 +1,11 @@
-import { NgModule, ErrorHandler, Component } from "@angular/core";
+import { NgModule, ErrorHandler, Component, LOCALE_ID } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { registerLocaleData } from "@angular/common";
+import localeIt from "@angular/common/locales/it";
+
+registerLocaleData(localeIt, "it");
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -22,12 +26,14 @@ import { NotAuthorizedComponent } from "./core/components/not-authorized/not-aut
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+import { NgApexchartsModule } from "ng-apexcharts";
 // import { DettaglioComponent } from './components/impianti/impianto-dettaglio/dettaglio.component';
 
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule, NgApexchartsModule],
   providers: [
+    { provide: LOCALE_ID, useValue: "it" },
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     {
