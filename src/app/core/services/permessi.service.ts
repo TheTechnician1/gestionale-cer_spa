@@ -7,7 +7,6 @@ export type RuoloNormalizzato = 'ADM' | 'GEST' | 'GUEST';
 export class PermessiService {
   constructor(private auth: UtenteService) {}
 
-  /** Normalizza qualsiasi alias di ruolo in ADM/GEST/GUEST. */
   normalizza(r: string | null | undefined): RuoloNormalizzato | null {
     if (!r) return null;
     const u = String(r).toUpperCase();
@@ -33,7 +32,6 @@ export class PermessiService {
     return this.ruolo === 'GUEST';
   }
 
-  /** ADM e GEST possono creare/modificare impianti e dati energetici. */
   puoCreare(): boolean {
     return this.ruolo === 'ADM' || this.ruolo === 'GEST';
   }
@@ -42,12 +40,10 @@ export class PermessiService {
     return this.puoCreare();
   }
 
-  /** Solo ADM può fare cancellazioni logiche. */
   puoEliminare(): boolean {
     return this.ruolo === 'ADM';
   }
 
-  /** Verifica permesso contro una lista (route data, sidebar, ecc.). */
   haUnoDei(ruoli: string[] | undefined): boolean {
     if (!ruoli || ruoli.length === 0) return true;
     const normalizzati = ruoli

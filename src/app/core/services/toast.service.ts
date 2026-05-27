@@ -113,14 +113,10 @@ export class ToastService {
   private buildErrorToast(_request: HttpRequest<unknown>, error: HttpErrorResponse): ToastMessage {
     const payload = this.readPayload(error.error);
 
-    // Titolo più umano in base allo status, niente "Errore richiesta".
     const title =
       this.pickFirstString(payload, ["titolo", "title", "messageTitle"]) ??
       this.defaultErrorTitle(error.status);
 
-    // Messaggio: se il backend ne fornisce uno specifico lo uso (è la cosa
-    // più informativa), altrimenti suggerisco all'utente cosa fare in base
-    // al codice HTTP.
     const payloadMessage = this.pickFirstString(payload, ["messaggio", "message", "descrizione", "description", "dettaglio", "detail", "testo", "text", "error", "errore"]);
     const textBodyMessage = this.extractTextBody(error.error);
     const fallbackMessage = this.defaultErrorMessage(error.status);
@@ -197,7 +193,6 @@ export class ToastService {
     return "Operazione non riuscita";
   }
 
-  /** Messaggio di "cosa fare adesso" per ogni codice HTTP. */
   private defaultErrorMessage(statusCode: number): string {
     if (statusCode === 0) {
       return "Impossibile contattare il server. Controlla la connessione e riprova.";

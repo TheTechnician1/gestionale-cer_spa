@@ -37,8 +37,6 @@ export class ImpiantiRicercaComponent implements OnInit {
     'azioni',
   ];
 
-  // La tabella sta dentro *ngIf: con i setter colleghiamo paginator e sort
-  // appena vengono creati (quando si passa alla vista lista).
   @ViewChild(MatPaginator) set paginator(p: MatPaginator) {
     if (p) this.dataSource.paginator = p;
   }
@@ -63,7 +61,7 @@ export class ImpiantiRicercaComponent implements OnInit {
       provincia: [null],
       comune: [null],
       presenzaAccumulo: [null],
-      attivo: [null], // includi disattivati (ADM)
+      attivo: [null],
     });
   }
 
@@ -72,7 +70,6 @@ export class ImpiantiRicercaComponent implements OnInit {
     if (valoreSalvato !== null) {
       this.vistaLista = JSON.parse(valoreSalvato);
     }
-    // Pre-filtri da queryParams (es. click sui KPI della dashboard).
     const qp = this.route.snapshot.queryParamMap;
     const patch: Record<string, string | number> = {};
     qp.keys.forEach((k) => {
@@ -85,7 +82,7 @@ export class ImpiantiRicercaComponent implements OnInit {
     });
     if (Object.keys(patch).length > 0) {
       this.form.patchValue(patch);
-      this.mostraFiltri = true; // mostro il pannello così l'utente vede cos'è filtrato
+      this.mostraFiltri = true;
     }
     this.cercaImpianti();
   }
@@ -104,7 +101,6 @@ export class ImpiantiRicercaComponent implements OnInit {
     this.cercaImpianti();
   }
 
-  /** Svuota tutti i filtri e ricarica la lista intera. */
   resetFiltri(): void {
     this.form.reset({
       idCer: null,
@@ -138,7 +134,6 @@ export class ImpiantiRicercaComponent implements OnInit {
     this.router.navigate(['/impianto/modifica-impianto', id]);
   }
 
-  /** Apre dialog di conferma prima della cancellazione logica. */
   chiediElimina(id: number): void {
     this.dlgElimina.open(id);
   }

@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
     }
 
     const allowedRoles = route.data?.["role"] as string[] | undefined;
-    // PermessiService.haUnoDei normalizza i nomi ruolo (ADM/ADMIN, GEST/GESTORE...).
     if (!this.permessi.haUnoDei(allowedRoles)) {
       return this.router.createUrlTree(["/not-authorized"]);
     }

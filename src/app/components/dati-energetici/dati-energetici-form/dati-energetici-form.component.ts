@@ -65,13 +65,11 @@ export class DatiEnergeticiFormComponent implements OnInit {
       this.caricaDato();
     }
 
-    // carica la lista CER per popolare la tendina
     this.datiEnergeticiService.ricercaCer().subscribe({
       next: (res) => (this.cers = res ?? []),
       error: (err) => console.error('Errore caricamento CER:', err),
     });
 
-    // se il calcolo CO2 è automatico, il campo riduzione non è editabile
     this.datiForm.get('calcoloCo2Automatico')?.valueChanges.subscribe((auto) => {
       const rid = this.datiForm.get('riduzioneCo2Ton');
       if (auto) {
@@ -152,8 +150,6 @@ export class DatiEnergeticiFormComponent implements OnInit {
       return;
     }
 
-    // In INSERIMENTO: prima controllo che non esista già una scheda
-    // per la stessa configurazione/anno.
     this.datiEnergeticiService
       .checkDuplicato(payload.idConfigurazione, payload.annoRiferimento)
       .subscribe({
@@ -173,7 +169,6 @@ export class DatiEnergeticiFormComponent implements OnInit {
           });
         },
         error: (err) => {
-          // se il check fallisce, procedo comunque con l'inserimento
           console.warn('Check duplicato fallito, procedo:', err);
           this.datiEnergeticiService.inserisci(payload).subscribe({
             next: () => this.tornaAllaLista(),
@@ -192,12 +187,10 @@ export class DatiEnergeticiFormComponent implements OnInit {
     return !!control && control.invalid && control.touched;
   }
 
-  /** Chiede conferma prima di svuotare il form. */
   chiediReset(): void {
     this.dlgReset.open();
   }
 
-  /** Eseguito al "Conferma" del dialog. */
   onConfermaReset(): void {
     this.datiForm.reset({
       idCer: null,

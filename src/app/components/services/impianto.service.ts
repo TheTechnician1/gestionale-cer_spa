@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
 import { StorageService } from '../../core/services/storage.service';
 import { UtenteLogin } from '../../core/interfaces/utente.model';
@@ -31,7 +31,6 @@ export class ImpiantoService {
     return params;
   }
 
-  // GET /api/impianti/
   ricerca(filtro: ImpiantoFiltro = {}): Observable<ImpiantoVista[]> {
     return this.api.get<ImpiantoVista[]>(
       'api/impianti/',
@@ -39,22 +38,18 @@ export class ImpiantoService {
     );
   }
 
-  // GET /api/impianti/{id}
   getById(id: number): Observable<ImpiantoDettaglio> {
     return this.api.get<ImpiantoDettaglio>(`api/impianti/${id}`);
   }
 
-  // POST /api/impianti/create
   inserisci(payload: ImpiantoRequest): Observable<string> {
     return this.api.postText('api/impianti/create', { ...payload });
   }
 
-  // PUT /api/impianti/edit/{id}
   modifica(id: number, payload: ImpiantoRequest): Observable<string> {
     return this.api.putText(`api/impianti/edit/${id}`, { ...payload });
   }
 
-  // DELETE /api/impianti/delete/{id}?email=...  (cancellazione logica)
   elimina(id: number): Observable<string> {
     return this.api.deleteText(`api/impianti/delete/${id}`, {
       email: this.emailUtente(),
@@ -62,12 +57,9 @@ export class ImpiantoService {
   }
 
   cambiaStato(id: number, nuovoStato: string): Observable<string> {
-    return this.getById(id).pipe(
-      switchMap((dett) => {
-        const { idImpianto, ...rest } = dett;
-        const payload: ImpiantoRequest = { ...rest, statoImpianto: nuovoStato };
-        return this.modifica(id, payload);
-      }),
-    );
+    return this.api.patchText(`api/impianti/${id}/stato`, {
+      stato: nuovoStato,
+      email: this.emailUtente(),
+    });
   }
 }

@@ -113,9 +113,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(private authService: UtenteService) {}
 
   ngOnInit(): void {
-    // Costruisce l'albero UNA SOLA VOLTA per ruolo: i riferimenti dei nodi
-    // restano stabili, così il treeControl mantiene l'espansione e i toggle
-    // continuano a funzionare anche dopo nuove emissioni di user$.
     this.sub = this.authService.user$
       .pipe(
         map((user) => user?.ruolo ?? null),

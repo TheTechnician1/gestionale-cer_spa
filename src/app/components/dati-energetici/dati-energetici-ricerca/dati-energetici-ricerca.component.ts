@@ -63,7 +63,6 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     if (valoreSalvato !== null) {
       this.vistaLista = JSON.parse(valoreSalvato);
     }
-    // Pre-filtri da queryParams (es. click sui KPI della dashboard).
     const qp = this.route.snapshot.queryParamMap;
     const patch: Record<string, string | number> = {};
     qp.keys.forEach((k) => {
@@ -95,7 +94,6 @@ export class DatiEnergeticiRicercaComponent implements OnInit {
     this.cercaDatiEnergetici();
   }
 
-  /** Svuota tutti i filtri e ricarica la lista intera. */
   resetFiltri(): void {
     this.form.reset({
       annoRiferimento: null,

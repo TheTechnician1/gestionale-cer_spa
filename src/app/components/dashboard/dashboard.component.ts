@@ -49,8 +49,6 @@ export class DashboardComponent implements OnInit {
 
   kpi: KpiCard[] = [];
 
-  // === Chart configs (ApexCharts) ===
-  // Andamento annuale (line)
   andamentoSeries: ApexAxisChartSeries = [];
   andamentoChart: ApexChart = { type: 'bar', height: 280, toolbar: { show: false } };
   andamentoXAxis: ApexXAxis = { categories: [] };
@@ -60,7 +58,6 @@ export class DashboardComponent implements OnInit {
   andamentoDataLabels: ApexDataLabels = { enabled: false };
   andamentoTooltip: ApexTooltip = { shared: true, intersect: false };
 
-  // Impianti per stato (donut)
   statoSeries: ApexNonAxisChartSeries = [];
   statoLabels: string[] = [];
   statoChart: ApexChart = { type: 'donut', height: 280 };
@@ -69,7 +66,6 @@ export class DashboardComponent implements OnInit {
     pie: { donut: { size: '65%' } },
   };
 
-  // Impianti per tipologia (bar)
   tipologiaSeries: ApexAxisChartSeries = [];
   tipologiaChart: ApexChart = { type: 'bar', height: 280, toolbar: { show: false } };
   tipologiaXAxis: ApexXAxis = { categories: [] };
@@ -117,7 +113,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // ===== KPI con click verso ricerche filtrate =====
   private buildKpi(): void {
     const s = this.summary;
     if (!s) return;
@@ -198,7 +193,6 @@ export class DashboardComponent implements OnInit {
   }
 
   private buildCharts(): void {
-    // Andamento annuale
     this.andamentoXAxis = { categories: this.andamento.map((a) => a.anno) };
     this.andamentoSeries = [
       { name: 'Prodotta', data: this.andamento.map((a) => a.energiaProdotta) },
@@ -206,27 +200,23 @@ export class DashboardComponent implements OnInit {
       { name: 'Autoconsumata', data: this.andamento.map((a) => a.energiaAutoconsumata) },
     ];
 
-    // Impianti per stato
     this.statoLabels = this.perStato.map((p) => p.stato);
-    this.statoSeries = this.perStato.map((p) => p.totale);
+    this.statoSeries = this.perStato.map((p) => p.count);
 
-    // Impianti per tipologia
     this.tipologiaXAxis = {
       categories: this.perTipologia.map((p) => p.tipologia || '—'),
     };
     this.tipologiaSeries = [
-      { name: 'Impianti', data: this.perTipologia.map((p) => p.totale) },
+      { name: 'Impianti', data: this.perTipologia.map((p) => p.count) },
     ];
   }
 
-  /** Conta gli impianti per un dato stato leggendo dalla risposta /impianti-per-stato. */
   totaleStato(stato: string): number {
     return (
-      this.perStato.find((p) => p.stato === stato)?.totale ?? 0
+      this.perStato.find((p) => p.stato === stato)?.count ?? 0
     );
   }
 
-  // ===== Navigazione =====
   vaiImpianti(stato?: string): void {
     this.router.navigate(['/impianto'], {
       queryParams: stato ? { statoImpianto: stato } : undefined,
@@ -238,11 +228,9 @@ export class DashboardComponent implements OnInit {
   }
 
   vaiCer(idCer: number): void {
-    // non c'è una pagina CER lato FE: porto alla lista dati energetici filtrata per CER
     this.router.navigate(['/dati-energetici'], { queryParams: { idCer } });
   }
 
-  // ===== Alert: associa un'icona Material al tipo =====
   iconaAlert(tipo: string): string {
     switch (tipo) {
       case 'IMPIANTI_SOSPESI':
@@ -257,7 +245,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // ===== Formatter numerico semplice =====
   fmtNumero(v: number | string | undefined | null): string {
     if (v === null || v === undefined || v === '') return '0';
     const n = typeof v === 'number' ? v : Number(v);
