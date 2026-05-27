@@ -19,22 +19,18 @@
   >
     <mat-form-field appearance="fill">
       <mat-label>Ragione Sociale</mat-label>
-      <input [value]="cerData.ragioneSociale || ''" matInput readonly />
+      <input [value]="cerData.displayRagioneSociale" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Forma Giuridica</mat-label>
-      <input
-        [value]="cerData.formaGiuridica?.descrizione || ''"
-        matInput
-        readonly
-      />
+      <input [value]="cerData.displayFormaGiuridica" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Codice Fiscale</mat-label>
       <input
-        [value]="cerData.codiceFiscale || ''"
+        [value]="cerData.displayCodiceFiscale"
         matInput
         readonly
         style="text-transform: uppercase"
@@ -43,39 +39,22 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Partita IVA</mat-label>
-      <input [value]="cerData.partitaIva || ''" matInput readonly />
+      <input [value]="cerData.displayPartitaIva" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Comune</mat-label>
-      <input
-        [value]="cerData.comuneLegale?.descrizione || ''"
-        matInput
-        readonly
-      />
+      <input [value]="cerData.displayComune" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Provincia</mat-label>
-      <input
-        [value]="cerData.provinciaLegale?.descrizione || ''"
-        matInput
-        readonly
-      />
+      <input [value]="cerData.displayProvincia" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Regione</mat-label>
-      <input
-        [value]="cerData.regioneLegale?.descrizione || ''"
-        matInput
-        readonly
-      />
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Referente Principale</mat-label>
-      <input [value]="cerData.referente || ''" matInput readonly />
+      <input [value]="cerData.displayRegione" matInput readonly />
     </mat-form-field>
   </div>
 

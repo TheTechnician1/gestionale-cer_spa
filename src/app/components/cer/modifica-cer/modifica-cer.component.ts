@@ -54,14 +54,34 @@ export class ModificaCerComponent implements OnInit {
         if (data) {
           this.originalRawData = data;
 
+          const formaGiuridicaDesc =
+            typeof data.formaGiuridica === 'object'
+              ? data.formaGiuridica?.descrizione
+              : data.formaGiuridica;
+
+          const comuneObj = data.comuneLegale || data.comuneLegal;
+          const comuneDesc =
+            typeof comuneObj === 'object'
+              ? comuneObj?.descrizione
+              : comuneObj || data.comune;
+
+          const provinciaDesc =
+            typeof data.provinciaLegale === 'object'
+              ? data.provinciaLegale?.descrizione
+              : data.provinciaLegale || data.provincia;
+          const regioneDesc =
+            typeof data.regioneLegale === 'object'
+              ? data.regioneLegale?.descrizione
+              : data.regioneLegale || data.regione;
+
           this.editForm.patchValue({
-            ragSociale: data.ragioneSociale || '',
-            formaGiuridica: data.formaGiuridica?.descrizione || '',
-            codFisc: data.codiceFiscale || '',
-            pIva: data.partitaIva || '',
-            comune: data.comuneLegale?.descrizione || '',
-            provincia: data.provinciaLegale?.descrizione || '',
-            regione: data.regioneLegale?.descrizione || '',
+            ragSociale: data.ragioneSociale || data.ragSociale || '',
+            formaGiuridica: formaGiuridicaDesc || '',
+            codFisc: data.codiceFiscale || data.codFisc || '',
+            pIva: data.partitaIva || data.pIva || '',
+            comune: comuneDesc || '',
+            provincia: provinciaDesc || '',
+            regione: regioneDesc || '',
             referente: data.referente || '',
           });
         }

@@ -121,7 +121,7 @@ export class DashboardService {
         descrizione: 'ASN - Associazione non riconosciuta',
         specifica: null,
       },
-      comuneLegal: {
+      comuneLegale: {
         codice: '9913',
         descrizione: 'MILANO',
         specifica: null,
@@ -315,52 +315,33 @@ export class DashboardService {
   }
 
   getSummary(filtri: any, options: ApiRequestOptions = {}): Observable<any> {
-    if (this.useMock) {
-      return of({
-        totaleComunita: this.mockCers.length,
-        totaleImpianti: 12,
-        totaleUtenti: 145,
-        incentiviErogati: '4.560',
-        valoreIncentivi: '25.430',
-      });
-    }
-
-    const clean = this.getSanitizedFilterObject(filtri);
-    return this.api.get<any>('api/dashboard/summary', clean, options);
+    return of({
+      totaleComunita: this.mockCers.length,
+      totaleImpianti: 12,
+      totaleUtenti: 145,
+      incentiviErogati: '4.560',
+      valoreIncentivi: '25.430',
+    });
   }
 
   getImpiantiPerStato(
     filtri: any,
     options: ApiRequestOptions = {},
   ): Observable<any[]> {
-    if (this.useMock)
-      return of([
-        { stato: 'Attivo', quantita: 8 },
-        { stato: 'In Attesa', quantita: 4 },
-      ]);
-    const clean = this.getSanitizedFilterObject(filtri);
-    return this.api.get<any>(
-      'api/dashboard/impianti-per-stato',
-      clean,
-      options,
-    );
+    return of([
+      { stato: 'Attivo', quantita: 8 },
+      { stato: 'In Attesa', quantita: 4 },
+    ]);
   }
 
   getImpiantiPerTipologia(
     filtri: any,
     options: ApiRequestOptions = {},
   ): Observable<any[]> {
-    if (this.useMock)
-      return of([
-        { tipologia: 'Fotovoltaico', valore: 10 },
-        { tipologia: 'Eolico', valore: 2 },
-      ]);
-    const clean = this.getSanitizedFilterObject(filtri);
-    return this.api.get<any>(
-      'api/dashboard/impianti-per-tipologia',
-      clean,
-      options,
-    );
+    return of([
+      { tipologia: 'Fotovoltaico', valore: 10 },
+      { tipologia: 'Eolico', valore: 2 },
+    ]);
   }
 
   getAndamentoEnergetico(
@@ -448,27 +429,65 @@ export class DashboardService {
   }
 
   modificaCer(
-    updatedData: any,
+    updatedCer: any,
     options: ApiRequestOptions = {},
   ): Observable<any> {
     if (this.useMock) {
-      console.warn(
-        `[MOCK ACTIVATED] Simulating update for CER ID: ${updatedData.idCer}`,
+      const index = this.mockCers.findIndex(
+        (item) => item.idCer === updatedCer.idCer,
       );
 
-      const index = this.mockCers.findIndex(
-        (c) => c.idCer === updatedData.idCer,
-      );
       if (index !== -1) {
-        this.mockCers[index] = { ...this.mockCers[index], ...updatedData };
+        this.mockCers[index] = {
+          ...this.mockCers[index],
+          ragioneSociale: updatedCer.ragSociale,
+          codiceFiscale: updatedCer.codFiscale,
+          partitaIva: updatedCer.getpIva,
+          referente: updatedCer.referente,
+
+          formaGiuridica:
+            typeof updatedCer.formaGiuridica === 'object'
+              ? updatedCer.formaGiuridica
+              : {
+                  codice: this.mockCers[index].formaGiuridica?.codice || 'ASN',
+                  descrizione: updatedCer.formaGiuridica,
+                  specifica: null,
+                },
+          comuneLegale:
+            typeof updatedCer.comuneLegale === 'object'
+              ? updatedCer.comuneLegale
+              : {
+                  codice: this.mockCers[index].comuneLegale?.codice || '',
+                  descrizione: updatedCer.comune,
+                  specifica: null,
+                },
+          provinciaLegale:
+            typeof updatedCer.provinciaLegale === 'object'
+              ? updatedCer.provinciaLegale
+              : {
+                  codice: this.mockCers[index].provinciaLegale?.codice || '',
+                  descrizione: updatedCer.provincia,
+                  specifica: null,
+                },
+          regioneLegale:
+            typeof updatedCer.regioneLegale === 'object'
+              ? updatedCer.regioneLegale
+              : {
+                  codice: this.mockCers[index].regioneLegale?.codice || '',
+                  descrizione: updatedCer.regione,
+                  specifica: null,
+                },
+        };
+
+        console.log('Mock Data updated successfully:', this.mockCers[index]);
       }
+
       return of({
-        status: 'success',
-        message: 'Record aggiornato con successo (MOCK MODE)',
+        status: 'OK',
+        message: 'Modifica mock salvata con successo',
       });
     }
 
-    const endpoint = 'cer/modifica';
-    return this.api.put<any>(endpoint, updatedData, options);
+    return this.api.put<any>('api/cer/modifica', updatedCer, options);
   }
 }
