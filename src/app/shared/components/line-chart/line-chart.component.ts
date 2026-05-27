@@ -54,13 +54,13 @@ export type ChartOptions = {
 export class LineChartComponent {
   @Input() values: number[] = [];
   @Input() categories: string[] = [];
-  @Input() title: string = 'Line Chart';
-  public chartOptions: Partial<ChartOptions> = {};
+  @Input() label: string = '';
+    public chartOptions: Partial<ChartOptions> = {};
   ngOnChanges(changes: SimpleChanges): void {
     this.chartOptions = {
         series: [
           {
-            name: 'Desktops',
+            name: this.label,
             data: this.values,
           },
         ],
@@ -79,10 +79,6 @@ export class LineChartComponent {
         },
         stroke: {
           curve: 'straight',
-        },
-        title: {
-          text: this.title,
-          align: 'left',
         },
         grid: {
           row: {
