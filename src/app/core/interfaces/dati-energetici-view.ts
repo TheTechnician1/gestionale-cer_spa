@@ -19,3 +19,27 @@ export interface DatiEnergeticiView {
   emailUtenteLoggato: string | null ;
 }
 
+export class DatiEnergeticiViewModel {
+  partitaIva: string | null = null;
+  codiceCabina: string | null = null;
+  idSchedaEnergetica: number | null = null;
+  idCer: number | null = null;
+  idConfigurazione: number | null = null;
+  annoRiferimento: string | null = null;
+  energiaProdottaMhw: number | null = null;
+  energiaPrelevataMhw: number | null = null;
+  energiaImmessaMhw: number | null = null;
+  energiaCondivisaMhw: number | null = null;
+  energiaAutoconsumataMhw: number | null = null;
+  tariffaPremioEuro: number | null = null;
+  corrispettivoPremioEuro: number | null = null;
+  riduzioneCo2Ton: string | null = null;
+  calcoloCo2Automatico: boolean | null = null;
+  note: string | null = null;
+  attivo: string | null = null;
+  emailUtenteLoggato: string | null = null;
+
+  constructor(init?: Partial<DatiEnergeticiViewModel>) {
+    Object.assign(this, init);
+  }
+}

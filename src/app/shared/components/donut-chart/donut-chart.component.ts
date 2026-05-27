@@ -51,31 +51,53 @@ export type ChartOptions = {
   styleUrls: ['./donut-chart.component.scss'],
 })
 export class DonutChartComponent {
-  @Input() values : number[] = [];
-  @Input() labels : string[] = [];
-  
+  @Input() values: number[] = [];
+  @Input() labels: string[] = [];
+
   public chartOptions: Partial<ChartOptions> = {};
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.chartOptions = {
-      series: this.values,
-      chart: {
-        type: 'donut',
-      },
-      labels: this.labels,
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200,
-            },
-            legend: {
-              position: 'bottom',
+    setTimeout(() => {
+      this.chartOptions = {
+        series: this.values,
+        chart: {
+          type: 'donut',
+        },
+        labels: this.labels,
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                  label: 'Totale',
+                  formatter: (w: any) => {
+                    const total = w.globals.seriesTotals.reduce(
+                      (a: number, b: number) => a + b,
+                      0,
+                    );
+                    return total.toString();
+                  },
+                },
+              },
             },
           },
         },
-      ],
-    };
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: 'bottom',
+              },
+            },
+          },
+        ],
+      };
+    });
   }
 }

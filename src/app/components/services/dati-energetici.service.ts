@@ -115,6 +115,11 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
   );
 }
 
+getDatoById(id: number, options: ApiRequestOptions = {}): Observable<DatiEnergeticiView> {
+    const endpoint = `api/dati-energetici/${id}`;
+    return this.api.get<DatiEnergeticiView>(endpoint, undefined, options);
+  }
+
 
   // =========================================
   // VERSIONE MOCK COMMENTATA

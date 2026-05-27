@@ -1,18 +1,20 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { DashboardService } from "../services/dashboard.service";
-import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { MatSort, Sort } from "@angular/material/sort";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DashboardService } from '../services/dashboard.service';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { DashboardImpianti, DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
-import { tap } from "rxjs";
-
+import {
+  DashboardImpianti,
+  DashboardInterfaces,
+} from 'src/app/core/interfaces/dashboard.interfaces';
+import { tap } from 'rxjs';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.scss"],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
   constructor(
@@ -31,18 +33,17 @@ export class DashboardComponent implements OnInit {
   dashboard: DashboardInterfaces | null = null;
 
   dashboardImpianti: DashboardImpianti[] = [];
-  chartLabels : string[]=[]
-  chartValues : number[]=[]
+  chartLabels: string[] = [];
+  chartValues: number[] = [];
 
-animatedComunita = 0;
-animatedImpianti = 0;
-animatedConfigurazioniAttive = 0;
-animatedIncentivi = 0;
-animatedValore = 0;
+  animatedComunita = 0;
+  animatedImpianti = 0;
+  animatedConfigurazioniAttive = 0;
+  animatedIncentivi = 0;
+  animatedValore = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  
 
   // filtro = {
   //   ragSociale: "",
@@ -59,17 +60,16 @@ animatedValore = 0;
   ngOnInit() {
     // this.loadCERS();
     this.loadKPI();
-    this.dashboardService.getDashboardImpianti().subscribe(res => {
-      res.forEach(r=>{
+    this.dashboardService.getDashboardImpianti().subscribe((res) => {
+      res.forEach((r) => {
         // console.log("res stato:"+ r.stato)
         // console.log("res totale:"+ r.totale)
         // console.log("res tipologia:"+ r.tipologia)
         this.dashboardImpianti = res;
         this.chartValues.push(r.totale);
         this.chartLabels.push(r.stato);
-      }
-      ) 
-    })
+      });
+    });
   }
 
   // ngAfterViewInit() {
@@ -113,66 +113,61 @@ animatedValore = 0;
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
     } else {
-      this._liveAnnouncer.announce("Sorting cleared");
+      this._liveAnnouncer.announce('Sorting cleared');
     }
-     
   }
 
   animateValue(target: number, setter: (val: number) => void, duration = 800) {
-  const start = 0;
-  const increment = target / (duration / 16);
+    const start = 0;
+    const increment = target / (duration / 16);
 
-  let current = start;
+    let current = start;
 
-  const step = () => {
-    current += increment;
+    const step = () => {
+      current += increment;
 
-    if (current >= target) {
-      setter(target);
-      return;
-    }
+      if (current >= target) {
+        setter(target);
+        return;
+      }
 
-    setter(Math.floor(current));
-    requestAnimationFrame(step);
-  };
+      setter(Math.floor(current));
+      requestAnimationFrame(step);
+    };
 
-  step();
-}
+    step();
+  }
 
-loadKPI() {
-  this.dashboardService.getSummary().subscribe({
-   next: (res: any) => {
+  loadKPI() {
+    this.dashboardService.getSummary().subscribe({
+      next: (res: any) => {
+        console.log('RAW:', res);
 
-    console.log("RAW:", res);
+        const data = res?.result || res?.data || res;
 
-    const data = res?.result || res?.data || res;
+        this.dashboard = data;
 
-    this.dashboard = data;
-
-    this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
-    this.animateValue(res.impiantiTotali || 0, v => this.animatedImpianti = v);
-    this.animateValue(res.configurazioniAttive || 0, v => this.animatedConfigurazioniAttive = v);
-    this.animateValue(res.incentivi || 0, v => this.animatedIncentivi = v);
-    this.animateValue(res.energiaProdotta || 0, v => this.animatedValore = v);
-  }});
-}
-
-// get chartLabels(): string[] {
-//   return ['Attivi', 'Disattivi'];
-// }
-
-// get chartValues(): number[] {
-
-//   const attivi = this.dashboardImpianti
-//     .filter(i => i.stato?.toUpperCase() === 'ATTIVO')
-//     .reduce((sum, i) => sum + i.totale, 0);
-
-//   const disattivi = this.dashboardImpianti
-//     .filter(i => i.stato?.toUpperCase() === 'DISMESSO')
-//     .reduce((sum, i) => sum + i.totale, 0);
-
-//   return [attivi, disattivi];
-// }
-
- 
+        this.animateValue(
+          res.totaleCer || 0,
+          (v) => (this.animatedComunita = v),
+        );
+        this.animateValue(
+          res.impiantiTotali || 0,
+          (v) => (this.animatedImpianti = v),
+        );
+        this.animateValue(
+          res.configurazioniAttive || 0,
+          (v) => (this.animatedConfigurazioniAttive = v),
+        );
+        this.animateValue(
+          res.incentivi || 0,
+          (v) => (this.animatedIncentivi = v),
+        );
+        this.animateValue(
+          res.energiaProdotta || 0,
+          (v) => (this.animatedValore = v),
+        );
+      },
+    });
+  }
 }

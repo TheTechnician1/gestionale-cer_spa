@@ -16,12 +16,29 @@
         <input matInput formControlName="annoRiferimento">
       </mat-form-field>
 
+      <!-- CER -->
       <mat-form-field appearance="outline">
-        <mat-label>CER</mat-label>
-        <input matInput formControlName="idCer">
-      </mat-form-field>
 
-      </div>
+        <mat-label>CER</mat-label>
+
+        <mat-select formControlName="idCer">
+
+          <mat-option [value]="null">
+            Tutti
+          </mat-option>
+
+   <mat-option
+            *ngFor="let cer of (cerList$ | async) ?? []"
+            [value]="cer.idCer">
+
+            {{ cer.ragSociale }}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+</div>
 
       <div class="grid-2">
       <mat-form-field appearance="outline">
@@ -29,10 +46,28 @@
         <input matInput formControlName="idSchedaEnergetica">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Configurazione</mat-label>
-        <input matInput formControlName="idConfigurazione">
+     <mat-form-field appearance="outline">
+
+        <mat-label>Cabina</mat-label>
+
+        <mat-select formControlName="idCabina">
+
+          <mat-option [value]="null">
+            Tutte
+          </mat-option>
+
+          <mat-option
+            *ngFor="let cabina of (configurazioniList$ | async) ?? []"
+            [value]="cabina.idConfig">
+
+            {{ cabina.codiceCabina }}
+
+          </mat-option>
+
+        </mat-select>
+
       </mat-form-field>
+
 
     </div>
 
