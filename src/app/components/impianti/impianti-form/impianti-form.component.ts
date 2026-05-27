@@ -4,7 +4,7 @@ import { ImpiantoService } from "../../services/impianto.service";
 import { CodiceDescrizioneBase, CodiceDescrizioneBaseModel, Impianto, ImpiantoById, ImpiantoEdit, ImpiantoModel } from "src/app/core/interfaces/impianto.model";
 import { CodiciDescrizioneBaseService } from "../../services/codici-descrizione-base.service";
 import { ComboTables } from "src/app/core/enum/comboTable.enum";
-import { Observable, of, startWith, switchMap } from "rxjs";
+import { forkJoin, Observable, of, startWith, switchMap } from "rxjs";
 import { ConfigurazioneView } from "src/app/core/interfaces/configurazione.model";
 import { ConfigurazioniService } from "../../services/configurazioni.service";
 import { UtenteService } from "src/app/core/services/utente.service";
@@ -100,9 +100,6 @@ export class ImpiantiFormComponent {
               specificaCategoriaProduttore: x.specificaCategoriaProduttore,
               tipologiaSitoInstallazione: x.tipologiaSitoInstallazione,
               specificaSitoInstallazione: x.specificaSitoInstallazione,
-              regione: x.regione,
-              provincia: x.provincia,
-              comune: x.comune,
               indirizzo: x.indirizzo,
               civico: x.civico,
               cap: x.cap,
@@ -123,7 +120,23 @@ export class ImpiantiFormComponent {
     //FORM OPZIONI TIPOLOGIE SITO INSTALLAZIONE
     this.tipologieSitoInstallazione$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.INSTALLAZIONE,"")
     //FORM OPZIONI REGIONE
-    this.regioni$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, "");
+    forkJoin({
+      labelRegioni: this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, ""),
+
+    }).subscribe({
+      next: ({ labelRegioni }) => {
+        this.regioni$ = of(labelRegioni);
+        if(this.flagModifica){
+          this.editedImpianto$?.subscribe({
+            next:(edited: ImpiantoById)=>{
+              this.formImpianto.get('regione')?.patchValue(labelRegioni.find(r => r.descrizione === edited.regione)??null);
+            }
+          })
+        }
+      }
+    });
+    
+
     //FORM OPZIONI STATO IMPIANTO
     this.statiImpianto$ = this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.STATO, "");
     //FORM OPZIONI PROVINCIA
@@ -137,15 +150,31 @@ export class ImpiantiFormComponent {
 
         this.formImpianto.get('provincia')?.disable({emitEvent : false});
 
-        this.provincie$ = x? this.codiciDescrizioneBaseService
-          .getCodiceDescrizioneBase(ComboTables.PROVINCIE, x.codice): of([]);
-        this.provincie$.subscribe({
-          next:(x: CodiceDescrizioneBase[])=>{
-            if(x && x.length> 0){
-              this.formImpianto.get('provincia')?.enable({emitEvent : false});
-            }
-        }})
-        return of([]);
+        forkJoin({
+          labelProvincie: this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.PROVINCIE, x.codice),
+        }).subscribe({
+          next: ({ labelProvincie }) => {
+            this.provincie$ = of(labelProvincie);
+            if(this.flagModifica){
+              this.editedImpianto$?.subscribe({
+              next:(edited: ImpiantoById)=>{
+                this.formImpianto.get('provincia')?.patchValue(labelProvincie.find(r => r.descrizione === edited.provincia)?.descrizione??null);
+                console.log("provincia:" + JSON.stringify(this.formImpianto.get('provincia')?.value));
+                if(this.formImpianto.get('provincia')){
+                  this.formImpianto.get('provincia')?.enable({emitEvent:false});
+                }
+              }
+            })}
+            else{
+              this.provincie$.subscribe({
+                next:(prov:CodiceDescrizioneBase[])=>{
+                  if(prov && prov.length>0){
+                    this.formImpianto.get('provincia')?.enable({emitEvent:false});
+                  }
+                }
+              })
+            }}
+        });
       }});
     //FORM OPZIONI COMUNE
     this.formImpianto.get('provincia')!.valueChanges.subscribe({
@@ -153,16 +182,31 @@ export class ImpiantiFormComponent {
 
       this.formImpianto.get('comune')?.setValue(null);
       this.comuni$ = of([]);
-      this.comuni$ = x? this.codiciDescrizioneBaseService
-        .getCodiceDescrizioneBase(ComboTables.COMUNI, x): of([]);
-      this.formImpianto.get('comune')?.disable({emitEvent : false});
-      this.comuni$.subscribe({
-        next:(x: CodiceDescrizioneBase[])=>{
-          if(x && x.length> 0){
-            this.formImpianto.get('comune')?.enable({emitEvent : false});
-          }
-      }})
-      return of([]);
+      forkJoin({
+        labelComuni: this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.COMUNI, x),
+      }).subscribe({
+          next: ({ labelComuni }) => {
+            this.comuni$ = of(labelComuni);
+            if(this.flagModifica){
+              this.editedImpianto$?.subscribe({
+              next:(edited: ImpiantoById)=>{
+                this.formImpianto.get('comune')?.patchValue(labelComuni.find(r => r.descrizione.trim() === edited.comune.trim())??null);
+                console.log("comune:" + JSON.stringify(this.formImpianto.get('comune')?.value));
+                if(this.formImpianto.get('comune')){
+                  this.formImpianto.get('comune')?.enable({emitEvent:false});
+                }
+              }
+            })}
+            else{
+              this.comuni$.subscribe({
+                next:(com:CodiceDescrizioneBase[])=>{
+                  if(com && com.length>0){
+                    this.formImpianto.get('comune')?.enable({emitEvent:false});
+                  }
+                }
+              })
+            }}       
+          });
     }});
     //ABILITAZIONE SPECIFICHE
     this.formImpianto.get('tipologiaImpianto')!.valueChanges.subscribe({
@@ -252,6 +296,7 @@ export class ImpiantiFormComponent {
         tipologiaSitoInst: this.formImpianto.get('tipologiaSitoInstallazione')?.value,
         specSitoInst: this.formImpianto.get('specificaSitoInstallazione')?.value
       };
+      console.log(JSON.stringify(impiantoModificato));
       this.impiantoService.editImpianto(this.idEdit!, impiantoModificato).subscribe({
         next: (x: string) => {
           console.log("modifica impianto con id: " + this.idEdit);
