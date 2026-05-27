@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
 import { Observable } from "rxjs";
 import { DashboardEnergetica, DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
+import { HttpClient } from '@angular/common/http';
+import { DashboardImpianti } from "src/app/core/interfaces/dashboard.interfaces";
 
 @Injectable({
   providedIn: "root",
@@ -24,4 +26,10 @@ export class DashboardService {
 
     return this.api.get<DashboardEnergetica>(endpoint, { params });
   }
+
+getDashboardImpianti(): Observable<DashboardImpianti[]> {
+  const endpoint = "/api/dashboard/impianti-per-stato";
+  return this.api.get<DashboardImpianti[]>(endpoint);
+  
+}
 }

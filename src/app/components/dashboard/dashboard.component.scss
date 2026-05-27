@@ -1,76 +1,17 @@
-th {
-  font-weight: bold;
-}
-
-td {
-  padding-right: 0px;
-}
-
-table {
-  width: 100%;
-}
-
-.form-field {
-  margin-left: 6px;
-  margin-right: 6px;
-  width: 32%;
-}
-
-.table {
-  margin-top: 20px;
-}
-
-.button-filtro,
-button {
-  margin: 5px;
-}
-
-.button-filtro {
-  justify-self: center;
-}
-
-.filtro {
-  background-color: white;
-  box-shadow:
-    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
-  padding: 10px;
-}
-
-.h3-header {
-  display: flex;
-  justify-content: center;
-}
-
-.button-td {
-  width: 15%;
-  padding-left: 0px;
-}
-
-.regione {
-  padding-left: 4.5%;
-}
-
-.provincia {
-  padding-left: 4.5%;
-}
-
-.comune {
-  padding-left: 4.5%;
-}
-
-.span-h2 {
-  padding-right: 10px;
-}
-
+/* =========================
+   KPI GRID
+========================= */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   margin-bottom: 24px;
+  align-items: start;
 }
 
+/* =========================
+   KPI CARD BASE
+========================= */
 .kpi-card {
   display: flex;
   align-items: center;
@@ -81,8 +22,8 @@ button {
   border-radius: 14px;
 
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-
   transition: all 0.2s ease;
+
   border-left: 4px solid #3b82f6;
 }
 
@@ -91,13 +32,18 @@ button {
   box-shadow: 0 8px 18px rgba(0,0,0,0.10);
 }
 
+/* =========================
+   ICON + TEXT
+========================= */
 .kpi-icon {
   font-size: 26px;
   width: 42px;
   height: 42px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: #f3f4f6;
   border-radius: 10px;
 }
@@ -118,24 +64,27 @@ button {
   color: #6b7280;
 }
 
-.kpi-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 18px;
-  border-radius: 14px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  transition: 0.2s;
+/* =========================
+   COLORI KPI
+========================= */
+.kpi-card.blue { border-left-color: #3b82f6; }
+.kpi-card.green { border-left-color: #10b981; }
+.kpi-card.purple { border-left-color: #8b5cf6; }
+.kpi-card.orange { border-left-color: #f59e0b; }
+.kpi-card.red { border-left-color: #ef4444; }
+.kpi-card.yellow { border-left-color: #eab308; }
+
+/* =========================
+   DONUT CARD (FIXATA)
+========================= */
+.donut-kpi-card {
+ display: block;
+  width: 500px;
+  height: 300px;
 }
 
-.kpi-card:hover {
-  transform: translateY(-3px);
+app-donut-chart {
+  display: block;
+  width: 400px;
+  height: 400px;
 }
-
-/* COLORI */
-.kpi-card.blue { border-left: 4px solid #3b82f6; }
-.kpi-card.green { border-left: 4px solid #10b981; }
-.kpi-card.purple { border-left: 4px solid #8b5cf6; }
-.kpi-card.orange { border-left: 4px solid #f59e0b; }
-.kpi-card.red { border-left: 4px solid #ef4444; }

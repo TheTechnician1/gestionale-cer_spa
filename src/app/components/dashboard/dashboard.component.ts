@@ -5,7 +5,8 @@ import { MatSort, Sort } from "@angular/material/sort";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { Router } from '@angular/router';
-import { DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
+import { DashboardImpianti, DashboardInterfaces } from "src/app/core/interfaces/dashboard.interfaces";
+import { tap } from "rxjs";
 
 
 @Component({
@@ -28,6 +29,10 @@ export class DashboardComponent implements OnInit {
   // sortedData: any[] | undefined;
 
   dashboard: DashboardInterfaces | null = null;
+
+  dashboardImpianti: DashboardImpianti[] = [];
+  chartLabels : string[]=[]
+  chartValues : number[]=[]
 
 animatedComunita = 0;
 animatedImpianti = 0;
@@ -53,7 +58,18 @@ animatedValore = 0;
 
   ngOnInit() {
     // this.loadCERS();
-     this.loadKPI();
+    this.loadKPI();
+    this.dashboardService.getDashboardImpianti().subscribe(res => {
+      res.forEach(r=>{
+        // console.log("res stato:"+ r.stato)
+        // console.log("res totale:"+ r.totale)
+        // console.log("res tipologia:"+ r.tipologia)
+        this.dashboardImpianti = res;
+        this.chartValues.push(r.totale);
+        this.chartLabels.push(r.stato);
+      }
+      ) 
+    })
   }
 
   // ngAfterViewInit() {
@@ -127,19 +143,36 @@ loadKPI() {
   this.dashboardService.getSummary().subscribe({
    next: (res: any) => {
 
-  console.log("RAW:", res);
+    console.log("RAW:", res);
 
-  const data = res?.result || res?.data || res;
+    const data = res?.result || res?.data || res;
 
-  this.dashboard = data;
+    this.dashboard = data;
 
-this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
-this.animateValue(res.impiantiTotali || 0, v => this.animatedImpianti = v);
-this.animateValue(res.configurazioniAttive || 0, v => this.animatedConfigurazioniAttive = v);
-this.animateValue(res.incentivi || 0, v => this.animatedIncentivi = v);
-this.animateValue(res.energiaProdotta || 0, v => this.animatedValore = v);
+    this.animateValue(res.totaleCer || 0, v => this.animatedComunita = v);
+    this.animateValue(res.impiantiTotali || 0, v => this.animatedImpianti = v);
+    this.animateValue(res.configurazioniAttive || 0, v => this.animatedConfigurazioniAttive = v);
+    this.animateValue(res.incentivi || 0, v => this.animatedIncentivi = v);
+    this.animateValue(res.energiaProdotta || 0, v => this.animatedValore = v);
+  }});
 }
-  });
-}
+
+// get chartLabels(): string[] {
+//   return ['Attivi', 'Disattivi'];
+// }
+
+// get chartValues(): number[] {
+
+//   const attivi = this.dashboardImpianti
+//     .filter(i => i.stato?.toUpperCase() === 'ATTIVO')
+//     .reduce((sum, i) => sum + i.totale, 0);
+
+//   const disattivi = this.dashboardImpianti
+//     .filter(i => i.stato?.toUpperCase() === 'DISMESSO')
+//     .reduce((sum, i) => sum + i.totale, 0);
+
+//   return [attivi, disattivi];
+// }
+
  
 }
