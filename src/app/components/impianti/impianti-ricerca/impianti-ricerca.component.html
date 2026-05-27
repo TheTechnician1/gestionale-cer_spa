@@ -1,150 +1,264 @@
-<h2>Impianti</h2>         
-<mat-divider></mat-divider>
-<div class="example-button-row">
-  <button mat-raised-button color="primary" (click)="inserisciDati()">
-    Inserisci
-  </button>
+<!-- HEADER -->
+<div class="page-header">
+
+  <div class="header-content">
+
+    <div class="title-row">
+
+      <h2 class="page-title">Gestione impianti</h2>
+
+      <p class="subtitle">
+        Visualizza, filtra e gestisci gli impianti registrati nel sistema
+      </p>
+
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="primary-action"
+      (click)="inserisciDati()">
+
+      <mat-icon>add</mat-icon>
+      Nuovo impianto
+
+    </button>
+
+  </div>
+
 </div>
-<div class="white-box">
-  <form [formGroup]="formRicercaImpianti" (ngSubmit)="search()">
-    <div class="form-group">
-      <label for="idCer">Cer</label>
-      <select formControlName="idCer">
-          <option [ngValue]="null">
-              -- Seleziona Cer --
-          </option>
-          <option *ngFor="let c of cer$ | async"
-              [ngValue]="c.idCer">
-                  {{c.ragSociale}}
-          </option>
-      </select>
-    </div>
 
-    <div class="form-group">
-      <label for="idConfigurazione">Configurazione</label>
-      <select formControlName="idConfigurazione">
-          <option [ngValue]="null">
-              -- Seleziona Configurazione --
-          </option>
-          <option *ngFor="let c of configurazioni$ | async"
-              [ngValue]="c.idConfig">
-                  {{c.ragioneSociale}}
-          </option>
-      </select>
-    </div>
+<!-- FILTRI -->
+<div class="filter-card">
 
-    <div class="form-group">
-      <label for="codiceCabina">Codice cabina</label>
-      <input formControlName="codiceCabina" type="text" class="form-control">
-    </div>
+  <form [formGroup]="formRicercaImpianti" (ngSubmit)="search()" class="filters-grid">
 
+    <!-- CER -->
+    <mat-form-field appearance="outline">
 
-    <div class="form-group">
-      <label for="tipoologiaImpianto">Tipologia impianto</label>
-      <select formControlName="tipologiaImpianto">
-          <option [ngValue]="null">
-              -- Seleziona Tipologia --
-          </option>
-          <option *ngFor="let t of tipologieImpianto$ | async"
-              [ngValue]="t.descrizione">
-                  {{t.descrizione}}
-          </option>
-      </select>
-    </div>
+      <mat-label>Cer</mat-label>
 
-    <div class="form-group">
-      <label for="statoImpianto">Stato impianto</label>
-      <select formControlName="statoImpianto">
-          <option [ngValue]="null">
-              -- Seleziona Stato --
-          </option>
-          <option *ngFor="let s of statiImpianto$ | async"
-              [ngValue]="s.descrizione">
-                  {{s.descrizione}}
-          </option>
-      </select>
-    </div>
+      <mat-select formControlName="idCer">
 
+        <mat-option [value]="null">
+          -- Seleziona Cer --
+        </mat-option>
 
-    <div class="form-group">
-      <label for="regione">Regione</label>
-      <select formControlName="regione">
-          <option [ngValue]="null">
-              -- Seleziona Regione --
-          </option>
-          <option *ngFor="let r of regioni$ | async"
-              [ngValue]="r.descrizione">
-                  {{r.descrizione}}
-          </option>
-      </select>
-    </div>
+        <mat-option *ngFor="let c of cer$ | async"
+          [value]="c.idCer">
 
-    <div class="form-group">
-      <label for="provincia">Provincia</label>
-      <select formControlName="provincia">
-        <option [ngValue]="null">
+          {{c.ragSociale}}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- CONFIGURAZIONE -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Configurazione</mat-label>
+
+      <mat-select formControlName="idConfigurazione">
+
+        <mat-option [value]="null">
+          -- Seleziona Configurazione --
+        </mat-option>
+
+        <mat-option *ngFor="let c of configurazioni$ | async"
+          [value]="c.idConfig">
+
+          {{c.ragioneSociale}}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- CODICE CABINA -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Codice cabina</mat-label>
+
+      <input
+        matInput
+        type="text"
+        formControlName="codiceCabina"
+        class="form-control">
+
+    </mat-form-field>
+
+    <!-- TIPOLOGIA IMPIANTO -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Tipologia impianto</mat-label>
+
+      <mat-select formControlName="tipologiaImpianto">
+
+        <mat-option [value]="null">
+          -- Seleziona Tipologia --
+        </mat-option>
+
+        <mat-option *ngFor="let t of tipologieImpianto$ | async"
+          [value]="t.descrizione">
+
+          {{t.descrizione}}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- STATO IMPIANTO -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Stato impianto</mat-label>
+
+      <mat-select formControlName="statoImpianto">
+
+        <mat-option [value]="null">
+          -- Seleziona Stato --
+        </mat-option>
+
+        <mat-option *ngFor="let s of statiImpianto$ | async"
+          [value]="s.descrizione">
+
+          {{s.descrizione}}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- REGIONE -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Regione</mat-label>
+
+      <mat-select formControlName="regione">
+
+        <mat-option [value]="null">
+          -- Seleziona Regione --
+        </mat-option>
+
+        <mat-option *ngFor="let r of regioni$ | async"
+          [value]="r.descrizione">
+
+          {{r.descrizione}}
+
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- PROVINCIA -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Provincia</mat-label>
+
+      <mat-select formControlName="provincia">
+
+        <mat-option [value]="null">
           -- Seleziona Provincia --
-        </option>
-        <option *ngFor="let p of provincie$ | async"
-            [ngValue]="p">
+        </mat-option>
+
+        <mat-option *ngFor="let p of provincie$ | async"
+          [value]="p">
+
           {{p.descrizione}}
-        </option>
-      </select>
-    </div>
 
-    <div class="form-group">
-      <label for="comune">Comune</label>
-      <select formControlName="comune">
-        <option [ngValue]="null">
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- COMUNE -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Comune</mat-label>
+
+      <mat-select formControlName="comune">
+
+        <mat-option [value]="null">
           -- Seleziona Comune --
-        </option>
-        <option *ngFor="let c of comuni$ | async"
-            [ngValue]="c">
+        </mat-option>
+
+        <mat-option *ngFor="let c of comuni$ | async"
+          [value]="c">
+
           {{c.descrizione}}
-        </option>
-      </select>
-    </div>
 
-    <div class="form-group">
-      <label for="potenzaNominaleKw">Potenza nominale (kW)</label>
-      <input formControlName="potenzaNominaleKw" type="number" class="form-control">
-    </div>
+        </mat-option>
 
-    <div class="form-group">
-      <label for="presenzaAccumulo">Presenza Accumulo</label>
-      <select formControlName="presenzaAccumulo">
-          <option [ngValue]="null">
-              -- Seleziona presenza accumulo --
-          </option>
-          <option [ngValue]="'S'">
-            S
-          </option>
-          <option [ngValue]="'N'">
-            N
-          </option>
-      </select>
-    </div>
+      </mat-select>
 
-    <div class="form-group">
-      <label for="Attivo">Attivo</label>
-      <select formControlName="attivo">
-          <option [ngValue]="null">
-              -- Seleziona attivo --
-          </option>
-          <option [ngValue]="'S'">
-            S
-          </option>
-          <option [ngValue]="'N'">
-            N
-          </option>
-      </select>
-    </div>
+    </mat-form-field>
+
+    <!-- POTENZA -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Potenza nominale (kW)</mat-label>
+
+      <input
+        matInput
+        type="number"
+        formControlName="potenzaNominaleKw">
+
+    </mat-form-field>
+
+    <!-- PRESENZA ACCUMULO -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Presenza Accumulo</mat-label>
+
+      <mat-select formControlName="presenzaAccumulo">
+
+        <mat-option [value]="null">
+          -- Seleziona presenza accumulo --
+        </mat-option>
+
+        <mat-option [value]="'S'">S</mat-option>
+        <mat-option [value]="'N'">N</mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+    <!-- ATTIVO -->
+    <mat-form-field appearance="outline">
+
+      <mat-label>Attivo</mat-label>
+
+      <mat-select formControlName="attivo">
+
+        <mat-option [value]="null">
+          -- Seleziona attivo --
+        </mat-option>
+
+        <mat-option [value]="'S'">S</mat-option>
+        <mat-option [value]="'N'">N</mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
   </form>
+
 </div>
 
-<div class="table-container">
+<!-- TABELLA -->
+<div class="table-card">
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-table">
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="full-table">
 
     <ng-container matColumnDef="codiceCabina">
       <th mat-header-cell *matHeaderCellDef>Codice cabina</th>
@@ -180,17 +294,21 @@
       <th mat-header-cell *matHeaderCellDef>Azioni</th>
       <td mat-cell *matCellDef="let dato">
 
-        <mat-icon (click)="visualizzaDati(dato.idImpianto)">
-          find_in_page
-        </mat-icon>
+        <div class="actions">
 
-        <mat-icon (click)="editaDati(dato.idImpianto)">
-          edit
-        </mat-icon>
+          <button mat-icon-button (click)="visualizzaDati(dato.idImpianto)">
+            <mat-icon>find_in_page</mat-icon>
+          </button>
 
-        <mat-icon (click)="openDialog(dato.idImpianto)">
-          delete
-        </mat-icon>
+          <button mat-icon-button (click)="editaDati(dato.idImpianto)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="openDialog(dato.idImpianto)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+        </div>
 
       </td>
     </ng-container>
@@ -209,12 +327,14 @@
 
 </div>
 
-<app-confirmation-dialog #confirmationDialog
+<!-- DIALOG -->
+<app-confirmation-dialog
+  #confirmationDialog
   [title]="'Elimina elemento'"
   [description]="'Sei sicuro di voler eliminare questo elemento?'"
   [confirmText]="'Elimina'"
   [cancelText]="'Annulla'"
   (confirm)="eliminaDato()"
   (cancel)="onCancel()"
-  (closed)="onClosed($event)">>
+  (closed)="onClosed($event)">
 </app-confirmation-dialog>

@@ -1,256 +1,300 @@
+<!-- HEADER -->
+<div class="page-header">
 
-  <div *ngIf="!flagModifica">
-    <h2>Inserimento nuovo impianto</h2>
+  <div class="title-row">
+
+    <h2 class="page-title">
+      {{ !flagModifica ? 'Nuovo impianto' : 'Modifica impianto' }}
+    </h2>
+
   </div>
-  <div *ngIf="flagModifica">
-    <h2>Modifica impianto</h2>
-  </div>
 
+  <p class="subtitle">
+    {{ !flagModifica 
+        ? 'Inserisci i dati per creare un nuovo impianto nel sistema'
+        : 'Aggiorna le informazioni dell’impianto selezionato'
+    }}
+  </p>
 
-<div class="white-box">
+</div>
+
+<!-- CARD PRINCIPALE -->
+<mat-card class="edit-card">
+
   <form [formGroup]="formImpianto">
 
-    <div class="form-group">
-      <label for="idConfigurazione">Configurazione</label>
-      <select formControlName="idConfigurazione">
-          <option [ngValue]="null">
-              -- Seleziona Configurazione --
-          </option>
-          <option *ngFor="let c of configurazioni$ | async"
-              [ngValue]="c.idConfig">
-                  {{c.ragioneSociale}}
-          </option>
-      </select>
+    <!-- =======================
+         SEZIONE: GENERALE
+    ======================== -->
+    <div class="section-title">Informazioni generali</div>
+
+    <div class="filters-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Configurazione</mat-label>
+        <mat-select formControlName="idConfigurazione">
+
+          <mat-option [value]="null">-- Seleziona Configurazione --</mat-option>
+
+          <mat-option *ngFor="let c of configurazioni$ | async"
+            [value]="c.idConfig">
+
+            {{c.ragioneSociale}}
+
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Esercizio</mat-label>
+        <mat-select formControlName="flagEsercizio">
+
+          <mat-option [value]="null">-- Seleziona stato esercizio --</mat-option>
+          <mat-option [value]="'SI'">S</mat-option>
+          <mat-option [value]="'NO'">N</mat-option>
+
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data Entrata Esercizio</mat-label>
+
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dataEntrataEsercizio">
+
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+      </mat-form-field>
+
     </div>
 
-    <div class="form-group">
-      <label for="flagEsercizio">Esercizio</label>
-      <select formControlName="flagEsercizio">
-          <option [ngValue]="null">
-              -- Seleziona stato esercizio --
-          </option>
-          <option [ngValue]="'SI'">
-            S
-          </option>
-          <option [ngValue]="'NO'">
-            N
-          </option>
+    <!-- =======================
+         SEZIONE: TECNICA
+    ======================== -->
+    <div class="section-title">Dati tecnici</div>
 
-      </select>
-    </div>
-    
+    <div class="filters-grid">
 
-    <div class="form-group">
-      <label for="dataEntrataEsercizio">Data Entrata Esercizio</label>
-      <input
-        type="date"
-        id="dataEntrataEsercizio"
-        formControlName="dataEntrataEsercizio">
-    </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Tipologia</mat-label>
 
-    <div class="form-group">
-      <label for="tipologiaImpianto">Tipologia</label>
-      <select formControlName="tipologiaImpianto">
-          <option [ngValue]="null">
-              -- Seleziona tipologia impianto --
-          </option>
-          <option *ngFor="let t of tipologieImpianto$ | async"
-              [ngValue]="t.descrizione">
-                  {{t.descrizione}}
-          </option>
-      </select>
-    </div>
+        <mat-select formControlName="tipologiaImpianto">
 
-    <div class="form-group" *ngIf="specificaTipologiaImpianto">
-      <label for="specificaTipologiaImpianto">Specifica tipologia impianto</label>
-      <input
-        type="text"
-        id="specificaTipologiaImpianto"
-        formControlName="specificaTipologiaImpianto">
-    </div>
+          <mat-option [value]="null">-- Seleziona tipologia impianto --</mat-option>
 
-    <div class="form-group">
-      <label for="potenzaNominaleKw">Potenza Nominale (kW)</label>
-      <input
-        type="number"
-        id="potenzaNominaleKw"
-        formControlName="potenzaNominaleKw">
-    </div>
+          <mat-option *ngFor="let t of tipologieImpianto$ | async"
+            [value]="t.descrizione">
 
-    <div class="form-group">
-      <label for="presenzaAccumulo">Presenza Accumulo</label>
-      <select formControlName="presenzaAccumulo">
-          <option [ngValue]="null">
-              -- Seleziona presenza accumulo --
-          </option>
-          <option [ngValue]="'S'">
-            S
-          </option>
-          <option [ngValue]="'N'">
-            N
-          </option>
-      </select>
+            {{t.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field *ngIf="specificaTipologiaImpianto" appearance="outline">
+        <mat-label>Specifica tipologia impianto</mat-label>
+        <input matInput formControlName="specificaTipologiaImpianto">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Potenza Nominale (kW)</mat-label>
+        <input matInput type="number" formControlName="potenzaNominaleKw">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Presenza Accumulo</mat-label>
+
+        <mat-select formControlName="presenzaAccumulo">
+          <mat-option [value]="null">-- Seleziona --</mat-option>
+          <mat-option [value]="'S'">S</mat-option>
+          <mat-option [value]="'N'">N</mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Capacità Accumulo (kWh)</mat-label>
+        <input matInput type="number" formControlName="capacitaAccumuloKwh">
+      </mat-form-field>
+
     </div>
 
-    <div class="form-group">
-      <label for="capacitaAccumuloKwh">Capacità Accumulo (kWh)</label>
-      <input
-        type="number"
-        id="capacitaAccumuloKwh"
-        formControlName="capacitaAccumuloKwh">
+    <!-- =======================
+         SEZIONE: PRODUZIONE
+    ======================== -->
+    <div class="section-title">Produttore</div>
+
+    <div class="filters-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Categoria Produttore</mat-label>
+
+        <mat-select formControlName="categoriaProduttore">
+          <mat-option [value]="null">-- Seleziona --</mat-option>
+          <mat-option [value]="'S'">S</mat-option>
+          <mat-option [value]="'N'">N</mat-option>
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Codice Categoria Produttore</mat-label>
+
+        <mat-select formControlName="codiceCategoriaProduttore">
+
+          <mat-option [value]="null">-- Seleziona produttore --</mat-option>
+
+          <mat-option *ngFor="let c of codiciCategoriaProduttore$ | async"
+            [value]="c.descrizione">
+
+            {{c.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field *ngIf="specificaCategoriaProduttore" appearance="outline">
+        <mat-label>Specifica categoria produttore</mat-label>
+        <input matInput formControlName="specificaCategoriaProduttore">
+      </mat-form-field>
+
     </div>
 
-    <div class="form-group">
-      <label for="categoriaProduttore">Categoria Produttore</label>
-      <select formControlName="categoriaProduttore">
-          <option [ngValue]="null">
-              -- Seleziona categoria produttore --
-          </option>
-          <option [ngValue]="'S'">
-            S
-          </option>
-          <option [ngValue]="'N'">
-            N
-          </option>
-      </select>
+    <!-- =======================
+         SEZIONE: UBICAZIONE
+    ======================== -->
+    <div class="section-title">Ubicazione impianto</div>
+
+    <div class="filters-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Regione</mat-label>
+
+        <mat-select formControlName="regione">
+          <mat-option [value]="null">-- Seleziona Regione --</mat-option>
+
+          <mat-option *ngFor="let r of regioni$ | async"
+            [value]="r">
+
+            {{r.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Provincia</mat-label>
+
+        <mat-select formControlName="provincia">
+          <mat-option [value]="null">-- Seleziona Provincia --</mat-option>
+
+          <mat-option *ngFor="let p of provincie$ | async"
+            [value]="p.descrizione">
+
+            {{p.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comune</mat-label>
+
+        <mat-select formControlName="comune">
+          <mat-option [value]="null">-- Seleziona Comune --</mat-option>
+
+          <mat-option *ngFor="let c of comuni$ | async"
+            [value]="c">
+
+            {{c.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Indirizzo</mat-label>
+        <input matInput formControlName="indirizzo">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Civico</mat-label>
+        <input matInput formControlName="civico">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>CAP</mat-label>
+        <input matInput formControlName="cap">
+      </mat-form-field>
+
     </div>
 
-    <div class="form-group">
-      <label for="codiceCategoriaProduttore">Codice Categoria Produttore</label>
-      <select formControlName="codiceCategoriaProduttore">
-          <option [ngValue]="null">
-              -- Seleziona produttore --
-          </option>
-          <option *ngFor="let c of codiciCategoriaProduttore$ | async"
-              [ngValue]="c.descrizione">
-                  {{c.descrizione}}
-          </option>
-      </select>
+    <!-- =======================
+         SEZIONE: STATO
+    ======================== -->
+    <div class="section-title">Stato impianto</div>
+
+    <div class="filters-grid">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Stato Impianto</mat-label>
+
+        <mat-select formControlName="statoImpianto">
+
+          <mat-option [value]="null">-- Seleziona stato impianto --</mat-option>
+
+          <mat-option *ngFor="let c of statiImpianto$ | async"
+            [value]="c.descrizione">
+
+            {{c.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Attivo</mat-label>
+        <input matInput formControlName="attivo">
+      </mat-form-field>
+
     </div>
 
-    <div class="form-group" *ngIf="specificaCategoriaProduttore">
-      <label for="specificaCategoriaProduttore">Specifica categoria produttore</label>
-      <input
-        type="text"
-        id="specificaCategoriaProduttore"
-        formControlName="specificaCategoriaProduttore">
-    </div>
+    <!-- ACTIONS -->
+    <div class="actions">
 
-    <div class="form-group">
-      <label for="tipologiaSitoInstallazione">Tipologia sito installazione</label>
-      <select formControlName="tipologiaSitoInstallazione">
-          <option [ngValue]="null">
-              -- Seleziona tipologia installazione --
-          </option>
-          <option *ngFor="let t of tipologieSitoInstallazione$ | async"
-              [ngValue]="t.descrizione">
-                  {{t.descrizione}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group" *ngIf="specificaSitoInstallazione">
-      <label for="specificaSitoInstallazione">Specifica tipologia installazione</label>
-      <input
-        type="text"
-        id="specificaSitoInstallazione"
-        formControlName="specificaSitoInstallazione">
-    </div>
-
-    <div class="form-group">
-      <label for="regione">Regione</label>
-      <select formControlName="regione">
-          <option [ngValue]="null">
-              -- Seleziona Regione --
-          </option>
-          <option *ngFor="let r of regioni$ | async"
-              [ngValue]="r">
-                  {{r.descrizione}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="provincia">Provincia</label>
-      <select formControlName="provincia">
-          <option [ngValue]="null">
-              -- Seleziona Provincia --
-          </option>
-          <option *ngFor="let p of provincie$ | async"
-              [ngValue]="p.descrizione">
-                  {{p.descrizione}}
-          </option>
-      </select>
-    </div>
-
-      <div class="form-group">
-      <label for="comune">Comune</label>
-      <select formControlName="comune">
-          <option [ngValue]="null">
-              -- Seleziona Comune --
-          </option>
-          <option *ngFor="let c of comuni$ | async"
-              [ngValue]="c">
-                  {{c.descrizione}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="indirizzo">Indirizzo</label>
-      <input
-        type="text"
-        id="indirizzo"
-        formControlName="indirizzo">
-    </div>
-
-    <div class="form-group">
-      <label for="civico">Civico</label>
-      <input
-        type="text"
-        id="civico"
-        formControlName="civico">
-    </div>
-
-    <div class="form-group">
-      <label for="cap">CAP</label>
-      <input
-        type="text"
-        id="cap"
-        formControlName="cap">
-    </div>
-
-    <div class="form-group">
-      <label for="statoImpianto">Stato Impianto</label>
-      <select formControlName="statoImpianto">
-          <option [ngValue]="null">
-              -- Seleziona stato impianto --
-          </option>
-          <option *ngFor="let c of statiImpianto$ | async"
-              [ngValue]="c.descrizione">
-                  {{c.descrizione}}
-          </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="attivo">Attivo</label>
-      <input
-        type="text"
-        id="attivo"
-        formControlName="attivo">
-    </div>
-
-    <div *ngIf="!flagModifica">
-      <button type="submit" class="search-btn" [disabled]="formImpianto.invalid" (click)="salvataggio()">
-        Salva
+      <button mat-button type="button" (click)="formImpianto.reset()">
+        Reset
       </button>
-    </div>
-    <div *ngIf="flagModifica"> 
-      <button type="submit" class="search-btn" [disabled]="formImpianto.invalid" (click)="salvataggio()">
-        Modifica
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="salvataggio()"
+        [disabled]="formImpianto.invalid">
+
+        {{ !flagModifica ? 'Salva' : 'Modifica' }}
+
       </button>
+
     </div>
 
   </form>
-</div>
+
+</mat-card>

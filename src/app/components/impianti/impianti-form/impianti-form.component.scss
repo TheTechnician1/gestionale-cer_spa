@@ -1,53 +1,70 @@
+/* =========================
+   LAYOUT PAGINA
+========================= */
+
 .page-container {
-  padding: 20px;
+  padding: 24px;
   background: #f4f6f9;
   min-height: 100%;
 }
 
-h2 {
-  margin-bottom: 5px;
+/* =========================
+   HEADER
+========================= */
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: #111827;
 }
 
 .subtitle {
-  margin-top: 0;
-  margin-bottom: 20px;
-  color: #666;
+  margin: 6px 0 0 0;
+  font-size: 14px;
+  color: #6b7280;
 }
 
-/* ⭐ LA BOX BIANCA */
+/* =========================
+   CARD GENERICA
+========================= */
+
 .white-box {
-  background: #ffffff;
+  background: #fff;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* placeholder tabella */
-.table-placeholder {
-  background: #fafafa;
-  border: 1px dashed #ccc;
-  padding: 10px;
-  border-radius: 8px;
+/* CARD EDIT FORM */
+.edit-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  border: 1px solid #eef0f3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.section-box {
-  margin-top: 20px;
-  padding: 15px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  background: #fafafa;
+/* spacing interno form */
+.edit-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.section-box h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-}
+/* =========================
+   FORM
+========================= */
 
-select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px 24px;
 }
 
 .form-row {
@@ -62,18 +79,37 @@ select {
   flex-direction: column;
 }
 
+/* section titles */
+.section-title {
+  margin: 10px 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* =========================
+   SELECT / INPUT BASE
+========================= */
+
 select {
+  width: 100%;
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
 
+/* =========================
+   TABELLA
+========================= */
+
 .table-container {
   margin-top: 20px;
   border-radius: 12px;
   overflow: hidden;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .energy-table {
@@ -103,6 +139,10 @@ select {
   background: #f9fafb;
 }
 
+/* =========================
+   BADGE
+========================= */
+
 .badge {
   padding: 5px 10px;
   border-radius: 999px;
@@ -130,8 +170,36 @@ select {
   color: #374151;
 }
 
+/* =========================
+   AZIONI
+========================= */
+
 .actions {
   display: flex;
+  align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+/* =========================
+   PLACEHOLDER / BOX SECONDARI
+========================= */
+
+.table-placeholder {
+  background: #fafafa;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.section-box {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.section-box h3 {
+  margin: 0 0 10px 0;
 }
