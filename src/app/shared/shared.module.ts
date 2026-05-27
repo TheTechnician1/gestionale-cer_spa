@@ -33,6 +33,7 @@ import { ConfirmationDialogComponent } from "./components/confirmation-dialog/co
 import { ToastSnackbarComponent } from "./components/toast-snackbar/toast-snackbar.component";
 import { DonutChartComponent } from './components/donut-chart/donut-chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { LineChartComponent } from './components/line-chart/line-chart.component';
 
 export const MATERIAL_MODULES = [
   MatButtonModule,
@@ -63,8 +64,8 @@ export const MATERIAL_MODULES = [
 ];
 
 @NgModule({
-  declarations: [FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, DonutChartComponent],
+  declarations: [FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, DonutChartComponent, LineChartComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, ...MATERIAL_MODULES],
-  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, ...MATERIAL_MODULES, DonutChartComponent, NgApexchartsModule],
+  exports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, TranslateModule, FormControlErrorComponent, ConfirmationDialogComponent, ToastSnackbarComponent, ...MATERIAL_MODULES, DonutChartComponent, LineChartComponent, NgApexchartsModule],
 })
 export class SharedModule {}
