@@ -179,23 +179,32 @@ console.log('datiEnergetici:', this.datiEnergetici);
 }
 
   elimina(): void {
-    if (!this.impianto) return;
+  if (!this.impianto) return;
 
-    const dialogRef = this.dialog.open(ConfermaDialogComponent, {
-      width: '400px',
-      data: { codiceCabina: this.impianto.codiceCabina }
-    });
+  const id = this.route.snapshot.paramMap.get('id');
+  const email = (this.utenteService.currentUser as any)?.utente?.mail ?? '';
 
-    dialogRef.afterClosed().subscribe((confermato: boolean) => {
-      if (confermato) {
-        this.impiantoService.deleteImpianto(this.impianto!)
-          .subscribe(() => {
-            this.toastService.success('Impianto eliminato con successo');
-            this.router.navigate(['../..'], { relativeTo: this.route });
-          });
-      }
-    });
+  if (!id || !email) {
+    this.toastService.error('Utente non autenticato');
+    return;
   }
+
+  const dialogRef = this.dialog.open(ConfermaDialogComponent, {
+    width: '400px',
+    data: { codiceCabina: this.impianto.codiceCabina }
+  });
+
+  dialogRef.afterClosed().subscribe((confermato: boolean) => {
+    if (confermato) {
+      
+      this.impiantoService.deleteImpianto(+id, email)
+        .subscribe(() => {
+          this.toastService.success('Impianto eliminato con successo');
+          this.router.navigate(['../..'], { relativeTo: this.route });
+        });
+    }
+  });
+}
 
   annulla(): void {
     this.router.navigate(['../..'], { relativeTo: this.route });

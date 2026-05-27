@@ -7,7 +7,7 @@ import { ApiRequestOptions, ApiService } from 'src/app/core/services/api.service
 })
 export class CerService {
 
-
+/*
     private mockCer: any[] = [
     { idCer: 100, ragSociale: 'CER Napoli' },
     { idCer: 101, ragSociale: 'CER Milano' },
@@ -26,8 +26,8 @@ export class CerService {
   }
 }
 
+*/
 
-/*
   constructor(private api: ApiService) {}
 
   ricercaCer(payload: any, options: ApiRequestOptions = {}): Observable<any[]> {
@@ -40,4 +40,4 @@ export class CerService {
     return this.api.get<any[]>(endpoint, undefined, options);
   }
 }
-  */
+  

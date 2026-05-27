@@ -12,6 +12,7 @@ import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
 import { filter } from 'rxjs/operators';
 import { UtenteService } from "src/app/core/services/utente.service";
 import { Ruolo } from "src/app/core/enum/role.enum";
+import { ToastService } from "src/app/core/services/toast.service";
 
 @Component({
   selector: "app-impianti-ricerca",
@@ -53,7 +54,8 @@ export class ImpiantiRicercaComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private utenteService: UtenteService
+    private utenteService: UtenteService,
+    private toastService :ToastService
   ) {}
 
   ngOnInit(): void {
@@ -124,20 +126,32 @@ export class ImpiantiRicercaComponent implements OnInit {
   }
 
   eliminaImpianto(impianto: Impianto): void {
-    if (!impianto.idImpianto) return;
+  if (!impianto.idImpianto) return;
 
-    const dialogRef = this.dialog.open(ConfermaDialogComponent, {
-      width: '400px',
-      data: { codiceCabina: impianto.codiceCabina }
-    });
+  const idImpianto = impianto.idImpianto;
+  const codiceCabina = impianto.codiceCabina;
 
-    dialogRef.afterClosed().subscribe((confermato: boolean) => {
-      if (confermato) {
-        this.impiantoService.deleteImpianto(impianto)
-          .subscribe(() => {
-            this.cerca();
-          });
+  const dialogRef = this.dialog.open(ConfermaDialogComponent, {
+    width: '400px',
+    data: { codiceCabina }
+  });
+
+  dialogRef.afterClosed().subscribe((confermato: boolean) => {
+    if (confermato) {
+      const email = (this.utenteService.currentUser as any)?.utente?.mail ?? '';
+
+      console.log('DELETE payload:', { idImpianto, email });
+
+      if (!email) {
+        this.toastService.error('Utente non autenticato');
+        return;
       }
-    });
-  }
+
+      this.impiantoService.deleteImpianto(idImpianto, email)
+        .subscribe(() => {
+          this.cerca();
+        });
+    }
+  });
+}
 }

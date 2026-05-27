@@ -11,26 +11,24 @@ const routes: Routes = [
     component: ImpiantiRicercaComponent,
     data: { role: ["ADMIN", "GEST", "GUEST"] },
     canActivate: [AuthGuard],
-    children: [
-      {
-        path: "inserimento-impianto",
-        component: ImpiantiFormComponent,
-        data: { role: ["ADMIN", "GEST"] },
-        canActivate: [AuthGuard],
-      },
-      {
-        path: "modifica-impianto/:id",
-        component: ImpiantiModificaComponent,
-        data: { role: ["ADMIN", "GEST"] },
-        canActivate: [AuthGuard],
-      },
-      {
-        path: "dettaglio-impianto/:id",
-        component: ImpiantiModificaComponent,
-        data: { role: ["ADMIN", "GEST", "GUEST"] },
-        canActivate: [AuthGuard],
-      },
-    ],
+  },
+  {
+    path: "inserimento-impianto",
+    component: ImpiantiFormComponent,
+    data: { role: ["ADMIN", "GEST"] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "modifica-impianto/:id",
+    component: ImpiantiModificaComponent,
+    data: { role: ["ADMIN", "GEST"] },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "dettaglio-impianto/:id",
+    component: ImpiantiModificaComponent,
+    data: { role: ["ADMIN", "GEST", "GUEST"] },
+    canActivate: [AuthGuard],
   },
 ];
 

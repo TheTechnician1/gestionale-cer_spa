@@ -6,7 +6,7 @@ import { ApiRequestOptions, ApiService } from 'src/app/core/services/api.service
   providedIn: 'root'
 })
 export class ConfigurazioneService {
-  
+  /*
      private mockConfigurazioni: any[] = [
   { idConfig: 200, codiceCabina: 'ABC123DEF45', idCer: 100 },
   { idConfig: 201, codiceCabina: 'XYZ987LMN12', idCer: 101 },
@@ -28,7 +28,7 @@ export class ConfigurazioneService {
     return this.api.get<any[]>(endpoint, undefined, options);
   }
 }
-/*
+*/
   constructor(private api: ApiService) {}
 
   ricercaConfigurazione(payload: any, options: ApiRequestOptions = {}): Observable<any[]> {
@@ -41,4 +41,3 @@ export class ConfigurazioneService {
     return this.api.get<any[]>(endpoint, undefined, options);
   }
 }
-*/

@@ -1,121 +1,130 @@
 <form [formGroup]="form">
 
-  <h2 class="title">Nuovo Impianto</h2>
+  <h2 class="title">{{ 'plant.new-plant' | translate }}</h2>
 
   <div class="grid">
 
     <mat-form-field appearance="fill">
-      <mat-label>CER</mat-label>
+      <mat-label>{{ 'plant.cer' | translate }}</mat-label>
       <mat-select formControlName="idCer">
-        <mat-option [value]="null">Seleziona</mat-option>
+        <mat-option [value]="null">{{ 'plant.select' | translate }}</mat-option>
         <mat-option *ngFor="let cer of cerList" [value]="cer.id">{{ cer.descrizione }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-  <mat-label>Configurazione</mat-label>
-  <mat-select formControlName="idConfigurazione" (selectionChange)="onConfigurazioneChange($event.value)">
-    <mat-option [value]="null">Seleziona</mat-option>
-    <mat-option *ngFor="let conf of configurazioniList" [value]="conf.id">{{ conf.descrizione }}</mat-option>
-  </mat-select>
-</mat-form-field>
-
-   <mat-form-field appearance="fill">
-  <mat-label>Codice Cabina</mat-label>
-  <input matInput formControlName="codiceCabina" [readonly]="true">
-</mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Flg Esercizio</mat-label>
-      <mat-select formControlName="flgEsercizio">
-        <mat-option value="SI">SI</mat-option>
-        <mat-option value="NO">NO</mat-option>
+      <mat-label>{{ 'plant.configuration' | translate }}</mat-label>
+      <mat-select formControlName="idConfigurazione" (selectionChange)="onConfigurazioneChange($event.value)">
+        <mat-option [value]="null">{{ 'plant.select' | translate }}</mat-option>
+        <mat-option *ngFor="let conf of configurazioniList" [value]="conf.id">{{ conf.descrizione }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Data Entrata Esercizio</mat-label>
+      <mat-label>{{ 'plant.cabin-code' | translate }}</mat-label>
+      <input matInput type="text" formControlName="codiceCabina" [readonly]="true">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'plant.exercise-flag' | translate }}</mat-label>
+      <mat-select formControlName="flgEsercizio">
+        <mat-option value="S">{{ 'plant.disable' | translate }}</mat-option>
+        <mat-option value="N">{{ 'plant.enable' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'plant.activation-date' | translate }}</mat-label>
       <input matInput type="date" formControlName="annoAttivazione">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Tipologia</mat-label>
+      <mat-label>{{ 'plant.type' | translate }}</mat-label>
       <mat-select formControlName="tipologia">
-        <mat-option value="fotovoltaico">Fotovoltaico</mat-option>
-        <mat-option value="agrivoltaico">Agrivoltaico</mat-option>
-        <mat-option value="eolico">Eolico</mat-option>
-        <mat-option value="idroelettrico">Idroelettrico</mat-option>
-        <mat-option value="biomassa">Biomassa</mat-option>
-        <mat-option value="biogas">Biogas</mat-option>
-        <mat-option value="altro">Altro</mat-option>
+        <mat-option value="fotovoltaico">{{ 'plant.photovoltaic' | translate }}</mat-option>
+        <mat-option value="agrivoltaico">{{ 'plant.agrivoltaic' | translate }}</mat-option>
+        <mat-option value="eolico">{{ 'plant.wind' | translate }}</mat-option>
+        <mat-option value="idroelettrico">{{ 'plant.hydroelectric' | translate }}</mat-option>
+        <mat-option value="biomassa">{{ 'plant.biomass' | translate }}</mat-option>
+        <mat-option value="biogas">{{ 'plant.biogas' | translate }}</mat-option>
+        <mat-option value="altro">{{ 'plant.other' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Potenza Nominale (kW)</mat-label>
+      <mat-label>{{ 'plant.nominal-power' | translate }}</mat-label>
       <input matInput type="number" formControlName="potenzaNominale">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Flag Accumulo</mat-label>
+      <mat-label>{{ 'plant.storage-flag' | translate }}</mat-label>
       <mat-select formControlName="flgAccumulo">
-        <mat-option value="SI">SI</mat-option>
-        <mat-option value="NO">NO</mat-option>
+        <mat-option value="S">SI</mat-option>
+        <mat-option value="N">NO</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Capacità Accumulo (kWh)</mat-label>
+      <mat-label>{{ 'plant.storage-capacity' | translate }}</mat-label>
       <input matInput type="number" formControlName="capAccumulo">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Categoria Produttore</mat-label>
-      <input matInput formControlName="tipologiaProduttore">
+      <mat-label>{{ 'plant.producer-category' | translate }}</mat-label>
+      <input matInput type="text" formControlName="tipologiaProduttore">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Regione</mat-label>
-      <input matInput formControlName="regione">
+      <mat-label>{{ 'plant.region' | translate }}</mat-label>
+      <mat-select formControlName="regione">
+        <mat-option [value]="null">{{ 'plant.select' | translate }}</mat-option>
+        <mat-option *ngFor="let r of regioni" [value]="r.codice">{{ r.descrizione }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Provincia</mat-label>
-      <input matInput formControlName="provincia">
+      <mat-label>{{ 'plant.province' | translate }}</mat-label>
+      <mat-select formControlName="provincia">
+        <mat-option [value]="null">{{ 'plant.select' | translate }}</mat-option>
+        <mat-option *ngFor="let p of province" [value]="p.codice">{{ p.descrizione }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Comune</mat-label>
-      <input matInput formControlName="comune">
+      <mat-label>{{ 'plant.municipality' | translate }}</mat-label>
+      <mat-select formControlName="comune">
+        <mat-option [value]="null">{{ 'plant.select' | translate }}</mat-option>
+        <mat-option *ngFor="let c of comuni" [value]="c.codice">{{ c.descrizione }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Indirizzo</mat-label>
-      <input matInput formControlName="indirizzo">
+      <mat-label>{{ 'plant.address' | translate }}</mat-label>
+      <input matInput type="text" formControlName="indirizzo">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Civico</mat-label>
-      <input matInput formControlName="civico">
+      <mat-label>{{ 'plant.street-number' | translate }}</mat-label>
+      <input matInput type="text" formControlName="civico">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>CAP</mat-label>
-      <input matInput formControlName="cap">
+      <mat-label>{{ 'plant.zip-code' | translate }}</mat-label>
+      <input matInput type="text" formControlName="cap" maxlength="5">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Codice installazione</mat-label>
-      <input matInput formControlName="codiceInstallazione">
+      <mat-label>{{ 'plant.installation-code' | translate }}</mat-label>
+      <input matInput type="text" formControlName="codiceInstallazione">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Specifica installazione</mat-label>
-      <input matInput formControlName="specificaInstallazione">
+      <mat-label>{{ 'plant.installation-details' | translate }}</mat-label>
+      <input matInput type="text" formControlName="specificaInstallazione">
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Stato Impianto</mat-label>
+      <mat-label>{{ 'plant.plant-status' | translate }}</mat-label>
       <mat-select formControlName="statoImpianto">
         <mat-option *ngFor="let s of statiImpianto" [value]="s">{{ s }}</mat-option>
       </mat-select>
@@ -124,8 +133,8 @@
   </div>
 
   <div class="actions">
-    <button mat-raised-button color="primary" type="button" (click)="submit()">Salva Impianto</button>
-    <button mat-raised-button type="button" (click)="annulla()">Annulla</button>
+    <button mat-raised-button color="primary" type="button" (click)="submit()">{{ 'plant.save-plant' | translate }}</button>
+    <button mat-raised-button type="button" (click)="annulla()">{{ 'plant.cancel' | translate }}</button>
   </div>
 
 </form>

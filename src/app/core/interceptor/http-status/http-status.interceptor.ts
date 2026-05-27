@@ -18,9 +18,9 @@ export class HttpStatusInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
   catchError((error: HttpErrorResponse) => {
 
-    if (!skipToast) {
-      this.toastService.showFromHttpError(req, error);
-    }
+   if (!skipToast && error.status !== 0) {
+  this.toastService.showFromHttpError(req, error);
+}
 
     if (error.status === 401) {
       this.router.navigateByUrl('/login');

@@ -9,23 +9,28 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CerService } from '../../services/cer.service';
 import { ConfigurazioneService } from '../../services/configurazione.service';
 import { UtenteService } from "src/app/core/services/utente.service";
+import { TerritorioService } from "../../services/territorio.service";
+import { CodiceDescrizioneBase } from "src/app/core/interfaces/territorio.model";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: "app-impianti-form",
-  templateUrl: "./impianti-form.component.html",
-  styleUrls: ["./impianti-form.component.scss"],
+  selector: 'app-impianti-form',
+  templateUrl: './impianti-form.component.html'
 })
 export class ImpiantiFormComponent implements OnInit {
 
-   statiImpianto = Object.values(StatoImpianto);
+  statiImpianto = Object.values(StatoImpianto);
   cerList: any[] = [];
   configurazioniList: any[] = [];
+  regioni: CodiceDescrizioneBase[] = [];
+  province: CodiceDescrizioneBase[] = [];
+  comuni: CodiceDescrizioneBase[] = [];
 
   form: FormGroup = new FormGroup({
     idImpianto: new FormControl(null),
     idCer: new FormControl(null, Validators.required),
     idConfigurazione: new FormControl(null),
-    codiceCabina: new FormControl(null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{11}$/)]), 
+    codiceCabina: new FormControl(null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9]{11}$/)]),
     flgEsercizio: new FormControl(null, Validators.required),
     annoAttivazione: new FormControl(null, Validators.required),
     tipologia: new FormControl(null, Validators.required),
@@ -47,6 +52,8 @@ export class ImpiantiFormComponent implements OnInit {
     utenteUltimaModifica: new FormControl(null)
   });
 
+  
+
   constructor(
     private impiantoService: ImpiantoService,
     private toastService: ToastService,
@@ -54,11 +61,16 @@ export class ImpiantiFormComponent implements OnInit {
     private configurazioneService: ConfigurazioneService,
     private utenteService: UtenteService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private territorioService: TerritorioService,
+    private translate: TranslateService
   ) {
+
+     translate.use('it');
+
     this.form.get('flgAccumulo')?.valueChanges.subscribe(val => {
       const controlloAttivo = this.form.get('capAccumulo');
-      if (val === 'SI') {
+      if (val === 'S') {
         controlloAttivo?.setValidators([Validators.required, Validators.min(0.01)]);
       } else {
         controlloAttivo?.clearValidators();
@@ -79,17 +91,17 @@ export class ImpiantiFormComponent implements OnInit {
     });
 
     this.form.get('idConfigurazione')?.valueChanges.subscribe(idConf => {
-  console.log('idConf:', idConf);
-  console.log('configurazioniList:', this.configurazioniList);
-  console.log('find result:', this.configurazioniList.find(c => c.id === idConf));
-  if (idConf && this.configurazioniList.length > 0) {
-    const conf = this.configurazioniList.find(c => c.id === idConf);
-    if (conf) {
-      this.form.get('codiceCabina')?.setValue(conf.codiceCabina);
-      this.form.get('codiceCabina')?.enable();
-    }
-  }
-});
+      console.log('idConf:', idConf);
+      console.log('configurazioniList:', this.configurazioniList);
+      console.log('find result:', this.configurazioniList.find(c => c.id === idConf));
+      if (idConf && this.configurazioniList.length > 0) {
+        const conf = this.configurazioniList.find(c => c.id === idConf);
+        if (conf) {
+          this.form.get('codiceCabina')?.setValue(conf.codiceCabina);
+          this.form.get('codiceCabina')?.enable();
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -97,18 +109,31 @@ export class ImpiantiFormComponent implements OnInit {
       next: (data) => this.cerList = data.map((c: any) => ({ id: c.idCer, descrizione: c.ragSociale })),
       error: (err) => console.error('Errore caricamento CER', err)
     });
-  }
 
-  /*caricaConfigurazioni(idCer: number): void {
-    this.configurazioneService.ricercaConfigurazione({ idCer }).subscribe({
-      next: (data) => this.configurazioniList = data.map((c: any) => ({
-        id: c.idConfigurazione,
-        descrizione: c.codiceCabina,
-        codiceCabina: c.codiceCabina
-      })),
-      error: (err) => console.error('Errore caricamento configurazioni', err)
-    });
-  }*/
+    this.territorioService.getRegioni().subscribe({
+  next: data => {
+    console.log('regioni OK:', data);
+    this.regioni = data;
+  },
+  error: err => console.error('Errore regioni:', err.status, err.message, err.error)
+});
+
+this.territorioService.getProvince().subscribe({
+  next: data => {
+    console.log('province OK:', data);
+    this.province = data;
+  },
+  error: err => console.error('Errore province:', err.status, err.message, err.error)
+});
+
+this.territorioService.getComuni().subscribe({
+  next: data => {
+    console.log('comuni OK:', data);
+    this.comuni = data;
+  },
+  error: err => console.error('Errore comuni:', err.status, err.message, err.error)
+});
+  }
 
   caricaConfigurazioni(idCer: number): void {
     this.configurazioneService.ricercaConfigurazione({ idCer }).subscribe({
@@ -165,12 +190,12 @@ export class ImpiantiFormComponent implements OnInit {
   }
 
   onConfigurazioneChange(idConf: any): void {
-  if (idConf && this.configurazioniList.length > 0) {
-    const conf = this.configurazioniList.find(c => c.id === idConf);
-    if (conf) {
-      this.form.get('codiceCabina')?.setValue(conf.codiceCabina);
-      this.form.get('codiceCabina')?.enable();
+    if (idConf && this.configurazioniList.length > 0) {
+      const conf = this.configurazioniList.find(c => c.id === idConf);
+      if (conf) {
+        this.form.get('codiceCabina')?.setValue(conf.codiceCabina);
+        this.form.get('codiceCabina')?.enable();
+      }
     }
   }
-}
 }

@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { Impianto } from "../../core/interfaces/impianto.model";
 import { StatoImpianto } from "src/app/core/enum/stato-impianto.enum";
 import { ApiRequestOptions, ApiService } from "../../core/services/api.service";
-//import { Observable } from "rxjs";
+import { Observable } from "rxjs";
+import { HttpParams } from "@angular/common/http";
 
 
-/*
+
 @Injectable({
   providedIn: "root",
 })
@@ -30,22 +31,22 @@ editImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any
   return this.api.put<any>(endpoint, payload, { ...options, params: { emailUtenteLoggato: email } });
 }
 
-  deleteImpianto(payload: Impianto): Observable<any> {
-  const endpoint = `api/impianti/${payload.idImpianto}`;
+deleteImpianto(idImpianto: number, emailUtenteLoggato: string): Observable<string> {
+  const endpoint = `api/impianti/${idImpianto}`;
 
-  return this.api.delete<any>(endpoint);
+  return this.api.delete<string>(endpoint, { emailUtenteLoggato });
 }
 
 createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any> {
   const endpoint = "api/impianti";
   const email = payload.emailUtenteLoggato;
-  return this.api.post<any>(endpoint, payload, { ...options, params: { emailUtenteLoggato: email ?? '' } });
+  return this.api.postText(endpoint, payload, { ...options, params: { emailUtenteLoggato: email ?? '' } });
 }
 }
-*/
 
 
 
+/*
 //import { Injectable } from "@angular/core";
  import { Observable, of } from "rxjs";
 import { HttpClient } from '@angular/common/http';
@@ -207,4 +208,4 @@ export class ImpiantoService {
     return of(payload);
   }
 }
-
+*/
