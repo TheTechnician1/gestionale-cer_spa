@@ -35,6 +35,8 @@ export class DashboardComponent implements OnInit {
   dashboardImpianti: DashboardImpianti[] = [];
   chartLabels: string[] = [];
   chartValues: number[] = [];
+  chartLabels1: string[] = [];
+  chartValues1: number[] = [];
 
   animatedComunita = 0;
   animatedImpianti = 0;
@@ -68,10 +70,17 @@ export class DashboardComponent implements OnInit {
         this.dashboardImpianti = res;
         this.chartValues.push(r.totale);
         this.chartLabels.push(r.stato);
+        
       });
     });
+ this.dashboardService.getDashboardImpianti1().subscribe((res) => {
+      res.forEach((r) => {
+    this.chartValues1.push(r.totale);
+        this.chartLabels1.push(r.tipologia);
+   });
+    });
   }
-
+  
   // ngAfterViewInit() {
   //   this.dataSource.sort = this.sort;
   //   this.dataSource.paginator = this.paginator;

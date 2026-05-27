@@ -30,6 +30,10 @@ export class DashboardService {
 getDashboardImpianti(): Observable<DashboardImpianti[]> {
   const endpoint = "/api/dashboard/impianti-per-stato";
   return this.api.get<DashboardImpianti[]>(endpoint);
-  
 }
+getDashboardImpianti1(): Observable<DashboardImpianti[]> {
+  const endpoint = "/api/dashboard/impianti-per-tipologia";
+  return this.api.get<DashboardImpianti[]>(endpoint);
+}
+
 }
