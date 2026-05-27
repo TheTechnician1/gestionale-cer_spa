@@ -23,12 +23,6 @@ export class DashboardComponent implements OnInit {
     private router: Router,
   ) {}
 
-  // tableCER: string[] = ["ragSociale", "codFisc", "pIva", "comune", "provincia", "regione", "azioni"];
-
-  // cer: any[] = [];
-
-  // dataSource = new MatTableDataSource(this.cer);
-  // sortedData: any[] | undefined;
 
   dashboard: DashboardInterfaces | null = null;
 
@@ -37,6 +31,14 @@ export class DashboardComponent implements OnInit {
   chartValues: number[] = [];
   chartLabels1: string[] = [];
   chartValues1: number[] = [];
+
+  valuesTopCer: number[] = [];
+  labelsTopCer: string[] = [];
+  nameTopCer: string = '';
+
+  valuesSummary: number[] = [];
+  labelsSummary: string[] = [];
+  nameSummary: string = '';
 
   animatedComunita = 0;
   animatedImpianti = 0;
@@ -47,26 +49,11 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  // filtro = {
-  //   ragSociale: "",
-  //   codFisc: "",
-  //   pIva: "",
-  //   comune: "",
-  //   provincia: "",
-  //   regione: "",
-  // };
-
-  // listaFiltrata = [...this.cer];
-  // isFiltering = false;
-
   ngOnInit() {
-    // this.loadCERS();
+
     this.loadKPI();
     this.dashboardService.getDashboardImpianti().subscribe((res) => {
       res.forEach((r) => {
-        // console.log("res stato:"+ r.stato)
-        // console.log("res totale:"+ r.totale)
-        // console.log("res tipologia:"+ r.tipologia)
         this.dashboardImpianti = res;
         this.chartValues.push(r.totale);
         this.chartLabels.push(r.stato);
@@ -79,45 +66,31 @@ export class DashboardComponent implements OnInit {
         this.chartLabels1.push(r.tipologia);
    });
     });
+
+    this.dashboardService.getDashboardAndamento().subscribe((res) => {
+      res.forEach((r) => {
+    this.valuesSummary.push(r.energiaProdotta);
+        this.labelsSummary.push(r.anno);
+        this.nameSummary = 'Energia Annuale';
+   });
+    });
+
+    this.dashboardService.getDashboardTopCer().subscribe((res) => {
+
+  this.valuesTopCer = [];
+  this.labelsTopCer = [];
+
+  res.forEach((r) => {
+    this.valuesTopCer.push(r.energiaCondivisa);
+
+    this.labelsTopCer.push(`CER ${r.ragioneSociale}`);
+  });
+
+  this.nameTopCer = 'Top 5 CER';
+});
+     
   }
   
-  // ngAfterViewInit() {
-  //   this.dataSource.sort = this.sort;
-  //   this.dataSource.paginator = this.paginator;
-  // }
-
-  // loadCERS() {
-  //   this.dashboardService.getDati(this.filtro).subscribe({
-  //     next: (cer) => {
-  //       this.cer = cer;
-  //       this.dataSource.data = [...this.cer];
-  //       this.listaFiltrata = [...this.cer];
-  //     },
-  //     error: (error) => {
-  //       console.error("Login error", error);
-  //     },
-  //   });
-  // }
-
-  // filtraCER() {
-  //   this.isFiltering = true;
-  //   this.loadCERS();
-  // }
-
-  // resetFiltro() {
-  //   this.isFiltering = false;
-  //   this.filtro = {
-  //     ragSociale: "",
-  //     codFisc: "",
-  //     pIva: "",
-  //     comune: "",
-  //     provincia: "",
-  //     regione: "",
-  //   };
-  //   this.listaFiltrata = [...this.cer];
-  //   this.loadCERS();
-  // }
-
   sortData(sortState: Sort) {
     if (sortState.direction) {
       this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);

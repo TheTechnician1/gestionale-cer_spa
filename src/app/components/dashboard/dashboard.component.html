@@ -71,5 +71,27 @@
 </div>
 
 
+<div class="kpi-card yellow donut-kpi-card">
+    <h4>Top Cer</h4>
+    <div class="chart-wrapper">
+      <app-column-chart
+        [values]="valuesTopCer"
+        [labels]="labelsTopCer"
+        [name]="nameTopCer">
+      </app-column-chart>
+    </div>
+  </div>
+
+
+  <div class="kpi-card yellow donut-kpi-card">
+    <h4>Energia Annuale</h4>
+    <div class="chart-wrapper">
+      <app-column-chart
+        [values]="valuesSummary"
+        [labels]="labelsSummary"
+        [name]="nameSummary">
+      </app-column-chart>
+    </div>
+  </div>
 
 

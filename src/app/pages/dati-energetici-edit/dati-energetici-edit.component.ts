@@ -39,11 +39,8 @@ export class DatiEnergeticiEditComponent implements OnInit {
     private toastService: ToastService,
     private router: Router,
     private cerService: CerService,
-    private configurazioniService: ConfigurazioniService,
-  ) {}
-
-  ngOnInit(): void {
-    this.form = this.fb.group({
+    private configurazioniService: ConfigurazioniService) {
+      this.form = this.fb.group({
       idSchedaEnergetica: [''],
       idCer: [''],
       idConfigurazione: [''],
@@ -61,7 +58,10 @@ export class DatiEnergeticiEditComponent implements OnInit {
       attivo: [{ value: '', disabled: true }],
       emailUtenteLoggato: [''],
     });
+}
 
+  ngOnInit(): void {
+    
     this.cerList$ = this.cerService.getAllCer();
     this.form.get('idCer')?.valueChanges.subscribe((idCer) => {
       this.configurazioniList$ = of([]);

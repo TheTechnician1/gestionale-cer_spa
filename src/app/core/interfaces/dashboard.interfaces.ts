@@ -85,3 +85,39 @@ incentivi!:number;
     Object.assign(this, init);
   }
 }
+
+export interface DashboardTopCer{
+  idCer:number;
+  energiaCondivisa: number;
+  incentivi: number
+}
+  export class DashboardTopCer implements DashboardTopCer {
+  idCer!:number;
+  energiaCondivisa!: number;
+  incentivi!: number
+
+
+   constructor(init?: Partial<DashboardTopCer>) {
+    Object.assign(this, init);
+  }
+}
+
+export interface CerEnergy {
+  anno: string;
+  energiaProdotta: number;
+  energiaCondivisa: number;
+  energiaAutoconsumata: number;
+  incentivi: number;
+}
+ export class CerEnergy implements CerEnergy {
+  anno!: string;
+  energiaProdotta!: number;
+  energiaCondivisa!: number;
+  energiaAutoconsumata!: number;
+  incentivi!: number;
+
+constructor(init?: Partial<CerEnergy>) {
+    Object.assign(this, init);
+
+ }
+}
