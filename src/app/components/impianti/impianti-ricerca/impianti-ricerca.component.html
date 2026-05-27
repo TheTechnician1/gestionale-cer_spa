@@ -73,7 +73,7 @@
               -- Seleziona Regione --
           </option>
           <option *ngFor="let r of regioni$ | async"
-              [ngValue]="r">
+              [ngValue]="r.descrizione">
                   {{r.descrizione}}
           </option>
       </select>
