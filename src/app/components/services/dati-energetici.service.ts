@@ -168,12 +168,10 @@ export class DatiEnergeticiService {
       return of('Record inizializzato con successo (MOCK)!');
     }
 
-    // 1. Run your existing converter safely
     const backendPayload = this.convertToBackendDto(payload, emailLoggato);
 
     console.log('FINAL PAYLOAD OUTBOUND FORWARD TO HTTP PORT:', backendPayload);
 
-    // 2. Use raw http.post directly instead of this.api.postText to bypass the wrapper dropping the email
     return this.http.post(
       `http://localhost:8081/${this.basePath}/inserimento`,
       backendPayload,
@@ -272,7 +270,7 @@ export class DatiEnergeticiService {
     return this.api.get<boolean>(`${this.basePath}/check`, params);
   }
 
- private initializeMockDatabase(): void {
+  private initializeMockDatabase(): void {
     const rawBackendJson = [
       { idDati: 1, anno: '2025', idCer: 42, idConfig: 46, statoScheda: 'N' },
       { idDati: 2, anno: '2012', idCer: 43, idConfig: 1, statoScheda: 'N' },

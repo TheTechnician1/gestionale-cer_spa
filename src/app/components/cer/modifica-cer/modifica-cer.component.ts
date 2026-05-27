@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
-import { MatLabel } from '@angular/material/form-field';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-modifica-cer',
@@ -16,6 +13,7 @@ export class ModificaCerComponent implements OnInit {
   editForm!: FormGroup;
   isLoading = true;
   isSaving = false;
+  originalRawData: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,7 +51,20 @@ export class ModificaCerComponent implements OnInit {
     this.isLoading = true;
     this.dashboardService.getCerById(this.idCer).subscribe({
       next: (data) => {
-        this.editForm.patchValue(data);
+        if (data) {
+          this.originalRawData = data;
+
+          this.editForm.patchValue({
+            ragSociale: data.ragioneSociale || '',
+            formaGiuridica: data.formaGiuridica?.descrizione || '',
+            codFisc: data.codiceFiscale || '',
+            pIva: data.partitaIva || '',
+            comune: data.comuneLegale?.descrizione || '',
+            provincia: data.provinciaLegale?.descrizione || '',
+            regione: data.regioneLegale?.descrizione || '',
+            referente: data.referente || '',
+          });
+        }
         this.isLoading = false;
       },
       error: (err) => {
@@ -65,9 +76,48 @@ export class ModificaCerComponent implements OnInit {
 
   onSubmit(): void {
     if (this.editForm.invalid) return;
-
     this.isSaving = true;
-    const updatedData = { id: this.idCer, ...this.editForm.value };
+
+    const formValues = this.editForm.value;
+
+    const updatedData = {
+      idCer: this.idCer,
+      ragSociale: formValues.ragSociale,
+      codFiscale: formValues.codFisc,
+      getpIva: formValues.pIva,
+      email: this.originalRawData?.email || '',
+      pec: this.originalRawData?.pec || '',
+      sitoWeb: this.originalRawData?.sitoWeb || null,
+      referente: formValues.referente,
+      telefono: this.originalRawData?.telefono || null,
+      flgCancellazione: this.originalRawData?.flgCancellazione || 'N',
+      emailUtenteLoggato: 'utente.test@comunita.it',
+      dataInserimento:
+        this.originalRawData?.dataInserimento ||
+        new Date().toISOString().split('T')[0],
+      dataModifica: new Date().toISOString().split('T')[0],
+
+      formaGiuridica: {
+        codice: this.originalRawData?.formaGiuridica?.codice || 'ASN',
+        descrizione: formValues.formaGiuridica,
+        specifica: this.originalRawData?.formaGiuridica?.specifica || null,
+      },
+      comuneLegale: {
+        codice: this.originalRawData?.comuneLegale?.codice || '',
+        descrizione: formValues.comune,
+        specifica: this.originalRawData?.comuneLegale?.specifica || null,
+      },
+      provinciaLegale: {
+        codice: this.originalRawData?.provinciaLegale?.codice || '',
+        descrizione: formValues.provincia,
+        specifica: this.originalRawData?.provinciaLegale?.specifica || null,
+      },
+      regioneLegale: {
+        codice: this.originalRawData?.regioneLegale?.codice || '',
+        descrizione: formValues.regione,
+        specifica: this.originalRawData?.regioneLegale?.specifica || null,
+      },
+    };
 
     this.dashboardService.modificaCer(updatedData).subscribe({
       next: () => {
@@ -75,7 +125,7 @@ export class ModificaCerComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error('Error updating CER:', err);
+        console.error('Error updating CER on live server:', err);
         this.isSaving = false;
       },
     });

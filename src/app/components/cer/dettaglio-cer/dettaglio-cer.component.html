@@ -19,18 +19,22 @@
   >
     <mat-form-field appearance="fill">
       <mat-label>Ragione Sociale</mat-label>
-      <input [value]="cerData.ragSociale" matInput readonly />
+      <input [value]="cerData.ragioneSociale || ''" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Forma Giuridica</mat-label>
-      <input [value]="cerData.formaGiuridica" matInput readonly />
+      <input
+        [value]="cerData.formaGiuridica?.descrizione || ''"
+        matInput
+        readonly
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Codice Fiscale</mat-label>
       <input
-        [value]="cerData.codFisc"
+        [value]="cerData.codiceFiscale || ''"
         matInput
         readonly
         style="text-transform: uppercase"
@@ -39,22 +43,34 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Partita IVA</mat-label>
-      <input [value]="cerData.pIva || ''" matInput readonly />
+      <input [value]="cerData.partitaIva || ''" matInput readonly />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Comune</mat-label>
-      <input [value]="cerData.comune" matInput readonly />
+      <input
+        [value]="cerData.comuneLegale?.descrizione || ''"
+        matInput
+        readonly
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Provincia</mat-label>
-      <input [value]="cerData.provincia" matInput readonly />
+      <input
+        [value]="cerData.provinciaLegale?.descrizione || ''"
+        matInput
+        readonly
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Regione</mat-label>
-      <input [value]="cerData.regione" matInput readonly />
+      <input
+        [value]="cerData.regioneLegale?.descrizione || ''"
+        matInput
+        readonly
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill">

@@ -1,8 +1,15 @@
-import { Injectable, ViewContainerRef } from "@angular/core";
-import { HttpErrorResponse, HttpRequest, HttpResponse } from "@angular/common/http";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
-import { ToastSnackbarComponent } from "src/app/shared/components/toast-snackbar/toast-snackbar.component";
-import { ToastSnackbarData, ToastType } from "src/app/shared/components/toast-snackbar/toast-snackbar.model";
+import { Injectable, ViewContainerRef } from '@angular/core';
+import {
+  HttpErrorResponse,
+  HttpRequest,
+  HttpResponse,
+} from '@angular/common/http';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { ToastSnackbarComponent } from 'src/app/shared/components/toast-snackbar/toast-snackbar.component';
+import {
+  ToastSnackbarData,
+  ToastType,
+} from 'src/app/shared/components/toast-snackbar/toast-snackbar.model';
 
 interface ToastMessage {
   title: string;
@@ -13,7 +20,7 @@ interface ToastMessage {
 }
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ToastService {
   private viewContainerRef?: ViewContainerRef;
@@ -31,20 +38,20 @@ export class ToastService {
     }
   }
 
-  success(message: string, title: string = "Operazione completata"): void {
-    this.show({ type: "success", title, message });
+  success(message: string, title: string = 'Operazione completata'): void {
+    this.show({ type: 'success', title, message });
   }
 
-  error(message: string, title: string = "Errore"): void {
-    this.show({ type: "error", title, message });
+  error(message: string, title: string = 'Errore'): void {
+    this.show({ type: 'error', title, message });
   }
 
-  warning(message: string, title: string = "Attenzione"): void {
-    this.show({ type: "warning", title, message });
+  warning(message: string, title: string = 'Attenzione'): void {
+    this.show({ type: 'warning', title, message });
   }
 
-  info(message: string, title: string = "Informazione"): void {
-    this.show({ type: "info", title, message });
+  info(message: string, title: string = 'Informazione'): void {
+    this.show({ type: 'info', title, message });
   }
 
   show(config: ToastMessage): void {
@@ -58,16 +65,19 @@ export class ToastService {
     const snackbarConfig: MatSnackBarConfig<ToastSnackbarData> = {
       data,
       duration: config.duration ?? this.defaultDuration,
-      horizontalPosition: "left",
-      verticalPosition: "top",
-      panelClass: ["app-toast-snackbar-panel", `app-toast-${config.type}`],
+      horizontalPosition: 'left',
+      verticalPosition: 'top',
+      panelClass: ['app-toast-snackbar-panel', `app-toast-${config.type}`],
       viewContainerRef: this.viewContainerRef,
     };
 
     this.snackBar.openFromComponent(ToastSnackbarComponent, snackbarConfig);
   }
 
-  showFromHttpSuccess(request: HttpRequest<unknown>, response: HttpResponse<unknown>): void {
+  showFromHttpSuccess(
+    request: HttpRequest<unknown>,
+    response: HttpResponse<unknown>,
+  ): void {
     const message = this.buildSuccessToast(request, response);
     if (!message) {
       return;
@@ -76,28 +86,52 @@ export class ToastService {
     this.show(message);
   }
 
-  showFromHttpError(request: HttpRequest<unknown>, error: HttpErrorResponse): void {
+  showFromHttpError(
+    request: HttpRequest<unknown>,
+    error: HttpErrorResponse,
+  ): void {
     this.show(this.buildErrorToast(request, error));
   }
 
-  private buildSuccessToast(request: HttpRequest<unknown>, response: HttpResponse<unknown>): ToastMessage | null {
+  private buildSuccessToast(
+    request: HttpRequest<unknown>,
+    response: HttpResponse<unknown>,
+  ): ToastMessage | null {
     const payload = this.readPayload(response.body);
-    const inferredType = this.resolveToastType(payload["status"] ?? payload["type"] ?? response.status, response.status);
-    const title = this.pickFirstString(payload, ["titolo", "title", "messageTitle", "statusText"]) ?? this.defaultSuccessTitle(request.method);
+    const inferredType = this.resolveToastType(
+      payload['status'] ?? payload['type'] ?? response.status,
+      response.status,
+    );
+    const title =
+      this.pickFirstString(payload, [
+        'titolo',
+        'title',
+        'messageTitle',
+        'statusText',
+      ]) ?? this.defaultSuccessTitle(request.method);
 
-    const payloadMessage = this.pickFirstString(payload, ["messaggio", "message", "descrizione", "description", "dettaglio", "detail", "testo", "text"]);
+    const payloadMessage = this.pickFirstString(payload, [
+      'messaggio',
+      'message',
+      'descrizione',
+      'description',
+      'dettaglio',
+      'detail',
+      'testo',
+      'text',
+    ]);
     const textBodyMessage = this.extractTextBody(response.body);
     const message = payloadMessage ?? textBodyMessage;
 
     if (!message) {
-      if (request.method === "GET") {
+      if (request.method === 'GET') {
         return null;
       }
 
       return {
         type: inferredType,
         title,
-        message: "Operazione completata con successo.",
+        message: 'Operazione completata con successo.',
         statusCode: response.status,
       };
     }
@@ -110,16 +144,40 @@ export class ToastService {
     };
   }
 
-  private buildErrorToast(_request: HttpRequest<unknown>, error: HttpErrorResponse): ToastMessage {
+  private buildErrorToast(
+    _request: HttpRequest<unknown>,
+    error: HttpErrorResponse,
+  ): ToastMessage {
     const payload = this.readPayload(error.error);
 
-    const title = this.pickFirstString(payload, ["titolo", "title", "messageTitle", "error", "errore"]) ?? this.defaultErrorTitle(error.status);
-    const payloadMessage = this.pickFirstString(payload, ["messaggio", "message", "descrizione", "description", "dettaglio", "detail", "testo", "text"]);
+    const title =
+      this.pickFirstString(payload, [
+        'titolo',
+        'title',
+        'messageTitle',
+        'error',
+        'errore',
+      ]) ?? this.defaultErrorTitle(error.status);
+    const payloadMessage = this.pickFirstString(payload, [
+      'messaggio',
+      'message',
+      'descrizione',
+      'description',
+      'dettaglio',
+      'detail',
+      'testo',
+      'text',
+    ]);
     const textBodyMessage = this.extractTextBody(error.error);
-    const fallbackMessage = error.message || "Si e verificato un errore durante la richiesta.";
+    const fallbackMessage =
+      error.message || 'Si e verificato un errore durante la richiesta.';
 
     return {
-      type: this.resolveToastType(payload["status"] ?? payload["type"] ?? error.status, error.status, true),
+      type: this.resolveToastType(
+        payload['status'] ?? payload['type'] ?? error.status,
+        error.status,
+        true,
+      ),
       title,
       message: payloadMessage ?? textBodyMessage ?? fallbackMessage,
       statusCode: error.status,
@@ -127,58 +185,58 @@ export class ToastService {
   }
 
   private defaultSuccessTitle(method: string): string {
-    if (method === "POST") {
-      return "Inserimento completato";
+    if (method === 'POST') {
+      return 'Inserimento completato';
     }
 
-    if (method === "PUT" || method === "PATCH") {
-      return "Modifica completata";
+    if (method === 'PUT' || method === 'PATCH') {
+      return 'Modifica completata';
     }
 
-    if (method === "DELETE") {
-      return "Cancellazione completata";
+    if (method === 'DELETE') {
+      return 'Cancellazione completata';
     }
 
-    return "Operazione completata";
+    return 'Operazione completata';
   }
 
   private defaultErrorTitle(statusCode: number): string {
     if (statusCode === 401) {
-      return "Non autenticato";
+      return 'Non autenticato';
     }
 
     if (statusCode === 403) {
-      return "Accesso negato";
+      return 'Accesso negato';
     }
 
     if (statusCode === 404) {
-      return "Risorsa non trovata";
+      return 'Risorsa non trovata';
     }
 
     if (statusCode >= 500) {
-      return "Errore server";
+      return 'Errore server';
     }
 
-    return "Errore richiesta";
+    return 'Errore richiesta';
   }
 
   private readPayload(raw: unknown): Record<string, unknown> {
-    if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
       return raw as Record<string, unknown>;
     }
 
-    if (typeof raw !== "string") {
+    if (typeof raw !== 'string') {
       return {};
     }
 
     const trimmed = raw.trim();
-    if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) {
+    if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) {
       return {};
     }
 
     try {
       const parsed = JSON.parse(trimmed) as unknown;
-      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
         return parsed as Record<string, unknown>;
       }
     } catch {
@@ -188,10 +246,13 @@ export class ToastService {
     return {};
   }
 
-  private pickFirstString(payload: Record<string, unknown>, keys: string[]): string | null {
+  private pickFirstString(
+    payload: Record<string, unknown>,
+    keys: string[],
+  ): string | null {
     for (const key of keys) {
       const value = payload[key];
-      if (typeof value === "string" && value.trim()) {
+      if (typeof value === 'string' && value.trim()) {
         return value.trim();
       }
     }
@@ -200,57 +261,78 @@ export class ToastService {
   }
 
   private extractTextBody(raw: unknown): string | null {
-    if (typeof raw !== "string") {
+    if (typeof raw !== 'string') {
       return null;
     }
 
     const trimmed = raw.trim();
-    if (!trimmed || (trimmed.startsWith("{") && trimmed.endsWith("}"))) {
+    if (!trimmed || (trimmed.startsWith('{') && trimmed.endsWith('}'))) {
       return null;
     }
 
     return trimmed;
   }
 
-  private resolveToastType(rawStatus: unknown, statusCode?: number, forceError = false): ToastType {
+  private resolveToastType(
+    rawStatus: unknown,
+    statusCode?: number,
+    forceError = false,
+  ): ToastType {
     if (forceError) {
-      return "error";
+      return 'error';
     }
 
-    if (typeof rawStatus === "string") {
+    if (typeof rawStatus === 'string') {
       const normalizedStatus = rawStatus.trim().toLowerCase();
 
-      if (["success", "ok", "completed", "positivo", "positiva", "esito positivo"].some((token) => normalizedStatus.includes(token))) {
-        return "success";
+      if (
+        [
+          'success',
+          'ok',
+          'completed',
+          'positivo',
+          'positiva',
+          'esito positivo',
+        ].some((token) => normalizedStatus.includes(token))
+      ) {
+        return 'success';
       }
 
-      if (["warning", "warn", "attenzione"].some((token) => normalizedStatus.includes(token))) {
-        return "warning";
+      if (
+        ['warning', 'warn', 'attenzione'].some((token) =>
+          normalizedStatus.includes(token),
+        )
+      ) {
+        return 'warning';
       }
 
-      if (["error", "ko", "fail", "errore", "negativo", "esito negativo"].some((token) => normalizedStatus.includes(token))) {
-        return "error";
+      if (
+        ['error', 'ko', 'fail', 'errore', 'negativo', 'esito negativo'].some(
+          (token) => normalizedStatus.includes(token),
+        )
+      ) {
+        return 'error';
       }
     }
 
-    if (typeof rawStatus === "number") {
-      return rawStatus >= 400 ? "error" : "success";
+    if (typeof rawStatus === 'number') {
+      return rawStatus >= 400 ? 'error' : 'success';
     }
 
-    if (typeof statusCode === "number") {
+    if (typeof statusCode === 'number') {
       if (statusCode >= 500) {
-        return "error";
+        return 'error';
       }
 
       if (statusCode >= 400) {
-        return "warning";
+        return 'warning';
       }
 
       if (statusCode >= 200 && statusCode < 300) {
-        return "success";
+        return 'success';
       }
     }
 
-    return "info";
+    return 'info';
   }
 }
