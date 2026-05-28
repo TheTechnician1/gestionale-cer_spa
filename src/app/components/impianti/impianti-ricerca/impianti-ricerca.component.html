@@ -1,6 +1,12 @@
 <div class="impianti-container">
   <div class="azioni-lista">
-    <button mat-flat-button color="primary" type="button" (click)="inserisciNuovo()">
+    <button
+      *ngIf="permessi.puoCreare()"
+      mat-flat-button
+      color="primary"
+      type="button"
+      (click)="inserisciNuovo()"
+    >
       Inserisci nuovo
     </button>
 
@@ -97,15 +103,30 @@
           <mat-icon>visibility</mat-icon>
           <span>Dettaglio</span>
         </button>
-        <button mat-menu-item type="button" (click)="modificaImpianto(impianto.idImpianto)">
+        <button
+          *ngIf="permessi.puoModificare()"
+          mat-menu-item
+          type="button"
+          (click)="modificaImpianto(impianto.idImpianto)"
+        >
           <mat-icon>edit</mat-icon>
           <span>Modifica</span>
         </button>
-        <button mat-menu-item type="button" [matMenuTriggerFor]="menuStatoCard">
+        <button
+          *ngIf="permessi.puoCambiareStato()"
+          mat-menu-item
+          type="button"
+          [matMenuTriggerFor]="menuStatoCard"
+        >
           <mat-icon>swap_horiz</mat-icon>
           <span>Cambia stato</span>
         </button>
-        <button mat-menu-item type="button" (click)="chiediElimina(impianto.idImpianto)">
+        <button
+          *ngIf="permessi.puoEliminare()"
+          mat-menu-item
+          type="button"
+          (click)="chiediElimina(impianto.idImpianto)"
+        >
           <mat-icon color="warn">delete</mat-icon>
           <span>Elimina</span>
         </button>
@@ -201,10 +222,20 @@
           <button mat-icon-button type="button" (click)="dettaglioImpianto(impianto.idImpianto)">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-icon-button type="button" (click)="modificaImpianto(impianto.idImpianto)">
+          <button
+            *ngIf="permessi.puoModificare()"
+            mat-icon-button
+            type="button"
+            (click)="modificaImpianto(impianto.idImpianto)"
+          >
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button type="button" [matMenuTriggerFor]="menuStatoRiga">
+          <button
+            *ngIf="permessi.puoCambiareStato()"
+            mat-icon-button
+            type="button"
+            [matMenuTriggerFor]="menuStatoRiga"
+          >
             <mat-icon>swap_horiz</mat-icon>
           </button>
           <mat-menu #menuStatoRiga="matMenu">
@@ -217,7 +248,13 @@
               {{ s }}
             </button>
           </mat-menu>
-          <button mat-icon-button color="warn" type="button" (click)="chiediElimina(impianto.idImpianto)">
+          <button
+            *ngIf="permessi.puoEliminare()"
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="chiediElimina(impianto.idImpianto)"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>

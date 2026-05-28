@@ -1,5 +1,3 @@
-// DTO della Dashboard, allineati a /api/dashboard/*
-
 export interface DashboardSummary {
   totaleCer: number;
   configurazioniAttive: number;
@@ -15,12 +13,12 @@ export interface DashboardSummary {
 
 export interface ImpiantiPerStato {
   stato: string;
-  totale: number;
+  count: number;
 }
 
 export interface ImpiantiPerTipologia {
   tipologia: string;
-  totale: number;
+  count: number;
 }
 
 export interface AndamentoAnno {

@@ -44,6 +44,10 @@ export class PermessiService {
     return this.ruolo === 'ADM';
   }
 
+  puoCambiareStato(): boolean {
+    return this.ruolo === 'ADM';
+  }
+
   haUnoDei(ruoli: string[] | undefined): boolean {
     if (!ruoli || ruoli.length === 0) return true;
     const normalizzati = ruoli

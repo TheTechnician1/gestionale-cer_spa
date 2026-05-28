@@ -85,18 +85,18 @@ export interface DatiEnergeticiFiltro {
 export interface DatiEnergeticiDettaglio {
   idDati: number;
   anno: string;
-  geteProdotta: number;
-  getePrelevata: number;
-  geteImmessa: number;
-  geteCondivisa: number;
-  geteAutoCons: number;
+  eProdotta: number;
+  ePrelevata: number;
+  eImmessa: number;
+  eCondivisa: number;
+  eAutoCons: number;
   tariffaPremium: number;
   corrPremioOtt: number;
   ridEmCo2: string;
   statoScheda: string;
   calcoloCo2Automatico: boolean;
-  note: string;
-  configurazioneCer: ConfigurazioneBase;
+  note: string | null;
+  configurazioneCer: ConfigurazioneBase | null;
 }
 
 export interface DatiEnergeticiRequest {
@@ -115,4 +115,13 @@ export interface DatiEnergeticiRequest {
   calcoloCo2Automatico: boolean;
   note: string;
   attivo: string;
+}
+
+export interface StoricoSchedaEnergetica {
+  anno: string;
+  energiaProdotta: number;
+  energiaCondivisa: number;
+  energiaAutoconsumata: number;
+  incentivi: number;
+  co2Evitata: string | number;
 }

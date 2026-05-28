@@ -8,7 +8,9 @@
       <mat-form-field appearance="outline">
         <mat-label>ID Configurazione</mat-label>
         <input matInput type="number" formControlName="idConfigurazione" />
-        <mat-error *ngIf="impiantoForm.get('idConfigurazione')?.hasError('required')">
+        <mat-error
+          *ngIf="impiantoForm.get('idConfigurazione')?.hasError('required')"
+        >
           La configurazione è obbligatoria
         </mat-error>
       </mat-form-field>
@@ -23,17 +25,27 @@
       <mat-form-field appearance="outline">
         <mat-label>Tipologia</mat-label>
         <mat-select formControlName="tipologiaImpianto">
-          <mat-option *ngFor="let t of tipologie" [value]="t">{{ t }}</mat-option>
+          <mat-option *ngFor="let t of tipologie" [value]="t">{{
+            t
+          }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="impiantoForm.get('tipologiaImpianto')?.hasError('required')">
+        <mat-error
+          *ngIf="impiantoForm.get('tipologiaImpianto')?.hasError('required')"
+        >
           La tipologia è obbligatoria
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Categoria produttore</mat-label>
-        <input matInput formControlName="categoriaProduttore" />
-        <mat-error *ngIf="impiantoForm.get('categoriaProduttore')?.hasError('required')">
+        <mat-select formControlName="categoriaProduttore">
+          <mat-option *ngFor="let c of categorieProduttore" [value]="c">
+            {{ c }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="impiantoForm.get('categoriaProduttore')?.hasError('required')"
+        >
           La categoria produttore è obbligatoria
         </mat-error>
       </mat-form-field>
@@ -41,10 +53,14 @@
       <mat-form-field appearance="outline">
         <mat-label>Potenza nominale (kW)</mat-label>
         <input matInput type="number" formControlName="potenzaNominaleKw" />
-        <mat-error *ngIf="impiantoForm.get('potenzaNominaleKw')?.hasError('required')">
+        <mat-error
+          *ngIf="impiantoForm.get('potenzaNominaleKw')?.hasError('required')"
+        >
           La potenza è obbligatoria
         </mat-error>
-        <mat-error *ngIf="impiantoForm.get('potenzaNominaleKw')?.hasError('min')">
+        <mat-error
+          *ngIf="impiantoForm.get('potenzaNominaleKw')?.hasError('min')"
+        >
           La potenza deve essere maggiore di zero
         </mat-error>
       </mat-form-field>
@@ -60,7 +76,9 @@
       <mat-form-field appearance="outline">
         <mat-label>Data entrata esercizio</mat-label>
         <input matInput type="date" formControlName="dataEntrataEsercizio" />
-        <mat-error *ngIf="impiantoForm.get('dataEntrataEsercizio')?.hasError('required')">
+        <mat-error
+          *ngIf="impiantoForm.get('dataEntrataEsercizio')?.hasError('required')"
+        >
           La data è obbligatoria
         </mat-error>
       </mat-form-field>
@@ -79,14 +97,20 @@
       >
         <mat-label>Capacità accumulo (kWh)</mat-label>
         <input matInput type="number" formControlName="capacitaAccumuloKwh" />
-        <mat-error *ngIf="impiantoForm.get('capacitaAccumuloKwh')?.hasError('required')">
+        <mat-error
+          *ngIf="impiantoForm.get('capacitaAccumuloKwh')?.hasError('required')"
+        >
           Obbligatoria se è presente l'accumulo
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Regione</mat-label>
-        <input matInput formControlName="regione" />
+        <mat-select formControlName="regione">
+          <mat-option *ngFor="let r of regioni" [value]="r.codice">
+            {{ r.descrizione }}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="impiantoForm.get('regione')?.hasError('required')">
           La regione è obbligatoria
         </mat-error>
@@ -141,7 +165,10 @@
       Reset
     </button>
     <button
-      *ngIf="(isEditMode && permessi.puoModificare()) || (!isEditMode && permessi.puoCreare())"
+      *ngIf="
+        (isEditMode && permessi.puoModificare()) ||
+        (!isEditMode && permessi.puoCreare())
+      "
       mat-flat-button
       color="primary"
       type="button"

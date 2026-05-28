@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImpiantoService } from '../../services/impianto.service';
 import { ImpiantoDettaglio } from '../../../core/interfaces/impianto.model';
+import { PermessiService } from '../../../core/services/permessi.service';
 
 @Component({
   selector: 'app-dettaglio',
@@ -16,6 +17,7 @@ export class DettaglioComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private impiantoService: ImpiantoService,
+    public permessi: PermessiService,
   ) {}
 
   ngOnInit(): void {

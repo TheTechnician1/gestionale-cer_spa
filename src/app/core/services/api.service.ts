@@ -118,8 +118,19 @@ export class ApiService {
     });
   }
 
+  patchText(
+    path: string,
+    params?: Record<string, string | number | boolean>,
+    options: ApiRequestOptions = {},
+  ): Observable<string> {
+    return this.request<string>('PATCH', path, undefined, 'text', {
+      ...options,
+      params,
+    });
+  }
+
   private request<T>(
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH',
     path: string,
     body?: any,
     responseType: 'json' | 'text' = 'json',
@@ -146,6 +157,8 @@ export class ApiService {
           return this.http.post(url, body, textOptions) as Observable<T>;
         case 'PUT':
           return this.http.put(url, body, textOptions) as Observable<T>;
+        case 'PATCH':
+          return this.http.patch(url, body, textOptions) as Observable<T>;
         case 'DELETE':
           return this.http.delete(url, textOptions) as Observable<T>;
         default:
@@ -166,6 +179,8 @@ export class ApiService {
         return this.http.post<T>(url, body, jsonOptions);
       case 'PUT':
         return this.http.put<T>(url, body, jsonOptions);
+      case 'PATCH':
+        return this.http.patch<T>(url, body, jsonOptions);
       case 'DELETE':
         return this.http.delete<T>(url, jsonOptions);
     }

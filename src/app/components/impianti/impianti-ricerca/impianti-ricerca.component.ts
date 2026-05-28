@@ -10,6 +10,7 @@ import {
   STATI_IMPIANTO,
 } from '../../../core/interfaces/impianto.model';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { PermessiService } from '../../../core/services/permessi.service';
 
 @Component({
   selector: 'app-impianti-ricerca',
@@ -51,6 +52,7 @@ export class ImpiantiRicercaComponent implements OnInit {
     private route: ActivatedRoute,
     private impiantoService: ImpiantoService,
     private fb: FormBuilder,
+    public permessi: PermessiService,
   ) {
     this.form = this.fb.group({
       idCer: [null],

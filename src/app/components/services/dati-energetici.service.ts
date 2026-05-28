@@ -70,7 +70,7 @@ export class DatiEnergeticiService {
     anno: string,
   ): Observable<{ duplicato: boolean; messaggio: string }> {
     return this.api
-      .getText('api/dati-energetici/check', { idConfigurazione, anno })
+      .getText('api/dati-energetici/check', { idConfigurazione, anno }, { skipToast: true })
       .pipe(
         map((testo) => ({
           duplicato: !testo.toLowerCase().includes('nessuna'),
@@ -80,7 +80,7 @@ export class DatiEnergeticiService {
   }
 
   ricercaCer(): Observable<CerLista[]> {
-    return this.api.postLogin<CerLista[]>('cer/ricerca', {});
+    return this.api.postLogin<CerLista[]>('cer/ricerca', {}, { skipToast: true });
   }
 
   getStorico(idConfigurazione: number): Observable<StoricoSchedaEnergetica[]> {

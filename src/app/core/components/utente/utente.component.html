@@ -3,15 +3,15 @@
 <div class="profile-container">
   <div *ngIf="utente" class="profile-header">
     <div class="user-info">
-      <h4 class="title">Benvenuto! {{ utente.nomeUtente }} {{ utente.cognomeUtente }}</h4>
+      <h4 class="title">Benvenuto! {{ utente.nome }} {{ utente.cognome }}</h4>
       <br />
       <p>
         <span class="label">Nome: </span>
-        <span class="value">{{ utente.nomeUtente }}</span>
+        <span class="value">{{ utente.nome }}</span>
       </p>
       <p>
         <span class="label">Cognome: </span>
-        <span class="value">{{ utente.cognomeUtente }}</span>
+        <span class="value">{{ utente.cognome }}</span>
       </p>
       <p>
         <span class="label">Codice fiscale: </span>
@@ -23,7 +23,7 @@
       </p>
       <p>
         <span class="label">Numero di telefono: </span>
-        <span class="value">{{ utente.numeroTelefono }}</span>
+        <span class="value">{{ utente.numTelefono }}</span>
       </p>
       <p>
         <span class="label">Ruolo: </span>

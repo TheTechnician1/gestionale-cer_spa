@@ -45,17 +45,17 @@ export class DatiEnergeticiFormComponent implements OnInit {
     this.datiForm = this.fb.group({
       idCer: [null, Validators.required],
       idConfigurazione: [null, Validators.required],
-      annoRiferimento: [null, Validators.required],
-      energiaProdottaMhw: [0, [Validators.required, Validators.min(0)]],
-      energiaPrelevataMhw: [0, [Validators.required, Validators.min(0)]],
-      energiaImmessaMhw: [0, [Validators.required, Validators.min(0)]],
-      energiaCondivisaMhw: [0, [Validators.required, Validators.min(0)]],
-      energiaAutoconsumataMhw: [0, [Validators.required, Validators.min(0)]],
-      tariffaPremioEuro: [0, [Validators.required, Validators.min(0)]],
-      corrispettivoPremioEuro: [0, [Validators.required, Validators.min(0)]],
+      annoRiferimento: [null, [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      energiaProdottaMhw: [null, [Validators.required, Validators.min(1)]],
+      energiaPrelevataMhw: [null, [Validators.required, Validators.min(1)]],
+      energiaImmessaMhw: [null, [Validators.required, Validators.min(1)]],
+      energiaCondivisaMhw: [null, [Validators.required, Validators.min(1)]],
+      energiaAutoconsumataMhw: [null, [Validators.required, Validators.min(1)]],
+      tariffaPremioEuro: [null, [Validators.required, Validators.min(0.21)]],
+      corrispettivoPremioEuro: [null, [Validators.required, Validators.min(0.21)]],
       riduzioneCo2Ton: [''],
       calcoloCo2Automatico: [true],
-      note: [''],
+      note: ['', Validators.maxLength(500)],
     });
 
     if (this.isEditMode) {
@@ -89,16 +89,16 @@ export class DatiEnergeticiFormComponent implements OnInit {
           idCer: dato.configurazioneCer?.idCer ?? null,
           idConfigurazione: dato.configurazioneCer?.idConfigurazione ?? null,
           annoRiferimento: dato.anno,
-          energiaProdottaMhw: dato.geteProdotta,
-          energiaPrelevataMhw: dato.getePrelevata,
-          energiaImmessaMhw: dato.geteImmessa,
-          energiaCondivisaMhw: dato.geteCondivisa,
-          energiaAutoconsumataMhw: dato.geteAutoCons,
-          tariffaPremioEuro: dato.tariffaPremium,
-          corrispettivoPremioEuro: dato.corrPremioOtt,
-          riduzioneCo2Ton: dato.ridEmCo2,
-          calcoloCo2Automatico: dato.calcoloCo2Automatico,
-          note: dato.note,
+          energiaProdottaMhw: dato.eProdotta ?? 0,
+          energiaPrelevataMhw: dato.ePrelevata ?? 0,
+          energiaImmessaMhw: dato.eImmessa ?? 0,
+          energiaCondivisaMhw: dato.eCondivisa ?? 0,
+          energiaAutoconsumataMhw: dato.eAutoCons ?? 0,
+          tariffaPremioEuro: dato.tariffaPremium ?? 0,
+          corrispettivoPremioEuro: dato.corrPremioOtt ?? 0,
+          riduzioneCo2Ton: dato.ridEmCo2 ?? '',
+          calcoloCo2Automatico: dato.calcoloCo2Automatico ?? true,
+          note: dato.note ?? '',
         });
         if (this.isDettaglio) {
           this.datiForm.disable();
@@ -110,26 +110,25 @@ export class DatiEnergeticiFormComponent implements OnInit {
 
   private buildPayload(): DatiEnergeticiRequest {
     const v = this.datiForm.getRawValue();
-    const payload: DatiEnergeticiRequest = {
-      idCer: v.idCer,
-      idConfigurazione: v.idConfigurazione,
-      annoRiferimento: v.annoRiferimento,
-      energiaProdottaMhw: v.energiaProdottaMhw,
-      energiaPrelevataMhw: v.energiaPrelevataMhw,
-      energiaImmessaMhw: v.energiaImmessaMhw,
-      energiaCondivisaMhw: v.energiaCondivisaMhw,
-      energiaAutoconsumataMhw: v.energiaAutoconsumataMhw,
-      tariffaPremioEuro: v.tariffaPremioEuro,
-      corrispettivoPremioEuro: v.corrispettivoPremioEuro,
-      riduzioneCo2Ton: v.riduzioneCo2Ton ?? '',
-      calcoloCo2Automatico: v.calcoloCo2Automatico,
-      note: v.note ?? '',
-      attivo: 'S',
+    const intero = (x: unknown) => Math.floor(Number(x ?? 0));
+    const decimale = (x: unknown) => Number(x ?? 0);
+    return {
+      idSchedaEnergetica: this.isEditMode ? Number(this.idDatiEnergetici) : undefined,
+      idCer: intero(v.idCer),
+      idConfigurazione: intero(v.idConfigurazione),
+      annoRiferimento: String(v.annoRiferimento ?? ''),
+      energiaProdottaMhw: intero(v.energiaProdottaMhw),
+      energiaPrelevataMhw: intero(v.energiaPrelevataMhw),
+      energiaImmessaMhw: intero(v.energiaImmessaMhw),
+      energiaCondivisaMhw: intero(v.energiaCondivisaMhw),
+      energiaAutoconsumataMhw: intero(v.energiaAutoconsumataMhw),
+      tariffaPremioEuro: decimale(v.tariffaPremioEuro),
+      corrispettivoPremioEuro: decimale(v.corrispettivoPremioEuro),
+      riduzioneCo2Ton: String(v.riduzioneCo2Ton ?? ''),
+      calcoloCo2Automatico: !!v.calcoloCo2Automatico,
+      note: String(v.note ?? ''),
+      attivo: 'N',
     };
-    if (this.isEditMode) {
-      payload.idSchedaEnergetica = Number(this.idDatiEnergetici);
-    }
-    return payload;
   }
 
   salva(): void {
@@ -196,13 +195,13 @@ export class DatiEnergeticiFormComponent implements OnInit {
       idCer: null,
       idConfigurazione: null,
       annoRiferimento: null,
-      energiaProdottaMhw: 0,
-      energiaPrelevataMhw: 0,
-      energiaImmessaMhw: 0,
-      energiaCondivisaMhw: 0,
-      energiaAutoconsumataMhw: 0,
-      tariffaPremioEuro: 0,
-      corrispettivoPremioEuro: 0,
+      energiaProdottaMhw: null,
+      energiaPrelevataMhw: null,
+      energiaImmessaMhw: null,
+      energiaCondivisaMhw: null,
+      energiaAutoconsumataMhw: null,
+      tariffaPremioEuro: null,
+      corrispettivoPremioEuro: null,
       riduzioneCo2Ton: '',
       calcoloCo2Automatico: true,
       note: '',

@@ -22,7 +22,7 @@
 
       <div class="info-item">
         <span class="label">In esercizio</span>
-        <span class="value">{{ impianto.flagEsercizio }}</span>
+        <span class="value">{{ impianto.flagEsercizio === "SI" ? "Sì" : "No" }}</span>
       </div>
 
       <div class="info-item">
@@ -46,35 +46,38 @@
       </div>
 
       <div class="info-item">
+        <span class="label">Sito installazione</span>
+        <span class="value">{{ impianto.tipologiaSitoInstallazione }}</span>
+      </div>
+
+      <div class="info-item">
         <span class="label">Configurazione</span>
         <span class="value">{{ impianto.idConfigurazione }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Regione</span>
-        <span class="value">{{ impianto.regione?.descrizione }}</span>
+        <span class="value">{{ impianto.regione }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Provincia</span>
-        <span class="value">{{ impianto.provincia?.descrizione }}</span>
+        <span class="value">{{ impianto.provincia }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Comune</span>
-        <span class="value">{{ impianto.comune?.descrizione }}</span>
+        <span class="value">{{ impianto.comune }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Indirizzo</span>
-        <span class="value">
-          {{ impianto.indirizzo?.descrizione }} {{ impianto.civico?.descrizione }}
-        </span>
+        <span class="value">{{ impianto.indirizzo }} {{ impianto.civico }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">CAP</span>
-        <span class="value">{{ impianto.cap?.descrizione }}</span>
+        <span class="value">{{ impianto.cap }}</span>
       </div>
     </div>
   </mat-card-content>
@@ -83,7 +86,13 @@
     <button mat-stroked-button type="button" (click)="tornaAllaLista()">
       Torna alla lista
     </button>
-    <button mat-flat-button color="primary" type="button" (click)="vaiAModifica()">
+    <button
+      *ngIf="permessi.puoModificare()"
+      mat-flat-button
+      color="primary"
+      type="button"
+      (click)="vaiAModifica()"
+    >
       Modifica Impianto
     </button>
   </mat-card-actions>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImpiantoService } from '../../services/impianto.service';
 import { PermessiService } from '../../../core/services/permessi.service';
+import { CodiciService } from '../../../core/services/codici.service';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import {
   CodiceDescrizioneBase,
@@ -22,28 +23,41 @@ export class ImpiantiFormComponent implements OnInit {
   isEditMode = false;
   idImpianto: string | null = null;
 
-  // dettaglio caricato in modifica: serve a preservare i "codice" dei
-  // CodiceDescrizioneBase quando rimandiamo i dati al backend.
   private dettaglioCaricato?: ImpiantoDettaglio;
 
-  @ViewChild('dlgReset') private dlgReset!: ConfirmationDialogComponent;
+  regioni: CodiceDescrizioneBase[] = [];
 
   stati = STATI_IMPIANTO;
   tipologie = [
     'Fotovoltaico',
     'Agrivoltaico',
-    'Eolico',
+    'Eolico on-shore',
+    'Eolico off-shore',
     'Idroelettrico',
-    'Biomassa',
     'Biogas',
+    'Biomassa',
     'Altro',
   ];
+  categorieProduttore = [
+    'Persona Fisica',
+    'Piccola/Media Impresa',
+    'Comune',
+    'Unione di Comuni',
+    'Province/Citta Metropolitane',
+    'Aziende Sanitarie Locali',
+    'Altre Pubbliche Amministrazioni',
+    'Enti del Terzo Settore',
+    'Altro',
+  ];
+
+  @ViewChild('dlgReset') private dlgReset!: ConfirmationDialogComponent;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private impiantoService: ImpiantoService,
+    private codiciService: CodiciService,
     public permessi: PermessiService,
   ) {}
 
@@ -54,11 +68,12 @@ export class ImpiantiFormComponent implements OnInit {
     this.isEditMode = !!this.idImpianto;
     this.titoloPagina = this.isEditMode ? 'Modifica Impianto' : 'Nuovo Impianto';
 
+    this.caricaRegioni();
+
     if (this.isEditMode) {
       this.caricaImpianto();
     }
 
-    // capacità accumulo obbligatoria solo se presenzaAccumulo = S
     this.impiantoForm.get('presenzaAccumulo')?.valueChanges.subscribe((v) => {
       const capacita = this.impiantoForm.get('capacitaAccumuloKwh');
       if (v === 'S') {
@@ -68,6 +83,10 @@ export class ImpiantiFormComponent implements OnInit {
       }
       capacita?.updateValueAndValidity();
     });
+  }
+
+  private caricaRegioni(): void {
+    this.codiciService.list('REGIONI').subscribe((r) => (this.regioni = r ?? []));
   }
 
   private buildForm(): void {
@@ -106,39 +125,36 @@ export class ImpiantiFormComponent implements OnInit {
           presenzaAccumulo: i.presenzaAccumulo,
           capacitaAccumuloKwh: i.capacitaAccumuloKwh,
           categoriaProduttore: i.categoriaProduttore,
-          regione: i.regione?.descrizione,
-          provincia: i.provincia?.descrizione,
-          comune: i.comune?.descrizione,
-          indirizzo: i.indirizzo?.descrizione,
-          civico: i.civico?.descrizione,
-          cap: i.cap?.descrizione,
+          provincia: i.provincia,
+          comune: i.comune,
+          indirizzo: i.indirizzo,
+          civico: i.civico,
+          cap: i.cap,
           statoImpianto: i.statoImpianto,
         });
+        this.preselezionaRegione(i.regione);
       },
       error: (err) => console.error('Errore caricamento impianto:', err),
     });
   }
 
-  // Costruisce un CodiceDescrizioneBase preservando il "codice" originale
-  // ricevuto dal backend (in modifica). Se non c'è né originale né codice
-  // reale (ancora niente /codici disponibile), torniamo null: il backend
-  // ESPLODE 500 se gli passiamo un CodiceDescrizioneBase con codice vuoto.
-  private toCodice(
-    valore: string | null,
-    originale?: CodiceDescrizioneBase | null,
-  ): CodiceDescrizioneBase | null {
-    if (originale) {
-      return {
-        ...originale,
-        descrizione: valore ?? originale.descrizione ?? '',
-      };
-    }
-    return null;
+  private preselezionaRegione(descrizione: string): void {
+    this.codiciService.list('REGIONI').subscribe((regioni) => {
+      this.regioni = regioni ?? [];
+      const reg = this.regioni.find((r) => r.descrizione === descrizione);
+      if (reg) this.impiantoForm.patchValue({ regione: reg.codice }, { emitEvent: false });
+    });
   }
 
   private buildPayload(): ImpiantoRequest {
-    const v = this.impiantoForm.value;
+    const v = this.impiantoForm.getRawValue();
     const o = this.dettaglioCaricato;
+
+    const regioneObj = this.regioni.find((r) => r.codice === v.regione) ?? null;
+    const comuneObj: CodiceDescrizioneBase | null = v.comune
+      ? { codice: '', descrizione: v.comune, specifica: null }
+      : null;
+
     return {
       idConfigurazione: v.idConfigurazione,
       flagEsercizio: v.flagEsercizio,
@@ -147,18 +163,18 @@ export class ImpiantiFormComponent implements OnInit {
       potenzaNominaleKw: v.potenzaNominaleKw,
       presenzaAccumulo: v.presenzaAccumulo,
       capacitaAccumuloKwh: v.capacitaAccumuloKwh ?? 0,
-      categoriaProduttore: v.categoriaProduttore,
-      codiceCategoriaProduttore: o?.codiceCategoriaProduttore ?? '',
-      specificaTipologiaImpianto: o?.specificaTipologiaImpianto ?? '',
-      specificaCategoriaProduttore: o?.specificaCategoriaProduttore ?? '',
-      tipologiaSitoInstallazione: o?.tipologiaSitoInstallazione ?? '',
-      specificaSitoInstallazione: o?.specificaSitoInstallazione ?? '',
-      regione: this.toCodice(v.regione, o?.regione),
-      provincia: this.toCodice(v.provincia, o?.provincia),
-      comune: this.toCodice(v.comune, o?.comune),
-      indirizzo: this.toCodice(v.indirizzo, o?.indirizzo),
-      civico: this.toCodice(v.civico, o?.civico),
-      cap: this.toCodice(v.cap, o?.cap),
+      categoriaProduttore: 'S',
+      codiceCategoriaProduttore: v.categoriaProduttore,
+      specificaTipologiaImpianto: String(o?.specificaTipologiaImpianto ?? ''),
+      specificaCategoriaProduttore: String(o?.specificaCategoriaProduttore ?? ''),
+      tipologiaSitoInstallazione: String(o?.tipologiaSitoInstallazione ?? ''),
+      specificaSitoInstallazione: String(o?.specificaSitoInstallazione ?? ''),
+      regione: regioneObj,
+      provincia: v.provincia ?? '',
+      comune: comuneObj,
+      indirizzo: v.indirizzo ?? '',
+      civico: v.civico ?? '',
+      cap: v.cap ?? '',
       statoImpianto: v.statoImpianto,
       attivo: o?.attivo ?? 'S',
     };
@@ -190,12 +206,10 @@ export class ImpiantiFormComponent implements OnInit {
     this.router.navigate(['/impianto']);
   }
 
-  /** Chiede conferma prima di svuotare il form. */
   chiediReset(): void {
     this.dlgReset.open();
   }
 
-  /** Eseguito al "Conferma" del dialog: svuota davvero il form. */
   onConfermaReset(): void {
     this.impiantoForm.reset({
       flagEsercizio: 'SI',

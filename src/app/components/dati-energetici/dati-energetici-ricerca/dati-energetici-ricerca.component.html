@@ -124,7 +124,7 @@
       </div>
       <div class="campo">
         <strong>Attivo:</strong>
-        <span>{{ dato.attivo === "S" ? "Sì" : "No" }}</span>
+        <span>{{ dato.attivo === "N" ? "Sì" : "No" }}</span>
       </div>
     </mat-card-content>
   </mat-card>
@@ -163,7 +163,7 @@
 
       <ng-container matColumnDef="attivo">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Attivo</th>
-        <td mat-cell *matCellDef="let d">{{ d.attivo === "S" ? "Sì" : "No" }}</td>
+        <td mat-cell *matCellDef="let d">{{ d.attivo === "N" ? "Sì" : "No" }}</td>
       </ng-container>
 
       <ng-container matColumnDef="azioni">

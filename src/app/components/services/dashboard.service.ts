@@ -14,8 +14,11 @@ import {
 export class DashboardService {
   constructor(private api: ApiService) {}
 
-  summary(): Observable<DashboardSummary> {
-    return this.api.get<DashboardSummary>('api/dashboard/summary');
+  summary(anno?: number | string, anno2?: number | string): Observable<DashboardSummary> {
+    const params: Record<string, string | number | boolean> = {};
+    if (anno !== undefined && anno !== null && anno !== '') params['anno'] = anno;
+    if (anno2 !== undefined && anno2 !== null && anno2 !== '') params['anno2'] = anno2;
+    return this.api.get<DashboardSummary>('api/dashboard/summary', params);
   }
 
   impiantiPerStato(): Observable<ImpiantiPerStato[]> {

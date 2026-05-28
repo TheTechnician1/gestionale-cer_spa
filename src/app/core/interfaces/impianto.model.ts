@@ -1,7 +1,7 @@
 export interface CodiceDescrizioneBase {
   codice: string;
   descrizione: string;
-  specifica?: string;
+  specifica?: string | null;
 }
 
 export type StatoImpianto =
@@ -9,6 +9,7 @@ export type StatoImpianto =
   | 'IN_MANUTENZIONE'
   | 'SOSPESO'
   | 'DISMESSO';
+
 export const STATI_IMPIANTO: StatoImpianto[] = [
   'ATTIVO',
   'IN_MANUTENZIONE',
@@ -55,23 +56,40 @@ export interface ImpiantoDettaglio {
   capacitaAccumuloKwh: number;
   categoriaProduttore: string;
   codiceCategoriaProduttore: string;
-  specificaTipologiaImpianto: string;
-  specificaCategoriaProduttore: string;
+  specificaTipologiaImpianto: string | null;
+  specificaCategoriaProduttore: string | null;
   tipologiaSitoInstallazione: string;
-  specificaSitoInstallazione: string;
-  // Possono arrivare null dal backend e vanno rimandati null se non abbiamo
-  // il codice reale (altrimenti il backend risponde 500).
-  regione: CodiceDescrizioneBase | null;
-  provincia: CodiceDescrizioneBase | null;
-  comune: CodiceDescrizioneBase | null;
-  indirizzo: CodiceDescrizioneBase | null;
-  civico: CodiceDescrizioneBase | null;
-  cap: CodiceDescrizioneBase | null;
+  specificaSitoInstallazione: string | null;
+  regione: string;
+  provincia: string;
+  comune: string;
+  indirizzo: string;
+  civico: string;
+  cap: string;
   statoImpianto: string;
   attivo: string;
 }
 
-export interface ImpiantoRequest extends Omit<
-  ImpiantoDettaglio,
-  'idImpianto'
-> {}
+export interface ImpiantoRequest {
+  idConfigurazione: number;
+  flagEsercizio: string;
+  dataEntrataEsercizio: string;
+  tipologiaImpianto: string;
+  potenzaNominaleKw: number;
+  presenzaAccumulo: string;
+  capacitaAccumuloKwh: number;
+  categoriaProduttore: string;
+  codiceCategoriaProduttore: string;
+  specificaTipologiaImpianto: string | null;
+  specificaCategoriaProduttore: string | null;
+  tipologiaSitoInstallazione: string;
+  specificaSitoInstallazione: string | null;
+  regione: CodiceDescrizioneBase | null;
+  provincia: string;
+  comune: CodiceDescrizioneBase | null;
+  indirizzo: string;
+  civico: string;
+  cap: string;
+  statoImpianto: string;
+  attivo: string;
+}
