@@ -35,6 +35,7 @@ export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
     'azioni'
   ];
 
+  disableIfNotAdmin:boolean=true;
 
   impiantiList$ : Observable<ImpiantoView[]> = of([]);
   tipologieImpianto$? : Observable<CodiceDescrizioneBase[]>;
@@ -74,8 +75,10 @@ export class ImpiantiRicercaComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     //ABILITAZIONE CAMPO ATTIVO SOLO PER ADMIN
     console.log("Role:" + this.utenteService.getRole());
-    
-    this.utenteService.getRole()=== "ADMIN" ? this.formRicercaImpianti.get('attivo')?.enable() : this.formRicercaImpianti.get('attivo')?.disable();
+    if(this.utenteService.getRole()=== "ADMIN"){
+      this.formRicercaImpianti.get('attivo')?.enable();
+      this.disableIfNotAdmin = false;
+    }
 
     //FORM OPZIONI CER
     this.cer$ = this.cerService.getAllCer();
