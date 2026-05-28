@@ -170,6 +170,26 @@
 
       </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Stato Impianto</mat-label>
+
+        <mat-select formControlName="statoImpianto">
+
+          <mat-option [value]="null">-- Seleziona stato impianto --</mat-option>
+
+          <mat-option *ngFor="let c of statiImpianto$ | async"
+            [value]="c.descrizione">
+
+            {{c.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+        <mat-error *ngIf="formImpianto.get('statoImpianto')?.hasError('required') ">
+          Inserire stato impianto
+        </mat-error>
+      </mat-form-field>
+
     </div>
 
     <!-- =======================
@@ -213,6 +233,7 @@
         </mat-error>
 
       </mat-form-field>
+
 
       <!-- <mat-form-field *ngIf="specificaCategoriaProduttore" appearance="outline">
         <mat-label>Specifica categoria produttore</mat-label>
@@ -311,56 +332,6 @@
           || formImpianto.get('cap')?.hasError('maxlength')">
           Inserire un CAP valido
         </mat-error>
-      </mat-form-field>
-
-    </div>
-
-    <!-- =======================
-         SEZIONE: STATO
-    ======================== -->
-    <div class="section-title">Stato impianto</div>
-
-    <div class="filters-grid">
-
-      <mat-form-field appearance="outline">
-        <mat-label>Stato Impianto</mat-label>
-
-        <mat-select formControlName="statoImpianto">
-
-          <mat-option [value]="null">-- Seleziona stato impianto --</mat-option>
-
-          <mat-option *ngFor="let c of statiImpianto$ | async"
-            [value]="c.descrizione">
-
-            {{c.descrizione}}
-
-          </mat-option>
-
-        </mat-select>
-        <mat-error *ngIf="formImpianto.get('statoImpianto')?.hasError('required') ">
-          Inserire una provincia
-        </mat-error>
-
-      </mat-form-field>
-
-      <!-- <mat-form-field appearance="outline">
-        <mat-label>Attivo</mat-label>
-        <input matInput formControlName="attivo">
-      </mat-form-field> -->
-
-
-      <mat-form-field appearance="outline">
-        <mat-label>Attivo</mat-label>
-
-        <mat-select formControlName="attivo">
-          <mat-option [value]="null">-- Seleziona --</mat-option>
-          <mat-option [value]="'S'">S</mat-option>
-          <mat-option [value]="'N'">N</mat-option>
-        </mat-select>
-        <mat-error *ngIf="formImpianto.get('statoImpianto')?.hasError('required') ">
-          Selezionare lo stato di attività dell'impianto
-        </mat-error>
-
       </mat-form-field>
 
     </div>

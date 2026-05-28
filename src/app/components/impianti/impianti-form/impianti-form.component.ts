@@ -70,7 +70,7 @@ export class ImpiantiFormComponent {
       civico : ['', [Validators.required,Validators.min(1)]],
       cap : ['', [Validators.required,Validators.minLength(5),Validators.maxLength(5)]],
       statoImpianto : ['', Validators.required],
-      attivo : [''],
+      attivo : ['N'],
     });
   }
 
