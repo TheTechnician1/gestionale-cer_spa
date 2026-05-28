@@ -5,12 +5,11 @@ import { StorageService } from "../../services/storage.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private readonly tokenKey = "auth_token";
-
   constructor(private storage: StorageService) {}
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const token = this.storage.getLocal<string>(this.tokenKey) || this.storage.getSession<string>(this.tokenKey);
+    const utente = this.storage.getLocal<any>("utente");
+    const token = utente?.token ?? utente?.sessionId ?? null;
 
     if (!token) {
       return next.handle(req);

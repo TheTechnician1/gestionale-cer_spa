@@ -68,24 +68,32 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" *ngIf="form.get('tipologiaProduttore')?.value !== null">
-      <mat-label>Categoria Produttore</mat-label>
-      <input matInput formControlName="tipologiaProduttore">
-    </mat-form-field>
+  <mat-label>Categoria Produttore</mat-label>
+  <mat-select formControlName="tipologiaProduttore">
+    <mat-option value="N">Sì</mat-option>
+    <mat-option value="S">No</mat-option>
+  </mat-select>
+</mat-form-field>
+   <mat-form-field appearance="fill" *ngIf="form.get('regione')?.value !== null">
+  <mat-label>Regione</mat-label>
+  <mat-select formControlName="regione">
+    <mat-option *ngFor="let r of regioni" [value]="r.codice">{{ r.descrizione }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
-    <mat-form-field appearance="fill" *ngIf="form.get('regione')?.value !== null">
-      <mat-label>Regione</mat-label>
-      <input matInput formControlName="regione">
-    </mat-form-field>
+<mat-form-field appearance="fill" *ngIf="form.get('provincia')?.value !== null">
+  <mat-label>Provincia</mat-label>
+  <mat-select formControlName="provincia">
+    <mat-option *ngFor="let p of province" [value]="p.codice">{{ p.descrizione }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
-    <mat-form-field appearance="fill" *ngIf="form.get('provincia')?.value !== null">
-      <mat-label>Provincia</mat-label>
-      <input matInput formControlName="provincia">
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" *ngIf="form.get('comune')?.value !== null">
-      <mat-label>Comune</mat-label>
-      <input matInput formControlName="comune">
-    </mat-form-field>
+<mat-form-field appearance="fill" *ngIf="form.get('comune')?.value !== null">
+  <mat-label>Comune</mat-label>
+  <mat-select formControlName="comune">
+    <mat-option *ngFor="let c of comuni" [value]="c.codice">{{ c.descrizione }}</mat-option>
+  </mat-select>
+</mat-form-field>
 
     <mat-form-field appearance="fill" *ngIf="form.get('indirizzo')?.value !== null">
       <mat-label>Indirizzo</mat-label>

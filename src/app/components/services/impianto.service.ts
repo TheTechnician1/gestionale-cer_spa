@@ -27,20 +27,17 @@ export class ImpiantoService {
 
 editImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any> {
   const endpoint = `api/impianti/${payload.idImpianto}`;
-  const email = payload.emailUtenteLoggato ?? '';
-  return this.api.put<any>(endpoint, payload, { ...options, params: { emailUtenteLoggato: email } });
+  return this.api.putText(endpoint, payload, options);
 }
 
 deleteImpianto(idImpianto: number, emailUtenteLoggato: string): Observable<string> {
   const endpoint = `api/impianti/${idImpianto}`;
-
-  return this.api.delete<string>(endpoint, { emailUtenteLoggato });
+  return this.api.deleteText(endpoint, { emailUtenteLoggato });
 }
 
 createImpianto(payload: Impianto, options: ApiRequestOptions = {}): Observable<any> {
   const endpoint = "api/impianti";
-  const email = payload.emailUtenteLoggato;
-  return this.api.postText(endpoint, payload, { ...options, params: { emailUtenteLoggato: email ?? '' } });
+  return this.api.postText(endpoint, payload, options);
 }
 }
 

@@ -28,8 +28,8 @@
     <mat-form-field appearance="fill">
       <mat-label>{{ 'plant.exercise-flag' | translate }}</mat-label>
       <mat-select formControlName="flgEsercizio">
-        <mat-option value="S">{{ 'plant.disable' | translate }}</mat-option>
-        <mat-option value="N">{{ 'plant.enable' | translate }}</mat-option>
+        <mat-option value="SI">{{ 'plant.disable' | translate }}</mat-option>
+        <mat-option value="NO">{{ 'plant.enable' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -59,8 +59,8 @@
     <mat-form-field appearance="fill">
       <mat-label>{{ 'plant.storage-flag' | translate }}</mat-label>
       <mat-select formControlName="flgAccumulo">
-        <mat-option value="S">SI</mat-option>
-        <mat-option value="N">NO</mat-option>
+        <mat-option value="SI">SI</mat-option>
+        <mat-option value="NO">NO</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -69,10 +69,13 @@
       <input matInput type="number" formControlName="capAccumulo">
     </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>{{ 'plant.producer-category' | translate }}</mat-label>
-      <input matInput type="text" formControlName="tipologiaProduttore">
-    </mat-form-field>
+   <mat-form-field appearance="fill">
+  <mat-label>{{ 'plant.producer-category' | translate }}</mat-label>
+  <mat-select formControlName="tipologiaProduttore">
+    <mat-option value="N">Sì</mat-option>
+    <mat-option value="S">No</mat-option>
+  </mat-select>
+</mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>{{ 'plant.region' | translate }}</mat-label>

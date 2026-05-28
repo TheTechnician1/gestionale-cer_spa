@@ -28,30 +28,37 @@ export class ApiService {
     return this.request<T>("POST", path, body, "json", options);
   }
 
-  post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<T>("POST", path, body, "json", options);
-  }
+ post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
+  const stored = this.api.getLocal<any>("utente");
+  body.emailUtenteLoggato = stored?.utente?.mail ?? stored?.mail ?? '';
+  return this.request<T>("POST", path, body, "json", options);
+}
 
   postText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("POST", path, body, "text", options);
-  }
+  const stored = this.api.getLocal<any>("utente");
+  body.emailUtenteLoggato = stored?.utente?.mail ?? stored?.mail ?? '';
+  return this.request<string>("POST", path, body, "text", options);
+}
 
-  put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<T>("PUT", path, body, "json", options);
-  }
+ put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
+  const stored = this.api.getLocal<any>("utente");
+  body.emailUtenteLoggato = stored?.utente?.mail ?? stored?.mail ?? '';
+  return this.request<T>("PUT", path, body, "json", options);
+}
 
   putDelete<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
     body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
     return this.request<T>("PUT", path, body, "json", options);
   }
+  deleteText(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<string> {
+  return this.request<string>("DELETE", path, undefined, "text", { ...options, params });
+}
 
-  putText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("PUT", path, body, "text", options);
-  }
+ putText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
+  const stored = this.api.getLocal<any>("utente");
+  body.emailUtenteLoggato = stored?.utente?.mail ?? stored?.mail ?? '';
+  return this.request<string>("PUT", path, body, "text", options);
+}
 
   delete<T>(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<T> {
     return this.request<T>("DELETE", path, undefined, "json", { ...options, params });

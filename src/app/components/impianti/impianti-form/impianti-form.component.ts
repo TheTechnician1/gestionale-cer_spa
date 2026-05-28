@@ -162,29 +162,40 @@ this.territorioService.getComuni().subscribe({
     });
   }
 
-  submit(): void {
-    if (this.form.invalid) {
-      this.toastService.error('Campi mancanti o errati');
-      return;
-    }
-
-    const payload = this.form.getRawValue();
-    payload.emailUtenteLoggato = (this.utenteService.currentUser as any)?.utente?.mail ?? this.utenteService.currentUser?.mail ?? '';
-
-    this.impiantoService.createImpianto(payload)
-      .pipe(
-        tap(() => {
-          this.toastService.success('Impianto creato con successo');
-          this.router.navigate(['../'], { relativeTo: this.route });
-        }),
-        catchError(() => {
-          this.toastService.error('Errore durante la creazione dell\'impianto');
-          return of(null);
-        })
-      )
-      .subscribe();
+submit(): void {
+  if (this.form.invalid) {
+    this.toastService.error('Campi mancanti o errati');
+    return;
   }
 
+  const currentUser = this.utenteService.currentUser;
+  const email = currentUser?.utente?.mail ?? currentUser?.mail ?? '';
+
+  const { emailUtenteLoggato, ...formValues } = this.form.getRawValue();
+
+  const payload = {
+    ...formValues,
+    emailUtenteLoggato: email
+  };
+
+  console.log('payload:', payload);
+
+ this.impiantoService.createImpianto(payload)
+  .pipe(
+    tap(() => {
+      this.toastService.success('Impianto creato con successo');
+      this.router.navigate(['../'], { 
+        relativeTo: this.route,
+        queryParams: { refresh: Date.now() }
+      });
+    }),
+    catchError(() => {
+      this.toastService.error('Errore durante la creazione dell\'impianto');
+      return of(null);
+    })
+  )
+  .subscribe();
+}
   annulla(): void {
     this.router.navigate(['../'], { relativeTo: this.route });
   }

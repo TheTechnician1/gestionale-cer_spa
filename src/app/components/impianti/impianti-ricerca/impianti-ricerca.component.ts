@@ -59,20 +59,26 @@ export class ImpiantiRicercaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAdmin = this.utenteService.getRole()?.toUpperCase() === Ruolo.ADMIN.toUpperCase();
-    this.isGest = this.utenteService.getRole()?.toUpperCase() === Ruolo.GEST.toUpperCase();
+  this.isAdmin = this.utenteService.getRole()?.toUpperCase() === Ruolo.ADMIN.toUpperCase();
+  this.isGest = this.utenteService.getRole()?.toUpperCase() === Ruolo.GEST.toUpperCase();
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.figlioAttivo = this.route.children.length > 0;
-      if (!this.figlioAttivo) {
-        this.cerca();
-      }
-    });
+  this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe(() => {
+    this.figlioAttivo = this.route.children.length > 0;
+    if (!this.figlioAttivo) {
+      this.cerca();
+    }
+  });
 
-    this.cerca();
-  }
+  this.route.queryParams.subscribe(params => {
+    if (params['refresh']) {
+      this.cerca();
+    }
+  });
+
+  this.cerca();
+}
 
   cerca(): void {
     let cleanedPayload = Object.fromEntries(

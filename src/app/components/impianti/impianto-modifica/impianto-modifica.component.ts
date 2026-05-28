@@ -13,6 +13,8 @@ import { CerService } from '../../services/cer.service';
 import { ConfigurazioneService } from '../../services/configurazione.service';
 import { UtenteService } from 'src/app/core/services/utente.service';
 import { DatiEnergeticiService } from '../../services/dati-energetici.service';
+import { TerritorioService } from '../../services/territorio.service';
+import { CodiceDescrizioneBase } from 'src/app/core/interfaces/territorio.model';
 
 @Component({
   selector: 'app-impianto-modifica',
@@ -27,6 +29,9 @@ export class ImpiantiModificaComponent implements OnInit {
   datiEnergetici: any[] = [];
   isDettaglio: boolean = false;
   impianto: Impianto | null = null;
+  regioni: CodiceDescrizioneBase[] = [];
+  province: CodiceDescrizioneBase[] = [];
+  comuni: CodiceDescrizioneBase[] = [];
 
   form: FormGroup = new FormGroup({
     idImpianto: new FormControl(null),
@@ -63,6 +68,7 @@ export class ImpiantiModificaComponent implements OnInit {
     private utenteService: UtenteService,
     private dialog: MatDialog,
     private router: Router,
+     private territorioService: TerritorioService,
     private route: ActivatedRoute
   ) {
     this.form.get('flgAccumulo')?.valueChanges.subscribe(val => {
@@ -78,54 +84,66 @@ export class ImpiantiModificaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cerService.ricercaCer({}).subscribe({
-      next: (data) => this.cerList = data.map((c: any) => ({ id: c.idCer, descrizione: c.ragSociale })),
-      error: (err) => console.error('Errore caricamento CER', err)
-    });
+  this.cerService.ricercaCer({}).subscribe({
+    next: (data) => this.cerList = data.map((c: any) => ({ id: c.idCer, descrizione: c.ragSociale })),
+    error: (err) => console.error('Errore caricamento CER', err)
+  });
 
-    const path = this.route.snapshot.routeConfig?.path ?? '';
-    this.isDettaglio = path.startsWith('dettaglio');
+  this.territorioService.getRegioni().subscribe({
+    next: data => this.regioni = data,
+    error: err => console.error('Errore regioni:', err)
+  });
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.impiantoService.getImpianto(+id).subscribe(impianto => {
-        this.impianto = impianto;
-        this.form.patchValue(impianto);
+  this.territorioService.getProvince().subscribe({
+    next: data => this.province = data,
+    error: err => console.error('Errore province:', err)
+  });
 
-        this.form.patchValue({
-          tipologia: ((impianto as any).codiceTipologia ?? impianto.tipologia)?.toLowerCase(),
-          tipologiaProduttore: (impianto as any).codCategoriaProduttore ?? impianto.tipologiaProduttore,
-          codiceInstallazione: (impianto as any).codInstallazione ?? null,
-          flgAccumulo: (impianto as any).flgAccumulo === 'S' ? 'SI' : 'NO',
-          flgEsercizio: (impianto as any).flgEsercizio === 'S' ? 'SI' : 'NO',
-        });
+  this.territorioService.getComuni().subscribe({
+    next: data => this.comuni = data,
+    error: err => console.error('Errore comuni:', err)
+  });
 
-        if (impianto.idCer) {
-          this.caricaConfigurazioni(impianto.idCer);
-        }
+  const path = this.route.snapshot.routeConfig?.path ?? '';
+  this.isDettaglio = path.startsWith('dettaglio');
 
-        if (this.isDettaglio && impianto.idConfigurazione) {
-          this.datiEnergeticiService.getDati({}).subscribe({
-            next: (data) => {
-              this.datiEnergetici = data.filter(d => d.idConfigurazione === impianto.idConfigurazione);
-            },
-            error: (err) => console.error('Errore caricamento dati energetici', err)
-          });
-        }
+  const id = this.route.snapshot.paramMap.get('id');
+  if (id) {
+    this.impiantoService.getImpianto(+id).subscribe(impianto => {
+      this.impianto = impianto;
+      this.form.patchValue(impianto);
 
-        console.log('isDettaglio:', this.isDettaglio);
-console.log('datiEnergetici:', this.datiEnergetici);
-
-        this.form.get('idImpianto')?.disable();
-        this.form.get('idCer')?.disable();
-        this.form.get('idConfigurazione')?.disable();
-
-        if (this.isDettaglio) {
-          this.form.disable();
-        }
+      this.form.patchValue({
+        tipologia: ((impianto as any).codiceTipologia ?? impianto.tipologia)?.toLowerCase(),
+        tipologiaProduttore: (impianto as any).codCategoriaProduttore ?? impianto.tipologiaProduttore,
+        codiceInstallazione: (impianto as any).codInstallazione ?? null,
+        flgAccumulo: (impianto as any).flgAccumulo === 'S' ? 'SI' : 'NO',
+        flgEsercizio: (impianto as any).flgEsercizio === 'S' ? 'SI' : 'NO',
       });
-    }
+
+      if (impianto.idCer) {
+        this.caricaConfigurazioni(impianto.idCer);
+      }
+
+      if (this.isDettaglio && impianto.idConfigurazione) {
+        this.datiEnergeticiService.getDati({}).subscribe({
+          next: (data) => {
+            this.datiEnergetici = data.filter(d => d.idConfigurazione === impianto.idConfigurazione);
+          },
+          error: (err) => console.error('Errore caricamento dati energetici', err)
+        });
+      }
+
+      this.form.get('idImpianto')?.disable();
+      this.form.get('idCer')?.disable();
+      this.form.get('idConfigurazione')?.disable();
+
+      if (this.isDettaglio) {
+        this.form.disable();
+      }
+    });
   }
+}
 
   caricaConfigurazioni(idCer: number): void {
   this.configurazioneService.ricercaConfigurazione({ idCer }).subscribe({
