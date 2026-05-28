@@ -1,127 +1,146 @@
-<div class="detail-container" *ngIf="impianto$ | async as i">
+<mat-card class="detail-card" *ngIf="impianto$ | async as i; else noData">
 
   <div class="header">
 
-    <h1>Dettaglio impianto</h1>
+    <div>
+      <h1>Dettaglio impianto</h1>
 
-    <p>
+      <p class="subtitle">
         Data entrata esercizio: {{ i.dataEntrataEsercizio }}
-    </p>
+      </p>
 
-    <p>
+      <p class="subtitle">
         Esercizio: {{ i.flagEsercizio }}
-    </p>
+      </p>
+    </div>
+
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="page">
+
+    <div class="grid">
+
+      <!-- Informazioni generali -->
+      <div class="card-box">
+
+        <h3>Informazioni generali</h3>
+
+        <div class="info-row">
+          <span>Tipologia impianto</span>
+          <strong>{{ i.tipologiaImpianto }}</strong>
+        </div>
+
+        <div class="info-row" *ngIf="i.specificaTipologiaImpianto">
+          <span>Specifica tipologia</span>
+          <strong>{{ i.specificaTipologiaImpianto }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Categoria produttore</span>
+          <strong>{{ i.codiceCategoriaProduttore }}</strong>
+        </div>
+
+        <div class="info-row" *ngIf="i.specificaCategoriaProduttore">
+          <span>Specifica categoria</span>
+          <strong>{{ i.specificaCategoriaProduttore }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Tipologia sito installazione</span>
+          <strong>{{ i.tipologiaSitoInst }}</strong>
+        </div>
+
+        <div class="info-row" *ngIf="i.specificaSitoInstallazione">
+          <span>Specifica sito</span>
+          <strong>{{ i.specificaSitoInstallazione }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Stato impianto</span>
+          <strong>{{ i.statoImpianto }}</strong>
+        </div>
+
+      </div>
+
+      <!-- Dati tecnici -->
+      <div class="card-box">
+
+        <h3>Dati tecnici</h3>
+
+        <div class="info-row">
+          <span>Potenza nominale (kW)</span>
+          <strong>{{ i.potenzaNominaleKw }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Presenza accumulo</span>
+          <strong>{{ i.presenzaAccumulo }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Capacità accumulo (kWh)</span>
+          <strong>{{ i.capacitaAccumuloKwh }}</strong>
+        </div>
+
+      </div>
+
+      <!-- Dati posizione -->
+      <div class="card-box">
+
+        <h3>Dati posizione</h3>
+
+        <div class="info-row">
+          <span>Regione</span>
+          <strong>{{ i.regione }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Provincia</span>
+          <strong>{{ i.provincia }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Comune</span>
+          <strong>{{ i.comune }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Indirizzo</span>
+          <strong>{{ i.indirizzo }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>Civico</span>
+          <strong>{{ i.civico }}</strong>
+        </div>
+
+        <div class="info-row">
+          <span>CAP</span>
+          <strong>{{ i.cap }}</strong>
+        </div>
+
+      </div>
 
     </div>
 
-    <div class="card">
+  </div>
 
-        <h2>Informazioni Generali</h2>
+  <mat-divider></mat-divider>
 
-        <div class="info-grid">
-
-            <div>
-              <strong>Tipologia impianto:</strong>
-              {{ i.tipologiaImpianto }}
-            </div>
-
-            <div *ngIf="i.specificaTipologiaImpianto">
-                <strong>Specifica tipologia impianto:</strong>
-                {{ i.specificaTipologiaImpianto }}
-            </div>
-
-            <div>
-                <strong>Categoria produttore:</strong>
-                {{ i.codiceCategoriaProduttore }}
-            </div>
-
-            <div *ngIf="i.specificaCategoriaProduttore">
-                <strong>Specifica categoria produttore:</strong>
-                {{ i.specificaCategoriaProduttore }}
-            </div>
-
-            <div>
-                <strong>Tipologia sito installazione:</strong>
-                {{ i.tipologiaSitoInst }}
-            </div>
-
-            <div *ngIf="i.specificaSitoInstallazione">
-                <strong>Specifica sito installazione:</strong>
-                {{ i.specificaSitoInstallazione }}
-            </div>
-
-            <div>
-                <strong>Stato impianto:</strong>
-                {{ i.statoImpianto }}
-            </div>
-        </div>
-    </div>
-     <!-- Dati tecnici -->
-    <div class="card">
-
-        <h2>Dati tecnici</h2>
-
-        <div class="info-grid">
-
-            <div>
-              <strong>Potenza nominale (kW):</strong>
-              {{ i.potenzaNominaleKw }}
-            </div>
-
-            <div>
-              <strong>presenzaAccumulo:</strong>
-              {{ i.presenzaAccumulo }}
-            </div>
-
-            <div>
-              <strong>Capacità accumulo (kWh):</strong>
-              {{ i.capacitaAccumuloKwh }}
-            </div>
-        </div>
-    </div>
-
-    <!-- Dati Posizione -->
-    <div class="card">
-
-        <h2>Dati posizione</h2>
-
-        <div class="info-grid">
-
-            <div>
-              <strong>Regione:</strong>
-              {{ i.regione }}
-            </div>
-
-            <div>
-              <strong>Provincia:</strong>
-              {{ i.provincia }}
-            </div>
-
-            <div>
-              <strong>Comune:</strong>
-              {{ i.comune }}
-            </div>
-
-            <div>
-              <strong>Indirizzo:</strong>
-              {{ i.indirizzo }}
-            </div>
-
-            <div>
-              <strong>Civico:</strong>
-              {{ i.civico }}
-            </div>
-
-            <div>
-              <strong>Cap:</strong>
-              {{ i.cap }}
-            </div>
-        </div>
-    </div>    
-
-
-
-    <button (click)="tornaIndietro()">
-        Torna indietro
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="tornaIndietro()">
+      Torna indietro
     </button>
-</div>
+  </div>
+
+</mat-card>
+
+<ng-template #noData>
+  <mat-card>
+    <mat-card-content>
+      Nessun dato disponibile
+    </mat-card-content>
+  </mat-card>
+</ng-template>
