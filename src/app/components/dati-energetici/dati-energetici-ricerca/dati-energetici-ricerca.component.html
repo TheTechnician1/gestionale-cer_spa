@@ -41,13 +41,12 @@
     >
       <mat-form-field appearance="fill">
         <mat-label>ID CER</mat-label>
-        <input
-          [(ngModel)]="filtro.idCer"
-          matInput
-          type="number"
-          placeholder="Es. 43"
-          (keyup.enter)="caricaDati()"
-        />
+        <mat-select [(ngModel)]="filtro.idCer" (keyup.enter)="caricaDati()">
+          <mat-option value="">Tutti</mat-option>
+          <mat-option *ngFor="let cer of listaIdCer" [value]="cer">
+            {{ cer }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -60,26 +59,27 @@
           (keyup.enter)="caricaDati()"
         />
       </mat-form-field>
+
       <mat-form-field appearance="fill">
         <mat-label>Anno</mat-label>
-        <input
-          [(ngModel)]="filtro.anno"
-          matInput
-          type="text"
-          placeholder="Es. 2024"
-          (keyup.enter)="caricaDati()"
-        />
+        <mat-select [(ngModel)]="filtro.anno" (keyup.enter)="caricaDati()">
+          <mat-option value="">Tutti</mat-option>
+          <mat-option *ngFor="let anno of listaAnni" [value]="anno">
+            {{ anno }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
-        <mat-label>Stato Scheda (Es: ATTIVA / CANCELLATA)</mat-label>
-        <input
+        <mat-label>Stato Scheda</mat-label>
+        <mat-select
           [(ngModel)]="filtro.statoScheda"
-          matInput
-          type="text"
-          placeholder="ATTIVA"
           (keyup.enter)="caricaDati()"
-        />
+        >
+          <mat-option value="">Tutti</mat-option>
+          <mat-option value="ATTIVA">Attiva</mat-option>
+          <mat-option value="CANCELLATA">Cancellata</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 

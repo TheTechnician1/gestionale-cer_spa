@@ -40,8 +40,16 @@
 
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Forma Giuridica</mat-label>
-        <input formControlName="formaGiuridica" matInput type="text" />
-        <mat-error *ngIf="editForm.get('formaGiuridica')?.hasError('required')"
+        <mat-select formControlName="formaGiuridicaObj">
+          <mat-option
+            *ngFor="let forma of formeGiuridicheDisponibili"
+            [value]="forma"
+          >
+            {{ forma.descrizione }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="editForm.get('formaGiuridicaObj')?.hasError('required')"
           >Campo obbligatorio</mat-error
         >
       </mat-form-field>
@@ -66,23 +74,32 @@
 
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Comune</mat-label>
-        <input formControlName="comune" matInput type="text" />
+        <mat-select formControlName="comuneObj">
+          <mat-option [value]="null">-- Nessuna selezione --</mat-option>
+          <mat-option *ngFor="let com of comuniDisponibili" [value]="com">
+            {{ com.descrizione }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Provincia</mat-label>
-        <input
-          formControlName="provincia"
-          matInput
-          type="text"
-          maxLength="2"
-          style="text-transform: uppercase"
-        />
+        <mat-select formControlName="provinciaObj">
+          <mat-option [value]="null">-- Nessuna selezione --</mat-option>
+          <mat-option *ngFor="let prov of provinceDisponibili" [value]="prov">
+            {{ prov.descrizione }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Regione</mat-label>
-        <input formControlName="regione" matInput type="text" />
+        <mat-select formControlName="regioneObj">
+          <mat-option [value]="null">-- Nessuna selezione --</mat-option>
+          <mat-option *ngFor="let reg of regioniDisponibili" [value]="reg">
+            {{ reg.descrizione }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" style="width: 100%">

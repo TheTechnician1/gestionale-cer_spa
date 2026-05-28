@@ -15,6 +15,33 @@ export class ModificaCerComponent implements OnInit {
   isSaving = false;
   originalRawData: any = null;
 
+  regioniDisponibili = [
+    { codice: '03', descrizione: 'Lombardia' },
+    { codice: '05', descrizione: 'Veneto' },
+    { codice: '15', descrizione: 'Campania' },
+    { codice: '12', descrizione: 'Lazio' },
+  ];
+
+  provinceDisponibili = [
+    { codice: 'MI', descrizione: 'Milano' },
+    { codice: 'PD', descrizione: 'Padova' },
+    { codice: 'AV', descrizione: 'Avellino' },
+    { codice: 'RM', descrizione: 'Roma' },
+  ];
+
+  comuniDisponibili = [
+    { codice: '030', descrizione: 'MILANO' },
+    { codice: '041', descrizione: 'PADOVA' },
+    { codice: '064', descrizione: 'AVELLINO' },
+    { codice: '058', descrizione: 'ROMA' },
+  ];
+
+  formeGiuridicheDisponibili = [
+    { codice: 'ASN', descrizione: 'ASN - Associazione non riconosciuta' },
+    { codice: 'SRL', descrizione: 'SRL - Società a responsabilità limitata' },
+    { codice: 'COOP', descrizione: 'COOP - Società Cooperativa' },
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -34,121 +61,167 @@ export class ModificaCerComponent implements OnInit {
     }
   }
 
+  onSubmit(): void {
+    if (this.editForm.invalid) return;
+    this.isSaving = true;
+
+    const fv = this.editForm.value;
+
+    const swaggerPayload = {
+      idCer: this.idCer,
+      ragSociale: fv.ragSociale,
+      codFiscale: fv.codFisc,
+      getpIva: fv.pIva || '',
+      flgCancellazione: this.originalRawData?.flgCancellazione || 'N',
+      email: fv.email || '',
+      pec: fv.pec || '',
+      sitoWeb: fv.sitoWeb || '',
+      referente: fv.referente || '',
+      telefono: fv.telefono || '',
+
+      regioneLegale: fv.regioneObj
+        ? {
+            codice: fv.regioneObj.codice,
+            descrizione: fv.regioneObj.descrizione,
+            specifica: null,
+          }
+        : null,
+      provinciaLegale: fv.provinciaObj
+        ? {
+            codice: fv.provinciaObj.codice,
+            descrizione: fv.provinciaObj.descrizione,
+            specifica: null,
+          }
+        : null,
+      comuneLegale: fv.comuneObj
+        ? {
+            codice: fv.comuneObj.codice,
+            descrizione: fv.comuneObj.descrizione,
+            specifica: null,
+          }
+        : null,
+      formaGiuridica: fv.formaGiuridicaObj
+        ? {
+            codice: fv.formaGiuridicaObj.codice,
+            descrizione: fv.formaGiuridicaObj.descrizione,
+            specifica: null,
+          }
+        : null,
+
+      emailUtenteLoggato:
+        this.originalRawData?.emailUtenteLoggato || 'admin@gestionale.it',
+      dataInserimento:
+        this.originalRawData?.dataInserimento ||
+        new Date().toISOString().split('T')[0],
+      dataModifica: new Date().toISOString().split('T')[0],
+      dataCancellazione: this.originalRawData?.dataCancellazione || null,
+    };
+
+    this.dashboardService.modificaCer(swaggerPayload).subscribe({
+      next: () => {
+        this.isSaving = false;
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        console.error('Save failed:', err);
+        this.isSaving = false;
+      },
+    });
+  }
+
   initForm(): void {
     this.editForm = this.fb.group({
-      ragSociale: ['', [Validators.required]],
-      formaGiuridica: ['', [Validators.required]],
-      codFisc: ['', [Validators.required]],
+      ragSociale: ['', Validators.required],
+      formaGiuridicaObj: [null],
+      codFisc: [''],
       pIva: [''],
-      comune: [''],
-      provincia: [''],
-      regione: [''],
+      comuneObj: [null],
+      provinciaObj: [null],
+      regioneObj: [null],
       referente: [''],
+      email: [''],
+      pec: [''],
+      sitoWeb: [''],
+      telefono: [''],
     });
   }
 
   loadCerDataAndPopulateForm(): void {
     this.isLoading = true;
     this.dashboardService.getCerById(this.idCer).subscribe({
-      next: (data) => {
-        if (data) {
+      next: (res) => {
+        if (res) {
+          const data = res.data || res.cer || res;
           this.originalRawData = data;
 
-          const formaGiuridicaDesc =
-            typeof data.formaGiuridica === 'object'
-              ? data.formaGiuridica?.descrizione
-              : data.formaGiuridica;
+          const matchedForma =
+            this.formeGiuridicheDisponibili.find(
+              (f) => f.codice === data.formaGiuridica?.codice,
+            ) || this.formeGiuridicheDisponibili[0];
 
-          const comuneObj = data.comuneLegale || data.comuneLegal;
-          const comuneDesc =
-            typeof comuneObj === 'object'
-              ? comuneObj?.descrizione
-              : comuneObj || data.comune;
+          const matchedRegione =
+            this.regioniDisponibili.find(
+              (r) =>
+                r.descrizione.toUpperCase() ===
+                data.regioneLegale?.descrizione?.toUpperCase(),
+            ) || null;
+          const matchedProvincia =
+            this.provinceDisponibili.find(
+              (p) =>
+                p.descrizione.toUpperCase() ===
+                data.provinciaLegale?.descrizione?.toUpperCase(),
+            ) || null;
 
-          const provinciaDesc =
-            typeof data.provinciaLegale === 'object'
-              ? data.provinciaLegale?.descrizione
-              : data.provinciaLegale || data.provincia;
-          const regioneDesc =
-            typeof data.regioneLegale === 'object'
-              ? data.regioneLegale?.descrizione
-              : data.regioneLegale || data.regione;
+          let matchedComune =
+            this.comuniDisponibili.find(
+              (c) =>
+                c.descrizione.toUpperCase() ===
+                data.comuneLegale?.descrizione?.toUpperCase(),
+            ) || null;
+          if (data.comuneLegale?.descrizione === 'LOMBARDIA') {
+            matchedComune =
+              this.comuniDisponibili.find((c) => c.codice === '030') || null;
+          }
 
           this.editForm.patchValue({
             ragSociale: data.ragioneSociale || data.ragSociale || '',
-            formaGiuridica: formaGiuridicaDesc || '',
+            formaGiuridicaObj: matchedForma,
             codFisc: data.codiceFiscale || data.codFisc || '',
             pIva: data.partitaIva || data.pIva || '',
-            comune: comuneDesc || '',
-            provincia: provinciaDesc || '',
-            regione: regioneDesc || '',
+            comuneObj: matchedComune,
+            provinciaObj: matchedProvincia,
+            regioneObj: matchedRegione,
             referente: data.referente || '',
+            email: data.email || '',
+            pec: data.pec || '',
+            sitoWeb: data.sitoWeb || '',
+            telefono: data.telefono || '',
           });
+
+          this.logInvalidFormControls();
         }
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading CER for edit:', err);
-        this.isLoading = false;
-      },
+      error: () => (this.isLoading = false),
     });
   }
 
-  onSubmit(): void {
-    if (this.editForm.invalid) return;
-    this.isSaving = true;
-
-    const formValues = this.editForm.value;
-
-    const updatedData = {
-      idCer: this.idCer,
-      ragSociale: formValues.ragSociale,
-      codFiscale: formValues.codFisc,
-      getpIva: formValues.pIva,
-      email: this.originalRawData?.email || '',
-      pec: this.originalRawData?.pec || '',
-      sitoWeb: this.originalRawData?.sitoWeb || null,
-      referente: formValues.referente,
-      telefono: this.originalRawData?.telefono || null,
-      flgCancellazione: this.originalRawData?.flgCancellazione || 'N',
-      emailUtenteLoggato: 'utente.test@comunita.it',
-      dataInserimento:
-        this.originalRawData?.dataInserimento ||
-        new Date().toISOString().split('T')[0],
-      dataModifica: new Date().toISOString().split('T')[0],
-
-      formaGiuridica: {
-        codice: this.originalRawData?.formaGiuridica?.codice || 'ASN',
-        descrizione: formValues.formaGiuridica,
-        specifica: this.originalRawData?.formaGiuridica?.specifica || null,
-      },
-      comuneLegale: {
-        codice: this.originalRawData?.comuneLegale?.codice || '',
-        descrizione: formValues.comune,
-        specifica: this.originalRawData?.comuneLegale?.specifica || null,
-      },
-      provinciaLegale: {
-        codice: this.originalRawData?.provinciaLegale?.codice || '',
-        descrizione: formValues.provincia,
-        specifica: this.originalRawData?.provinciaLegale?.specifica || null,
-      },
-      regioneLegale: {
-        codice: this.originalRawData?.regioneLegale?.codice || '',
-        descrizione: formValues.regione,
-        specifica: this.originalRawData?.regioneLegale?.specifica || null,
-      },
-    };
-
-    this.dashboardService.modificaCer(updatedData).subscribe({
-      next: () => {
-        this.isSaving = false;
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err) => {
-        console.error('Error updating CER on live server:', err);
-        this.isSaving = false;
-      },
-    });
+  logInvalidFormControls() {
+    const invalid = [];
+    const controls = this.editForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    if (invalid.length > 0) {
+      console.warn(
+        '⚠️ The following fields are invalid and blocking the button:',
+        invalid,
+      );
+    } else {
+      console.log('✅ Form is completely valid!');
+    }
   }
 
   cancel(): void {

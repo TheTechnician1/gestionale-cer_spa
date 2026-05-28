@@ -38,6 +38,9 @@ export class DatiEnergeticiRicercaComponent {
   listaFiltrata: any[] = [];
   //sortedData: any[] | undefined;
 
+  listaAnni: string[] = [];
+  listaIdCer: number[] = [];
+
   filtro = {
     anno: '',
     statoScheda: '',
@@ -79,6 +82,24 @@ export class DatiEnergeticiRicercaComponent {
 
     this.datiEnergeticiService.getDati(searchParams).subscribe({
       next: (risposta: DatiEnergetici[] | any[]) => {
+        this.listaAnni = [
+          ...new Set(
+            risposta.map((item) =>
+              (item.anno || item.annoRiferimento || '').toString(),
+            ),
+          ),
+        ]
+          .filter((anno) => anno !== '')
+          .sort((a, b) => b.localeCompare(a));
+
+        this.listaIdCer = [
+          ...new Set(
+            risposta.map((item) => Number(item.idCer || item.idDatiCer)),
+          ),
+        ]
+          .filter((id) => !isNaN(id) && id !== 0)
+          .sort((a, b) => a - b);
+
         let datiFiltrati = [...risposta];
 
         if (!this.filtro.statoScheda || this.filtro.statoScheda.trim() === '') {

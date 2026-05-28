@@ -27,6 +27,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   filtriCorrenti: any = {};
   impiantiGradientStyle: string = 'conic-gradient(#cbd5e1 0% 100%)';
   tipologiaGradientStyle: string = 'conic-gradient(#cbd5e1 0% 100%)';
+  opzioniRegioni: string[] = [];
+  opzioniProvinceFiltrate: string[] = [];
+  opzioniComuniFiltrati: string[] = [];
 
   constructor(
     private dashboardService: DashboardService,
@@ -99,7 +102,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ragSociale: item.ragioneSociale || item.ragSociale || '',
           codFisc: item.codiceFiscale || item.codFisc || '',
           pIva: item.partitaIva || item.pIva || '',
-
           comune:
             item.comuneLegale?.descrizione ||
             item.comuneLegal?.descrizione ||
@@ -111,6 +113,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
         this.dataSource.data = [...this.cer];
         this.listaFiltrata = [...this.cer];
+
+        const regSet = new Set<string>(
+          this.cer.map((c) => c.regione).filter(Boolean),
+        );
+        this.opzioniRegioni = Array.from(regSet).sort();
+
+        this.aggiornaElenchiGeografici();
       },
       error: (error) => {
         console.error('Error loading registries', error);
@@ -251,5 +260,72 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const ruolo =
       currentUserState?.utente?.ruolo || currentUserState?.ruolo || '';
     return ruolo.toUpperCase() === 'GUEST' || ruolo.toUpperCase() === 'OSPITE';
+  }
+
+  onRegioneChange(): void {
+    this.filtro.provincia = '';
+    this.filtro.comune = '';
+    this.aggiornaElenchiGeografici();
+  }
+
+  onProvinciaChange(): void {
+    this.filtro.comune = '';
+    this.aggiornaElenchiGeografici();
+  }
+
+  aggiornaElenchiGeografici(): void {
+    let recordsFiltratiPerRegione = this.cer;
+    if (this.filtro.regione) {
+      recordsFiltratiPerRegione = this.cer.filter(
+        (c) => c.regione === this.filtro.regione,
+      );
+    }
+    const provSet = new Set<string>(
+      recordsFiltratiPerRegione.map((c) => c.provincia).filter(Boolean),
+    );
+    this.opzioniProvinceFiltrate = Array.from(provSet).sort();
+
+    let recordsFiltratiPerProvincia = recordsFiltratiPerRegione;
+    if (this.filtro.provincia) {
+      recordsFiltratiPerProvincia = recordsFiltratiPerRegione.filter(
+        (c) => c.provincia === this.filtro.provincia,
+      );
+    }
+    const comSet = new Set<string>(
+      recordsFiltratiPerProvincia.map((c) => c.comune).filter(Boolean),
+    );
+    this.opzioniComuniFiltrati = Array.from(comSet).sort();
+  }
+
+  filtraGridLocale(): void {
+    this.isFiltering = true;
+
+    const rSocialeLower = this.filtro.ragSociale?.toLowerCase().trim();
+    const cFiscLower = this.filtro.codFisc?.toLowerCase().trim();
+    const pIvaLower = this.filtro.pIva?.toLowerCase().trim();
+
+    this.listaFiltrata = this.cer.filter((item) => {
+      if (
+        rSocialeLower &&
+        !item.ragSociale?.toLowerCase().includes(rSocialeLower)
+      )
+        return false;
+      if (cFiscLower && !item.codFisc?.toLowerCase().includes(cFiscLower))
+        return false;
+      if (pIvaLower && !item.pIva?.toLowerCase().includes(pIvaLower))
+        return false;
+      if (this.filtro.regione && item.regione !== this.filtro.regione)
+        return false;
+      if (this.filtro.provincia && item.provincia !== this.filtro.provincia)
+        return false;
+      if (this.filtro.comune && item.comune !== this.filtro.comune)
+        return false;
+      return true;
+    });
+
+    this.dataSource.data = this.listaFiltrata;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

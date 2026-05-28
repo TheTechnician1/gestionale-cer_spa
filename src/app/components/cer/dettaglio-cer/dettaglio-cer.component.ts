@@ -31,31 +31,42 @@ export class DettaglioCerComponent implements OnInit {
   loadCerDetails(): void {
     this.isLoading = true;
     this.dashboardService.getCerById(this.idCer).subscribe({
-      next: (data) => {
-        if (data) {
-          const comuneObj = data.comuneLegale || data.comuneLegal;
+      next: (res) => {
+        if (res) {
+          const data = res.data || res.cer || res;
+
+          const formaDesc =
+            data.formaGiuridica && typeof data.formaGiuridica === 'object'
+              ? data.formaGiuridica.descrizione
+              : data.formaGiuridica || '';
+
+          const comDesc =
+            data.comuneLegale && typeof data.comuneLegale === 'object'
+              ? data.comuneLegale.descrizione
+              : data.comune || '';
+
+          const provDesc =
+            data.provinciaLegale && typeof data.provinciaLegale === 'object'
+              ? data.provinciaLegale.descrizione
+              : data.provincia || '';
+
+          const regDesc =
+            data.regioneLegale && typeof data.regioneLegale === 'object'
+              ? data.regioneLegale.descrizione
+              : data.regione || '';
 
           this.cerData = {
             ...data,
             displayRagioneSociale: data.ragioneSociale || data.ragSociale || '',
             displayCodiceFiscale: data.codiceFiscale || data.codFisc || '',
             displayPartitaIva: data.partitaIva || data.pIva || '',
-            displayFormaGiuridica:
-              typeof data.formaGiuridica === 'object'
-                ? data.formaGiuridica?.descrizione
-                : data.formaGiuridica || '',
-            displayComune:
-              typeof comuneObj === 'object'
-                ? comuneObj?.descrizione
-                : comuneObj || data.comune || '',
-            displayProvincia:
-              typeof data.provinciaLegale === 'object'
-                ? data.provinciaLegale?.descrizione
-                : data.provinciaLegale || data.provincia || '',
-            displayRegione:
-              typeof data.regioneLegale === 'object'
-                ? data.regioneLegale?.descrizione
-                : data.regioneLegale || data.regione || '',
+            displayFormaGiuridica: formaDesc,
+            displayComune: comDesc,
+            displayProvincia: provDesc,
+            displayRegione: regDesc,
+            displayEmail: data.email || '',
+            displayPec: data.pec || '',
+            displayReferente: data.referente || '',
           };
         }
         this.isLoading = false;

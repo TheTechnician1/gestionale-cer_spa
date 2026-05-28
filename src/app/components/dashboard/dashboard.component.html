@@ -456,43 +456,53 @@
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Comune Legale</mat-label>
-        <input
-          [(ngModel)]="filtro.comune"
-          matInput
-          type="text"
-          aria-label="comune"
-        />
+        <mat-label>Regione Legale</mat-label>
+        <mat-select
+          [(ngModel)]="filtro.regione"
+          (selectionChange)="onRegioneChange()"
+        >
+          <mat-option [value]="''">-- Tutte --</mat-option>
+          <mat-option *ngFor="let reg of opzioniRegioni" [value]="reg">
+            {{ reg }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
         <mat-label>Provincia Legale</mat-label>
-        <input
+        <mat-select
           [(ngModel)]="filtro.provincia"
-          matInput
-          type="text"
-          aria-label="provincia"
-        />
+          (selectionChange)="onProvinciaChange()"
+          [disabled]="!filtro.regione"
+        >
+          <mat-option [value]="''">-- Tutte --</mat-option>
+          <mat-option
+            *ngFor="let prov of opzioniProvinceFiltrate"
+            [value]="prov"
+          >
+            {{ prov }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="form-field">
-        <mat-label>Regione Legale</mat-label>
-        <input
-          [(ngModel)]="filtro.regione"
-          matInput
-          type="text"
-          aria-label="regione"
-        />
+        <mat-label>Comune Legale</mat-label>
+        <mat-select [(ngModel)]="filtro.comune" [disabled]="!filtro.provincia">
+          <mat-option [value]="''">-- Tutti --</mat-option>
+          <mat-option *ngFor="let com of opzioniComuniFiltrati" [value]="com">
+            {{ com }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
+
       <div style="display: flex; gap: 10px; justify-content: end">
         <div class="button-filtro">
           <button
             mat-raised-button
             color="primary"
             type="button"
-            value="Cerca"
             aria-label="Cerca"
-            (click)="filtraCER()"
+            (click)="filtraGridLocale()"
           >
             <mat-icon>search</mat-icon> Ricerca
           </button>
