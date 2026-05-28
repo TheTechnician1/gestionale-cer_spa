@@ -40,6 +40,8 @@ export class ImpiantiFormComponent {
   specificaCategoriaProduttore : boolean = false;
   specificaSitoInstallazione : boolean = false;
 
+  minDate = new Date(1900, 0, 1);
+
   constructor(private fb : FormBuilder, 
     private impiantoService : ImpiantoService,
     private configurazioniService : ConfigurazioniService,
@@ -52,9 +54,9 @@ export class ImpiantiFormComponent {
       flagEsercizio : ['', Validators.required],
       dataEntrataEsercizio : ['', Validators.required],
       tipologiaImpianto : ['', Validators.required],
-      potenzaNominaleKw : ['', Validators.required],
+      potenzaNominaleKw : ['', [Validators.required,Validators.min(0)]],
       presenzaAccumulo : ['', Validators.required],
-      capacitaAccumuloKwh : ['', Validators.required],
+      capacitaAccumuloKwh : ['', [Validators.required,Validators.min(0)]],
       categoriaProduttore : ['', Validators.required],
       codiceCategoriaProduttore : ['', Validators.required],
       specificaTipologiaImpianto : [''],
@@ -64,9 +66,9 @@ export class ImpiantiFormComponent {
       regione : ['', Validators.required],
       provincia : [{value : '', disabled : true}, Validators.required],
       comune : [{value : '', disabled : true}, Validators.required],
-      indirizzo : ['', Validators.required],
-      civico : ['', Validators.required],
-      cap : ['', Validators.required],
+      indirizzo : ['', [Validators.required,Validators.pattern("^(?!\s)(?!.*\s$)[A-Za-zÀ-ÿ ]+$")]],
+      civico : ['', [Validators.required,Validators.min(1)]],
+      cap : ['', [Validators.required,Validators.minLength(5),Validators.maxLength(5)]],
       statoImpianto : ['', Validators.required],
       attivo : ['', Validators.required],
     });
@@ -122,7 +124,6 @@ export class ImpiantiFormComponent {
     //FORM OPZIONI REGIONE
     forkJoin({
       labelRegioni: this.codiciDescrizioneBaseService.getCodiceDescrizioneBase(ComboTables.REGIONI, ""),
-
     }).subscribe({
       next: ({ labelRegioni }) => {
         this.regioni$ = of(labelRegioni);

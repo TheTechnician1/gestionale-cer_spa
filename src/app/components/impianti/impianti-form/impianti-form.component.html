@@ -42,8 +42,10 @@
             {{c.ragioneSociale}}
 
           </mat-option>
-
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('idConfigurazione')?.hasError('required') ">
+          Selezionare una configurazione
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -55,6 +57,10 @@
           <mat-option [value]="'NO'">N</mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('flagEsercizio')?.hasError('required') ">
+          Selezionare stato esercizio
+        </mat-error>
+
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -63,11 +69,14 @@
         <input
           matInput
           [matDatepicker]="picker"
+          [min]="minDate"
           formControlName="dataEntrataEsercizio">
 
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-
+        <mat-error *ngIf="formImpianto.get('dataEntrataEsercizio')?.hasError('required') ">
+          Selezionare una data valida
+        </mat-error>
       </mat-form-field>
 
     </div>
@@ -94,17 +103,24 @@
           </mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('tipologiaImpianto')?.hasError('required') ">
+          Selezionare tipologia impianto
+        </mat-error>
 
       </mat-form-field>
 
-      <mat-form-field *ngIf="specificaTipologiaImpianto" appearance="outline">
+      <!-- <mat-form-field *ngIf="specificaTipologiaImpianto" appearance="outline">
         <mat-label>Specifica tipologia impianto</mat-label>
         <input matInput formControlName="specificaTipologiaImpianto">
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field appearance="outline">
         <mat-label>Potenza Nominale (kW)</mat-label>
-        <input matInput type="number" formControlName="potenzaNominaleKw">
+        <input matInput type="number" min="1" formControlName="potenzaNominaleKw">
+          <mat-error *ngIf="formImpianto.get('potenzaNominaleKw')?.hasError('required') ">
+            La potenza deve essere maggiore di 0
+          </mat-error>
+
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -115,12 +131,43 @@
           <mat-option [value]="'S'">S</mat-option>
           <mat-option [value]="'N'">N</mat-option>
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('presenzaAccumulo')?.hasError('required') ">
+          Selezionare presenza accumulo
+        </mat-error>
 
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Capacità Accumulo (kWh)</mat-label>
-        <input matInput type="number" formControlName="capacitaAccumuloKwh">
+        <input matInput type="number" min="0" formControlName="capacitaAccumuloKwh">
+        <mat-error *ngIf="formImpianto.get('capacitaAccumuloKwh')?.hasError('required') ">
+          Inserire capacità accumulo
+        </mat-error>
+        <mat-error *ngIf="formImpianto.get('capacitaAccumuloKwh')?.hasError('min') ">
+          La capacità accumulo deve essere maggiore di 0
+        </mat-error>
+
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipologia installazione</mat-label>
+
+        <mat-select formControlName="tipologiaSitoInstallazione">
+
+          <mat-option [value]="null">-- Seleziona tipologia impianto --</mat-option>
+
+          <mat-option *ngFor="let t of tipologieSitoInstallazione$ | async"
+            [value]="t.descrizione">
+
+            {{t.descrizione}}
+
+          </mat-option>
+
+        </mat-select>
+        <mat-error *ngIf="formImpianto.get('tipologiaSitoInstallazione')?.hasError('required') ">
+          Selezionare tipologia installazione
+        </mat-error>
+
       </mat-form-field>
 
     </div>
@@ -140,11 +187,14 @@
           <mat-option [value]="'S'">S</mat-option>
           <mat-option [value]="'N'">N</mat-option>
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('categoriaProduttore')?.hasError('required') ">
+          Selezionare categoria produttore
+        </mat-error>
 
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Codice Categoria Produttore</mat-label>
+        <mat-label>Tipologia Produttore</mat-label>
 
         <mat-select formControlName="codiceCategoriaProduttore">
 
@@ -158,13 +208,16 @@
           </mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('codiceCategoriaProduttore')?.hasError('required') ">
+          Selezionare categoria produttore
+        </mat-error>
 
       </mat-form-field>
 
-      <mat-form-field *ngIf="specificaCategoriaProduttore" appearance="outline">
+      <!-- <mat-form-field *ngIf="specificaCategoriaProduttore" appearance="outline">
         <mat-label>Specifica categoria produttore</mat-label>
         <input matInput formControlName="specificaCategoriaProduttore">
-      </mat-form-field>
+      </mat-form-field> -->
 
     </div>
 
@@ -189,6 +242,9 @@
           </mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('regione')?.hasError('required') ">
+            Inserire una regione
+        </mat-error>
 
       </mat-form-field>
 
@@ -206,6 +262,9 @@
           </mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('provincia')?.hasError('required') ">
+            Inserire una provincia
+        </mat-error>
 
       </mat-form-field>
 
@@ -223,22 +282,35 @@
           </mat-option>
 
         </mat-select>
-
+        <mat-error *ngIf="formImpianto.get('comune')?.hasError('required') ">
+            Inserire un comune
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Indirizzo</mat-label>
         <input matInput formControlName="indirizzo">
+        <mat-error *ngIf="formImpianto.get('indirizzo')?.hasError('pattern')||formImpianto.get('indirizzo')?.hasError('required')">
+            Inserire un indirizzo valido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Civico</mat-label>
-        <input matInput formControlName="civico">
+        <input matInput type="number" min="1" formControlName="civico">
+        <mat-error *ngIf="formImpianto.get('civico')?.hasError('min')||formImpianto.get('civico')?.hasError('required') ">
+          Inserire un civico valido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>CAP</mat-label>
         <input matInput formControlName="cap">
+        <mat-error *ngIf="formImpianto.get('cap')?.hasError('minlength') 
+          || formImpianto.get('cap')?.hasError('required')
+          || formImpianto.get('cap')?.hasError('maxlength')">
+          Inserire un CAP valido
+        </mat-error>
       </mat-form-field>
 
     </div>
@@ -265,12 +337,30 @@
           </mat-option>
 
         </mat-select>
+        <mat-error *ngIf="formImpianto.get('statoImpianto')?.hasError('required') ">
+          Inserire una provincia
+        </mat-error>
 
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <!-- <mat-form-field appearance="outline">
         <mat-label>Attivo</mat-label>
         <input matInput formControlName="attivo">
+      </mat-form-field> -->
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Attivo</mat-label>
+
+        <mat-select formControlName="attivo">
+          <mat-option [value]="null">-- Seleziona --</mat-option>
+          <mat-option [value]="'S'">S</mat-option>
+          <mat-option [value]="'N'">N</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formImpianto.get('statoImpianto')?.hasError('required') ">
+          Selezionare lo stato di attività dell'impianto
+        </mat-error>
+
       </mat-form-field>
 
     </div>
