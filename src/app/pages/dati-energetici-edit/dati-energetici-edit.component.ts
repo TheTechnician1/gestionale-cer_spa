@@ -3,11 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatiEnergeticiService } from 'src/app/components/services/dati-energetici.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-import { DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
+import { DatiEnergeticiInserimento, DatiEnergeticiView } from 'src/app/core/interfaces/dati-energetici-view';
 import { DatiEnergeticiModel } from 'src/app/core/interfaces/dati-energetici.model';
 import {
   debounceTime,
   distinctUntilChanged,
+  forkJoin,
   map,
   Observable,
   of,
@@ -29,7 +30,8 @@ export class DatiEnergeticiEditComponent implements OnInit {
   cerList$?: Observable<CerView[]>;
   configurazioniList$?: Observable<ConfigurazioneView[]>;
 
-  editedDati$: Observable<DatiEnergeticiView> | undefined;
+  editedDati$?: Observable<DatiEnergeticiInserimento>;
+  
   idEdit = 0;
 
   constructor(
@@ -94,34 +96,47 @@ export class DatiEnergeticiEditComponent implements OnInit {
       return;
     }
 
-    this.editedDati$ = this.service.getDato(this.idEdit);
-    if (!this.editedDati$) {
-      alert('Impianto non trovato');
-      this.router.navigate(['/dati-energetici']);
-    }
+    // this.editedDati$ = this.service.getDato(this.idEdit);
+    // if (!this.editedDati$) {
+    //   alert('Impianto non trovato');
+    //   this.router.navigate(['/dati-energetici']);
+    // }
 
-    this.editedDati$.subscribe({
-      next: (x) => {
-        this.form.patchValue({
-          idSchedaEnergetica: x.idSchedaEnergetica,
-          idCer: x.idCer,
-          idConfigurazione: x.idConfigurazione,
-          annoRiferimento: x.annoRiferimento,
-          energiaProdottaMhw: x.energiaProdottaMhw,
-          energiaPrelevataMhw: x.energiaPrelevataMhw,
-          energiaImmessaMhw: x.energiaImmessaMhw,
-          energiaCondivisaMhw: x.energiaCondivisaMhw,
-          energiaAutoconsumataMhw: x.energiaAutoconsumataMhw,
-          tariffaPremioEuro: x.tariffaPremioEuro,
-          corrispettivoPremioEuro: x.corrispettivoPremioEuro,
-          riduzioneCo2Ton: x.riduzioneCo2Ton,
-          calcoloCo2Automatico: x.calcoloCo2Automatico,
-          note: x.note,
-          attivo: x.attivo,
-          emailUtenteLoggato: x.emailUtenteLoggato,
+    forkJoin({
+      datoEdited: this.service.getDatiById(this.idEdit),
+    }).subscribe({
+      next:({datoEdited}) =>{
+        this.editedDati$ = of(datoEdited[0]);
+        console.log(JSON.stringify(this.editedDati$));
+        
+        this.editedDati$.subscribe({
+          next: (x) => {
+          this.form.patchValue({
+            idSchedaEnergetica: x.idDati,
+            idCer: x.idCer,
+            idConfigurazione: x.idConfigurazione,
+            annoRiferimento: x.anno,
+            energiaProdottaMhw: x.geteProdotta,
+            energiaPrelevataMhw: x.getePrelevata,
+            energiaImmessaMhw: x.geteImmessa,
+            energiaCondivisaMhw: x.geteCondivisa,
+            energiaAutoconsumataMhw: x.geteAutoCons,
+            tariffaPremioEuro: x.tariffaPremium,
+            corrispettivoPremioEuro: x.corrPremioOtt,
+            riduzioneCo2Ton: x.ridEmCo2,
+            calcoloCo2Automatico: x.calcoloCo2Automatico,
+            note: x.note,
+            attivo: x.flgCancellazione,
+            emailUtenteLoggato: x.emailUtenteLoggato,
         });
       },
     });
+       
+      },
+
+    });
+
+
     this.id = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!this.id || isNaN(this.id)) {
@@ -130,35 +145,35 @@ export class DatiEnergeticiEditComponent implements OnInit {
       return;
     }
 
-    this.service.getDato(this.id).subscribe({
-      next: (res: DatiEnergeticiView) => {
-        console.log('EDIT DATA:', res);
+    // this.service.getDato(this.id).subscribe({
+    //   next: (res: DatiEnergeticiView) => {
+    //     console.log('EDIT DATA:', res);
 
-        this.form.patchValue({
-          idSchedaEnergetica: res.idSchedaEnergetica,
-          annoRiferimento: res.annoRiferimento,
-          idCer: res.idCer,
-          idConfigurazione: res.idConfigurazione,
+    //     this.form.patchValue({
+    //       idSchedaEnergetica: res.idSchedaEnergetica,
+    //       annoRiferimento: res.annoRiferimento,
+    //       idCer: res.idCer,
+    //       idConfigurazione: res.idConfigurazione,
 
-          energiaProdottaMhw: res.energiaProdottaMhw,
-          energiaPrelevataMhw: res.energiaPrelevataMhw,
-          energiaImmessaMhw: res.energiaImmessaMhw,
-          energiaAutoconsumataMhw: res.energiaAutoconsumataMhw,
+    //       energiaProdottaMhw: res.energiaProdottaMhw,
+    //       energiaPrelevataMhw: res.energiaPrelevataMhw,
+    //       energiaImmessaMhw: res.energiaImmessaMhw,
+    //       energiaAutoconsumataMhw: res.energiaAutoconsumataMhw,
 
-          tariffaPremioEuro: res.tariffaPremioEuro,
-          corrispettivoPremioEuro: res.corrispettivoPremioEuro,
+    //       tariffaPremioEuro: res.tariffaPremioEuro,
+    //       corrispettivoPremioEuro: res.corrispettivoPremioEuro,
 
-          riduzioneCo2Ton: res.riduzioneCo2Ton,
+    //       riduzioneCo2Ton: res.riduzioneCo2Ton,
 
-          note: res.note,
-          attivo: res.attivo,
-          emailUtenteLoggato: res.emailUtenteLoggato,
-        });
-      },
-      error: (err) => {
-        console.error('Errore caricamento edit', err);
-      },
-    });
+    //       note: res.note,
+    //       attivo: res.attivo,
+    //       emailUtenteLoggato: res.emailUtenteLoggato,
+    //     });
+    //   },
+    //   error: (err) => {
+    //     console.error('Errore caricamento edit', err);
+    //   },
+    // });
   }
 
   salvaModifica(): void {

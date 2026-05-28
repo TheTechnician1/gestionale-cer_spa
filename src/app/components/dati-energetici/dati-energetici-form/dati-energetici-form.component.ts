@@ -20,6 +20,7 @@ export class DatiEnergeticiFormComponent implements OnInit {
   cerList = ["CER Milano", "CER Roma", "CER Torino"];
 
   private datiEnergetici: any[] = [];
+  toastService: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -127,7 +128,9 @@ const payload = {
 
   request$.subscribe({
     next: () => {
+      // this.toastService.success('✅ Dati Energetici inseriti');
       console.log("SALVATO:", payload);
+      
       this.router.navigate(['/dati-energetici']);
     },
     error: (err: any) => console.error(err)

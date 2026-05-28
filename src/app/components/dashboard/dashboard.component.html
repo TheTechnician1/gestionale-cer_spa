@@ -46,10 +46,13 @@
 
 
 <!-- CARD DEL GRAFICO SEPARATA -->
-<div class="charts-column">
+<!-- RIGA 1 -->
+<div class="charts-row">
 
+  <!-- DONUT 1 -->
   <div class="kpi-card yellow donut-kpi-card">
     <h4>Stato Attività</h4>
+
     <div class="chart-wrapper">
       <app-donut-chart
         [values]="chartValues"
@@ -58,8 +61,10 @@
     </div>
   </div>
 
+  <!-- DONUT 2 -->
   <div class="kpi-card yellow donut-kpi-card">
     <h4>Tipologia</h4>
+
     <div class="chart-wrapper">
       <app-donut-chart
         [values]="chartValues1"
@@ -70,9 +75,13 @@
 
 </div>
 
+<!-- RIGA 2 -->
+<div class="charts-row">
 
-<div class="kpi-card yellow donut-kpi-card">
+  <!-- ISTOGRAMMA 1 -->
+  <div class="kpi-card yellow donut-kpi-card">
     <h4>Top Cer</h4>
+
     <div class="chart-wrapper">
       <app-column-chart
         [values]="valuesTopCer"
@@ -82,9 +91,10 @@
     </div>
   </div>
 
-
+  <!-- ISTOGRAMMA 2 -->
   <div class="kpi-card yellow donut-kpi-card">
     <h4>Energia Annuale</h4>
+
     <div class="chart-wrapper">
       <app-column-chart
         [values]="valuesSummary"
@@ -94,4 +104,4 @@
     </div>
   </div>
 
-
+</div>

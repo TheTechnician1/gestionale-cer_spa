@@ -7,7 +7,7 @@ import {
 
 import { Observable, of } from "rxjs";
 
-import { DatiEnergeticiView } from
+import { DatiEnergeticiInserimento, DatiEnergeticiView } from
   "src/app/core/interfaces/dati-energetici-view";
 import { HttpParams } from "@angular/common/http";
 
@@ -107,8 +107,8 @@ getDati(filters: any): Observable<DatiEnergetici[]> {
 
   }
 
-  getDatiById(id: number, options: ApiRequestOptions = {}): Observable<DatiEnergeticiView[]> {
-  return this.api.get<DatiEnergeticiView[]>(
+  getDatiById(id: number, options: ApiRequestOptions = {}): Observable<DatiEnergeticiInserimento[]> {
+  return this.api.get<DatiEnergeticiInserimento[]>(
     `api/dati-energetici/${id}`,
     undefined,
     options
