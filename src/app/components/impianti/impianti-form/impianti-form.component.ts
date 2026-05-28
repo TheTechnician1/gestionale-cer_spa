@@ -66,7 +66,7 @@ export class ImpiantiFormComponent {
       regione : ['', Validators.required],
       provincia : [{value : '', disabled : true}, Validators.required],
       comune : [{value : '', disabled : true}, Validators.required],
-      indirizzo : ['', [Validators.required,Validators.pattern("^(?!\s)(?!.*\s$)[A-Za-zÀ-ÿ ]+$")]],
+      indirizzo : ['', [Validators.required,Validators.pattern(/^(?!\s*$)(?!.*\s{2,})[A-Za-zÀ-ÿ0-9\s'.,-]+$/)]],
       civico : ['', [Validators.required,Validators.min(1)]],
       cap : ['', [Validators.required,Validators.minLength(5),Validators.maxLength(5)]],
       statoImpianto : ['', Validators.required],
