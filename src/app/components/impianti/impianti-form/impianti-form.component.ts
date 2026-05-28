@@ -70,7 +70,7 @@ export class ImpiantiFormComponent {
       civico : ['', [Validators.required,Validators.min(1)]],
       cap : ['', [Validators.required,Validators.minLength(5),Validators.maxLength(5)]],
       statoImpianto : ['', Validators.required],
-      attivo : ['', Validators.required],
+      attivo : [''],
     });
   }
 
@@ -81,10 +81,13 @@ export class ImpiantiFormComponent {
       this.idEdit = Number(this.route.snapshot.paramMap.get('id'));
       if(this.idEdit){
         this.editedImpianto$ = this.impiantoService.getImpiantoById(this.idEdit);
-        if(!this.editedImpianto$){
-          alert("Impianto non trovato");
-          this.router.navigate(['/impianti']);
-        }
+        this.editedImpianto$.subscribe({
+          error:(x)=>{
+            alert("Impianto non trovato");
+            this.router.navigate(['/impianto']);
+          }
+        })
+
         this.flagModifica = true;
         this.editedImpianto$.subscribe({
           next:(x: ImpiantoById)=>{
@@ -253,7 +256,7 @@ export class ImpiantiFormComponent {
         civico : this.formImpianto.get('civico')?.value,
         cap : this.formImpianto.get('cap')?.value,
         statoImpianto : this.formImpianto.get('statoImpianto')?.value,
-        attivo : this.formImpianto.get('attivo')?.value,
+        attivo : this.formImpianto.get('attivo')?.value ?? "N",
         emailUtenteLoggato : this.utenteService.currentUser?.mail ?? ''
       });
       console.log("utente creatore: " + this.utenteService.currentUser?.mail);
