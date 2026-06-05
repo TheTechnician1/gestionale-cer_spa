@@ -5,17 +5,43 @@
   background: var(--brand-blue);
   color: #ffffff;
   border-bottom: 1px solid var(--app-border);
+  justify-content: space-between;
+}
+
+button[mat-button] {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .title {
   margin-left: 8px;
   font-weight: 600;
+  cursor: pointer;
 }
 
-.spacer {
-  flex: 1;
+.text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.brand {
+  color: var(--app-secondary);
 }
 
 .app-toolbar .mat-icon {
   color: #ffffff;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-field {
+  width: 500px;
+}
+
+.search-button {
+  margin-top: 4px;
 }

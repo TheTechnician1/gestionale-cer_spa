@@ -3,7 +3,6 @@ import { HttpClient, HttpContext, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { APP_SETTINGS } from "../config/app-settings";
 import { StorageService } from "./storage.service";
-import { UtenteLogin } from "../interfaces/utente.model";
 import { SKIP_HTTP_SNACKBAR } from "../interceptor/http-status/http-snackbar.context";
 
 export interface ApiRequestOptions {
@@ -24,33 +23,12 @@ export class ApiService {
     return this.request<T>("GET", path, undefined, "json", { ...options, params });
   }
 
-  postLogin<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("POST", path, body, "json", options);
-  }
-
   post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
     return this.request<T>("POST", path, body, "json", options);
-  }
-
-  postText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("POST", path, body, "text", options);
   }
 
   put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
     return this.request<T>("PUT", path, body, "json", options);
-  }
-
-  putDelete<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
-    return this.request<T>("PUT", path, body, "json", options);
-  }
-
-  putText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
-    return this.request<string>("PUT", path, body, "text", options);
   }
 
   delete<T>(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<T> {

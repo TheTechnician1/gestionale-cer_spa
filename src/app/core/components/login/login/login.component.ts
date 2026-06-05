@@ -24,7 +24,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      utente_email: ["", [Validators.required, Validators.email]],
+      email: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
       rememberMe: [false],
     });
@@ -41,15 +41,6 @@ export class LoginComponent {
 
     this.loginForm.markAllAsTouched();
     this.toastService.warning("Controlla email e password prima di continuare.", "Form non valido");
-  }
-
-  guestIn() {
-    const payload = {
-      utente_email: "guest@guest.guest",
-      password: "guest",
-    };
-
-    this.doLogin(payload);
   }
 
   private doLogin(payload: any) {

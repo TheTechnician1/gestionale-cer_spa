@@ -58,14 +58,6 @@
         <mat-hint>Includi il prefisso</mat-hint>
         <mat-error appFormControlError [control]="form.get('numTelefono')" label="Telefono" [customMessages]="telefonoErrorMessages"></mat-error>
       </mat-form-field>
-      <mat-form-field appearance="fill" class="ruolo">
-        <mat-label>Ruolo:</mat-label>
-        <mat-select formControlName="ruolo">
-          <mat-option *ngFor="let ruolo of ruoli" [value]="ruolo.value">
-            {{ ruolo.viewValue }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
     </div>
     <div rows="2" class="button">
       <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>

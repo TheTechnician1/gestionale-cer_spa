@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { AbstractControl, FormBuilder, ValidationErrors, Validators } from "@angular/forms";
-import { Ruolo } from "src/app/core/interfaces/ruolo.model";
 import { UtenteService } from "../../../services/utente.service";
 import { Router } from "@angular/router";
 import { ToastService } from "src/app/core/services/toast.service";
@@ -40,10 +39,6 @@ export class RegistrazioneUtenteComponent {
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }];
   readonly confermaPasswordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }, { passwordMismatch: "Le password non coincidono." }];
   readonly telefonoErrorMessages: Record<string, string>[] = [{ pattern: "Inserisci un numero valido con prefisso, da 10 a 15 cifre." }];
-  ruoli: Ruolo[] = [
-    { value: "ADMIN", viewValue: "Admin" },
-    { value: "GEST", viewValue: "Gestore" },
-  ];
 
   ngOnInit() {
     this.form.get("codiceFiscale")?.valueChanges.subscribe((value) => {

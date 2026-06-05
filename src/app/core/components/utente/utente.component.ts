@@ -1,8 +1,7 @@
 import { UtenteLogin } from "./../../interfaces/utente.model";
 import { Component } from "@angular/core";
-import { UtenteService } from "../../services/utente.service";
-import { Router } from "@angular/router";
-import { Utente, UtenteLoginModel } from "../../interfaces/utente.model";
+import { UtenteService } from "../../services/utente.service"
+import { UtenteLoginModel } from "../../interfaces/utente.model";
 
 @Component({
   selector: "app-utente",
@@ -12,7 +11,6 @@ import { Utente, UtenteLoginModel } from "../../interfaces/utente.model";
 export class UtenteComponent {
   constructor(
     private utenteService: UtenteService,
-    private route: Router,
   ) {}
 
   utente: UtenteLogin | null = new UtenteLoginModel();

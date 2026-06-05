@@ -1,11 +1,19 @@
 .error {
   color: red;
   font-size: small;
-  margin-top: -30px;
+  margin-top: -20px;
 }
 
 .campo-obbligatorio {
   font-size: 10px;
   color: grey;
   font-style: italic;
+}
+
+.login-button {
+  color: var(--app-secondary);
+}
+
+.mat-mdc-raised-button.mat-primary {
+  --mdc-protected-button-container-color: var(--app-secondary);
 }

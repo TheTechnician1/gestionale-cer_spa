@@ -1,6 +1,6 @@
 {
-  "name": "gestionale-cer-spa",
-  "version": "0.0.0",
+  "name": "ecommerce",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
