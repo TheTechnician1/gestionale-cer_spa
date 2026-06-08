@@ -1,46 +1,28 @@
 import { Injectable } from "@angular/core";
-import { UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
+import { Utente, UtenteModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
-import { isAuthenticated } from "../interfaces/auth.model";
+import { ApiResponse } from "../interfaces/api.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtenteService {
   constructor(private apiService: ApiService) {}
-  utente?: UtenteLogin;
 
   private readonly storageKey = "utente";
-  private readonly userSubject = new BehaviorSubject<UtenteLoginModel | null>(this.loadFromStorage());
+  private readonly userSubject = new BehaviorSubject<UtenteModel | null>(this.loadFromStorage());
   readonly user$ = this.userSubject.asObservable();
-  readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
-  private user: UtenteLoginModel | null = null;
-  private loggedIn$ = new BehaviorSubject<boolean>(false);
+  readonly isLoggedIn$ = this.user$.pipe(map((user) => user !== null));
 
-  isAuth: isAuthenticated = {
-    check: false,
-    validUser: false,
-  };
-
-  isAuthenticated(user: any): void {
-    this.user = user;
-    this.isAuth.validUser = this.user !== null;
-    this.loggedIn$.next(this.isAuth.validUser);
-  }
-
-  getIsAuthenticated() {
-    return this.isAuth;
-  }
-
-  get currentUser(): UtenteLoginModel | null {
+  get currentUser(): UtenteModel | null {
     return this.userSubject.value;
   }
 
-  login(payload: { email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
+  login(payload: { email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteModel> {
     const endpoint = "api/auth/login";
-    return this.apiService.post<UtenteLogin>(endpoint, payload, options).pipe(
-      map((utente) => new UtenteLoginModel({ ...utente })),
+    return this.apiService.post<ApiResponse<Utente>>(endpoint, payload, options).pipe(
+      map((res) => new UtenteModel(res.data)),
       tap((utente) => this.persistUser(utente)),
     );
   }
@@ -50,29 +32,28 @@ export class UtenteService {
     this.userSubject.next(null);
   }
 
-  private persistUser(utente: UtenteLogin): void {
-    this.isAuthenticated(utente);
+  createUtente(payload: any, options: ApiRequestOptions = {}) {
+    const endpoint = "/api/auth/register";
+    return this.apiService.post<Utente>(endpoint, payload, options);
+  }
+
+  private persistUser(utente: UtenteModel): void {
     localStorage.setItem(this.storageKey, JSON.stringify(utente));
     this.userSubject.next(utente);
   }
 
-  private loadFromStorage(): UtenteLoginModel | null {
+  private loadFromStorage(): UtenteModel | null {
     const raw = localStorage.getItem(this.storageKey);
     if (!raw) {
       return null;
     }
 
     try {
-      const parsed = JSON.parse(raw) as Partial<UtenteLogin>;
-      return new UtenteLoginModel(parsed);
+      const parsed = JSON.parse(raw) as Partial<Utente>;
+      return new UtenteModel(parsed);
     } catch {
       localStorage.removeItem(this.storageKey);
       return null;
     }
-  }
-
-  createUtente(payload: any, options: ApiRequestOptions = {}) {
-    const path = "/utente/inserisci";
-    return this.apiService.post<UtenteLogin>(path, payload, options);
   }
 }

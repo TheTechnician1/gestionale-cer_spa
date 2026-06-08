@@ -10,24 +10,16 @@ import { ToastService } from "src/app/core/services/toast.service";
   styleUrls: ["./registrazione-utente.component.scss"],
 })
 export class RegistrazioneUtenteComponent {
-  constructor(
-    private fb: FormBuilder,
-    private authService: UtenteService,
-    private route: Router,
-    private toastService: ToastService,
-  ) {}
+  constructor(private fb: FormBuilder, private authService: UtenteService, private route: Router, private toastService: ToastService) {}
 
   form = this.fb.group(
     {
-      nome: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
-      cognome: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
-      codiceFiscale: ["", [Validators.required, Validators.pattern("^[A-Za-z]{6}[0-9]{2}[A-Za-z]{1}[0-9]{2}[A-Za-z]{1}[0-9]{3}[A-Za-z]{1}$")]],
-      mail: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$")]],
-      confermaPassword: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,64}$")]],
-      numTelefono: ["", [Validators.required, Validators.minLength(10), Validators.pattern("^\\+?\\d{10,15}$")]],
-      ruolo: [null],
-      idUtente: [null],
+      name: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
+      surname: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
+      email: ["", [Validators.required, Validators.email]],
+      balance: [0, [Validators.required, Validators.min(0)]],
+      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^[A-Za-z\\d@$!%*?&]{6,64}$")]],
+      confermaPassword: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^[A-Za-z\\d@$!%*?&]{6,64}$")]]
     },
     { validators: this.passwordMatchValidator },
   );
@@ -35,19 +27,10 @@ export class RegistrazioneUtenteComponent {
   hide = true;
   readonly nomeErrorMessages: Record<string, string>[] = [{ pattern: "Il nome puo contenere solo lettere." }];
   readonly cognomeErrorMessages: Record<string, string>[] = [{ pattern: "Il cognome puo contenere solo lettere." }];
-  readonly codiceFiscaleErrorMessages: Record<string, string>[] = [{ pattern: "Inserisci un codice fiscale valido." }];
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }];
   readonly confermaPasswordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }, { passwordMismatch: "Le password non coincidono." }];
-  readonly telefonoErrorMessages: Record<string, string>[] = [{ pattern: "Inserisci un numero valido con prefisso, da 10 a 15 cifre." }];
 
-  ngOnInit() {
-    this.form.get("codiceFiscale")?.valueChanges.subscribe((value) => {
-      const upper = value?.toUpperCase() || "";
-      if (upper !== value) {
-        this.form.get("codiceFiscale")?.setValue(upper, { emitEvent: false });
-      }
-    });
-  }
+  ngOnInit() {}
 
   onSubmit() {
     if (this.form.invalid) {
@@ -60,7 +43,7 @@ export class RegistrazioneUtenteComponent {
     this.authService.createUtente(payload).subscribe({
       next: () => {
         this.form.reset();
-        this.route.navigateByUrl("/dashboard");
+        this.route.navigateByUrl("/login");
       },
       error: (error) => {
         console.error("Register error", error);

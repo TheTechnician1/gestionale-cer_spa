@@ -12,54 +12,38 @@ import { ToastService } from "src/app/core/services/toast.service";
 export class LoginComponent {
   loginForm!: FormGroup;
   loginError = false;
+  hide = false;
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Password non valida per formato o lunghezza." }];
-  constructor(
-    private fb: FormBuilder,
-    private authService: UtenteService,
-    private route: Router,
-    private toastService: ToastService,
-  ) {}
-
-  hide = true;
+  constructor(private fb: FormBuilder, private authService: UtenteService, private route: Router, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
-      rememberMe: [false],
+      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{6,64}$")]]
     });
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const payload = this.loginForm.value;
-      this.doLogin(payload);
-
-      console.log(this.loginForm.value);
+    if(!this.loginForm.valid) {
+      this.loginForm.markAllAsTouched();
+      this.toastService.warning("Controlla email e password prima di continuare.", "Form non valido");
       return;
     }
 
-    this.loginForm.markAllAsTouched();
-    this.toastService.warning("Controlla email e password prima di continuare.", "Form non valido");
-  }
-
-  private doLogin(payload: any) {
-    this.authService.login(payload).subscribe({
+    this.authService.login(this.loginForm.value).subscribe({
       next: (user) => {
-        this.authService.isAuthenticated(user);
-
-        if (user) {
-          console.log("Login riuscito");
-          this.loginError = false;
-          this.route.navigate(["/dashboard"]);
-        } else {
-          console.log("Credenziali errate");
-          this.loginError = true;
-        }
+        console.log("Login riuscito", user);
+        this.loginError = false;
+        this.route.navigate(["/"]);
       },
       error: (err) => {
         console.error("Errore login:", err);
         this.loginError = true;
+
+        this.toastService.warning(
+          "Credenziali non valide",
+          "Login fallito"
+        );
       },
     });
   }

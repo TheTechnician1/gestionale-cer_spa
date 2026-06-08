@@ -20,9 +20,14 @@ import { NotAuthorizedComponent } from "./core/components/not-authorized/not-aut
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+import { SellerComponent } from './core/components/seller/seller.component';
+import { CartComponent } from './core/components/cart/cart.component';
+import { OrderComponent } from './core/components/order/order.component';
+import { DashboardComponent } from './core/components/dashboard/dashboard.component';
+import { ProductComponent } from './core/components/product/product.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

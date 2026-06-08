@@ -1,23 +1,53 @@
 <mat-toolbar class="app-toolbar">
-  <span class="title" routerLink="/">My<span class="brand">Store</span></span>
-  <div class="search-container">
-    <input matInput placeholder="Cerca prodotti" [(ngModel)]="searchTerm" (keyup.enter)="search()" class="search-field" aria-label="Cerca prodotti"/>
-    <button mat-icon-button matSuffix (click)="search()" aria-label="Cerca">
-      <mat-icon>search</mat-icon>
+  <span class="title" routerLink="/">
+    My<span class="brand">Store</span>
+    <img src="assets/img/logo.png" alt="Logo" class="logo"/>
+  </span>
+
+  <div class="search-bar">
+    <input matInput placeholder="Cerca prodotti" [(ngModel)]="searchTerm" (keyup.enter)="search()" aria-label="Cerca prodotti"/>
+    <button mat-raise-button matSuffix (click)="search()" aria-label="Cerca">
+      Cerca
+      <mat-icon class="icon-button">search</mat-icon>
     </button>
   </div>
-  <button mat-button aria-label="Profilo" [matMenuTriggerFor]="menu">
-    <mat-icon>account_circle</mat-icon>
-    <span class="text">Accedi</span>
-    <mat-menu #menu="matMenu">
-      <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/dashboard">Home</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo/:id">Profilo</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
-    </mat-menu>
-  </button>
-  <button mat-button aria-label="carrello" routerLink="/carrello">
-    <mat-icon>shopping_cart</mat-icon>
-    <span class="text">Carrello</span>
-  </button>
+  <div class="profile-menu">
+    <button mat-button aria-label="Profilo" [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+      <span *ngIf="!(isLoggedIn$ | async)" class="text">Accedi</span>
+      <span *ngIf="isLoggedIn$ | async" class="text">
+        {{ (user$ | async)?.name }}
+        {{ (user$ | async)?.surname }}
+      </span>
+      <mat-menu #menu="matMenu">
+        <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/">Home</button>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item [routerLink]="['/profilo', (user$ | async)?.id]">Profilo</button>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item class="saldo-row" (click)="addBalance($event)">
+          <span>Saldo: </span>
+          <span class="balance">{{ balance }} €</span>
+          <span>
+            <mat-icon class="add-icon" style="padding-top: 5px;">add</mat-icon>
+          </span>
+        </button>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/ordini">Ordini</button>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
+      </mat-menu>
+    </button>
+  </div>
+  <div class="cart">
+    <button mat-button aria-label="carrello" routerLink="/carrello">
+      <mat-icon>shopping_cart</mat-icon>
+      <span class="text">Carrello ({{ cartCount$ | async }})</span>
+    </button>
+  </div>
 </mat-toolbar>
+<nav>
+  <a href="#">Tutte le categorie</a>
+  <a href="#">Offerte</a>
+  <a href="#">Elettronica</a>
+  <a href="#">Casa e cucina</a>
+  <a href="#">Libri</a>
+  <a href="#">Moda</a>
+  <a href="#">Sport</a>
+</nav>

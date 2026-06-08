@@ -1,25 +1,32 @@
 <h3>Profilo Utente</h3>
-<br />
 <div class="profile-container">
   <div *ngIf="utente" class="profile-header">
     <div class="user-info">
-      <h4 class="title">Benvenuto!</h4>
-      <br />
+      <h4 class="title">Benvenuto <span class="value">{{ utente.name }} {{ utente.surname }}</span>!</h4>
       <p>
         <span class="label">Nome: </span>
+        <span class="value">{{ utente.name }}</span>
       </p>
       <p>
         <span class="label">Cognome: </span>
+        <span class="value">{{ utente.surname }}</span>
       </p>
       <p>
-        <span class="label">Codice fiscale: </span>
-      </p>
-      <p>
-        <span class="label">e-mail: </span>
+        <span class="label">E-mail: </span>
         <span class="value">{{ utente.email }}</span>
       </p>
       <p>
-        <span class="label">Numero di telefono: </span>
+        <span class="label">Password: </span>
+        <span class="value">
+          {{ showPassword ? utente.password : '••••••••' }}
+        </span>
+        <button mat-button (click)="togglePassword()">
+          {{ showPassword ? 'Nascondi' : 'Mostra' }}
+        </button>
+      </p>
+      <p>
+        <span class="label">Saldo: </span>
+        <span class="value">{{ utente.balance }} €</span>
       </p>
     </div>
   </div>

@@ -1,7 +1,6 @@
-import { UtenteLogin } from "./../../interfaces/utente.model";
+import { Utente, UtenteModel } from "./../../interfaces/utente.model";
 import { Component } from "@angular/core";
 import { UtenteService } from "../../services/utente.service"
-import { UtenteLoginModel } from "../../interfaces/utente.model";
 
 @Component({
   selector: "app-utente",
@@ -9,11 +8,10 @@ import { UtenteLoginModel } from "../../interfaces/utente.model";
   styleUrls: ["./utente.component.scss"],
 })
 export class UtenteComponent {
-  constructor(
-    private utenteService: UtenteService,
-  ) {}
+  constructor(private utenteService: UtenteService) {}
 
-  utente: UtenteLogin | null = new UtenteLoginModel();
+  utente: Utente | null = new UtenteModel();
+  showPassword = false;
 
   ngOnInit() {
     this.loadUtente();
@@ -21,5 +19,9 @@ export class UtenteComponent {
 
   loadUtente() {
     this.utente = this.utenteService.currentUser;
+  }
+
+  togglePassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }
