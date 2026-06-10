@@ -18,8 +18,8 @@ export class RegistrazioneUtenteComponent {
       surname: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
       email: ["", [Validators.required, Validators.email]],
       balance: [0, [Validators.required, Validators.min(0)]],
-      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^[A-Za-z\\d@$!%*?&]{6,64}$")]],
-      confermaPassword: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^[A-Za-z\\d@$!%*?&]{6,64}$")]]
+      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,64}$")]],
+      confermaPassword: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,64}$")]]
     },
     { validators: this.passwordMatchValidator },
   );

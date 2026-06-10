@@ -10,6 +10,6 @@ export class NotAuthorizedComponent {
   constructor(private route: Router) {}
 
   onClick() {
-    this.route.navigate(["/dashboard"]);
+    this.route.navigate(["/"]);
   }
 }
