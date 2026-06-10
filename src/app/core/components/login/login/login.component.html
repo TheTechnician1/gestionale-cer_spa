@@ -7,12 +7,12 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="utente_email" aria-label="email" required />
-        <mat-error appFormControlError [control]="loginForm.get('utente_email')" label="Email"></mat-error>
+        <input matInput formControlName="email" aria-label="email" required />
+        <mat-error appFormControlError [control]="loginForm.get('email')" label="Email"></mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
         <mat-label>Password</mat-label>
-        <input matInput [type]="hide ? 'text' : 'password'" formControlName="password" aria-label="password" required />
+        <input matInput [type]="hide ? 'text' : 'password'" formControlName="pwd" aria-label="password" required />
         <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>

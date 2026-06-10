@@ -1,76 +1,49 @@
 import { RoleType } from "../enum/role.enum";
 
 export interface Utente {
-  id_utente: number | null;
+  id: number | null;
   nome?: string | null;
   cognome?: string | null;
-  codiceFiscale: string | null;
-  mail?: string | null;
-  password: string | null;
-  numTelefono?: string | null;
-  ruolo: RoleType | null;
+  email?: string | null;
+  pwd: string | null;
 }
 
 export class UtenteModel implements Utente {
-  id_utente: number | null;
+  id: number | null;
   nome?: string | null;
   cognome?: string | null;
-  codiceFiscale: string | null;
-  mail?: string | null;
-  password: string | null;
-  numTelefono?: string | null;
-  ruolo: RoleType | null;
+  email?: string | null;
+  pwd: string | null;
 
   constructor(data?: Partial<Utente>) {
-    this.id_utente = data?.id_utente ?? null;
+    this.id = data?.id ?? null;
     this.nome = data?.nome ?? null;
     this.cognome = data?.cognome ?? null;
-    this.codiceFiscale = data?.codiceFiscale ?? null;
-    this.mail = data?.mail ?? null;
-    this.password = data?.password ?? null;
-    this.numTelefono = data?.numTelefono ?? null;
-    this.ruolo = data?.ruolo ?? null;
+    this.email = data?.email ?? null;
+    this.pwd = data?.pwd ?? null;
   }
 }
 
 export interface UtenteLogin {
-  idUtente: number | null;
-  nomeUtente?: string | null;
-  cognomeUtente?: string | null;
-  codiceFiscale: string | null;
-  mail?: string | null;
-  numeroTelefono?: string | null;
-  ruolo: RoleType | null;
-  flagCancellato: string | null;
-  utenteUpd?: string | null;
-  dataInserimento: string | null;
-  dataModifica: string | null;
+  id: number | null;
+  nome?: string | null;
+  cognome?: string | null;
+  email?: string | null;
+  pwd: string | null;
 }
 
 export class UtenteLoginModel implements UtenteLogin {
-  idUtente: number | null;
-  nomeUtente?: string | null;
-  cognomeUtente?: string | null;
-  codiceFiscale: string | null;
-  mail?: string | null;
-  numeroTelefono?: string | null;
-  ruolo: RoleType | null;
-  flagCancellato: string | null;
-  utenteUpd?: string | null;
-  dataInserimento: string | null;
-  dataModifica: string | null;
+  id: number | null;
+  nome?: string | null;
+  cognome?: string | null;
+  email?: string | null;
+  pwd: string | null;
 
   constructor(data?: Partial<UtenteLogin>) {
-    this.idUtente = data?.idUtente ?? null;
-    this.nomeUtente = data?.nomeUtente ?? null;
-    this.cognomeUtente = data?.cognomeUtente ?? null;
-    this.codiceFiscale = data?.codiceFiscale ?? null;
-    this.mail = data?.mail ?? null;
-    this.numeroTelefono = data?.numeroTelefono ?? null;
-    this.ruolo = data?.ruolo ?? null;
-    this.flagCancellato = data?.flagCancellato ?? "N";
-    this.utenteUpd = data?.utenteUpd ?? null;
-    this.dataInserimento = data?.dataInserimento ?? null;
-    this.dataModifica = data?.dataModifica ?? null;
+    this.id = data?.id ?? null;
+    this.nome = data?.nome ?? null;
+    this.cognome = data?.cognome ?? null;
+    this.email = data?.email ?? null;
+    this.pwd = data?.pwd ?? null;
   }
 }

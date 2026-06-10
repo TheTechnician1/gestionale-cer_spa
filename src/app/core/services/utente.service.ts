@@ -34,16 +34,13 @@ export class UtenteService {
     return this.isAuth;
   }
 
-  getRole(): RoleType | null {
-    return this.currentUser?.ruolo ?? null;
-  }
 
   get currentUser(): UtenteLoginModel | null {
     return this.userSubject.value;
   }
 
-  login(payload: { utente_email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
-    const endpoint = "autenticazione/logIn";
+  login(payload: { email: string; pwd: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
+    const endpoint = "api/auth/login";
     return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
@@ -77,7 +74,7 @@ export class UtenteService {
   }
 
   createUtente(payload: any, options: ApiRequestOptions = {}) {
-    const path = "/utente/inserisci";
+    const path = "api/auth/register";
     return this.apiService.postText(path, payload, options);
   }
 }

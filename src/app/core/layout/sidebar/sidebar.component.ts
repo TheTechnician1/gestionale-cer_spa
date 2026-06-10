@@ -35,36 +35,7 @@ const NAV_ITEMS: NavItem[] = [
   styleUrls: ["./sidebar.component.scss"],
 })
 export class SidebarComponent implements OnInit {
-  treeControl = new NestedTreeControl<NavItem>((node) => node.children);
-  dataSource = new MatTreeNestedDataSource<NavItem>();
-  dataSource$ = this.authService.user$.pipe(
-    map((user) => {
-      const role = user?.ruolo ?? null;
-      const ds = new MatTreeNestedDataSource<NavItem>();
-      ds.data = this.filterNavItems(NAV_ITEMS, role);
-      return ds;
-    }),
-  );
-  constructor(private authService: UtenteService) {}
-
-  ngOnInit() {}
-
-  hasChild = (_: number, node: NavItem) => !!node.children && node.children.length > 0;
-
-  private filterNavItems(items: NavItem[], role: string | null): NavItem[] {
-    if (!role) {
-      return [];
-    }
-
-    return items
-      .map((item) => {
-        const children = item.children ? this.filterNavItems(item.children, role) : undefined;
-        return { ...item, children };
-      })
-      .filter((item) => {
-        const roleAllowed = !item.roles || item.roles.includes(role);
-        const hasChildren = !!item.children && item.children.length > 0;
-        return roleAllowed && (item.route || hasChildren);
-      });
+  ngOnInit(): void {
   }
+
 }
