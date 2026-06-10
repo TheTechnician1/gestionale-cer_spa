@@ -18,14 +18,21 @@ export class HeaderComponent {
   user$ = this.authService.user$;
   cartCount$ = this.cartService.cartCount$;
   searchTerm: string = "";
-  balance = 0;
+  balance!: number | null;
+  editingBalance = false;
+  newBalance!: number | null;
 
   ngOnInit() {
-    this.user$.subscribe(user => {
-    if (user) {
-      this.balance = user.balance!;
+    const saved = localStorage.getItem('userBalance');
+    if (saved !== null) {
+      this.balance = Number(saved);
+    } else {
+      this.user$.subscribe(user => {
+        if (user) {
+          this.balance = user.balance!;
+        }
+      });
     }
-  });
   }
 
   logout() {
@@ -42,8 +49,24 @@ export class HeaderComponent {
     });
   }
 
-  addBalance(event: Event) {
+  startEditing(event: Event) {
     event.stopPropagation();
-    this.balance += 10;
+    this.editingBalance = true;
+    this.newBalance = this.balance;
+  }
+
+  confirmBalance(event: Event) {
+    event.stopPropagation();
+    const value = Number(this.newBalance);
+
+    if (isNaN(value) || value < this.balance!) {
+      this.newBalance = this.balance;
+      this.editingBalance = false;
+      return;
+    }
+
+    this.balance = value;
+    this.editingBalance = false;
+    this.authService.updateBalance(this.balance);
   }
 }

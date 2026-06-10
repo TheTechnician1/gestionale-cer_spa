@@ -12,9 +12,11 @@ export class UtenteComponent {
 
   utente: Utente | null = new UtenteModel();
   showPassword = false;
+  balance!: number | null;
 
   ngOnInit() {
     this.loadUtente();
+    this.balance = this.utenteService.getBalance();
   }
 
   loadUtente() {

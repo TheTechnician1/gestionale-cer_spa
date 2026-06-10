@@ -37,6 +37,23 @@ export class UtenteService {
     return this.apiService.post<Utente>(endpoint, payload, options);
   }
 
+  getBalance(): number {
+    const saved = localStorage.getItem('userBalance');
+    return saved ? Number(saved) : 0;
+  }
+
+  updateBalance(newBalance: number) {
+    const user = this.currentUser;
+
+    if (user) {
+      user.balance = newBalance;
+      localStorage.setItem(this.storageKey, JSON.stringify(user));
+      this.userSubject.next(user);
+    }
+
+    localStorage.setItem('userBalance', String(newBalance));
+  }
+
   private persistUser(utente: UtenteModel): void {
     localStorage.setItem(this.storageKey, JSON.stringify(utente));
     this.userSubject.next(utente);

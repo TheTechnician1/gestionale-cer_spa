@@ -23,12 +23,18 @@
         <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/">Home</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item [routerLink]="['/profilo', (user$ | async)?.id]">Profilo</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item class="saldo-row" (click)="addBalance($event)">
-          <span>Saldo: </span>
-          <span class="balance">{{ balance }} €</span>
-          <span>
-            <mat-icon class="add-icon" style="padding-top: 5px;">add</mat-icon>
-          </span>
+        <button *ngIf="isLoggedIn$ | async" mat-menu-item class="saldo-row" (click)="startEditing($event)">
+          <ng-container *ngIf="!editingBalance">
+            <span>Saldo: </span>
+            <span class="balance">{{ balance }} €</span>
+          </ng-container>
+          <ng-container *ngIf="editingBalance">
+            <input type="number"
+                  class="balance-input"
+                  [(ngModel)]="newBalance"
+                  (click)="$event.stopPropagation()"
+                  (keydown.enter)="confirmBalance($event)">
+          </ng-container>
         </button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/ordini">Ordini</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
