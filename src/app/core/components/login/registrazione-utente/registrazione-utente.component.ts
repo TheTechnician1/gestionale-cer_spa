@@ -17,11 +17,11 @@ export class RegistrazioneUtenteComponent {
       name: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
       surname: ["", [Validators.required, Validators.pattern("^[a-zA-Z]{1,}$")]],
       email: ["", [Validators.required, Validators.email]],
-      balance: [0, [Validators.required, Validators.min(0)]],
+      confirmEmail: ["", [Validators.required, Validators.email]],
       password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,64}$")]],
       confermaPassword: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,64}$")]]
     },
-    { validators: this.passwordMatchValidator },
+    { validators: [this.passwordMatchValidator, this.emailMatchValidator] },
   );
 
   hide = true;
@@ -39,14 +39,19 @@ export class RegistrazioneUtenteComponent {
       return;
     }
 
-    const { confermaPassword, ...payload } = this.form.getRawValue();
+    const { confermaPassword, confirmEmail, ...payload } = this.form.getRawValue();
     this.authService.createUtente(payload).subscribe({
       next: () => {
+        this.toastService.success(
+          "Sono stati accreditati 500€ sul tuo account.",
+          "Registrazione completata"
+        );
         this.form.reset();
         this.route.navigateByUrl("/login");
       },
       error: (error) => {
         console.error("Register error", error);
+        this.toastService.error("Errore durante la registrazione.", "Errore");
       },
     });
   }
@@ -74,6 +79,24 @@ export class RegistrazioneUtenteComponent {
     if (hasMismatchError) {
       const { passwordMismatch, ...remainingErrors } = existingErrors;
       confermaPasswordControl.setErrors(Object.keys(remainingErrors).length > 0 ? remainingErrors : null);
+    }
+
+    return null;
+  }
+
+  emailMatchValidator(form: AbstractControl) {
+    const email = form.get("email")?.value;
+    const confirmEmailControl = form.get("confirmEmail")?.value;
+    const confirmEmail = confirmEmailControl?.value;
+
+    if (!confirmEmailControl) return null;
+
+    if (email && confirmEmail && email !== confirmEmail) {
+      confirmEmailControl.setErrors({ emailMismatch: true });
+    } else {
+      if (confirmEmailControl.hasError("emailMismatch")) {
+        confirmEmailControl.setErrors(null);
+      }
     }
 
     return null;

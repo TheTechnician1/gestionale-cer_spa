@@ -18,38 +18,26 @@
       <span *ngIf="isLoggedIn$ | async" class="text">
         {{ (user$ | async)?.name }}
         {{ (user$ | async)?.surname }}
+        ({{ (user$ | async)?.balance | number:'1.2-2' }}€)
       </span>
       <mat-menu #menu="matMenu">
         <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/">Home</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item [routerLink]="['/profilo', (user$ | async)?.id]">Profilo</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item class="saldo-row" (click)="startEditing($event)">
-          <ng-container *ngIf="!editingBalance">
-            <span>Saldo: </span>
-            <span class="balance">{{ balance }} €</span>
-          </ng-container>
-          <ng-container *ngIf="editingBalance">
-            <input type="number"
-                  class="balance-input"
-                  [(ngModel)]="newBalance"
-                  (click)="$event.stopPropagation()"
-                  (keydown.enter)="confirmBalance($event)">
-          </ng-container>
-        </button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/ordini">Ordini</button>
         <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
       </mat-menu>
     </button>
   </div>
   <div class="cart">
-    <button mat-button aria-label="carrello" routerLink="/carrello">
+    <button mat-button aria-label="carrello" [routerLink]="['/carrello', (user$ | async)?.id]">
       <mat-icon>shopping_cart</mat-icon>
       <span class="text">Carrello ({{ cartCount$ | async }})</span>
     </button>
   </div>
 </mat-toolbar>
 <nav>
-  <a href="#">Tutte le categorie</a>
+  <a routerLink="/">Tutte le categorie</a>
   <a href="#">Offerte</a>
   <a href="#">Elettronica</a>
   <a href="#">Casa e cucina</a>

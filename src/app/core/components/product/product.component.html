@@ -1,1 +1,33 @@
-<p>product works!</p>
+<main class="product-detail-container" *ngIf="prodotto">
+  <div class="left-column">
+    <mat-card class="main-image-card">
+      <img mat-card-image [src]="prodotto.immagine" alt="prodotto.nomeProdotto">
+    </mat-card>
+    <div class="thumbnails">
+      <img [src]="prodotto.immagine" alt="thumb">
+      <img [src]="prodotto.immagine" alt="thumb">
+      <img [src]="prodotto.immagine" alt="thumb">
+    </div>
+  </div>
+  <div class="right-column">
+    <h1>{{ prodotto.nomeProdotto }}</h1>
+    <p class="price">{{ prodotto.prezzo | number:'1.2-2' }} €</p>
+    <p class="availability">Disponibilità: <strong>{{ prodotto.quantita }} pezzi</strong></p>
+    <p class="description">{{ prodotto.descrizioneCompleta }}</p>
+    <mat-form-field appearance="outline" class="quantity-field">
+      <mat-label>Quantità</mat-label>
+      <input matInput type="number" min="1" [max]="prodotto.quantita" [(ngModel)]="quantity">
+    </mat-form-field>
+    <div class="buttons">
+      <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(prodotto, quantity)">
+        Aggiungi al carrello
+      </button>
+      <button mat-raised-button color="white" routerLink="/">
+        Torna alla lista
+      </button>
+    </div>
+  </div>
+</main>
+<div *ngIf="!prodotto" class="error">
+  Prodotto non trovato.
+</div>

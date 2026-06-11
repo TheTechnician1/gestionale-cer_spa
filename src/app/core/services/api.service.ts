@@ -8,6 +8,7 @@ import { SKIP_HTTP_SNACKBAR } from "../interceptor/http-status/http-snackbar.con
 export interface ApiRequestOptions {
   params?: Record<string, string | number | boolean>;
   skipToast?: boolean;
+  responseType?: "json" | "text";
 }
 
 @Injectable({ providedIn: "root" })
@@ -24,7 +25,7 @@ export class ApiService {
   }
 
   post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("POST", path, body, "json", options);
+    return this.request<T>("POST", path, body, options.responseType === 'text' ? 'text' : 'json', options);
   }
 
   put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
@@ -60,7 +61,7 @@ export class ApiService {
           throw new Error(`Metodo HTTP non supportato: ${method}`);
       }
 
-      
+
     }
 
     const jsonOptions = {

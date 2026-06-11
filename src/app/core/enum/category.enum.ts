@@ -7,6 +7,8 @@ export enum Category {
   ELETTRONICA = 'Elettronica',
   GIOCATTOLI = 'Giocattoli',
   INFORMATICA = 'Informatica',
+  LIBRI = 'Libri',
+  MUSICA = 'Musica e Film',
   SPORT = 'Sport e Fitness',
   TELEFONIA = 'Telefonia'
 }

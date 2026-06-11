@@ -31,6 +31,11 @@ h3 {
   color: var(--app-text);
 }
 
+.btt {
+  background-color: var(--app-secondary);
+  margin-left: 60%;
+}
+
 @media (max-width: 850px) {
   .profile-container {
     width: 50%;

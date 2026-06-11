@@ -34,7 +34,7 @@ export class UtenteService {
 
   createUtente(payload: any, options: ApiRequestOptions = {}) {
     const endpoint = "/api/auth/register";
-    return this.apiService.post<Utente>(endpoint, payload, options);
+    return this.apiService.post<string>(endpoint, payload, { ...options, responseType: 'text' });
   }
 
   getBalance(): number {

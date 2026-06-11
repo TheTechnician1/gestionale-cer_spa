@@ -26,8 +26,9 @@
       </p>
       <p>
         <span class="label">Saldo: </span>
-        <span class="value">{{ utente.balance }} €</span>
+        <span class="value">{{ utente.balance | number:'1.2-2' }} €</span>
       </p>
     </div>
   </div>
+  <button mat-raised-button color="primary" class="btt" routerLink="">Modifica Profilo</button>
 </div>
