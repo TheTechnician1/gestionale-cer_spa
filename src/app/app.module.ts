@@ -13,18 +13,12 @@ import { TranslateRootModule } from "./core/translate/translate-root.module";
 import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
-import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
-import { UtenteComponent } from "./core/components/utente/utente.component";
-import { LoginComponent } from "./core/components/login/login/login.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { RegistrazioneUtenteComponent } from "./core/components/login/registrazione-utente/registrazione-utente.component";
-import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

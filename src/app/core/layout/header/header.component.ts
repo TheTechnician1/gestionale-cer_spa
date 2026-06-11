@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Output } from "@angular/core";
-import { UtenteService } from "../../services/utente.service";
-import { Observable } from "rxjs";
+import { Component} from "@angular/core";
+
 
 @Component({
   selector: "app-header",
@@ -8,16 +7,5 @@ import { Observable } from "rxjs";
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent {
-  @Output() toggleSidebar = new EventEmitter<void>();
-  constructor(private authService: UtenteService) {
-    this.isLoggedIn$ = this.authService.isLoggedIn$;
-  }
 
-  isLoggedIn$: Observable<boolean>;
-
-  ngOnInit() {}
-
-  logout() {
-    this.authService.logout();
-  }
 }
