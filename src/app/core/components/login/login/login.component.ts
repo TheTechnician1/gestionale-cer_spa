@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UtenteService } from "src/app/core/services/utente.service";
 import { ToastService } from "src/app/core/services/toast.service";
+import { SharedModule } from "src/app/shared/shared.module";
 
 @Component({
   selector: "app-login",

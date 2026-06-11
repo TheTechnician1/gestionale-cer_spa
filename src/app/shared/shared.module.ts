@@ -45,6 +45,7 @@ export const MATERIAL_MODULES = [
   MatPaginatorModule,
   MatSortModule,
   MatDialogModule,
+  MatFormFieldModule,
   MatSnackBarModule,
   MatMenuModule,
   MatCheckboxModule,

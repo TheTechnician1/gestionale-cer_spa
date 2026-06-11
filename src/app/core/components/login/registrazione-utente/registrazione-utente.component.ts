@@ -4,6 +4,7 @@ import { Ruolo } from "src/app/core/interfaces/ruolo.model";
 import { UtenteService } from "../../../services/utente.service";
 import { Router } from "@angular/router";
 import { ToastService } from "src/app/core/services/toast.service";
+import { SharedModule } from "src/app/shared/shared.module";
 
 @Component({
   selector: "app-registrazione-utente",
