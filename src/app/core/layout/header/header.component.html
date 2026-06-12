@@ -5,11 +5,18 @@
   </span>
 
   <div class="search-bar">
-    <input matInput placeholder="Cerca prodotti" [(ngModel)]="searchTerm" (keyup.enter)="search()" aria-label="Cerca prodotti"/>
+    <input matInput placeholder="Cerca prodotti" [(ngModel)]="searchTerm" (input)="onSearchChange()" aria-label="Cerca prodotti"/>
     <button mat-raise-button matSuffix (click)="search()" aria-label="Cerca">
       Cerca
       <mat-icon class="icon-button">search</mat-icon>
     </button>
+  </div>
+  <div class="search-results" *ngIf="results.length > 0">
+    <div class="result-item" *ngFor="let p of results" (click)="goToProduct(p.id)">
+      <img [src]="p.immagine" alt="img">
+      <span>{{ p.nomeProdotto }}</span>
+      <span class="price">{{ p.prezzo }} €</span>
+    </div>
   </div>
   <div class="profile-menu">
     <button mat-button aria-label="Profilo" [matMenuTriggerFor]="menu">
@@ -38,10 +45,10 @@
 </mat-toolbar>
 <nav>
   <a routerLink="/">Tutte le categorie</a>
-  <a href="#">Offerte</a>
-  <a href="#">Elettronica</a>
-  <a href="#">Casa e cucina</a>
-  <a href="#">Libri</a>
-  <a href="#">Moda</a>
-  <a href="#">Sport</a>
+  <a routerLink="/offerte">Offerte</a>
+  <a (click)="advancedSearchElettronica()">Elettronica</a>
+  <a (click)="advancedSearchCasa()">Casa e cucina</a>
+  <a (click)="advancedSearchLibri()">Libri</a>
+  <a (click)="advancedSearchModa()">Moda</a>
+  <a (click)="advancedSearchSport()">Sport</a>
 </nav>

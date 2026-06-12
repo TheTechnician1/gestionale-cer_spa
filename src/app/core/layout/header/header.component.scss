@@ -97,10 +97,51 @@ button[mat-button] {
   margin-top: 4px;
 }
 
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 5px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  gap: 10px;
+  color: #000000;
+}
+
+.result-item:hover {
+  background: #f5f5f5;
+}
+
+.result-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.result-item .price {
+  margin-left: auto;
+  font-weight: bold;
+  color: var(--app-secondary);
+}
+
 .search-bar {
   flex:1;
   display: flex;
   margin: 0 50px;
+  position: relative;
 }
 
 .search-bar input {
@@ -119,7 +160,7 @@ button[mat-button] {
   font-weight: bold;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 950px) {
   .logo {
     display: none;
   }
@@ -135,7 +176,7 @@ button[mat-button] {
 
   .profile-menu button mat-icon,
   .cart button mat-icon {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   .app-toolbar {
@@ -166,7 +207,7 @@ button[mat-button] {
 
   .profile-menu button mat-icon,
   .cart button mat-icon {
-    font-size: 24px;
+    font-size: 19px;
   }
 
   .app-toolbar {

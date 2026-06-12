@@ -1,0 +1,20 @@
+<main class="offers-container">
+  <h1 class="title">Offerte del giorno</h1>
+  <div class="offers-grid">
+    <mat-card class="offer-card" *ngFor="let p of offers">
+      <div class="badge">-{{ p.sconto }}%</div>
+      <img mat-card-image [src]="p.immagine" alt="{{ p.nomeProdotto }}" (click)="details(p.id)">
+      <mat-card-content>
+        <h3 class="product-name">{{ p.nomeProdotto }}</h3>
+        <p class="old-price">{{ p.prezzoOriginale | number:'1.2-2'}} €</p>
+        <p class="new-price">{{ p.prezzoScontato | number:'1.2-2' }} €</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(p)">
+          <mat-icon>add_shopping_cart</mat-icon>
+          Aggiungi al carrello
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</main>

@@ -3,7 +3,7 @@ h2 {
 }
 
 .mat-mdc-table thead, .mat-mdc-header-row, .mat-mdc-table .mat-mdc-header-cell {
-  background-color: #ddd;
+  background-color: #ededed;
 }
 
 .container {
@@ -199,6 +199,23 @@ h2 {
 
   .cart-table {
     max-width: auto;
+    table-layout: auto;
+  }
+
+  .order-summary {
+  max-width: auto;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .cart-layout {
+    max-width: 100%;
+    flex-direction: column;
+  }
+
+  .cart-table {
+    max-width: 100%;
     table-layout: auto;
   }
 

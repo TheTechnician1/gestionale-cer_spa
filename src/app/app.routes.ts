@@ -7,6 +7,7 @@ import { NotAuthorizedComponent } from "./core/components/not-authorized/not-aut
 import { DashboardComponent } from "./core/components/dashboard/dashboard.component";
 import { CartComponent } from "./core/components/cart/cart.component";
 import { ProductComponent } from "./core/components/product/product.component";
+import { OfferteComponent } from "./core/components/offerte/offerte.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: DashboardComponent, pathMatch: "full" },
@@ -15,6 +16,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "login", component: LoginComponent },
   { path: "prodotto/:id", component: ProductComponent },
   { path: "carrello/:id", component: CartComponent },
+  { path: "offerte", component: OfferteComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },
   { path: "**", redirectTo: "not-authorized" },
 ];

@@ -25,9 +25,11 @@ import { CartComponent } from './core/components/cart/cart.component';
 import { OrderComponent } from './core/components/order/order.component';
 import { DashboardComponent } from './core/components/dashboard/dashboard.component';
 import { ProductComponent } from './core/components/product/product.component';
+import { OfferteComponent } from './core/components/offerte/offerte.component';
+import { SearchComponent } from './core/components/search/search.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
