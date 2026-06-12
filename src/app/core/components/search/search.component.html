@@ -1,1 +1,55 @@
-<p>search works!</p>
+<main class="search-layout">
+  <aside class="filters">
+    <mat-card class="filters-card">
+      <h2>Filtri</h2>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Categoria</mat-label>
+        <mat-select [(ngModel)]="categoria">
+          <mat-option value="">Tutte</mat-option>
+          <mat-option *ngFor="let c of categorie" [value]="c">
+            {{ c }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Prezzo minimo</mat-label>
+        <input matInput type="number" [(ngModel)]="minPrice">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Prezzo massimo</mat-label>
+        <input matInput type="number" [(ngModel)]="maxPrice">
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Quantità minima</mat-label>
+        <input matInput type="number" [(ngModel)]="minQuantity">
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="full add-cart" (click)="applyFilters()">
+        Applica filtri
+      </button>
+      <button mat-button color="warn" class="full" (click)="resetFilters()">
+        Reset
+      </button>
+    </mat-card>
+  </aside>
+  <section class="results">
+    <h1>Risultati:</h1>
+    <div class="results-grid">
+      <div *ngFor="let p of products">
+        <mat-card class="product-card" *ngIf="p.quantita! > 0">
+          <img mat-card-image (click)="details(p.id!)" [src]="p.immagine" alt="{{ p.nomeProdotto }}">
+          <mat-card-content>
+            <h3>{{ p.nomeProdotto }}</h3>
+            <p class="price">{{ p.prezzo }} €</p>
+            <p class="category">{{ p.categoria }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+          <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(p)">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Aggiungi al carrello
+          </button>
+        </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+</main>

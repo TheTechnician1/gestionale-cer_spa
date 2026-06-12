@@ -39,3 +39,9 @@ export class CartItemModel implements CartItem {
     this.immagine = data?.immagine ?? null;
   }
 }
+
+export type CartItemExtended = CartItem & {
+  prezzoOriginale?: number | null;
+  prezzoScontato?: number | null;
+  sconto?: number | null;
+};

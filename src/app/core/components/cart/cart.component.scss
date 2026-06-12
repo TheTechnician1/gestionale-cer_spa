@@ -73,6 +73,49 @@ h2 {
   color: #b12704;
 }
 
+.price-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff9900;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 14px;
+}
+
+.new-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #b12704;
+}
+
+.discount {
+  color: #ff9900;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.saved {
+  font-size: 13px;
+  color: #008a00;
+  font-weight: 500;
+}
+
 .qty-controls {
   display: flex;
   align-items: center;
@@ -206,7 +249,6 @@ h2 {
   max-width: auto;
   }
 }
-
 
 @media (max-width: 600px) {
   .cart-layout {

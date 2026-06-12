@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
-import { CartItem } from '../../interfaces/cart.model';
+import { CartItem, CartItemExtended } from '../../interfaces/cart.model';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class CartComponent {
   constructor(private cartService: CartService) {}
-  cartItems$!: Observable<CartItem[]>;
+  cartItems$!: Observable<CartItemExtended[]>;
 
   displayedColumns: string[] = [
   'image',
@@ -23,6 +23,11 @@ export class CartComponent {
 
   ngOnInit(): void {
     this.cartItems$ = this.cartService.cartItems$;
+    const raw = localStorage.getItem('pendingDiscount');
+    if (raw) {
+      const payload = JSON.parse(raw);
+      localStorage.removeItem('pendingDiscount');
+    }
   }
 
   increase(item: CartItem) {
@@ -43,5 +48,22 @@ export class CartComponent {
 
   getTotal(items: CartItem[]): number {
     return items.reduce((tot, item) => tot + item.prezzo! * item.quantita!, 0);
+  }
+
+  hasAnyOriginalPrice(items: CartItemExtended[] | null | undefined): boolean {
+    if (!items || items.length === 0) {
+      return false;
+    }
+    return items.some(i => i.prezzoOriginale != null);
+  }
+
+  getTotalSavings(items: CartItemExtended[]): number {
+    return items.reduce((tot, item) => {
+      if (item.prezzoOriginale != null && item.prezzo != null) {
+        const diff = item.prezzoOriginale - item.prezzo!;
+        return tot + diff * item.quantita!;
+      }
+      return tot;
+    }, 0);
   }
 }

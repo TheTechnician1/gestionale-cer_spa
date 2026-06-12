@@ -43,10 +43,20 @@ export class HeaderComponent {
   }
 
   search() {
-    if (!this.searchTerm.trim()) return;
+    const term = this.searchTerm.trim();
+    if (!term) {
+      this.router.navigate(['/ricerca-avanzata']);
+      return;
+    }
 
-    this.apiService.get<any[]>(`/api/products/search/${this.searchTerm}`)
+    this.apiService.get<any[]>(`/api/products/search/${term}`)
       .subscribe(res => {
+        if (!res || res.length === 0) {
+          this.router.navigate(['/ricerca-avanzata'], {
+            queryParams: { q: term }
+          });
+          return;
+        }
         this.results = res;
       });
   }
@@ -72,13 +82,33 @@ export class HeaderComponent {
     }, 300);
   }
 
-  advancedSearchElettronica() {}
+  advancedSearchElettronica() {
+    this.router.navigate(['/ricerca-avanzata'], {
+      queryParams: { category: 'Elettronica' }
+    });
+  }
 
-  advancedSearchCasa() {}
+  advancedSearchCasa() {
+    this.router.navigate(['/ricerca-avanzata'], {
+      queryParams: { category: 'Casa e Cucina' }
+    });
+  }
 
-  advancedSearchLibri() {}
+  advancedSearchLibri() {
+    this.router.navigate(['/ricerca-avanzata'], {
+      queryParams: { category: 'Libri' }
+    });
+  }
 
-  advancedSearchModa() {}
+  advancedSearchModa() {
+    this.router.navigate(['/ricerca-avanzata'], {
+      queryParams: { category: 'Abbigliamento' }
+    });
+  }
 
-  advancedSearchSport() {}
+  advancedSearchSport() {
+    this.router.navigate(['/ricerca-avanzata'], {
+      queryParams: { category: 'Sport e Fitness' }
+    });
+  }
 }

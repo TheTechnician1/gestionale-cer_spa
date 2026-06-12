@@ -8,6 +8,8 @@ import { DashboardComponent } from "./core/components/dashboard/dashboard.compon
 import { CartComponent } from "./core/components/cart/cart.component";
 import { ProductComponent } from "./core/components/product/product.component";
 import { OfferteComponent } from "./core/components/offerte/offerte.component";
+import { SearchComponent } from "./core/components/search/search.component";
+import { OrderComponent } from "./core/components/order/order.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: DashboardComponent, pathMatch: "full" },
@@ -17,6 +19,8 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "prodotto/:id", component: ProductComponent },
   { path: "carrello/:id", component: CartComponent },
   { path: "offerte", component: OfferteComponent },
+  { path: "ricerca-avanzata", component: SearchComponent },
+  { path: "ordini", component: OrderComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },
   { path: "**", redirectTo: "not-authorized" },
 ];

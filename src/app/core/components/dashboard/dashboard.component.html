@@ -7,21 +7,23 @@
     </div>
   </section>
   <section class="products-grid">
-    <mat-card class="product-card" *ngFor="let p of productsByCategory">
-      <div class="image-wrapper">
-        <img mat-card-image [src]="p.immagine" alt="p.nomeProdotto" (click)="details(p.id!)">
-      </div>
-      <mat-card-content>
-        <h3 class="product-title">{{ p.nomeProdotto }}</h3>
-        <p class="quantity">Disponibilità: {{ p.quantita }}</p>
-        <p class="product-price">{{ p.prezzo }} €</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(p)">
-          <mat-icon>add_shopping_cart</mat-icon>
-          Aggiungi al carrello
-        </button>
-      </mat-card-actions>
-    </mat-card>
+    <div *ngFor="let p of productsByCategory">
+      <mat-card class="product-card" *ngIf="p.quantita! > 0">
+        <div class="image-wrapper">
+          <img mat-card-image [src]="p.immagine" alt="p.nomeProdotto" (click)="details(p.id!)">
+        </div>
+        <mat-card-content>
+          <h3 class="product-title">{{ p.nomeProdotto }}</h3>
+          <p class="quantity">Disponibilità: {{ p.quantita }}</p>
+          <p class="product-price">{{ p.prezzo }} €</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(p)">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Aggiungi al carrello
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </section>
 </main>

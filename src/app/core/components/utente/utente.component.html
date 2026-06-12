@@ -26,7 +26,26 @@
       </p>
       <p>
         <span class="label">Saldo: </span>
-        <span class="value">{{ utente.balance | number:'1.2-2' }} €</span>
+        <span *ngIf="!editing" class="value">
+          {{ utente.balance | number:'1.2-2' }} €
+        </span>
+        <button mat-icon-button *ngIf="!editing" (click)="startEdit()" aria-label="Modifica saldo">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <ng-container *ngIf="editing">
+          <mat-form-field appearance="outline" class="balance-input">
+            <input matInput type="number" [min]="originalBalance" [formControl]="balanceControl" aria-label="Saldo" />
+            <mat-error *ngIf="balanceControl.hasError('required')">Il saldo è obbligatorio</mat-error>
+            <mat-error *ngIf="balanceControl.hasError('min')">Il nuovo saldo non può essere inferiore a {{ originalBalance | number:'1.2-2' }} €</mat-error>
+          </mat-form-field>
+          <button mat-icon-button color="primary" (click)="saveBalance()" [disabled]="balanceControl.invalid || saving || isLowerThanOriginal()" aria-label="Salva saldo">
+            <mat-icon *ngIf="!saving">check</mat-icon>
+            <mat-progress-spinner *ngIf="saving" diameter="20" mode="indeterminate"></mat-progress-spinner>
+          </button>
+          <button mat-icon-button color="warn" (click)="cancelEdit()" [disabled]="saving" aria-label="Annulla modifica">
+            <mat-icon>close</mat-icon>
+          </button>
+        </ng-container>
       </p>
     </div>
   </div>

@@ -42,16 +42,9 @@ export class UtenteService {
     return saved ? Number(saved) : 0;
   }
 
-  updateBalance(newBalance: number) {
-    const user = this.currentUser;
-
-    if (user) {
-      user.balance = newBalance;
-      localStorage.setItem(this.storageKey, JSON.stringify(user));
-      this.userSubject.next(user);
-    }
-
-    localStorage.setItem('userBalance', String(newBalance));
+  updateBalance(userId: number, payload: { balance: number }): Observable<any> {
+    const endpoint = `/api/auth/edit/${userId}/balance`;
+    return this.apiService.post(endpoint, payload);
   }
 
   private persistUser(utente: UtenteModel): void {

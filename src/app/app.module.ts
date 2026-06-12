@@ -27,9 +27,10 @@ import { DashboardComponent } from './core/components/dashboard/dashboard.compon
 import { ProductComponent } from './core/components/product/product.component';
 import { OfferteComponent } from './core/components/offerte/offerte.component';
 import { SearchComponent } from './core/components/search/search.component';
+import { ModificaUtenteComponent } from './core/components/modifica-utente/modifica-utente.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent, ModificaUtenteComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

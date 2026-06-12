@@ -23,8 +23,14 @@ export class ProductService {
     return this.apiService.get<Prodotto[]>(endpoint);
   }
 
-  getProductsAdvancedSearch(filters: { category?: string; priceRange?: { min: number; max: number }; minQuantity: number }) {
-    const endpoint = '/api/products/advanced-search';
-    return this.apiService.post<Prodotto[]>(endpoint, filters);
+  getProductsAdvancedSearch(filters: any) {
+    let query = [];
+    if (filters.category) query.push(`category=${encodeURIComponent(filters.category)}`);
+    if (filters.minPrice != null) query.push(`minPrice=${filters.minPrice}`);
+    if (filters.maxPrice != null) query.push(`maxPrice=${filters.maxPrice}`);
+    if (filters.minQuantity != null) query.push(`minQuantity=${filters.minQuantity}`);
+    const queryString = query.length > 0 ? '?' + query.join('&') : '';
+    const endpoint = `/api/products/advanced-search${queryString}`;
+    return this.apiService.get<Prodotto[]>(endpoint);
   }
 }
