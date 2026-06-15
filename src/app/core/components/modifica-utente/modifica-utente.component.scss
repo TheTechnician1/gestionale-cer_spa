@@ -1,0 +1,19 @@
+.title { font-weight: bold; margin: 10px; }
+.profile-card { max-width: 700px; margin: 16px auto; }
+.profile-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+.avatar-column { display:flex; justify-content:center; }
+.avatar-wrapper { display:flex; flex-direction:column; align-items:center; gap:8px; }
+.avatar-img { width: 160px; height: 160px; object-fit:cover; border-radius: 8px; border: 1px solid #e0e0e0; }
+.avatar-actions { display:flex; gap:8px; align-items:center; }
+.fields-column .row { display:flex; gap:12px; margin-bottom:12px; }
+.full { flex: 1 1 100%; }
+.balance-row { display:flex; gap:12px; align-items:flex-end; }
+.balance-field { flex: 1 1 auto; }
+.balance-actions { display:flex; align-items:center; }
+.section-title { margin: 12px 0 8px; font-size: 14px; color: rgba(0,0,0,0.6); }
+.loading-placeholder { display:flex; flex-direction:column; align-items:center; gap:12px; padding:24px; }
+.btt-save { background-color: var(--app-secondary); margin-left: 5px; }
+@media (max-width: 800px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .fields-column .row { flex-direction: column; }
+}

@@ -1,1 +1,125 @@
-<p>order works!</p>
+<ng-container *ngIf="loading; else content">
+  <div class="loading-placeholder">
+    <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+    <p>Caricamento ordini...</p>
+  </div>
+</ng-container>
+
+<ng-template #content>
+  <mat-card class="orders-card">
+    <mat-card-title>Ordini</mat-card-title>
+
+    <mat-card-content>
+      <div class="toolbar">
+        <mat-form-field appearance="outline" class="search">
+          <mat-label>Ricerca ordine o prodotto</mat-label>
+          <input matInput placeholder="ID, prodotto, stato, data..." />
+          <button mat-icon-button matSuffix *ngIf="filterValue" (click)="clearFilter()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="status-filter">
+          <mat-label>Stato</mat-label>
+          <mat-select (selectionChange)="filterByStatus($event.value)" [value]="statusFilter">
+            <mat-option value="">Tutti</mat-option>
+            <mat-option *ngFor="let s of orderStatuses" [value]="s">{{ s }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="spacer"></div>
+
+        <button mat-stroked-button color="primary" (click)="refresh()">Aggiorna</button>
+      </div>
+
+      <div class="table-wrapper" *ngIf="orders && orders.length; else empty">
+        <table mat-table class="mat-elevation-z1" matSort>
+
+          <!-- ID -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+            <td mat-cell *matCellDef="let o">{{ o.id }}</td>
+          </ng-container>
+
+          <!-- Data -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Data</th>
+            <td mat-cell *matCellDef="let o">{{ o.date | date:'short' }}</td>
+          </ng-container>
+
+          <!-- Totale -->
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Totale</th>
+            <td mat-cell *matCellDef="let o">{{ o.total | currency:'EUR' }}</td>
+          </ng-container>
+
+          <!-- Stato -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato</th>
+            <td mat-cell *matCellDef="let o">
+              <mat-chip [color]="statusColor(o.status)" selected>{{ o.status }}</mat-chip>
+            </td>
+          </ng-container>
+
+          <!-- Items summary -->
+          <ng-container matColumnDef="items">
+            <th mat-header-cell *matHeaderCellDef>Prodotti</th>
+            <td mat-cell *matCellDef="let o">{{ o.items.length }} articoli</td>
+          </ng-container>
+
+          <!-- Azioni -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Azioni</th>
+            <td mat-cell *matCellDef="let o">
+              <button mat-icon-button color="primary" (click)="openDetails(o)">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="accent" *ngIf="o.status === 'In elaborazione'" (click)="cancelOrder(o)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [length]="totalOrders" [pageSize]="pageSize" [pageSizeOptions]="[5,10,25]" (page)="pageChanged($event)">
+        </mat-paginator>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty-state">
+          <mat-icon>receipt_long</mat-icon>
+          <p>Nessun ordine trovato.</p>
+          <button mat-stroked-button color="primary" (click)="refresh()">Riprova</button>
+        </div>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Dialog dettagli ordine -->
+  <ng-template #orderDetails let-order="order">
+    <h2 mat-dialog-title>Ordine {{ order.id }}</h2>
+    <mat-dialog-content>
+      <p><strong>Data</strong>: {{ order.date | date:'fullDate' }} {{ order.date | date:'shortTime' }}</p>
+      <p><strong>Totale</strong>: {{ order.total | currency:'EUR' }}</p>
+      <p><strong>Stato</strong>: {{ order.status }}</p>
+      <mat-divider></mat-divider>
+      <h3>Articoli</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let it of order.items">
+          <img matListAvatar [src]="it.image" alt="{{ it.name }}" />
+          <div matLine>{{ it.name }}</div>
+          <div matLine class="muted">x{{ it.quantity }} • {{ it.price | currency:'EUR' }}</div>
+        </mat-list-item>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <p *ngIf="order.shipping"><strong>Spedizione</strong>: {{ order.shipping.method }} - {{ order.shipping.cost | currency:'EUR' }}</p>
+      <p *ngIf="order.address"><strong>Indirizzo</strong>: {{ order.address.street }}, {{ order.address.city }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Chiudi</button>
+    </mat-dialog-actions>
+  </ng-template>
+</ng-template>

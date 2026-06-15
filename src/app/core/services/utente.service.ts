@@ -3,6 +3,7 @@ import { Utente, UtenteModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { ApiResponse } from "../interfaces/api.model";
+import { HttpParams } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -42,9 +43,14 @@ export class UtenteService {
     return saved ? Number(saved) : 0;
   }
 
-  updateBalance(userId: number, payload: { balance: number }): Observable<any> {
-    const endpoint = `/api/auth/edit/${userId}/balance`;
-    return this.apiService.post(endpoint, payload);
+  updateUser(id: number, payload: any, options: ApiRequestOptions = {}): Observable<any> {
+    const endpoint = `/api/auth/edit/${id}`;
+    return this.apiService.post<any>(endpoint, payload, { ...options, responseType: 'text' });
+  }
+
+  updateBalance(id: number, balance: number): Observable<any> {
+    const endpoint = `/api/auth/edit/${id}/balance`;
+    return this.apiService.post<any>(endpoint, null, { params: { balance }, responseType: 'text' });
   }
 
   private persistUser(utente: UtenteModel): void {
@@ -65,5 +71,15 @@ export class UtenteService {
       localStorage.removeItem(this.storageKey);
       return null;
     }
+  }
+
+  requestPasswordReset(email: string) {
+    const endpoint = `/api/auth/reset-password/request/${encodeURIComponent(email)}`;
+    return this.apiService.getText(endpoint);
+  }
+
+  resetPassword(payload: any) {
+    const endpoint = `/api/auth/reset-password`;
+    return this.apiService.post<any>(endpoint, payload, { responseType: 'text' });
   }
 }

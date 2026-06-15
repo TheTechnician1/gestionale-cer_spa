@@ -28,6 +28,7 @@ import { MatTreeModule } from "@angular/material/tree";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatBadgeModule } from "@angular/material/badge";
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
+import {MatChipsModule} from '@angular/material/chips';
 import { FormControlErrorComponent } from "./components/form-control-error/form-control-error.component";
 import { ConfirmationDialogComponent } from "./components/confirmation-dialog/confirmation-dialog.component";
 import { ToastSnackbarComponent } from "./components/toast-snackbar/toast-snackbar.component";
@@ -57,6 +58,8 @@ export const MATERIAL_MODULES = [
   MatGridListModule,
   MatBadgeModule,
   MatButtonToggleModule,
+  MatProgressSpinnerModule,
+  MatChipsModule
 ];
 
 @NgModule({

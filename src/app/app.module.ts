@@ -28,9 +28,15 @@ import { ProductComponent } from './core/components/product/product.component';
 import { OfferteComponent } from './core/components/offerte/offerte.component';
 import { SearchComponent } from './core/components/search/search.component';
 import { ModificaUtenteComponent } from './core/components/modifica-utente/modifica-utente.component';
+import { OrderDetailComponent } from './core/components/order-detail/order-detail.component';
+import { CheckoutComponent } from './core/components/checkout/checkout.component';
+import { PaypageComponent } from './core/components/paypage/paypage.component';
+import { ConfirmOrderComponent } from './core/components/confirm-order/confirm-order.component';
+import { OrderCompletedComponent } from './core/components/order-completed/order-completed.component';
+import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent, ModificaUtenteComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent, ModificaUtenteComponent, OrderDetailComponent, CheckoutComponent, PaypageComponent, ConfirmOrderComponent, OrderCompletedComponent, ResetPasswordComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

@@ -24,6 +24,10 @@ export class ApiService {
     return this.request<T>("GET", path, undefined, "json", { ...options, params });
   }
 
+  getText(path: string, params?: Record<string, string | number | boolean>) {
+    return this.request<string>("GET", path, undefined, "text", { params });
+  }
+
   post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
     return this.request<T>("POST", path, body, options.responseType === 'text' ? 'text' : 'json', options);
   }

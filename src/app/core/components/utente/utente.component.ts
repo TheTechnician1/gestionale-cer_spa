@@ -64,7 +64,7 @@ export class UtenteComponent {
     const id = this.utente?.id;
     this.utente!.balance = newBalance;
     this.saving = true;
-    this.utenteService.updateBalance(id!, { balance: newBalance })
+    this.utenteService.updateBalance(id!, newBalance)
       .pipe(finalize(() => (this.saving = false)))
       .subscribe({
         next: () => {

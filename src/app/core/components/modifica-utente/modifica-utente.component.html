@@ -1,1 +1,72 @@
-<p>modifica-utente works!</p>
+<ng-container *ngIf="utente; else loading">
+  <form *ngIf="profileForm" [formGroup]="profileForm" class="profile-form" (ngSubmit)="save()" novalidate>
+    <mat-card class="profile-card">
+      <mat-card-title class="title">Modifica profilo</mat-card-title>
+      <mat-card-content>
+        <div class="profile-grid">
+          <div class="fields-column">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="firstName" placeholder="{{ utente.name }}"/>
+                <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">Nome obbligatorio</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Cognome</mat-label>
+                <input matInput formControlName="lastName" placeholder="{{ utente.surname }}"/>
+                <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">Cognome obbligatorio</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" placeholder="{{ utente.email }}"/>
+                <mat-error *ngIf="profileForm.get('email')?.hasError('required')">Email obbligatoria</mat-error>
+                <mat-error *ngIf="profileForm.get('email')?.hasError('email')">Email non valida</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="row balance-row">
+              <mat-form-field appearance="outline" class="balance-field">
+                <mat-label>Saldo</mat-label>
+                <input matInput min="originalBalance" formControlName="balance" type="number"/>
+                <mat-hint>Saldo corrente: {{ utente.balance | number:'1.2-2' }} €</mat-hint>
+                <mat-error *ngIf="profileForm.get('balance')?.hasError('required')">Saldo obbligatorio</mat-error>
+                <mat-error *ngIf="profileForm.get('balance')?.hasError('min')">Il nuovo saldo non può essere inferiore a {{ originalBalance | number:'1.2-2' }} €</mat-error>
+                <mat-error *ngIf="profileForm.get('balance')?.hasError('pattern')">Valore non valido</mat-error>
+              </mat-form-field>
+            </div>
+            <mat-divider></mat-divider>
+            <h3 class="section-title">Cambia password</h3>
+            <div class="row">
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Nuova password</mat-label>
+                <input matInput formControlName="newPassword" type="password" autocomplete="new-password" />
+                <mat-error *ngIf="profileForm.get('newPassword')?.hasError('minlength')">Minimo 6 caratteri</mat-error>
+                <mat-error *ngIf="profileForm.get('newPassword')?.hasError('pattern')">Password non valida</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="full">
+                <mat-label>Conferma password</mat-label>
+                <input matInput formControlName="confirmPassword" type="password" autocomplete="new-password" />
+                <mat-error *ngIf="profileForm.hasError('passwordMismatch')">Le password non coincidono</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-stroked-button type="button" [disabled]="saving" routerLink="/">Annulla</button>
+        <button mat-flat-button color="primary" class="btt-save" type="submit" [disabled]="profileForm.invalid || saving">
+          <mat-icon *ngIf="!saving">save</mat-icon>
+          <mat-progress-spinner *ngIf="saving" diameter="20" mode="indeterminate"></mat-progress-spinner>
+          Salva
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</ng-container>
+<ng-template #loading>
+  <div class="loading-placeholder">
+    <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+    <p>Caricamento dati utente...</p>
+  </div>
+</ng-template>

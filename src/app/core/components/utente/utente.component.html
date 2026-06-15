@@ -29,7 +29,7 @@
         <span *ngIf="!editing" class="value">
           {{ utente.balance | number:'1.2-2' }} €
         </span>
-        <button mat-icon-button *ngIf="!editing" (click)="startEdit()" aria-label="Modifica saldo">
+        <button mat-icon-button class="edit-btt" *ngIf="!editing" (click)="startEdit()" aria-label="Modifica saldo">
           <mat-icon>edit</mat-icon>
         </button>
         <ng-container *ngIf="editing">
@@ -49,5 +49,5 @@
       </p>
     </div>
   </div>
-  <button mat-raised-button color="primary" class="btt" routerLink="">Modifica Profilo</button>
+  <button mat-raised-button color="primary" class="btt" [routerLink]="['/modifica-profilo', utente?.id]">Modifica Profilo</button>
 </div>
