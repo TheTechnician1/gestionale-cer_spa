@@ -1,0 +1,86 @@
+<div class="dettaglio-container" *ngIf="prodotto">
+
+  <mat-card class="dettaglio-card">
+
+    <!-- IMMAGINE -->
+    <div class="image-container">
+      <img
+        *ngIf="prodotto.immagine; else placeholder"
+        [src]="prodotto.immagine"
+        [alt]="prodotto.nomeProdotto"
+      />
+
+      <ng-template #placeholder>
+        <div class="image-placeholder">
+          <mat-icon>image_not_supported</mat-icon>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- INFO PRODOTTO -->
+    <mat-card-header>
+      <mat-card-title>{{ prodotto.nomeProdotto }}</mat-card-title>
+      <mat-card-subtitle>{{ prodotto.categoria }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <p>{{ prodotto.descrizioneBreve }}</p>
+      <p>{{ prodotto.descrizioneCompleta }}</p>
+
+      <div class="info">
+        <span class="prezzo">
+          {{ prodotto.prezzo | currency:'EUR' }}
+        </span>
+
+        <span>
+          Disponibilità: {{ prodotto.quantitaDisponibile }}
+        </span>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- VENDITORE -->
+      <div class="venditore">
+        <mat-icon>store</mat-icon>
+        <div>
+          <strong>{{ prodotto.venditore.nome }}</strong>
+          <small>{{ prodotto.venditore.email }}</small>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- QUANTITÀ -->
+      <div class="quantita-selezione">
+        <mat-form-field appearance="outline">
+          <mat-label>Quantità</mat-label>
+
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="quantita"
+            min="1"
+            [max]="prodotto.quantitaDisponibile"
+          />
+        </mat-form-field>
+      </div>
+
+    </mat-card-content>
+
+    <!-- AZIONE -->
+    <mat-card-actions>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="aggiungiAlCarrello()"
+        [disabled]="!quantita || quantita <= 0">
+
+        Aggiungi al carrello
+      </button>
+
+    </mat-card-actions>
+
+  </mat-card>
+</div>

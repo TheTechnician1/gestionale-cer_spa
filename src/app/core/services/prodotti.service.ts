@@ -13,4 +13,10 @@ export class ProdottiService {
     const endpoint = "api/products/";
     return this.api.get<Prodotto[]>(endpoint, {}, options);
   }
+
+  getById(id: number, options: ApiRequestOptions = {}): Observable<Prodotto> {
+    const endpoint = `api/products/${id}`;
+    return this.api.get<Prodotto>(endpoint, {}, options);
+  }
+
 }
