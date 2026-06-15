@@ -18,5 +18,23 @@ export class ProdottiService {
     const endpoint = `api/products/${id}`;
     return this.api.get<Prodotto>(endpoint, {}, options);
   }
+  getWithFilters(
+    categoria?: string,
+    prezzoMin?: number,
+    prezzoMax?: number,
+    quantitaDisponibileMin?: number,
+    quantitaDisponibileMax?: number,
+    options: ApiRequestOptions = {}
+  ): Observable<Prodotto[]> {
+    const endpoint = "api/products/advanced-search";
+    const params: any = {};
 
+    if (categoria!== undefined && categoria.trim() !== '' && categoria !== null) params.categoria = categoria;
+    if (prezzoMin !== undefined  && prezzoMin !== null) params.prezzoMin = prezzoMin;
+    if (prezzoMax !== undefined && prezzoMax !== null) params.prezzoMax = prezzoMax;
+    if (quantitaDisponibileMin !== undefined && quantitaDisponibileMin !== null) params.quantitaDisponibileMin = quantitaDisponibileMin;
+    if (quantitaDisponibileMax !== undefined && quantitaDisponibileMax !== null) params.quantitaDisponibileMax = quantitaDisponibileMax;
+
+    return this.api.get<Prodotto[]>(endpoint, params, options);
+  }
 }

@@ -1,18 +1,47 @@
+<form class="filter-form" [formGroup]="filterForm">
+
+  <input placeholder="Categoria"
+         formControlName="categoria">
+
+  <input type="number"
+         placeholder="Prezzo min"
+         formControlName="prezzoMin">
+
+  <input type="number"
+         placeholder="Prezzo max"
+         formControlName="prezzoMax">
+
+  <input type="number"
+         placeholder="Q.tà min"
+         formControlName="quantitaDisponibileMin">
+
+  <input type="number"
+         placeholder="Q.tà max"
+         formControlName="quantitaDisponibileMax">
+
+  <div class="actions">
+    <button type="button" (click)="search()">
+      Cerca
+    </button>
+
+    <button type="button" (click)="reset()">
+      Reset
+    </button>
+  </div>
+
+</form>
+
 <div class="prodotto-container">
 
-  <mat-card 
-    class="prodotto-card"
-    *ngFor="let prodotto of prodotto$ | async">
+  <mat-card class="prodotto-card"
+            *ngFor="let prodotto of prodotto$ | async">
 
     <div class="image-container">
-        <img 
-            mat-card-image
-            [src]="prodotto.immagine"
-            [alt]="prodotto.nomeProdotto">
+      <img [src]="prodotto.immagine"
+           [alt]="prodotto.nomeProdotto">
     </div>
 
     <mat-card-header>
-
       <mat-card-title>
         {{ prodotto.nomeProdotto }}
       </mat-card-title>
@@ -20,9 +49,7 @@
       <mat-card-subtitle>
         {{ prodotto.categoria }}
       </mat-card-subtitle>
-
     </mat-card-header>
-
 
     <mat-card-content>
 
@@ -30,11 +57,9 @@
         {{ prodotto.descrizioneBreve }}
       </p>
 
-
       <p>
         {{ prodotto.descrizioneCompleta }}
       </p>
-
 
       <div class="info">
 
@@ -42,49 +67,31 @@
           {{ prodotto.prezzo | currency:'EUR' }}
         </span>
 
-
         <span>
-          Q.tà:
-          {{ prodotto.quantitaDisponibile }}
+          Q.tà: {{ prodotto.quantitaDisponibile }}
         </span>
 
       </div>
 
-
       <mat-divider></mat-divider>
 
-
       <div class="venditore">
-
         <mat-icon>store</mat-icon>
 
         <div>
-          <strong>
-            {{ prodotto.venditore.nome }}
-          </strong>
-
-          <small>
-            {{ prodotto.venditore.email }}
-          </small>
+          <strong>{{ prodotto.venditore.nome }}</strong>
+          <small>{{ prodotto.venditore.email }}</small>
         </div>
-
       </div>
-
 
     </mat-card-content>
 
-
     <mat-card-actions>
-
-      <button 
-        mat-raised-button 
-        color="primary"
-        [routerLink]="['/prodotto', prodotto.idProdotto]">
+      <button mat-raised-button color="primary"
+              [routerLink]="['/prodotto', prodotto.idProdotto]">
         Acquista
       </button>
-
     </mat-card-actions>
-
 
   </mat-card>
 
