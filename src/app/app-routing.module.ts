@@ -25,11 +25,15 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
+    path: 'prodotti/categoria/:nomeCategoria',
+    component: ProdottiComponent,
+  },
+  {
     path: 'prodotti',
     component: ProdottiComponent,
   },
   {
-    path: ' carrello',
+    path: 'carrello',
     component: CarrelloComponent,
   },
   {

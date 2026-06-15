@@ -1,0 +1,34 @@
+<header class="shop-navbar">
+  <div class="navbar-left">
+    <a routerLink="/home" class="brand">
+      <img src="assets/immages/Logo.png" alt="Majorbit Group" />
+    </a>
+    <nav class="main-nav">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a routerLink="/prodotti" routerLinkActive="active">Prodotti</a>
+      <a href="#">Categorie</a>
+    </nav>
+  </div>
+
+  <div class="navbar-center">
+    <div class="search-box">
+      <span>⌕</span>
+      <input type="text" placeholder="Cerca prodotti..." />
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <button type="button" class="icon.button" title="preferiti">♥</button>
+
+    <button
+      type="button"
+      class="icon-button"
+      routerLink="/carrello"
+      title="carrello"
+    >
+      🛒
+    </button>
+
+    <button type="button" class="user-button">account</button>
+  </div>
+</header>

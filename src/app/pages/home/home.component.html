@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+<main class="home-page">
+  <section class="hero-section">
+    <div class="hero-content">
+      <p class="hero-kicker">Majorbit Shop</p>
+      <h1>MajorBit Marketplace</h1>
+      <p class="hero-text">
+        Trova cio che ti piace, aggiungilo al carrello e completa l'acquisto
+        prima che finisca in magazzino
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/prodotti" class="primary-link"> Vai a prodotti</a>
+        <a routerLink="/carrello" class="secondary-link">
+          Visualizza carrello</a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="category-grid">
+    <a
+      class="category-card"
+      *ngFor="let categoria of categorie"
+      [routerLink]="['/prodotti/categoria', categoria.nome]"
+    >
+      <img
+        [src]="'assets/immages/categorie/' + categoria.immagine"
+        [alt]="categoria.nome"
+      />
+
+      <div class="category-card-overlay"></div>
+
+      <h3>{{ categoria.nome }}</h3>
+    </a>
+  </section>
+</main>
