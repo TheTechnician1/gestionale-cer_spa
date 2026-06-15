@@ -3,70 +3,75 @@
 
   <nav class="auth-navbar">
     <div class="brand-mini">
-      <span class="menu-icon">☰</span>
+      <span class="menu-icon"></span>
       <span>MAJORBIT SHOP</span>
     </div>
 
     <div class="nav-links">
-      <a routerLink="/login">ACCEDEI</a>
+      <a routerLink="/login">ACCEDI</a>
       <a href="#">AIUTO?</a>
     </div>
   </nav>
 
   <div class="auth-content">
-    <img class="auth-logo" src="assets/immages/Logo.png" alt="Majorbit Group" />
+    <div class="auth-card">
+      <img
+        class="auth-logo"
+        src="assets/immages/Logo.png"
+        alt="MajorBit Group"
+      />
 
-    <form
-      class="auth-form"
-      [formGroup]="registrazioneForm"
-      (ngSubmit)="registrati()"
-    >
-      <div class="input-group">
-        <span class="input-icon">👤</span>
-        <input type="text" placeholder="Nome..." formControlName="nome" />
-      </div>
+      <h1>Registrazione</h1>
 
-      <div class="input-group">
-        <span class="input-icon">👤</span>
-        <input type="text" placeholder="Cognome..." formControlName="cognome" />
-      </div>
+      <form
+        class="auth-form"
+        [formGroup]="registrazioneForm"
+        (ngSubmit)="registrati()"
+      >
+        <div class="input-group">
+          <input type="text" placeholder="Nome" formControlName="nome" />
+        </div>
 
-      <div class="input-group">
-        <span class="input-icon">✉️</span>
-        <input type="email" placeholder="Email..." formControlName="email" />
-      </div>
+        <div class="input-group">
+          <input type="text" placeholder="Cognome" formControlName="cognome" />
+        </div>
 
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input
-          type="password"
-          placeholder="Password..."
-          formControlName="password"
-        />
-      </div>
+        <div class="input-group">
+          <input type="email" placeholder="Email" formControlName="email" />
+        </div>
 
-      <div class="input-group">
-        <span class="input-icon">🔒</span>
-        <input
-          type="password"
-          placeholder="Conferma Password..."
-          formControlName="confermaPassword"
-        />
-      </div>
+        <div class="input-group">
+          <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+        </div>
 
-      <button type="submit" class="primary-button" [disabled]="caricamento">
-        {{ caricamento ? "Registrazione..." : "Crea account" }}
-      </button>
-      <p class="error-message" *ngIf="messaggioErrore">
-        {{ messaggioErrore }}
-      </p>
+        <div class="input-group">
+          <input
+            type="password"
+            placeholder="Conferma password"
+            formControlName="confermaPassword"
+          />
+        </div>
 
-      <p class="success-message" *ngIf="messaggioSuccesso">
-        {{ messaggioSuccesso }}
-      </p>
-      <div class="auth-actions single-link">
-        <a routerLink="/login">HAI GIA UN ACCOUNT? ACCEDI</a>
-      </div>
-    </form>
+        <button type="submit" class="primary-button" [disabled]="caricamento">
+          {{ caricamento ? "Registrazione..." : "Crea account" }}
+        </button>
+
+        <p class="error-message" *ngIf="messaggioErrore">
+          {{ messaggioErrore }}
+        </p>
+
+        <p class="success-message" *ngIf="messaggioSuccesso">
+          {{ messaggioSuccesso }}
+        </p>
+
+        <div class="auth-actions">
+          <a routerLink="/login">Hai gia un account? Accedi</a>
+        </div>
+      </form>
+    </div>
   </div>
 </section>

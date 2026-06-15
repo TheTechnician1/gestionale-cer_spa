@@ -14,35 +14,42 @@
   </nav>
 
   <div class="auth-content">
-    <img class="auth-logo" src="assets/immages/Logo.png" alt="MajorBit Group" />
+    <div class="auth-card">
+      <img
+        class="auth-logo"
+        src="assets/immages/Logo.png"
+        alt="MajorBit Group"
+      />
 
-    <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
-      <div class="input-group">
-        <span class="input-icon"></span>
-        <input type="email" placeholder="Email..." formControlName="email" />
-      </div>
+      <h1>Login</h1>
 
-      <div class="input-group">
-        <span class="input-icon"></span>
-        <input
-          type="password"
-          placeholder="Password..."
-          formControlName="password"
-        />
-      </div>
+      <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="input-group">
+          <span class="input-icon">✉</span>
+          <input type="email" placeholder="Email" formControlName="email" />
+        </div>
 
-      <button type="submit" class="primary-button" [disabled]="caricamento">
-        {{ caricamento ? "Accesso..." : "Accedi" }}
-      </button>
+        <div class="input-group">
+          <span class="input-icon">⌕</span>
+          <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+        </div>
 
-      <p class="error-message" *ngIf="messaggioErrore">
-        {{ messaggioErrore }}
-      </p>
+        <button type="submit" class="primary-button" [disabled]="caricamento">
+          {{ caricamento ? "Accesso..." : "Accedi" }}
+        </button>
 
-      <div class="auth-actions">
-        <a routerLink="/registrazione">CREA ACCOUNT</a>
-        <a href="#">PASSWORD DIMENTICATA?</a>
-      </div>
-    </form>
+        <p class="error-message" *ngIf="messaggioErrore">
+          {{ messaggioErrore }}
+        </p>
+
+        <div class="auth-actions">
+          <a routerLink="/registrazione">Non hai un account? Registrati</a>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
