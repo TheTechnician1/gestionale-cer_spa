@@ -1,38 +1,199 @@
-.filter-form {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
-  padding: 16px 24px;
-  align-items: end;
+.products-page {
+  width: 100%;
 }
 
-.filter-form input {
-  padding: 10px;
+
+.products-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  background: #fafafa;
+  border-radius: 16px;
+}
+
+
+.filter-field {
+  flex: 1 1 180px;
+}
+
+
+.filter-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
   border: 1px solid #ddd;
-  border-radius: 8px;
   outline: none;
 }
 
-.actions {
-  display: flex;
-  gap: 8px;
+
+.filter-field input:focus {
+  border-color: #2a5298;
 }
 
-.actions button {
-  padding: 10px 14px;
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.filter-actions button {
+  padding: 11px 18px;
+  border-radius: 10px;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
   background: #2a5298;
   color: white;
 }
 
-.actions button:last-child {
+
+.filter-actions button:last-child {
   background: #777;
 }
 
-@media (max-width: 900px) {
-  .filter-form {
-    grid-template-columns: 1fr;
+
+
+.products-grid {
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(280px, 1fr)
+  );
+
+  gap: 24px;
+  padding: 0 24px 24px;
+}
+
+
+
+.product-card {
+
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform .2s ease;
+}
+
+
+.product-card:hover {
+  transform: translateY(-4px);
+}
+
+
+
+.product-image {
+
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+
+
+.product-image img {
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+
+
+.product-short {
+
+  font-size: 1rem;
+  color: #555;
+}
+
+
+.product-description {
+
+  color: #666;
+}
+
+
+
+.product-info {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+
+}
+
+
+.product-price {
+
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2e7d32;
+
+}
+
+
+
+.product-seller {
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+
+}
+
+
+.product-seller div {
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+.product-seller small {
+
+  color: #777;
+
+}
+
+
+
+@media(max-width:900px) {
+
+  .products-filter {
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
   }
+
+
+  .filter-field {
+    width: 100%;
+    flex: none;
+  }
+
+
+  .filter-field input {
+    height: 38px;
+    padding: 8px 10px;
+  }
+
+
+  .filter-actions {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+
+  .filter-actions button {
+    flex: 1;
+  }
+
 }

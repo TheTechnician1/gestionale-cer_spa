@@ -1,98 +1,149 @@
-<form class="filter-form" [formGroup]="filterForm">
+<div class="products-page">
 
-  <input placeholder="Categoria"
-         formControlName="categoria">
+  <form class="products-filter" [formGroup]="filterForm">
 
-  <input type="number"
-         placeholder="Prezzo min"
-         formControlName="prezzoMin">
-
-  <input type="number"
-         placeholder="Prezzo max"
-         formControlName="prezzoMax">
-
-  <input type="number"
-         placeholder="Q.tà min"
-         formControlName="quantitaDisponibileMin">
-
-  <input type="number"
-         placeholder="Q.tà max"
-         formControlName="quantitaDisponibileMax">
-
-  <div class="actions">
-    <button type="button" (click)="search()">
-      Cerca
-    </button>
-
-    <button type="button" (click)="reset()">
-      Reset
-    </button>
-  </div>
-
-</form>
-
-<div class="prodotto-container">
-
-  <mat-card class="prodotto-card"
-            *ngFor="let prodotto of prodotto$ | async">
-
-    <div class="image-container">
-      <img [src]="prodotto.immagine"
-           [alt]="prodotto.nomeProdotto">
+    <div class="filter-field">
+      <input placeholder="Categoria"
+             formControlName="categoria">
     </div>
 
-    <mat-card-header>
-      <mat-card-title>
-        {{ prodotto.nomeProdotto }}
-      </mat-card-title>
+    <div class="filter-field">
+      <input type="number"
+             placeholder="Prezzo min"
+             formControlName="prezzoMin">
+    </div>
 
-      <mat-card-subtitle>
-        {{ prodotto.categoria }}
-      </mat-card-subtitle>
-    </mat-card-header>
+    <div class="filter-field">
+      <input type="number"
+             placeholder="Prezzo max"
+             formControlName="prezzoMax">
+    </div>
 
-    <mat-card-content>
+    <div class="filter-field">
+      <input type="number"
+             placeholder="Q.tà min"
+             formControlName="quantitaDisponibileMin">
+    </div>
 
-      <p class="breve">
-        {{ prodotto.descrizioneBreve }}
-      </p>
+    <div class="filter-field">
+      <input type="number"
+             placeholder="Q.tà max"
+             formControlName="quantitaDisponibileMax">
+    </div>
 
-      <p>
-        {{ prodotto.descrizioneCompleta }}
-      </p>
 
-      <div class="info">
-
-        <span class="prezzo">
-          {{ prodotto.prezzo | currency:'EUR' }}
-        </span>
-
-        <span>
-          Q.tà: {{ prodotto.quantitaDisponibile }}
-        </span>
-
-      </div>
-
-      <mat-divider></mat-divider>
-
-      <div class="venditore">
-        <mat-icon>store</mat-icon>
-
-        <div>
-          <strong>{{ prodotto.venditore.nome }}</strong>
-          <small>{{ prodotto.venditore.email }}</small>
-        </div>
-      </div>
-
-    </mat-card-content>
-
-    <mat-card-actions>
-      <button mat-raised-button color="primary"
-              [routerLink]="['/prodotto', prodotto.idProdotto]">
-        Acquista
+    <div class="filter-actions">
+      <button type="button" (click)="search()">
+        Cerca
       </button>
-    </mat-card-actions>
 
-  </mat-card>
+      <button type="button" (click)="reset()">
+        Reset
+      </button>
+    </div>
+
+  </form>
+
+
+  <div class="products-grid">
+
+    <mat-card class="product-card"
+              *ngFor="let prodotto of prodotto$ | async">
+
+
+      <div class="product-image">
+
+        <img 
+          [src]="prodotto.immagine"
+          [alt]="prodotto.nomeProdotto">
+
+      </div>
+
+
+      <mat-card-header>
+
+        <mat-card-title>
+          {{ prodotto.nomeProdotto }}
+        </mat-card-title>
+
+        <mat-card-subtitle>
+          {{ prodotto.categoria }}
+        </mat-card-subtitle>
+
+      </mat-card-header>
+
+
+      <mat-card-content>
+
+
+        <p class="product-short">
+          {{ prodotto.descrizioneBreve }}
+        </p>
+
+
+        <p class="product-description">
+          {{ prodotto.descrizioneCompleta }}
+        </p>
+
+
+        <div class="product-info">
+
+          <span class="product-price">
+            {{ prodotto.prezzo | currency:'EUR' }}
+          </span>
+
+          <span>
+            Q.tà:
+            {{ prodotto.quantitaDisponibile }}
+          </span>
+
+        </div>
+
+
+        <mat-divider></mat-divider>
+
+
+        <div class="product-seller">
+
+          <mat-icon>
+            store
+          </mat-icon>
+
+
+          <div>
+
+            <strong>
+              {{ prodotto.venditore.nome }}
+            </strong>
+
+            <small>
+              {{ prodotto.venditore.email }}
+            </small>
+
+          </div>
+
+        </div>
+
+
+      </mat-card-content>
+
+
+      <mat-card-actions>
+
+        <button 
+          mat-raised-button
+          color="primary"
+          [routerLink]="['/prodotto', prodotto.idProdotto]">
+
+          Acquista
+
+        </button>
+
+      </mat-card-actions>
+
+
+    </mat-card>
+
+  </div>
 
 </div>
