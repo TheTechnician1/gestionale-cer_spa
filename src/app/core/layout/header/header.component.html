@@ -1,15 +1,32 @@
 <mat-toolbar class="app-toolbar">
-  <span class="title">My Store</span>
 
-  <span class="spacer"></span>
+  <div class="left">
+    <span class="title">My Store</span>
+  </div>
 
-  <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
-    <mat-icon>account_circle</mat-icon>
-    <mat-menu #menu="matMenu">
-      <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/dashboard">Home</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo/:id">Profilo</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
-    </mat-menu>
-  </button>
+  <div class="center">
+    <div class="search-bar" *ngIf="isProdottiPage$ | async">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        type="text"
+        placeholder="Cerca prodotti..."
+        [(ngModel)]="searchText"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </div>
+  </div>
+
+  <div class="right">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
+
 </mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
+  <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/prodotti">Home</button>
+  <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/profilo/:id">Profilo</button>
+  <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
+</mat-menu>

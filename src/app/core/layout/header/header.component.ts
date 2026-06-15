@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 import { UtenteService } from "../../services/utente.service";
-import { Observable } from "rxjs";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter, map, Observable, startWith } from "rxjs";
 
 @Component({
   selector: "app-header",
@@ -9,13 +10,31 @@ import { Observable } from "rxjs";
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
-  constructor(private authService: UtenteService) {
-    this.isLoggedIn$ = this.authService.isLoggedIn$;
-  }
 
-  isLoggedIn$: Observable<boolean>;
+    isLoggedIn$: Observable<boolean>;
 
   ngOnInit() {}
+
+ searchText: string = '';
+
+  isProdottiPage$: Observable<boolean>;
+  constructor(private authService: UtenteService, private router: Router) {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+    this.isProdottiPage$ = this.router.events.pipe(
+      filter((event): event is NavigationEnd =>
+      event instanceof NavigationEnd
+    ),
+  map(event => event.urlAfterRedirects === '/prodotti'),
+  startWith(this.router.url === '/prodotti')
+);
+  }
+
+
+
+  onSearchChange(value: string) {
+    console.log('Search:', value);
+  }
+
 
   logout() {
     this.authService.logout();

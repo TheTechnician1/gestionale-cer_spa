@@ -1,21 +1,57 @@
 .app-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--brand-blue);
-  color: #ffffff;
-  border-bottom: 1px solid var(--app-border);
+  height: 64px;
+  background: linear-gradient(90deg, #1e3c72, #2a5298) !important;
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
 }
 
 .title {
-  margin-left: 8px;
   font-weight: 600;
+  color: white;
 }
 
-.spacer {
+.center {
   flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.app-toolbar .mat-icon {
-  color: #ffffff;
+.right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.search-bar {
+  width: 420px;
+  height: 40px;
+  background: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: #000;
+}
+
+.search-icon {
+  color: rgba(0,0,0,0.6);
+  font-size: 20px;
 }
