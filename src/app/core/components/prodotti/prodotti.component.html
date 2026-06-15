@@ -1,0 +1,100 @@
+    <div class="search-container">
+        <mat-form-field appearance="outline" class="search-bar">
+            <mat-label>Cerca prodotto</mat-label>
+            <input
+                matInput
+            />
+            <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+    </div>
+
+<div class="prodotto-container">
+
+  <mat-card 
+    class="prodotto-card"
+    *ngFor="let prodotto of prodotto$ | async">
+
+    <div class="image-container">
+        <img 
+            mat-card-image
+            [src]="prodotto.immagine"
+            [alt]="prodotto.nomeProdotto">
+    </div>
+
+    <mat-card-header>
+
+      <mat-card-title>
+        {{ prodotto.nomeProdotto }}
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        {{ prodotto.categoria }}
+      </mat-card-subtitle>
+
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+      <p class="breve">
+        {{ prodotto.descrizioneBreve }}
+      </p>
+
+
+      <p>
+        {{ prodotto.descrizioneCompleta }}
+      </p>
+
+
+      <div class="info">
+
+        <span class="prezzo">
+          {{ prodotto.prezzo | currency:'EUR' }}
+        </span>
+
+
+        <span>
+          Q.tà:
+          {{ prodotto.quantitaDisponibile }}
+        </span>
+
+      </div>
+
+
+      <mat-divider></mat-divider>
+
+
+      <div class="venditore">
+
+        <mat-icon>store</mat-icon>
+
+        <div>
+          <strong>
+            {{ prodotto.venditore.nome }}
+          </strong>
+
+          <small>
+            {{ prodotto.venditore.email }}
+          </small>
+        </div>
+
+      </div>
+
+
+    </mat-card-content>
+
+
+    <mat-card-actions>
+
+      <button 
+        mat-raised-button 
+        color="primary">
+        Acquista
+      </button>
+
+    </mat-card-actions>
+
+
+  </mat-card>
+
+</div>

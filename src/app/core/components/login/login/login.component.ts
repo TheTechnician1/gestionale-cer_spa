@@ -60,7 +60,7 @@ export class LoginComponent {
         if (user) {
           console.log("Login riuscito");
           this.loginError = false;
-          this.route.navigate(["/dashboard"]);
+          this.route.navigate(["/prodotti"]);
         } else {
           console.log("Credenziali errate");
           this.loginError = true;

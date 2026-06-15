@@ -6,14 +6,13 @@ import { LoginComponent } from "./core/components/login/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { UtenteComponent } from "./core/components/utente/utente.component";
 import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
+import { ProdottiComponent } from "./core/components/prodotti/prodotti.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
-  { path: "", redirectTo: "dashboard", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
-  { path: "dashboard", component: DashboardComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
+  { path: "", redirectTo: "login", pathMatch: "full" },
   { path: "registration", component: RegistrazioneUtenteComponent},
-  { path: "impianto", loadChildren: () => import("./core/modules/impianto.module").then((m) => m.ImpiantoModule), data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "dati-energetici", loadChildren: () => import("./core/modules/dati-energetici.module").then((m) => m.DatiEnergeticiModule), data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
+  { path: "prodotti", component: ProdottiComponent, canActivate: [AuthGuard] },
+  { path: "profilo/:id", component: UtenteComponent, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },
   { path: "**", redirectTo: "not-authorized" },
