@@ -4,27 +4,19 @@ import { UtenteService } from "../services/utente.service";
 
 @Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private auth: UtenteService,
-    private router: Router,
-  ) {}
+  constructor(private auth: UtenteService, private router: Router) {}
+  private GUEST_EMAIL = 'guest@guest.guest';
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    const isAuth = !!this.auth.currentUser;
+    const user = this.auth.currentUser;
+
+
+    const isLogged = !!user;
+    const isGuest = user?.email === this.GUEST_EMAIL;
+    const isAuth = isLogged && !isGuest;
 
     if (!isAuth) {
       return this.router.createUrlTree(["/login"], { queryParams: { returnUrl: state.url } });
-    }
-
-    const allowedRoles = route.data?.["role"] as string[] | undefined;
-    if (!allowedRoles || allowedRoles.length === 0) {
-      return true;
-    }
-
-    const userRole = null;
-
-    if (!userRole || !allowedRoles.includes(userRole)) {
-      return this.router.createUrlTree(["/not-authorized"]);
     }
 
     return true;

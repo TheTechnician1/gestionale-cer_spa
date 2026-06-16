@@ -17,23 +17,24 @@ import { PaypageComponent } from "./core/components/paypage/paypage.component";
 import { ConfirmOrderComponent } from "./core/components/confirm-order/confirm-order.component";
 import { OrderCompletedComponent } from "./core/components/order-completed/order-completed.component";
 import { ResetPasswordComponent } from "./core/components/reset-password/reset-password.component";
+import { AuthGuard } from "./core/guard/auth.guard";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", component: DashboardComponent, pathMatch: "full" },
   { path: "registrazione", component: RegistrazioneUtenteComponent },
-  { path: "profilo/:id", component: UtenteComponent },
-  { path: "modifica-profilo/:id", component: ModificaUtenteComponent },
+  { path: "profilo/:id", component: UtenteComponent, canActivate: [AuthGuard] },
+  { path: "modifica-profilo/:id", component: ModificaUtenteComponent, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "prodotto/:id", component: ProductComponent },
   { path: "carrello/:id", component: CartComponent },
   { path: "offerte", component: OfferteComponent },
   { path: "ricerca-avanzata", component: SearchComponent },
-  { path: "ordini", component: OrderComponent },
-  { path: "ordini/:id", component: OrderDetailComponent },
-  { path: "checkout", component: CheckoutComponent },
-  { path: "payment", component: PaypageComponent },
-  { path: "conferma-ordine", component: ConfirmOrderComponent },
-  { path: "ricevuta-ordine", component: OrderCompletedComponent },
+  { path: "ordini", component: OrderComponent, canActivate: [AuthGuard] },
+  { path: "ordini/:id", component: OrderDetailComponent, canActivate: [AuthGuard] },
+  { path: "checkout", component: CheckoutComponent, canActivate: [AuthGuard] },
+  { path: "payment", component: PaypageComponent, canActivate: [AuthGuard] },
+  { path: "conferma-ordine", component: ConfirmOrderComponent, canActivate: [AuthGuard] },
+  { path: "ricevuta-ordine", component: OrderCompletedComponent, canActivate: [AuthGuard] },
   { path: "reset-password", component: ResetPasswordComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },
   { path: "**", redirectTo: "not-authorized" },
