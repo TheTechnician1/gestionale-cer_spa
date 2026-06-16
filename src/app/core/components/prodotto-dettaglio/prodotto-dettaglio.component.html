@@ -38,10 +38,17 @@
             <div>
               <strong>{{ prodotto.venditore.nome }}</strong><br>
               <small>{{ prodotto.venditore.email }}</small>
+
             </div>
           </div>
         </div>
-
+        <div>    
+          <button mat-raised-button
+            color="primary"
+            [routerLink]="['/prodotti']">
+              Torna ai prodotti
+          </button>
+        </div>
       </div>
 
       <!-- COLONNA DESTRA -->
