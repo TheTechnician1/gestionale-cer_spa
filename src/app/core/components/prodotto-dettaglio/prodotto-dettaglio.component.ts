@@ -9,7 +9,8 @@ import { Utente } from '../../interfaces/utente.model';
 
 @Component({
   selector: 'app-prodotto-dettaglio',
-  templateUrl: './prodotto-dettaglio.component.html'
+  templateUrl: './prodotto-dettaglio.component.html',
+  styleUrls: ['./prodotto-dettaglio.component.scss']
 })
 export class ProdottoDettaglioComponent implements OnInit {
 
@@ -56,4 +57,16 @@ export class ProdottoDettaglioComponent implements OnInit {
       }
     });
   }
+
+  incrementa() {
+    if (this.quantita < this.prodotto.quantitaDisponibile) {
+      this.quantita++;
+    }
+  } 
+
+  decrementa() {
+    if (this.quantita > 1) {
+      this.quantita--;
+    }
+  } 
 }
