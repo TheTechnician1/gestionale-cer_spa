@@ -4,6 +4,7 @@ import { Prodotto } from '../../interfaces/prodotto.model';
 import { filter, map, Observable, of, startWith } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-prodotti',
@@ -20,7 +21,8 @@ export class ProdottiComponent implements OnInit {
     private prodottiService: ProdottiService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toast: ToastService
   ) {
   }
 
@@ -67,5 +69,14 @@ export class ProdottiComponent implements OnInit {
   reset(): void {
     this.filterForm.reset();
     this.prodotto$ = this.prodottiService.getProdotti();
+  }
+
+  copyEmail(email: string): void {
+    navigator.clipboard.writeText(email).then(() => {
+      this.toast.info('Email copiata negli appunti');
+    }).catch(err => {
+      this.toast.error('Errore durante la copia dell\'email');
+      console.error('Errore durante la copia dell\'email', err);
+    });
   }
 }

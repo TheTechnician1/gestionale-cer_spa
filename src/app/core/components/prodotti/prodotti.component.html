@@ -130,7 +130,6 @@
         <img 
           [src]="prodotto.immagine"
           [alt]="prodotto.nomeProdotto">
-
       </div>
 
 
@@ -192,32 +191,21 @@
 
             <small>
               {{ prodotto.venditore.email }}
+              <mat-icon style="vertical-align: middle; margin-left: 4px;" (click)="copyEmail(prodotto.venditore.email)" [style.cursor]="'pointer'" [style.color]="'#3f51b5'">
+                file_copy
+              </mat-icon>
             </small>
-
           </div>
-
         </div>
-
-
       </mat-card-content>
-
-
       <mat-card-actions>
-
         <button 
           mat-raised-button
           color="primary"
           [routerLink]="['/prodotto', prodotto.idProdotto]">
-
           Acquista
-
         </button>
-
       </mat-card-actions>
-
-
     </mat-card>
-
   </div>
-
 </div>

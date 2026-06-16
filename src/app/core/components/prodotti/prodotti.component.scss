@@ -125,8 +125,14 @@
 
 
 .product-description {
-
   color: #666;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* numero righe */
+  overflow: hidden;
+
+  line-height: 1.5rem;
+  min-height: 3rem;
 }
 
 
