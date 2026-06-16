@@ -8,7 +8,7 @@
       <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" aria-label="email" required />
-        <mat-error appFormControlError [control]="loginForm.get('email')" label="Email"></mat-error>
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched" label="Email">Inserire email registrata</mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 15px">
         <mat-label>Password</mat-label>

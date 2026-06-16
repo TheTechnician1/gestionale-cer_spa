@@ -1,48 +1,52 @@
 <div class="products-page">
 
-  <form class="products-filter" [formGroup]="filterForm">
 
-    <div class="filter-field">
-      <input placeholder="Categoria"
-             formControlName="categoria">
-    </div>
+  <mat-expansion-panel class="products-filter-container">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>filter_list</mat-icon>
+        Filtri
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form class="products-filter" [formGroup]="filterForm">
 
-    <div class="filter-field">
-      <input type="number"
-             placeholder="Prezzo min"
-             formControlName="prezzoMin">
-    </div>
+      <div class="filter-field">
+        <input type="number"
+              placeholder="Prezzo min"
+              formControlName="prezzoMin">
+      </div>
 
-    <div class="filter-field">
-      <input type="number"
-             placeholder="Prezzo max"
-             formControlName="prezzoMax">
-    </div>
+      <div class="filter-field">
+        <input type="number"
+              placeholder="Prezzo max"
+              formControlName="prezzoMax">
+      </div>
 
-    <div class="filter-field">
-      <input type="number"
-             placeholder="Q.tà min"
-             formControlName="quantitaDisponibileMin">
-    </div>
+      <div class="filter-field">
+        <input type="number"
+              placeholder="Q.tà min"
+              formControlName="quantitaDisponibileMin">
+      </div>
 
-    <div class="filter-field">
-      <input type="number"
-             placeholder="Q.tà max"
-             formControlName="quantitaDisponibileMax">
-    </div>
+      <div class="filter-field">
+        <input type="number"
+              placeholder="Q.tà max"
+              formControlName="quantitaDisponibileMax">
+      </div>
 
 
-    <div class="filter-actions">
-      <button type="button" (click)="search()">
-        Cerca
-      </button>
+      <div class="filter-actions">
+        <button type="button" (click)="search()">
+          Cerca
+        </button>
 
-      <button type="button" (click)="reset()">
-        Reset
-      </button>
-    </div>
+        <button type="button" (click)="reset()">
+          Reset
+        </button>
+      </div>
 
-  </form>
+    </form>
+  </mat-expansion-panel>
 
 
   <div class="products-grid">

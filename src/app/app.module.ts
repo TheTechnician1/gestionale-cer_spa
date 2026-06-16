@@ -25,9 +25,11 @@ import { A11yModule } from "@angular/cdk/a11y";
 import { ProdottiComponent } from './core/components/prodotti/prodotti.component';
 import { ProdottoDettaglioComponent } from './core/components/prodotto-dettaglio/prodotto-dettaglio.component';
 
+import { MatExpansionModule } from '@angular/material/expansion';
+
 @NgModule({
   declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, ProdottiComponent, ProdottoDettaglioComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,MatExpansionModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
