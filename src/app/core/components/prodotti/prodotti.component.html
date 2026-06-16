@@ -14,24 +14,94 @@
         <input type="number"
               placeholder="Prezzo min"
               formControlName="prezzoMin">
+        
+        <div style="color: #f44336; font-size: 12px;  
+            line-height: 1.2;
+            margin-top: 4px;
+            display: block;
+            font-family: Roboto, 
+            sans-serif;"
+          *ngIf="filterForm.get('prezzoMin')?.invalid &&
+                filterForm.get('prezzoMin')?.touched">
+
+          <span *ngIf="filterForm.get('prezzoMin')?.errors?.['min']">
+            Il prezzo minimo è 0
+          </span>
+
+          <span *ngIf="filterForm.get('prezzoMin')?.errors?.['required']">
+            Campo obbligatorio
+          </span>
+        </div>
       </div>
+
 
       <div class="filter-field">
         <input type="number"
               placeholder="Prezzo max"
               formControlName="prezzoMax">
+        <div style="color: #f44336; font-size: 12px;  
+            line-height: 1.2;
+            margin-top: 4px;
+            display: block;
+            font-family: Roboto, 
+            sans-serif;"
+          *ngIf="filterForm.get('prezzoMax')?.invalid &&
+                filterForm.get('prezzoMax')?.touched">
+
+          <span *ngIf="filterForm.get('prezzoMax')?.errors?.['min']">
+            Il prezzo minimo è 0
+          </span>
+
+          <span *ngIf="filterForm.get('prezzoMax')?.errors?.['required']">
+            Campo obbligatorio
+          </span>
+        </div>    
       </div>
 
       <div class="filter-field">
         <input type="number"
               placeholder="Q.tà min"
               formControlName="quantitaDisponibileMin">
+        <div style="color: #f44336; font-size: 12px;  
+            line-height: 1.2;
+            margin-top: 4px;
+            display: block;
+            font-family: Roboto, 
+            sans-serif;"
+          *ngIf="filterForm.get('quantitaDisponibileMin')?.invalid &&
+                filterForm.get('quantitaDisponibileMin')?.touched">
+
+          <span *ngIf="filterForm.get('quantitaDisponibileMin')?.errors?.['min']">
+            La quantità minima è 0
+          </span>
+
+          <span *ngIf="filterForm.get('quantitaDisponibileMin')?.errors?.['required']">
+            Campo obbligatorio
+          </span>
+        </div>    
       </div>
 
       <div class="filter-field">
         <input type="number"
               placeholder="Q.tà max"
               formControlName="quantitaDisponibileMax">
+        <div style="color: #f44336; font-size: 12px;  
+            line-height: 1.2;
+            margin-top: 4px;
+            display: block;
+            font-family: Roboto, 
+            sans-serif;"
+          *ngIf="filterForm.get('quantitaDisponibileMax')?.invalid &&
+                filterForm.get('quantitaDisponibileMax')?.touched">
+
+          <span *ngIf="filterForm.get('quantitaDisponibileMax')?.errors?.['min']">
+            La quantità minima è 0
+          </span>
+
+          <span *ngIf="filterForm.get('quantitaDisponibileMax')?.errors?.['required']">
+            Campo obbligatorio
+          </span>
+        </div>    
       </div>
 
 
