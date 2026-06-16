@@ -87,4 +87,8 @@ export class RegistrazioneUtenteComponent {
 
     return null;
   }
+
+  login() {
+    this.route.navigateByUrl("/login");
+  }
 }

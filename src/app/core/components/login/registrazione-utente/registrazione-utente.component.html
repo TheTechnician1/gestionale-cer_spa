@@ -37,6 +37,9 @@
       <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
       <button mat-raised-button color="primary" routerLink="/">Annulla</button>
     </div>
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
+      <p>Hai già un account?</p><a (click)="login()" style="text-decoration: underline; cursor: pointer; color: blue;">Accedi</a>
+    </div>
   </div>
   <mat-hint class="campo-obbligatorio">Campi obbligatori *</mat-hint>
 </div>
