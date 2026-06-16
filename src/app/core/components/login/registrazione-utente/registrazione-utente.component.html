@@ -7,13 +7,17 @@
         <mat-label>Nome</mat-label>
         <input type="text" matInput formControlName="nome" aria-label="nome" required />
         <mat-icon matSuffix>id_card</mat-icon>
-        <mat-error appFormControlError [control]="form.get('nome')" label="Nome" [customMessages]="nomeErrorMessages"></mat-error>
+        <mat-error *ngIf="form.get('nome')?.hasError('required') && form.get('nome')?.touched" label="Nome">Nome è obbligatorio</mat-error>
+        <mat-error *ngIf="form.get('nome')?.hasError('pattern') && form.get('nome')?.touched" label="Nome">il nome inserito non è
+
+        </mat-error> 
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Cognome</mat-label>
         <input type="text" matInput formControlName="cognome" aria-label="cognome" required />
         <mat-icon matSuffix>id_card</mat-icon>
-        <mat-error appFormControlError [control]="form.get('cognome')" label="Cognome" [customMessages]="cognomeErrorMessages"></mat-error>
+        <mat-error  *ngIf="form.get('cognome')?.hasError('required') && form.get('cognome')?.touched" label="Cognome">Cognome è obbligatorio</mat-error>
+        <mat-error *ngIf="form.get('cognome')?.hasError('pattern') && form.get('cognome')?.touched" label="Cognome">il cognome inserito non è valido</mat-error> 
       </mat-form-field>
     </div>
     <div rows="2">
@@ -21,7 +25,8 @@
         <mat-label>Email</mat-label>
         <input type="text" matInput formControlName="email" aria-label="email" required />
         <mat-icon matSuffix>mail</mat-icon>
-        <mat-error appFormControlError [control]="form.get('email')" label="Email"></mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched" label="Email">Email obbligatoria</mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched" label="Email">Email non valida</mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" class="password">
         <mat-label>Password</mat-label>
@@ -29,17 +34,22 @@
         <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>
-        <mat-hint>Minimo 8 caratteri</mat-hint>
-        <mat-error appFormControlError [control]="form.get('pwd')" label="Password" [customMessages]="passwordErrorMessages"></mat-error>
+        <mat-hint class="campo-obbligatorio">Minimo 8 caratteri</mat-hint>
+        <mat-error *ngIf="form.get('pwd')?.hasError('required') && form.get('pwd')?.touched" label="Password">Password obbligatoria</mat-error>
+        <mat-error *ngIf="form.get('pwd')?.hasError('minlength') && form.get('pwd')?.touched" label="Password">Password troppo corta</mat-error>
+        <mat-error *ngIf="form.get('pwd')?.hasError('pattern') && form.get('pwd')?.touched" label="Password">Password non valida</mat-error>
       </mat-form-field>
     </div>
-    <div rows="2" class="button">
+    <div  class="register-button">
       <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
-      <button mat-raised-button color="primary" routerLink="/">Annulla</button>
     </div>
     <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px">
       <p>Hai già un account?</p><a (click)="login()" style="text-decoration: underline; cursor: pointer; color: blue;">Accedi</a>
     </div>
   </div>
-  <mat-hint class="campo-obbligatorio">Campi obbligatori *</mat-hint>
+
+  <mat-hint class="campo-obbligatorio">
+    Campi obbligatori *<br> 
+    Requisiti password: minimo 8 caratteri, una lettera maiuscola, una lettera minuscola e un numero
+  </mat-hint>
 </div>
