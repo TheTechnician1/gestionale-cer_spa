@@ -1,0 +1,51 @@
+<app-navbar></app-navbar>
+
+<main class="profile-page">
+  <section class="profile-shell" *ngIf="utente as utenteLoggato">
+    <div class="profile-hero">
+      <div class="profile-avatar">
+        {{ utenteLoggato.nome.charAt(0) }}{{ utenteLoggato.cognome.charAt(0) }}
+      </div>
+
+      <div class="profile-title">
+        <p>Area personale</p>
+        <h1>{{ utenteLoggato.nome }} {{ utenteLoggato.cognome }}</h1>
+        <span>{{ utenteLoggato.email }}</span>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <section class="balance-panel">
+        <p>Saldo disponibile</p>
+        <strong>{{ utenteLoggato.saldo | currency: "EUR" }}</strong>
+        <span>Credito virtuale utilizzabile per gli ordini didattici.</span>
+
+        <a routerLink="/fondi" class="primary-action">Aggiungi fondi</a>
+      </section>
+
+      <section class="details-panel">
+        <div class="panel-heading">
+          <p>Dati account</p>
+          <h2>Informazioni personali</h2>
+        </div>
+
+        <div class="profile-info-list">
+          <div class="profile-info-row">
+            <span>Nome</span>
+            <strong>{{ utenteLoggato.nome }}</strong>
+          </div>
+
+          <div class="profile-info-row">
+            <span>Cognome</span>
+            <strong>{{ utenteLoggato.cognome }}</strong>
+          </div>
+
+          <div class="profile-info-row">
+            <span>Email</span>
+            <strong>{{ utenteLoggato.email }}</strong>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>

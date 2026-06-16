@@ -5,6 +5,9 @@ import { RegistrazioneComponent } from './pages/registrazione/registrazione.comp
 import { HomeComponent } from './pages/home/home.component';
 import { ProdottiComponent } from './pages/prodotti/prodotti.component';
 import { CarrelloComponent } from './pages/carrello/carrello.component';
+import { ProfiloComponent } from './pages/profilo/profilo.component';
+import { FondiComponent } from './pages/fondi/fondi.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -23,18 +26,32 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'prodotti/categoria/:nomeCategoria',
     component: ProdottiComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'prodotti',
     component: ProdottiComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'carrello',
     component: CarrelloComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'profilo',
+    component: ProfiloComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'fondi',
+    component: FondiComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: '**',
@@ -43,7 +60,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

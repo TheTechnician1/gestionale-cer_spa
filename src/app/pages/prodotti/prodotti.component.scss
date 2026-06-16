@@ -27,6 +27,7 @@
 
 .loading-message,
 .error-message,
+.success-message,
 .empty-message {
   max-width: 1180px;
   margin: 24px auto;
@@ -36,6 +37,10 @@
 
 .error-message {
   color: #c0392b;
+}
+
+.success-message {
+  color: #18864b;
 }
 
 .prodotti-grid {
@@ -85,13 +90,24 @@
   border-radius: 50%;
   background: #ffffff;
   color: #171717;
-  font-size: 18px;
+  font-size: 19px;
+  line-height: 1;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.heart-button:hover,
+.heart-button.active {
+  background: #ff6338;
+  color: #ffffff;
 }
 
 .heart-button:hover {
-  color: #ff6338;
+  transform: scale(1.08);
 }
 
 .product-info {
@@ -172,4 +188,5 @@
   .prodotti-grid {
     grid-template-columns: 1fr;
   }
+
 }

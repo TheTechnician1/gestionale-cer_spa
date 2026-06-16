@@ -6,29 +6,77 @@
     <nav class="main-nav">
       <a routerLink="/home" routerLinkActive="active">Home</a>
       <a routerLink="/prodotti" routerLinkActive="active">Prodotti</a>
-      <a href="#">Categorie</a>
+      <a routerLink="/home" fragment="categorie">Categorie</a>
     </nav>
   </div>
 
   <div class="navbar-center">
-    <div class="search-box">
-      <span>⌕</span>
-      <input type="text" placeholder="Cerca prodotti..." />
-    </div>
+    <form class="search-box" (ngSubmit)="cercaProdotti(testoRicerca.value)">
+      <input
+        #testoRicerca
+        type="text"
+        placeholder="Cerca prodotti..."
+        aria-label="Cerca prodotti"
+      />
+      <button type="submit">Cerca</button>
+    </form>
   </div>
 
   <div class="navbar-right">
-    <button type="button" class="icon.button" title="preferiti">♥</button>
+    <button
+      type="button"
+      class="icon-button"
+      routerLink="/home"
+      fragment="preferiti"
+      title="preferiti"
+      aria-label="Vai ai preferiti"
+    >
+      &hearts;
+    </button>
 
     <button
       type="button"
       class="icon-button"
       routerLink="/carrello"
       title="carrello"
+      aria-label="Vai al carrello"
     >
-      🛒
+      &#128722;
     </button>
 
-    <button type="button" class="user-button">account</button>
+    <div class="account-menu">
+      <button
+        type="button"
+        class="user-button"
+        (click)="cambiaStatoMenuAccount()"
+        aria-label="Apri menu account"
+      >
+        Account
+        <span>&#9662;</span>
+      </button>
+
+      <div class="account-dropdown" *ngIf="menuAccountAperto">
+        <div class="account-dropdown-header">
+          <span>Area personale</span>
+          <strong>Il tuo account</strong>
+        </div>
+
+        <a routerLink="/profilo" (click)="chiudiMenuAccount()">
+          <span class="menu-icon">P</span>
+          <span>
+            <strong>Profilo</strong>
+            <small>Dati e saldo</small>
+          </span>
+        </a>
+
+        <a routerLink="/fondi" (click)="chiudiMenuAccount()">
+          <span class="menu-icon">EUR</span>
+          <span>
+            <strong>Fondi</strong>
+            <small>Ricarica saldo</small>
+          </span>
+        </a>
+      </div>
+    </div>
   </div>
 </header>

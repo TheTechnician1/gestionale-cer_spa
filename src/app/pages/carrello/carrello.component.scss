@@ -1,0 +1,265 @@
+.carrello-page {
+  min-height: calc(100vh - 74px);
+  padding: 42px 48px 64px;
+  background: #f6f6f6;
+  color: #171717;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.carrello-header {
+  max-width: 1180px;
+  margin: 0 auto 32px;
+}
+
+.carrello-header p {
+  margin: 0 0 8px;
+  color: #ff6338;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.carrello-header h1 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 900;
+}
+
+.loading-message,
+.error-message,
+.success-message,
+.empty-message {
+  max-width: 1180px;
+  margin: 24px auto;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.error-message {
+  color: #c0392b;
+}
+
+.success-message {
+  color: #18864b;
+}
+
+.carrello-layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 24px;
+  align-items: start;
+}
+
+.carrello-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.carrello-item {
+  min-height: 150px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) auto auto;
+  gap: 18px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+}
+
+.item-image {
+  width: 130px;
+  height: 118px;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #ececec;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.item-info p {
+  margin: 10px 0 6px;
+  color: #666666;
+  font-size: 13px;
+}
+
+.item-info strong {
+  font-size: 15px;
+}
+
+.quantity-controls {
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #e4e4e4;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.quantity-controls button {
+  width: 38px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: #171717;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.quantity-controls button:hover {
+  background: #f0f0f0;
+}
+
+.quantity-controls span {
+  width: 34px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.remove-button {
+  height: 42px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #171717;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.remove-button:hover {
+  background: #c0392b;
+}
+
+.carrello-summary {
+  padding: 24px;
+  position: sticky;
+  top: 96px;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+}
+
+.carrello-summary h2 {
+  margin: 0 0 22px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.summary-row {
+  padding: 14px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eeeeee;
+  font-size: 14px;
+}
+
+.summary-row.total {
+  border-bottom: 0;
+  font-size: 18px;
+}
+
+.checkout-button,
+.clear-button {
+  width: 100%;
+  height: 46px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.checkout-button {
+  background: #ff6338;
+  color: #ffffff;
+}
+
+.checkout-button:hover {
+  background: #171717;
+}
+
+.clear-button {
+  background: #f1f1f1;
+  color: #171717;
+}
+
+.clear-button:hover {
+  background: #e0e0e0;
+}
+
+.checkout-button:disabled,
+.clear-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .carrello-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .carrello-summary {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .carrello-page {
+    padding: 32px 20px 52px;
+  }
+
+  .carrello-header h1 {
+    font-size: 36px;
+  }
+
+  .carrello-item {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .item-image {
+    width: 96px;
+    height: 96px;
+  }
+
+  .quantity-controls,
+  .remove-button {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 520px) {
+  .carrello-item {
+    grid-template-columns: 1fr;
+  }
+
+  .item-image {
+    width: 100%;
+    height: 180px;
+  }
+
+  .quantity-controls,
+  .remove-button {
+    grid-column: auto;
+  }
+}

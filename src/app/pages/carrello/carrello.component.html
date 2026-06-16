@@ -1,4 +1,87 @@
 <app-navbar></app-navbar>
+
 <main class="carrello-page">
-  <h1>Carrello</h1>
+  <section class="carrello-header">
+    <p>MajorBit Shop</p>
+    <h1>Carrello</h1>
+  </section>
+
+  <p class="loading-message" *ngIf="caricamento">Caricamento carrello...</p>
+
+  <p class="error-message" *ngIf="messaggioErrore">
+    {{ messaggioErrore }}
+  </p>
+
+  <p class="success-message" *ngIf="messaggioSuccesso">
+    {{ messaggioSuccesso }}
+  </p>
+
+  <section class="carrello-layout" *ngIf="!caricamento">
+    <div class="carrello-lista">
+      <article class="carrello-item" *ngFor="let elemento of elementiCarrello">
+        <div class="item-image">
+          <img [src]="elemento.immagine" [alt]="elemento.nomeProdotto" />
+        </div>
+
+        <div class="item-info">
+          <h3>{{ elemento.nomeProdotto }}</h3>
+          <p>
+            Prezzo unitario: {{ elemento.prezzoUnitario | currency: "EUR" }}
+          </p>
+          <strong>Totale: {{ elemento.totaleRiga | currency: "EUR" }}</strong>
+        </div>
+
+        <div class="quantity-controls">
+          <button type="button" (click)="diminuisciQuantita(elemento)">
+            -
+          </button>
+          <span>{{ elemento.quantita }}</span>
+          <button type="button" (click)="aumentaQuantita(elemento)">+</button>
+        </div>
+
+        <button
+          type="button"
+          class="remove-button"
+          (click)="rimuoviProdotto(elemento)"
+        >
+          Rimuovi
+        </button>
+      </article>
+
+      <p class="empty-message" *ngIf="elementiCarrello.length === 0">
+        Il carrello e vuoto.
+      </p>
+    </div>
+
+    <aside class="carrello-summary">
+      <h2>Riepilogo</h2>
+
+      <div class="summary-row">
+        <span>Articoli</span>
+        <strong>{{ numeroArticoliCarrello }}</strong>
+      </div>
+
+      <div class="summary-row total">
+        <span>Totale</span>
+        <strong>{{ totaleCarrello | currency: "EUR" }}</strong>
+      </div>
+
+      <button
+        type="button"
+        class="checkout-button"
+        [disabled]="elementiCarrello.length === 0"
+      >
+        Checkout
+      </button>
+
+      <button
+        type="button"
+        class="clear-button"
+        [disabled]="elementiCarrello.length === 0"
+        (click)="svuotaCarrello()"
+      >
+        Svuota carrello
+      </button>
+    </aside>
+  </section>
 </main>

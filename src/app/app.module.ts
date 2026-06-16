@@ -10,6 +10,8 @@ import { RegistrazioneComponent } from './pages/registrazione/registrazione.comp
 import { HomeComponent } from './pages/home/home.component';
 import { ProdottiComponent } from './pages/prodotti/prodotti.component';
 import { CarrelloComponent } from './pages/carrello/carrello.component';
+import { ProfiloComponent } from './pages/profilo/profilo.component';
+import { FondiComponent } from './pages/fondi/fondi.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 
@@ -21,16 +23,18 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     HomeComponent,
     ProdottiComponent,
     CarrelloComponent,
+    ProfiloComponent,
+    FondiComponent,
     NavbarComponent,
-    ProductCardComponent
+    ProductCardComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

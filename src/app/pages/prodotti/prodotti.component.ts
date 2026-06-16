@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { combineLatest } from 'rxjs';
 
 import { ProdottoResponse } from '../../models/prodotto-response';
 import { ProdottoService } from '../../services/prodotto.service';
+import { CarrelloService } from 'src/app/services/carrello.service';
+import { PreferitoService } from 'src/app/services/preferito.service';
+import { UtenteStorageService } from '../../services/utente-storage.service';
 
 @Component({
   selector: 'app-prodotti',
@@ -11,26 +15,48 @@ import { ProdottoService } from '../../services/prodotto.service';
 })
 export class ProdottiComponent implements OnInit {
   prodotti: ProdottoResponse[] = [];
+  idProdottiPreferiti = new Set<number>();
   nomeCategoria = '';
+  testoRicerca = '';
   caricamento = false;
   messaggioErrore = '';
+  messaggioSuccesso = '';
 
   constructor(
     private prodottoService: ProdottoService,
     private activatedRoute: ActivatedRoute,
+    private carrelloService: CarrelloService,
+    private preferitoService: PreferitoService,
+    private utenteStorageService: UtenteStorageService,
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((params) => {
+    this.recuperaPreferitiUtente();
+
+    combineLatest([
+      this.activatedRoute.paramMap,
+      this.activatedRoute.queryParamMap,
+    ]).subscribe(([params, queryParams]) => {
       const categoria = params.get('nomeCategoria');
+      const ricerca = queryParams.get('ricerca');
 
       if (categoria) {
         this.nomeCategoria = categoria;
+        this.testoRicerca = '';
         this.recuperaProdottiPerCategoria(categoria);
-      } else {
-        this.nomeCategoria = '';
-        this.recuperaProdotti();
+        return;
       }
+
+      if (ricerca && ricerca.trim()) {
+        this.nomeCategoria = '';
+        this.testoRicerca = ricerca.trim();
+        this.cercaProdotti(this.testoRicerca);
+        return;
+      }
+
+      this.nomeCategoria = '';
+      this.testoRicerca = '';
+      this.recuperaProdotti();
     });
   }
 
@@ -65,5 +91,109 @@ export class ProdottiComponent implements OnInit {
         this.caricamento = false;
       },
     });
+  }
+
+  cercaProdotti(nome: string): void {
+    this.caricamento = true;
+    this.messaggioErrore = '';
+
+    this.prodottoService.cercaProdottiPerNome(nome).subscribe({
+      next: (prodotti) => {
+        this.prodotti = prodotti;
+        this.caricamento = false;
+      },
+      error: (errore) => {
+        this.messaggioErrore =
+          errore.error?.messaggio || 'Errore durante la ricerca dei prodotti';
+        this.caricamento = false;
+      },
+    });
+  }
+
+  aggiungiAlCarrello(idProdotto: number): void {
+    this.messaggioErrore = '';
+    this.messaggioSuccesso = '';
+
+    const utente = this.recuperaUtenteLoggato();
+
+    if (!utente) {
+      this.messaggioErrore =
+        'Devi effettuare il login per aggiungere prodotti al carrello';
+      return;
+    }
+
+    this.carrelloService
+      .aggiungiProdottoAlCarrello(utente.id, idProdotto, 1)
+      .subscribe({
+        next: () => {
+          this.messaggioSuccesso = 'Prodotto aggiunto al carrello';
+        },
+        error: (errore) => {
+          this.messaggioErrore =
+            errore.error?.messaggio || 'Errore durante aggiunta al carrello';
+        },
+      });
+  }
+
+  gestisciPreferito(idProdotto: number): void {
+    this.messaggioErrore = '';
+    this.messaggioSuccesso = '';
+
+    const utente = this.recuperaUtenteLoggato();
+
+    if (!utente) {
+      this.messaggioErrore =
+        'Devi effettuare il login per gestire i prodotti preferiti';
+      return;
+    }
+
+    const eraPreferito = this.prodottoPreferito(idProdotto);
+    const richiesta = eraPreferito
+      ? this.preferitoService.rimuoviProdottoDaiPreferiti(utente.id, idProdotto)
+      : this.preferitoService.aggiungiProdottoAiPreferiti(utente.id, idProdotto);
+
+    richiesta.subscribe({
+      next: (prodottiPreferiti) => {
+        this.aggiornaPreferiti(prodottiPreferiti);
+        this.messaggioSuccesso = eraPreferito
+          ? 'Prodotto rimosso dai preferiti'
+          : 'Prodotto aggiunto ai preferiti';
+      },
+      error: (errore) => {
+        this.messaggioErrore =
+          errore.error?.messaggio || 'Errore durante la gestione dei preferiti';
+      },
+    });
+  }
+
+  prodottoPreferito(idProdotto: number): boolean {
+    return this.idProdottiPreferiti.has(idProdotto);
+  }
+
+  private recuperaPreferitiUtente(): void {
+    const utente = this.recuperaUtenteLoggato();
+
+    if (!utente) {
+      return;
+    }
+
+    this.preferitoService.recuperaProdottiPreferitiUtente(utente.id).subscribe({
+      next: (prodottiPreferiti) => {
+        this.aggiornaPreferiti(prodottiPreferiti);
+      },
+      error: () => {
+        this.idProdottiPreferiti.clear();
+      },
+    });
+  }
+
+  private aggiornaPreferiti(prodottiPreferiti: ProdottoResponse[]): void {
+    this.idProdottiPreferiti = new Set(
+      prodottiPreferiti.map((prodotto) => prodotto.idProdotto),
+    );
+  }
+
+  private recuperaUtenteLoggato() {
+    return this.utenteStorageService.recuperaUtente();
   }
 }

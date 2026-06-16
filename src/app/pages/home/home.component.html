@@ -10,15 +10,15 @@
       </p>
 
       <div class="hero-actions">
-        <a routerLink="/prodotti" class="primary-link"> Vai a prodotti</a>
+        <a routerLink="/prodotti" class="primary-link">Vai a prodotti</a>
         <a routerLink="/carrello" class="secondary-link">
-          Visualizza carrello</a
-        >
+          Visualizza carrello
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="category-grid">
+  <section id="categorie" class="category-grid">
     <a
       class="category-card"
       *ngFor="let categoria of categorie"
@@ -33,5 +33,58 @@
 
       <h3>{{ categoria.nome }}</h3>
     </a>
+  </section>
+
+  <section
+    id="preferiti"
+    class="favorite-section"
+    *ngIf="
+      caricamentoPreferiti ||
+      prodottiPreferiti.length > 0 ||
+      messaggioErrorePreferiti
+    "
+  >
+    <div class="section-heading">
+      <p>Scelti da te</p>
+      <h2>I tuoi preferiti</h2>
+    </div>
+
+    <p class="favorite-loading" *ngIf="caricamentoPreferiti">
+      Caricamento preferiti...
+    </p>
+
+    <p class="favorite-error" *ngIf="messaggioErrorePreferiti">
+      {{ messaggioErrorePreferiti }}
+    </p>
+
+    <div class="favorite-list" *ngIf="!caricamentoPreferiti">
+      <article class="favorite-item" *ngFor="let prodotto of prodottiPreferiti">
+        <img
+          class="favorite-item-image"
+          [src]="prodotto.immagine"
+          [alt]="prodotto.nomeProdotto"
+        />
+
+        <div class="favorite-item-info">
+          <p>{{ prodotto.categoriaNome }}</p>
+          <h3>{{ prodotto.nomeProdotto }}</h3>
+          <span>{{ prodotto.descrizioneBreve }}</span>
+        </div>
+
+        <strong class="favorite-item-price">
+          {{ prodotto.prezzo | currency: "EUR" }}
+        </strong>
+
+        <button
+          type="button"
+          class="favorite-remove"
+          title="Rimuovi dai preferiti"
+          aria-label="Rimuovi dai preferiti"
+          (click)="rimuoviDaiPreferiti(prodotto.idProdotto)"
+        >
+          &hearts;
+        </button>
+      </article>
+    </div>
   </section>
 </main>

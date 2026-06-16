@@ -90,7 +90,8 @@
 
 .search-box span {
   color: #656565;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .search-box input {
@@ -118,20 +119,124 @@
   color: #ff6338;
 }
 
+.account-menu {
+  position: relative;
+}
+
 .user-button {
   height: 42px;
-  padding: 0 18px;
+  padding: 0 16px 0 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   border: 0;
   border-radius: 999px;
   background: #171717;
   color: #ffffff;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
+}
+
+.user-button span {
+  font-size: 11px;
 }
 
 .user-button:hover {
   background: #ff6338;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 238px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.14);
+}
+
+.account-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 28px;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-left: 1px solid #eeeeee;
+  border-top: 1px solid #eeeeee;
+  transform: rotate(45deg);
+}
+
+.account-dropdown-header {
+  padding: 10px 10px 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.account-dropdown-header span {
+  display: block;
+  color: #ff6338;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.account-dropdown-header strong {
+  display: block;
+  margin-top: 3px;
+  color: #171717;
+  font-size: 15px;
+}
+
+.account-dropdown a {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  color: #171717;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.account-dropdown a:hover {
+  background: #f6f6f6;
+}
+
+.menu-icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #171717;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.account-dropdown a:hover .menu-icon {
+  background: #ff6338;
+}
+
+.account-dropdown a strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.account-dropdown a small {
+  display: block;
+  margin-top: 2px;
+  color: #666666;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 @media (max-width: 900px) {
@@ -161,5 +266,10 @@
 
   .brand img {
     width: 160px;
+  }
+
+  .account-dropdown {
+    right: 50%;
+    transform: translateX(50%);
   }
 }

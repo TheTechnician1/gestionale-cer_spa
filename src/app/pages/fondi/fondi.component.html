@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+
+<main class="funds-page">
+  <section class="funds-card" *ngIf="utente as utenteLoggato">
+    <p class="funds-kicker">Portafoglio virtuale</p>
+    <h1>Aggiungi fondi</h1>
+
+    <div class="user-summary">
+      <span>Account</span>
+      <strong>{{ utenteLoggato.nome }} {{ utenteLoggato.cognome }}</strong>
+      <small>Saldo attuale: {{ utenteLoggato.saldo | currency: "EUR" }}</small>
+    </div>
+
+    <form [formGroup]="fondiForm" (ngSubmit)="aggiungiFondi()">
+      <label for="importo">Importo da aggiungere</label>
+      <input
+        id="importo"
+        type="number"
+        min="1"
+        step="0.01"
+        formControlName="importo"
+        placeholder="Es. 50"
+      />
+
+      <p class="field-error" *ngIf="fondiForm.get('importo')?.touched && fondiForm.get('importo')?.invalid">
+        Inserisci un importo maggiore di zero.
+      </p>
+
+      <p class="field-error" *ngIf="messaggioErrore">
+        {{ messaggioErrore }}
+      </p>
+
+      <p class="field-success" *ngIf="messaggioSuccesso">
+        {{ messaggioSuccesso }}
+      </p>
+
+      <button type="submit" [disabled]="caricamento">
+        {{ caricamento ? "Aggiunta in corso..." : "Aggiungi fondi" }}
+      </button>
+    </form>
+  </section>
+</main>

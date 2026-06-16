@@ -1,8 +1,10 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ErroreResponse } from '../../models/errore-response';
 import { AuthService } from '../../services/auth.service';
+import { UtenteStorageService } from '../../services/utente-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,8 @@ export class LoginComponent {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
+    private router: Router,
+    private utenteStorageService: UtenteStorageService,
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -37,9 +41,9 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (utente) => {
-        localStorage.setItem('utente', JSON.stringify(utente));
+        this.utenteStorageService.salvaUtente(utente);
         this.caricamento = false;
-        console.log('Login effettuato', utente);
+        this.router.navigate(['/home']);
       },
       error: (errore) => {
         const erroreResponse = errore.error as ErroreResponse;
