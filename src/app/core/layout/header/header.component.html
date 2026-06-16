@@ -11,7 +11,7 @@
         type="text"
         placeholder="Cerca prodotti..."
         [(ngModel)]="searchText"
-        (ngModelChange)="onSearchChange($event)"
+        (keyup.enter)="onSearchChange()"
       />
     </div>
   </div>

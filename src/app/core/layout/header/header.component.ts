@@ -13,7 +13,7 @@ export class HeaderComponent {
 
     isLoggedIn$: Observable<boolean>;
 
-  ngOnInit() {}
+  ngOnInit() {} 
 
  searchText: string = '';
 
@@ -22,19 +22,16 @@ export class HeaderComponent {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
     this.isProdottiPage$ = this.router.events.pipe(
       filter((event): event is NavigationEnd =>
-      event instanceof NavigationEnd
-    ),
-  map(event => event.urlAfterRedirects === '/prodotti'),
-  startWith(this.router.url === '/prodotti')
-);
+        event instanceof NavigationEnd
+      ),
+      map(event => event.urlAfterRedirects === '/prodotti' || event.urlAfterRedirects.startsWith('/ricerca-prodotti')),
+      startWith(this.router.url === '/prodotti' || this.router.url.startsWith('/ricerca-prodotti'))
+    );
   }
 
-
-
-  onSearchChange(value: string) {
-    console.log('Search:', value);
+  onSearchChange() {
+    this.router.navigate(['/ricerca-prodotti', this.searchText]);
   }
-
 
   logout() {
     this.authService.logout();

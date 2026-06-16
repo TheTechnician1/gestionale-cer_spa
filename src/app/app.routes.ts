@@ -14,6 +14,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "registration", component: RegistrazioneUtenteComponent},
   { path: "prodotti", component: ProdottiComponent, canActivate: [AuthGuard] },
   { path: "prodotto/:id", component: ProdottoDettaglioComponent, canActivate: [AuthGuard] },
+  { path: "ricerca-prodotti/:ricerca", component: ProdottiComponent, canActivate: [AuthGuard] },
   { path: "profilo/:id", component: UtenteComponent, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },

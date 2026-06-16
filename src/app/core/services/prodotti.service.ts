@@ -18,6 +18,12 @@ export class ProdottiService {
     const endpoint = `api/products/${id}`;
     return this.api.get<Prodotto>(endpoint, {}, options);
   }
+
+  getByName(name: string, options: ApiRequestOptions = {}): Observable<Prodotto[]> {
+    const endpoint = `api/products/search`;
+    return this.api.get<Prodotto[]>(endpoint, { name }, options);
+  }
+
   getWithFilters(
     categoria?: string,
     prezzoMin?: number,
