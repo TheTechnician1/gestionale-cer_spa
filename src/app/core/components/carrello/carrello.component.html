@@ -1,0 +1,94 @@
+<div class="carrello-container" *ngIf="carrello">
+  <mat-card class="carrello-card">
+    <mat-card-header>
+      <mat-card-title>
+        Il mio carrello
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ carrello.articoli.length }} articoli
+      </mat-card-subtitle>
+    </mat-card-header>
+    <div class="layout">
+      <div class="col-sx">
+        <mat-card
+          class="articolo-card"
+          *ngFor="let articolo of carrello.articoli">
+          <div class="articolo">
+            <div class="articolo-info">
+              <h3 [routerLink]="['/prodotto', articolo.idProdotto]"                 
+                [style.cursor]="'pointer'" 
+                [style.color]="'#3f51b5'">
+                    {{ articolo.nomeProdotto }}
+              </h3>
+              <p>
+                {{ articolo.descrizioneBreve }}
+              </p>
+              <div class="categoria">
+                {{ articolo.categoria }}
+              </div>
+            </div>
+            <div class="articolo-dati">
+              <span class="prezzo">
+                {{ articolo.prezzo | currency:'EUR' }}
+              </span>
+              <mat-form-field appearance="outline">
+                <mat-label>
+                  Quantità
+                </mat-label>
+                <input
+                  matInput
+                  type="number"
+                  min="1"
+                  [(ngModel)]="articolo.quantita"
+                  (change)="aggiornaQuantita(articolo)"
+                />
+              </mat-form-field>
+              <span class="totale">
+                Totale:
+                {{ articolo.prezzo * articolo.quantita | currency:'EUR' }}
+              </span>
+              <button
+                mat-raised-button
+                color="warn"
+                (click)="rimuovi(articolo)">
+                <mat-icon>
+                  delete
+                </mat-icon>
+                Rimuovi
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-dx">
+        <div class="riepilogo">
+          <h2>
+            Riepilogo
+          </h2>
+          <div class="riga">
+            <span>
+              Prodotti
+            </span>
+            <strong>
+              {{ totaleArticoli }}
+            </strong>
+        </div>
+          <div class="riga">
+            <span>
+              Totale
+            </span>
+            <strong class="totale-final">
+              {{ totaleCarrello | currency:'EUR' }}
+            </strong>
+          </div>
+          <button
+            mat-raised-button
+            color="primary"
+            class="checkout">
+                Procedi all'ordine
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

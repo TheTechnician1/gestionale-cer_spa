@@ -26,9 +26,10 @@ import { ProdottiComponent } from './core/components/prodotti/prodotti.component
 import { ProdottoDettaglioComponent } from './core/components/prodotto-dettaglio/prodotto-dettaglio.component';
 
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CarrelloComponent } from './core/components/carrello/carrello.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, ProdottiComponent, ProdottoDettaglioComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, ProdottiComponent, ProdottoDettaglioComponent, CarrelloComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule,MatExpansionModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

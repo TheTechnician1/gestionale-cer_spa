@@ -8,6 +8,7 @@ import { UtenteComponent } from "./core/components/utente/utente.component";
 import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
 import { ProdottiComponent } from "./core/components/prodotti/prodotti.component";
 import { ProdottoDettaglioComponent } from "./core/components/prodotto-dettaglio/prodotto-dettaglio.component";
+import { CarrelloComponent } from "./core/components/carrello/carrello.component";
 
 export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "", redirectTo: "login", pathMatch: "full" },
@@ -15,6 +16,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "prodotti", component: ProdottiComponent, canActivate: [AuthGuard] },
   { path: "prodotto/:id", component: ProdottoDettaglioComponent, canActivate: [AuthGuard] },
   { path: "ricerca-prodotti/:ricerca", component: ProdottiComponent, canActivate: [AuthGuard] },
+  { path: "carrello/:id", component: CarrelloComponent, canActivate: [AuthGuard] },
   { path: "profilo/:id", component: UtenteComponent, canActivate: [AuthGuard] },
   { path: "login", component: LoginComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },

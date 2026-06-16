@@ -3,6 +3,7 @@
   background: linear-gradient(90deg, #1e3c72, #2a5298) !important;
   display: flex;
   align-items: center;
+  gap: 24px;
 }
 
 .left {
@@ -28,6 +29,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  color: white;
 }
 
 .search-bar {

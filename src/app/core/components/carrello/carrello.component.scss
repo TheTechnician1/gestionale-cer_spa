@@ -1,0 +1,199 @@
+.carrello-container {
+
+  display:flex;
+  justify-content:center;
+  padding:24px;
+
+}
+
+
+
+.carrello-card {
+
+  width:100%;
+  max-width:1100px;
+  padding:16px 24px;
+  border-radius:14px;
+
+}
+
+
+
+.layout {
+
+  display:flex;
+  gap:32px;
+  margin-top:20px;
+
+}
+
+
+
+.col-sx {
+
+  flex:1.3;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+
+}
+
+
+
+.articolo-card {
+
+  padding:16px;
+  border-radius:12px;
+  border:1px solid #e0e0e0;
+
+}
+
+
+
+.articolo {
+
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+
+}
+
+
+
+.articolo-info {
+
+  flex:1;
+
+}
+
+
+
+.articolo-info h3 {
+
+  margin-bottom:8px;
+  font-weight:600;
+
+}
+
+
+
+.articolo-info p {
+
+  line-height:1.4;
+
+}
+
+
+
+.categoria {
+
+  display:flex;
+  align-items:center;
+  gap:8px;
+  opacity:.7;
+
+}
+
+
+
+.articolo-dati {
+
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:12px;
+
+}
+
+
+
+.prezzo {
+
+  font-size:1.5rem;
+  font-weight:700;
+  color:#2e7d32;
+
+}
+
+
+
+.totale {
+
+  font-weight:600;
+
+}
+
+
+
+.col-dx {
+
+  flex:.7;
+
+}
+
+
+
+.riepilogo {
+
+  padding:20px;
+  background:#fafafa;
+  border-radius:12px;
+  border:1px solid #e0e0e0;
+
+}
+
+
+
+.riga {
+
+  display:flex;
+  justify-content:space-between;
+  margin:18px 0;
+
+}
+
+
+
+.totale-final {
+
+  font-size:1.6rem;
+  color:#2e7d32;
+
+}
+
+
+
+.checkout {
+
+  width:100%;
+  margin-top:20px;
+
+}
+
+
+
+@media(max-width:900px){
+
+
+.layout {
+
+ flex-direction:column;
+
+}
+
+
+.articolo {
+
+ flex-direction:column;
+
+}
+
+
+.articolo-dati {
+
+ align-items:stretch;
+
+}
+
+
+}

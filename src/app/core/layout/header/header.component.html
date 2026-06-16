@@ -17,6 +17,9 @@
   </div>
 
   <div class="right">
+    <button mat-icon-button *ngIf="isLoggedIn$ | async" routerLink="/carrello/{{ idUtente }}">
+      <mat-icon>shopping_cart</mat-icon>
+    </button>
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>account_circle</mat-icon>
     </button>
