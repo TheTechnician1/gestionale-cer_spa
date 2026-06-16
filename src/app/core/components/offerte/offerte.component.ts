@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { Prodotto } from '../../interfaces/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { UtenteService } from '../../services/utente.service';
 
 type Offerta = Prodotto & {
   prezzoOriginale: number | null;
@@ -16,7 +17,7 @@ type Offerta = Prodotto & {
   styleUrls: ['./offerte.component.scss']
 })
 export class OfferteComponent {
-  constructor(private productService: ProductService, private cartService: CartService, private snackBar: MatSnackBar, private route: Router) {}
+  constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private snackBar: MatSnackBar, private route: Router) {}
   offers: Offerta[] = [];
   productsByCategory: Prodotto[] = [];
   categoria!: string | null;
@@ -51,7 +52,8 @@ export class OfferteComponent {
       sconto: product.sconto
     };
     localStorage.setItem('pendingDiscount', JSON.stringify(discountedProduct));
-    this.cartService.add(discountedProduct);
+    const user = this.authService.currentUser;
+    this.cartService.addItem(user!.id!, discountedProduct);
 
     if (discountedProduct.quantita && discountedProduct.quantita  > 0) {
       discountedProduct.quantita--;

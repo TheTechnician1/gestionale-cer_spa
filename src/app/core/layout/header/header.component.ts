@@ -1,9 +1,10 @@
 import { Component } from "@angular/core";
 import { UtenteService } from "../../services/utente.service";
-import { Observable } from "rxjs";
+import { filter, map, Observable, switchMap } from "rxjs";
 import { Router } from "@angular/router";
 import { CartService } from "../../services/cart.service";
 import { ApiService } from "../../services/api.service";
+import { UtenteModel } from "../../interfaces/utente.model";
 
 @Component({
   selector: "app-header",
@@ -14,10 +15,9 @@ export class HeaderComponent {
   constructor(private authService: UtenteService, private cartService: CartService, private apiService: ApiService, private router: Router) {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
   }
-
   isLoggedIn$: Observable<boolean>;
   user$ = this.authService.user$;
-  cartCount$ = this.cartService.cartCount$;
+  cartCount$!: Observable<number>;
   searchTerm: string = "";
   results: any[] = [];
   searchTimeout: any;
@@ -25,17 +25,11 @@ export class HeaderComponent {
   editingBalance = false;
   newBalance!: number | null;
 
-  ngOnInit() {
-    const saved = localStorage.getItem('userBalance');
-    if (saved !== null) {
-      this.balance = Number(saved);
-    } else {
-      this.user$.subscribe(user => {
-        if (user) {
-          this.balance = user.balance!;
-        }
-      });
-    }
+  ngOnInit(): void {
+    this.cartCount$ = this.cartService.cartRefresh$.pipe(
+      switchMap(() => this.user$.pipe(
+        switchMap(user => this.cartService.getCart(user.id!)))),
+        map(cart => (cart.items ?? []).reduce((sum, item) => sum + (item.quantita ?? 0), 0)));
   }
 
   logout() {

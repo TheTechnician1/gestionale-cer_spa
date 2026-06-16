@@ -30,7 +30,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "ricerca-avanzata", component: SearchComponent },
   { path: "ordini", component: OrderComponent },
   { path: "ordini/:id", component: OrderDetailComponent },
-  { path: "ckeckout", component: CheckoutComponent },
+  { path: "checkout", component: CheckoutComponent },
   { path: "payment", component: PaypageComponent },
   { path: "conferma-ordine", component: ConfirmOrderComponent },
   { path: "ricevuta-ordine", component: OrderCompletedComponent },

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { UtenteService } from "src/app/core/services/utente.service";
 import { ToastService } from "src/app/core/services/toast.service";
+import { CartService } from "src/app/core/services/cart.service";
 
 @Component({
   selector: "app-login",
@@ -14,7 +15,7 @@ export class LoginComponent {
   loginError = false;
   hide = false;
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Password non valida per formato o lunghezza." }];
-  constructor(private fb: FormBuilder, private authService: UtenteService, private route: Router, private toastService: ToastService) {}
+  constructor(private fb: FormBuilder, private authService: UtenteService, private cartService: CartService, private route: Router, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -32,6 +33,12 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (user) => {
+        const guestItems = this.cartService.getGuestCart();
+        if (guestItems.length > 0) {
+          this.cartService.mergeGuestCartIntoUser(user.id!);
+        }
+        this.cartService.notifyCartChange();
+        this.authService['userSubject'].next(user);
         console.log("Login riuscito", user);
         this.loginError = false;
         this.route.navigate(["/"]);

@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UtenteService } from '../../services/utente.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor(private productService: ProductService, private cartService: CartService, private route: Router, private snackBar: MatSnackBar) { }
+  constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private route: Router, private snackBar: MatSnackBar) { }
   productsByCategory: Prodotto[] = [];
   categoria!: string | null;
 
@@ -34,7 +35,34 @@ export class DashboardComponent {
   }
 
   addToCart(product: Prodotto) {
-    this.cartService.add(product);
+    const user = this.authService.currentUser;
+
+    this.cartService.addItem(user!.id!, {
+    productId: product.id,
+    quantity: 1
+  }).subscribe({
+    next: () => {
+      if (product.quantita && product.quantita > 0) {
+        product.quantita--;
+      }
+
+      this.snackBar.open(
+        `${product.nomeProdotto} aggiunto al carrello`, 'OK',
+        {
+          duration: 2500,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        }
+      );
+    },
+    error: () => {
+      this.snackBar.open(
+        'Errore durante l\'aggiunta al carrello',
+        'OK',
+        { duration: 3000 }
+      );
+    }});
 
     if (product.quantita && product.quantita > 0) {
       product.quantita--;

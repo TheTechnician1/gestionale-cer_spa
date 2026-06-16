@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CartService } from '../../services/cart.service';
+import { UtenteService } from '../../services/utente.service';
 
 @Component({
   selector: 'app-product',
@@ -11,7 +12,7 @@ import { CartService } from '../../services/cart.service';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
-  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService, private snackBar: MatSnackBar) {}
+  constructor(private route: ActivatedRoute, private authService: UtenteService, private productService: ProductService, private cartService: CartService, private snackBar: MatSnackBar) {}
   prodotto!: Prodotto | null;
   loading = true;
   quantity = 1;
@@ -30,8 +31,9 @@ export class ProductComponent {
     });
   }
 
-  addToCart(product: Prodotto, qty: number) {
-    this.cartService.add(product, qty);
+  addToCart(product: Prodotto) {
+    const user = this.authService.currentUser;
+    this.cartService.addItem(user!.id!, product);
 
     if (product.quantita && product.quantita > 0) {
       product.quantita--;

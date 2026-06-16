@@ -12,7 +12,7 @@
     </button>
   </div>
   <div class="search-results" *ngIf="results.length > 0">
-    <div class="result-item" *ngFor="let p of results" (click)="goToProduct(p.id)">
+    <div class="result-item" onkeypress="" *ngFor="let p of results" (click)="goToProduct(p.id)">
       <img [src]="p.immagine" alt="img">
       <span>{{ p.nomeProdotto }}</span>
       <span class="price">{{ p.prezzo }} €</span>
@@ -21,18 +21,20 @@
   <div class="profile-menu">
     <button mat-button aria-label="Profilo" [matMenuTriggerFor]="menu">
       <mat-icon>account_circle</mat-icon>
-      <span *ngIf="!(isLoggedIn$ | async)" class="text">Accedi</span>
-      <span *ngIf="isLoggedIn$ | async" class="text">
-        {{ (user$ | async)?.name }}
-        {{ (user$ | async)?.surname }}
-        ({{ (user$ | async)?.balance | number:'1.2-2' }}€)
+      <span *ngIf="(user$ | async) as user">
+        <ng-container *ngIf="user.id === 26; else logged">
+          Accedi
+        </ng-container>
+        <ng-template #logged>
+          {{ user.name }} {{ user.surname }} ({{ user.balance | number:'1.2-2' }}€)
+        </ng-template>
       </span>
       <mat-menu #menu="matMenu">
-        <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/">Home</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item [routerLink]="['/profilo', (user$ | async)?.id]">Profilo</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/ordini">Ordini</button>
-        <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
+        <button *ngIf="(user$ | async)?.id === 26" mat-menu-item routerLink="login">Login</button>
+        <button *ngIf="(user$ | async)?.id !== 26" mat-menu-item routerLink="/">Home</button>
+        <button *ngIf="(user$ | async)?.id !== 26" mat-menu-item [routerLink]="['/profilo', (user$ | async)?.id]">Profilo</button>
+        <button *ngIf="(user$ | async)?.id !== 26" mat-menu-item routerLink="/ordini">Ordini</button>
+        <button *ngIf="(user$ | async)?.id !== 26" mat-menu-item (click)="logout()" routerLink="/">Logout</button>
       </mat-menu>
     </button>
   </div>

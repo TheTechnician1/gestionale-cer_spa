@@ -19,7 +19,7 @@
       <input matInput type="number" min="1" [max]="prodotto.quantita" [(ngModel)]="quantity">
     </mat-form-field>
     <div class="buttons">
-      <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(prodotto, quantity)">
+      <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(prodotto)">
         Aggiungi al carrello
       </button>
       <button mat-raised-button color="white" routerLink="/">

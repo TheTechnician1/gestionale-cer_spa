@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CartService } from '../../services/cart.service';
-import { CartItem, CartItemExtended } from '../../interfaces/cart.model';
+import { Cart, CartItem} from '../../interfaces/cart.model';
 import { Observable } from 'rxjs';
+import { UtenteService } from '../../services/utente.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -9,8 +11,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent {
-  constructor(private cartService: CartService) {}
-  cartItems$!: Observable<CartItemExtended[]>;
+  constructor(private cartService: CartService, private authService: UtenteService, private router: Router) {}
+  cart$!: Observable<Cart>;
+  userId!: number;
 
   displayedColumns: string[] = [
   'image',
@@ -19,51 +22,68 @@ export class CartComponent {
   'quantity',
   'subtotal',
   'remove'
-];
+  ];
 
   ngOnInit(): void {
-    this.cartItems$ = this.cartService.cartItems$;
-    const raw = localStorage.getItem('pendingDiscount');
-    if (raw) {
-      const payload = JSON.parse(raw);
-      localStorage.removeItem('pendingDiscount');
-    }
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.userId = user.id!;
+        this.loadCart();
+      }
+    });
+  }
+
+  loadCart(): void {
+    this.cart$ = this.cartService.getCart(this.userId);
   }
 
   increase(item: CartItem) {
-    this.cartService.increase(item.productId!);
+    const request = {
+    productId: item.productId,
+    quantity: item.quantita! + 1
+  };
+    this.cartService
+      .updateItem(this.userId, item.id!, request)
+      .subscribe(() => this.loadCart());
   }
 
   decrease(item: CartItem) {
-    this.cartService.decrease(item.productId!);
-  }
+    const request = {
+    productId: item.productId,
+    quantity: item.quantita! - 1
+  };
 
-  remove(item: CartItem) {
-    this.cartService.remove(item.productId!);
-  }
-
-  clearCart() {
-    this.cartService.clear();
-  }
-
-  getTotal(items: CartItem[]): number {
-    return items.reduce((tot, item) => tot + item.prezzo! * item.quantita!, 0);
-  }
-
-  hasAnyOriginalPrice(items: CartItemExtended[] | null | undefined): boolean {
-    if (!items || items.length === 0) {
-      return false;
+    if (request.quantity <= 0) {
+      this.removeItem(item);
+      return;
     }
-    return items.some(i => i.prezzoOriginale != null);
+
+    this.cartService
+      .updateItem(this.userId, item.id!, request)
+      .subscribe(() => this.loadCart());
   }
 
-  getTotalSavings(items: CartItemExtended[]): number {
-    return items.reduce((tot, item) => {
-      if (item.prezzoOriginale != null && item.prezzo != null) {
-        const diff = item.prezzoOriginale - item.prezzo!;
-        return tot + diff * item.quantita!;
-      }
-      return tot;
-    }, 0);
+  removeItem(item: CartItem) {
+    this.cartService
+      .remove(this.userId, item.id!)
+      .subscribe(() => this.loadCart());
+  }
+
+  getTotal(items: CartItem[] | null): number {
+    return (items ?? []).reduce(
+      (sum, item) => sum + (item.totaleRiga ?? 0),
+      0
+    );
+  }
+  goToCheckout(cart: Cart): void {
+    const user = this.authService.currentUser;
+
+    if (user?.id === 26) {
+      this.cartService.saveGuestCart(cart.items ?? []);
+      this.router.navigate(['/login'], {
+      queryParams: { returnUrl: '/checkout' }});
+      return;
+    }
+    this.router.navigate(['/checkout']);
   }
 }

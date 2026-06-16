@@ -5,6 +5,7 @@ import { Prodotto } from '../../interfaces/product.model';
 import { Category } from '../../enum/category.enum';
 import { CartService } from '../../services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UtenteService } from '../../services/utente.service';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent {
-  constructor(private productService: ProductService, private cartService: CartService, private snackBar: MatSnackBar, private router: ActivatedRoute, private route: Router) {}
+  constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private snackBar: MatSnackBar, private router: ActivatedRoute, private route: Router) {}
   categoria: string | null = null;
   minPrice: number | null = null;
   maxPrice: number | null = null;
@@ -44,7 +45,8 @@ export class SearchComponent {
   }
 
   addToCart(product: Prodotto) {
-    this.cartService.add(product);
+    const user = this.authService.currentUser;
+    this.cartService.addItem(user!.id!, product);
 
     if (product.quantita && product.quantita > 0) {
       product.quantita--;

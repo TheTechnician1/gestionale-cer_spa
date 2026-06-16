@@ -1,1 +1,82 @@
-<p>checkout works!</p>
+<div class="container">
+  <div class="left">
+    <mat-card class="card">
+      <h2>1. Indirizzo di spedizione</h2>
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="flex">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="shipping.nome" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="flex">
+          <mat-label>Cognome</mat-label>
+          <input matInput [(ngModel)]="shipping.cognome" />
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="fill" class="full">
+        <mat-label>Indirizzo</mat-label>
+        <input matInput [(ngModel)]="shipping.indirizzo" />
+      </mat-form-field>
+      <div class="form-row">
+        <mat-form-field appearance="fill" class="flex">
+          <mat-label>CAP</mat-label>
+          <input matInput [(ngModel)]="shipping.cap" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="flex">
+          <mat-label>Città</mat-label>
+          <input matInput [(ngModel)]="shipping.citta" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="flex">
+          <mat-label>Provincia</mat-label>
+          <input matInput [(ngModel)]="shipping.provincia" />
+        </mat-form-field>
+      </div>
+    </mat-card>
+    <mat-card class="card" style="margin-top:16px;">
+      <h2>2. Metodo di pagamento</h2>
+      <div class="balance">
+        <div>
+          <div class="muted">Saldo disponibile (Finto pagamento)</div>
+          <div class="saldo">€ {{ payment.saldo | number:'1.2-2' }}</div>
+        </div>
+        <div>
+          <mat-select [(value)]="payment.metodo" disabled>
+            <mat-option [value]="payment.metodo">{{ payment.metodo }}</mat-option>
+          </mat-select>
+        </div>
+      </div>
+      <div class="muted-small">Seleziona il metodo di pagamento o aggiungi una carta.</div>
+    </mat-card>
+  </div>
+  <div class="right">
+    <mat-card class="card summary">
+      <h2>Riepilogo ordine</h2>
+      <ng-container *ngIf="cart$ | async as cart">
+        <div class="summary-line" *ngFor="let item of cart.items">
+          <div>{{ item.productName }}</div>
+          <div>
+            € {{ item.prezzoUnitario }} x {{ item.quantita }}
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="summary-line">
+          <div>Subtotale</div>
+          <div>€ {{ getTotal(cart.items) | number:'1.2-2' }}</div>
+        </div>
+        <div class="summary-line">
+          <div>Spedizione</div>
+          <div>€ {{ order.shippingCost | number:'1.2-2' }}</div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="total">
+          <div>Totale</div>
+          <div>€ {{ getFinalTotal(cart.items)  | number:'1.2-2' }}</div>
+        </div>
+        <button mat-raised-button color="accent" class="pay-btn" (click)="payNow(cart)" [disabled]="!hasEnoughBalance(getFinalTotal(cart.items))">Paga ora</button>
+        <div class="error" *ngIf="cart.items && !hasEnoughBalance(getFinalTotal(cart.items))">
+          <mat-icon style="font-size: 18px;">error</mat-icon>
+          Saldo insufficiente per completare l'acquisto
+        </div>
+      </ng-container>
+    </mat-card>
+  </div>
+</div>

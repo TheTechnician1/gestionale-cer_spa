@@ -3,18 +3,26 @@ import { Utente, UtenteModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { ApiResponse } from "../interfaces/api.model";
-import { HttpParams } from "@angular/common/http";
+import { CartService } from "./cart.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtenteService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private cartService: CartService) {}
+  private guestUser: UtenteModel = new UtenteModel({
+    id: 26,
+    name: 'Guest',
+    surname: 'Guest',
+    email: 'guest@guest.guest',
+    password: 'Guest1@Guest',
+    balance: 0
+  });
 
   private readonly storageKey = "utente";
-  private readonly userSubject = new BehaviorSubject<UtenteModel | null>(this.loadFromStorage());
+  private userSubject = new BehaviorSubject<UtenteModel>(this.guestUser);
   readonly user$ = this.userSubject.asObservable();
-  readonly isLoggedIn$ = this.user$.pipe(map((user) => user !== null));
+  readonly isLoggedIn$ = this.user$.pipe(map(user => user.id !== this.guestUser.id));
 
   get currentUser(): UtenteModel | null {
     return this.userSubject.value;
@@ -24,13 +32,16 @@ export class UtenteService {
     const endpoint = "api/auth/login";
     return this.apiService.post<ApiResponse<Utente>>(endpoint, payload, options).pipe(
       map((res) => new UtenteModel(res.data)),
-      tap((utente) => this.persistUser(utente)),
-    );
+      tap((utente) => this.persistUser(utente)));
   }
 
   logout(): void {
+    const user = this.userSubject.value;
+    if (user?.id) {
+      this.cartService.clearCart(user.id).subscribe();
+    }
     localStorage.removeItem(this.storageKey);
-    this.userSubject.next(null);
+    this.userSubject.next(this.guestUser);
   }
 
   createUtente(payload: any, options: ApiRequestOptions = {}) {
@@ -56,21 +67,6 @@ export class UtenteService {
   private persistUser(utente: UtenteModel): void {
     localStorage.setItem(this.storageKey, JSON.stringify(utente));
     this.userSubject.next(utente);
-  }
-
-  private loadFromStorage(): UtenteModel | null {
-    const raw = localStorage.getItem(this.storageKey);
-    if (!raw) {
-      return null;
-    }
-
-    try {
-      const parsed = JSON.parse(raw) as Partial<Utente>;
-      return new UtenteModel(parsed);
-    } catch {
-      localStorage.removeItem(this.storageKey);
-      return null;
-    }
   }
 
   requestPasswordReset(email: string) {
