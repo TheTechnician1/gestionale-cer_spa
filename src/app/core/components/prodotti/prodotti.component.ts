@@ -28,10 +28,12 @@ export class ProdottiComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
-  this.route.paramMap.subscribe(params => {
-    this.ricerca = params.get('ricerca') ?? '';
-    this.search();
-  });
+    this.route.paramMap.subscribe(params => {
+      this.ricerca = params.get('ricerca') ?? '';
+      this.search();
+      this.filterForm.reset();
+    });
+    
   }
 
   initForm(): void {
@@ -64,7 +66,7 @@ export class ProdottiComponent implements OnInit {
 
   reset(): void {
     this.filterForm.reset();
-    this.prodotto$ = this.prodottiService.getProdotti();
+    this.prodotto$ = this.prodottiService.getByName(this.ricerca);
   }
 
   copyEmail(email: string): void {

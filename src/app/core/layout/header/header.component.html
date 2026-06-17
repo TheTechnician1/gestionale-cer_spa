@@ -29,7 +29,7 @@
 
 <mat-menu #menu="matMenu">
   <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-  <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/prodotti">Home</button>
+  <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="toHome()">Home</button>
   <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/profilo/:id">Profilo</button>
   <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
 </mat-menu>

@@ -32,6 +32,11 @@ export class HeaderComponent {
 
   onSearchChange() {
     this.router.navigate(['/ricerca-prodotti', this.searchText]);
+    this.searchText="";
+  }
+
+  toHome() {
+    this.router.navigate(['/ricerca-prodotti', ""]);
   }
 
   logout() {
