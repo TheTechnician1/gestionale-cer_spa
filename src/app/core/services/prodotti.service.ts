@@ -30,6 +30,7 @@ export class ProdottiService {
     prezzoMax?: number,
     quantitaDisponibileMin?: number,
     quantitaDisponibileMax?: number,
+    nomeProdotto?: string,
     options: ApiRequestOptions = {}
   ): Observable<Prodotto[]> {
     const endpoint = "api/products/advanced-search";
@@ -40,7 +41,7 @@ export class ProdottiService {
     if (prezzoMax !== undefined && prezzoMax !== null) params.prezzoMax = prezzoMax;
     if (quantitaDisponibileMin !== undefined && quantitaDisponibileMin !== null) params.quantitaDisponibileMin = quantitaDisponibileMin;
     if (quantitaDisponibileMax !== undefined && quantitaDisponibileMax !== null) params.quantitaDisponibileMax = quantitaDisponibileMax;
-
+    if ( nomeProdotto !== undefined && nomeProdotto !== null && nomeProdotto.trim() !== '' ) params.nomeProdotto = nomeProdotto;
     return this.api.get<Prodotto[]>(endpoint, params, options);
   }
 }

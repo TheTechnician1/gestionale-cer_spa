@@ -30,12 +30,7 @@ export class ProdottiComponent implements OnInit {
     this.initForm();
   this.route.paramMap.subscribe(params => {
     this.ricerca = params.get('ricerca') ?? '';
-
-    if (this.ricerca) {
-      this.prodotto$ = this.prodottiService.getByName(this.ricerca);
-    } else {
-      this.prodotto$ = this.prodottiService.getProdotti();
-    }
+    this.search();
   });
   }
 
@@ -62,7 +57,8 @@ export class ProdottiComponent implements OnInit {
       filters.prezzoMin,
       filters.prezzoMax,
       filters.quantitaDisponibileMin,
-      filters.quantitaDisponibileMax
+      filters.quantitaDisponibileMax,
+      this.ricerca
     );
   }
 

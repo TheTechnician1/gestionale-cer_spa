@@ -27,10 +27,6 @@
           <span *ngIf="filterForm.get('prezzoMin')?.errors?.['min']">
             Il prezzo minimo è 0
           </span>
-
-          <span *ngIf="filterForm.get('prezzoMin')?.errors?.['required']">
-            Campo obbligatorio
-          </span>
         </div>
       </div>
 
@@ -51,10 +47,6 @@
           <span *ngIf="filterForm.get('prezzoMax')?.errors?.['min']">
             Il prezzo minimo è 0
           </span>
-
-          <span *ngIf="filterForm.get('prezzoMax')?.errors?.['required']">
-            Campo obbligatorio
-          </span>
         </div>    
       </div>
 
@@ -74,10 +66,6 @@
           <span *ngIf="filterForm.get('quantitaDisponibileMin')?.errors?.['min']">
             La quantità minima è 0
           </span>
-
-          <span *ngIf="filterForm.get('quantitaDisponibileMin')?.errors?.['required']">
-            Campo obbligatorio
-          </span>
         </div>    
       </div>
 
@@ -96,10 +84,6 @@
 
           <span *ngIf="filterForm.get('quantitaDisponibileMax')?.errors?.['min']">
             La quantità minima è 0
-          </span>
-
-          <span *ngIf="filterForm.get('quantitaDisponibileMax')?.errors?.['required']">
-            Campo obbligatorio
           </span>
         </div>    
       </div>
