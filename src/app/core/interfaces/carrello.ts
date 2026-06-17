@@ -1,3 +1,5 @@
+import { Prodotto } from "./prodotto.model";
+
 export interface Carrello {
   id: number;
   createdAt: string;
@@ -29,6 +31,7 @@ export interface ViewArticoloCarrelloDTO {
   descrizioneCompleta: string;
   prezzo: number;
   categoria: string;
+  prodotto: Prodotto;
 }
 
 export class ViewArticoloCarrelloDTOModel implements ViewArticoloCarrelloDTO {
@@ -41,6 +44,7 @@ export class ViewArticoloCarrelloDTOModel implements ViewArticoloCarrelloDTO {
   descrizioneCompleta!: string;
   prezzo!: number;
   categoria!: string;
+  prodotto!: Prodotto;
 
   constructor(init?: Partial<ViewArticoloCarrelloDTO>) {
     Object.assign(this, init);

@@ -31,21 +31,33 @@
               <span class="prezzo">
                 {{ articolo.prezzo | currency:'EUR' }}
               </span>
-              <mat-form-field appearance="outline">
-                <mat-label>
-                  Quantità
-                </mat-label>
-                <input
-                  matInput
-                  type="number"
-                  min="1"
-                  [(ngModel)]="articolo.quantita"
-                  (change)="aggiornaQuantita(articolo)"
-                />
-              </mat-form-field>
+                <mat-form-field appearance="outline" >
+                  <mat-label>
+                    Quantità
+                  </mat-label>
+                  <div [formGroup]="formAggiunta">
+                  <input
+                    matInput
+                    formControlName="quantita"
+                    type="number"
+                    [min]="1"
+                    [max]="articolo.prodotto.quantitaDisponibile"
+                    [(ngModel)]="articolo.quantita"
+                    (change)="aggiornaQuantita(articolo)"
+                  />
+                  </div>
+                  <mat-error  *ngIf="articolo.quantita>articolo.prodotto.quantitaDisponibile || articolo.quantita <= 0">quantità non disponibile</mat-error>
+                </mat-form-field>
+              
               <span class="totale">
                 Totale:
-                {{ articolo.prezzo * articolo.quantita | currency:'EUR' }}
+                {{(
+                  articolo.quantita > 0 &&
+                  articolo.quantita <= articolo.prodotto.quantitaDisponibile
+                  ? articolo.prezzo * articolo.quantita
+                  : 0
+                  ) | currency:'EUR' 
+                }}
               </span>
               <button
                 mat-raised-button
@@ -83,6 +95,7 @@
           </div>
           <button
             mat-raised-button
+            [disabled]="totaleArticoli===0"
             color="primary"
             class="checkout">
                 Procedi all'ordine
