@@ -16,6 +16,10 @@ export class ProdottoService {
     return this.httpClient.get<ProdottoResponse[]>(this.apiUrl);
   }
 
+  recuperaProdottoPerId(idProdotto: number): Observable<ProdottoResponse> {
+    return this.httpClient.get<ProdottoResponse>(`${this.apiUrl}/${idProdotto}`);
+  }
+
   recuperaProdottiPerCategoria(
     nomeCategoria: string,
   ): Observable<ProdottoResponse[]> {

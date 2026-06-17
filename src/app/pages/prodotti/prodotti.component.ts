@@ -38,7 +38,7 @@ export class ProdottiComponent implements OnInit {
       this.activatedRoute.queryParamMap,
     ]).subscribe(([params, queryParams]) => {
       const categoria = params.get('nomeCategoria');
-      const ricerca = queryParams.get('ricerca');
+      const ricerca = queryParams.get('nome') || queryParams.get('ricerca');
 
       if (categoria) {
         this.nomeCategoria = categoria;
@@ -103,11 +103,25 @@ export class ProdottiComponent implements OnInit {
         this.caricamento = false;
       },
       error: (errore) => {
+        console.error('Errore ricerca prodotti', errore);
         this.messaggioErrore =
-          errore.error?.messaggio || 'Errore durante la ricerca dei prodotti';
+          errore.error?.messaggio ||
+          `Errore durante la ricerca dei prodotti. Status: ${errore.status}`;
         this.caricamento = false;
       },
     });
+  }
+
+  recuperaTitoloPagina(): string {
+    if (this.testoRicerca) {
+      return 'Risultati per ' + this.testoRicerca;
+    }
+
+    if (this.nomeCategoria) {
+      return this.nomeCategoria;
+    }
+
+    return 'Tutti i prodotti';
   }
 
   aggiungiAlCarrello(idProdotto: number): void {

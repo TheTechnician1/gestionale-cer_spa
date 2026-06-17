@@ -8,6 +8,8 @@ import { CarrelloComponent } from './pages/carrello/carrello.component';
 import { ProfiloComponent } from './pages/profilo/profilo.component';
 import { FondiComponent } from './pages/fondi/fondi.component';
 import { AuthGuard } from './guards/auth.guard';
+import { PagamentoCompletatoComponent } from './pages/pagamento-completato/pagamento-completato.component';
+import { DettaglioProdottoComponent } from './pages/dettaglio-prodotto/dettaglio-prodotto.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'prodotti/dettaglio/:idProdotto',
+    component: DettaglioProdottoComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'prodotti/categoria/:nomeCategoria',
     component: ProdottiComponent,
     canActivate: [AuthGuard],
@@ -41,6 +48,11 @@ const routes: Routes = [
   {
     path: 'carrello',
     component: CarrelloComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'pagamento-completato',
+    component: PagamentoCompletatoComponent,
     canActivate: [AuthGuard],
   },
   {

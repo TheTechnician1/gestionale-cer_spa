@@ -14,6 +14,9 @@ import { ProfiloComponent } from './pages/profilo/profilo.component';
 import { FondiComponent } from './pages/fondi/fondi.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
+import { PagamentoCompletatoComponent } from './pages/pagamento-completato/pagamento-completato.component';
+import { DettaglioProdottoComponent } from './pages/dettaglio-prodotto/dettaglio-prodotto.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { ProductCardComponent } from './components/product-card/product-card.com
     FondiComponent,
     NavbarComponent,
     ProductCardComponent,
+    PagamentoCompletatoComponent,
+    DettaglioProdottoComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,

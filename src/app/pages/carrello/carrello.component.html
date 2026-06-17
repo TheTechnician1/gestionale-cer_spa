@@ -69,9 +69,10 @@
       <button
         type="button"
         class="checkout-button"
-        [disabled]="elementiCarrello.length === 0"
+        [disabled]="elementiCarrello.length === 0 || checkoutInCorso"
+        (click)="effettuaCheckout()"
       >
-        Checkout
+        {{ checkoutInCorso ? "Pagamento in corso..." : "Checkout" }}
       </button>
 
       <button

@@ -13,9 +13,7 @@ export class CarrelloService {
   constructor(private httpClient: HttpClient) {}
 
   recuperaCarrelloUtente(idUtente: number): Observable<CarrelloResponse[]> {
-    return this.httpClient.get<CarrelloResponse[]>(
-      `${this.apiUrl}/${idUtente}`,
-    );
+    return this.httpClient.get<CarrelloResponse[]>(`${this.apiUrl}/${idUtente}`);
   }
 
   aggiungiProdottoAlCarrello(

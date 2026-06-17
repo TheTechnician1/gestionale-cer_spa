@@ -4,6 +4,8 @@ import { CarrelloResponse } from '../../models/carrello-response';
 import { UserResponse } from '../../models/user-response';
 import { CarrelloService } from '../../services/carrello.service';
 import { UtenteStorageService } from '../../services/utente-storage.service';
+import { Router } from '@angular/router';
+import { OrdineService } from '../../services/ordine.service';
 
 @Component({
   selector: 'app-carrello',
@@ -20,10 +22,13 @@ export class CarrelloComponent implements OnInit {
 
   totaleCarrello = 0;
   numeroArticoliCarrello = 0;
+  checkoutInCorso = false;
 
   constructor(
     private carrelloService: CarrelloService,
     private utenteStorageService: UtenteStorageService,
+    private ordineService: OrdineService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -154,5 +159,42 @@ export class CarrelloComponent implements OnInit {
     this.totaleCarrello = this.elementiCarrello[0].totaleCarrello;
     this.numeroArticoliCarrello =
       this.elementiCarrello[0].numeroArticoliCarrello;
+  }
+  effettuaCheckout(): void {
+    if (!this.utente) {
+      this.messaggioErrore =
+        'Devi effettuare il login per completare il pagamento';
+      return;
+    }
+    if (this.elementiCarrello.length === 0) {
+      this.messaggioErrore = 'Il carrello e vuoto';
+      return;
+    }
+    this.checkoutInCorso = true;
+    this.messaggioErrore = '';
+    this.messaggioErrore = '';
+
+    this.ordineService.effettuaCheckout(this.utente.id).subscribe({
+      next: (ordine) => {
+        const utenteAggiornato = {
+          ...this.utente!,
+          saldo: ordine.saldoResiduo,
+        };
+        this.utenteStorageService.salvaUtente(utenteAggiornato);
+
+        this.elementiCarrello = [];
+        this.aggiornaTotali();
+        this.checkoutInCorso = false;
+
+        this.router.navigate(['/pagamento-completato'], {
+          state: { ordine },
+        });
+      },
+      error: (errore) => {
+        this.messaggioErrore =
+          errore.error?.messaggio || 'Errore durante il checkout';
+        this.checkoutInCorso = false;
+      },
+    });
   }
 }
