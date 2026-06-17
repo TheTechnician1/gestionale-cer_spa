@@ -52,7 +52,7 @@ export class RegistrazioneUtenteComponent {
     this.authService.createUtente(payload).subscribe({
       next: () => {
         this.form.reset();
-        this.route.navigateByUrl("/dashboard");
+        this.route.navigateByUrl("/login");
       },
       error: (error) => {
         console.error("Register error", error);

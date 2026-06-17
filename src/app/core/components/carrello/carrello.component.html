@@ -1,13 +1,19 @@
 <div class="carrello-container" *ngIf="carrello">
   <mat-card class="carrello-card">
-    <mat-card-header>
-      <mat-card-title>
-        Il mio carrello
-      </mat-card-title>
-      <mat-card-subtitle>
-        {{ carrello.articoli.length }} articoli
-      </mat-card-subtitle>
-    </mat-card-header>
+    <div class="carrello-header">
+      <div class="header-info">
+        <h1>Il mio carrello</h1>
+        <span>{{ carrello.articoli.length }} articoli</span>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        routerLink="/prodotti">
+        <mat-icon>arrow_back</mat-icon>
+        Continua gli acquisti
+      </button>
+    </div>
     <div class="layout">
       <div class="col-sx">
         <mat-card
