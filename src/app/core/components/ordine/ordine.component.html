@@ -1,0 +1,118 @@
+<div class="ordine-container" *ngIf="ordine && !loading">
+
+  <mat-card class="ordine-card">
+
+    <!-- HEADER -->
+    <div class="ordine-header">
+
+      <div class="header-info">
+        <h1>Il tuo ordine</h1>
+        <span>Codice: {{ ordine.codiceOrdine }}</span>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        routerLink="/prodotti">
+        Torna allo shop
+      </button>
+
+    </div>
+
+    <!-- LAYOUT -->
+    <div class="layout">
+
+      <!-- COLONNA SINISTRA -->
+      <div class="col-sx">
+
+        <mat-card
+          class="articolo-card"
+          *ngFor="let articolo of ordine.articoliOrdine">
+
+          <div class="articolo">
+
+            <img
+              class="articolo-img"
+              [src]="articolo.immagine"
+              [alt]="articolo.nomeProdotto">
+
+            <div class="articolo-info">
+
+              <h3>
+                {{ articolo.nomeProdotto }}
+              </h3>
+
+              <p>
+                {{ articolo.descrizioneBreve }}
+              </p>
+
+              <div class="categoria">
+                Venduto da {{ articolo.nomeVenditore }}
+              </div>
+
+            </div>
+
+            <div class="articolo-dati">
+
+              <span class="prezzo">
+                {{ formatPrice(articolo.prezzoUnitario) }}
+              </span>
+
+              <span class="quantita">
+                Quantità: {{ articolo.quantita }}
+              </span>
+
+              <span class="totale">
+                Totale: {{ formatPrice(articolo.totaleRiga) }}
+              </span>
+
+            </div>
+
+          </div>
+
+        </mat-card>
+
+      </div>
+
+      <!-- COLONNA DESTRA -->
+      <div class="col-dx">
+
+        <div class="riepilogo">
+
+          <h2>Riepilogo ordine</h2>
+
+          <div class="riga">
+            <span>Cliente</span>
+            <strong>{{ ordine.nome }} {{ ordine.cognome }}</strong>
+          </div>
+
+          <div class="riga">
+            <span>Email</span>
+            <strong>{{ ordine.email }}</strong>
+          </div>
+
+          <hr>
+
+          <div class="riga">
+            <span>Totale ordine</span>
+            <strong class="totale-final">
+              {{ formatPrice(ordine.totaleOrdine) }}
+            </strong>
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            class="checkout">
+            Procedi al checkout
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </mat-card>
+
+</div>
