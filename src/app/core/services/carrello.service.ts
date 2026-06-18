@@ -24,4 +24,9 @@ export class CarrelloService {
     const endpoint = `api/users/${idUtente}/cart/items/${idArticolo}/delete`;
     return this.api.delete(endpoint,{}, options);
   }
+
+  aggiornaArticoloCarrello(idUtente?: number, cartItemId?: number,payload?: ArticoloCarrelloDTOModel, options: ApiRequestOptions = {}): Observable<Carrello> {
+    const endpoint = `api/users/${idUtente}/cart/items/${cartItemId}`;
+    return this.api.put<Carrello>(endpoint, payload, options);
+  }
 }

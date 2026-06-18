@@ -26,7 +26,7 @@ export class CarrelloComponent implements OnInit {
     private toast: ToastService,
     private fb:FormBuilder){
       this.formAggiunta= this.fb.group({
-        quantita:[null, Validators.min(1)]
+        quantita:[null,[Validators.required, Validators.min(1)]]
       });
 
       this.formAggiunta.get('quantita')?.markAsTouched();
@@ -75,11 +75,21 @@ export class CarrelloComponent implements OnInit {
   aggiornaQuantita(
     articolo: ViewArticoloCarrelloDTO
   ){
-
-
-    // qui chiamerai il backend
-    // PUT /carrello/{id}/articolo/{idArticolo}
-
+    if(this.formAggiunta.valid){
+      this.carrelloService.aggiornaArticoloCarrello(this.idUtente, 
+        articolo.idArticoloCarrello,
+        this.mapToArticoloCarrelloDTO(articolo)
+      ).subscribe({
+        next: (carrello: Carrello) => {
+          this.carrello = carrello;
+          this.toast.success('Articolo aggiornato');
+        },
+        error: (err) => {
+          console.error('Errore rimozione articolo', err);
+          this.toast.error('Errore aggiornamento articolo');
+        }
+      });
+    }
   }
 
   rimuovi(

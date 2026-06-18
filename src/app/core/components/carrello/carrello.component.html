@@ -50,6 +50,7 @@
                     [max]="articolo.prodotto.quantitaDisponibile"
                     [(ngModel)]="articolo.quantita"
                     (change)="aggiornaQuantita(articolo)"
+                    (keyup.enter)="aggiornaQuantita(articolo)"
                   />
                   </div>
                   <mat-error  *ngIf="articolo.quantita>articolo.prodotto.quantitaDisponibile || articolo.quantita <= 0">quantità non disponibile</mat-error>
