@@ -47,9 +47,9 @@ export class PagamentoCompletatoComponent implements OnInit {
         link.click();
         window.URL.revokeObjectURL(url);
       },
-      error: () => {
+      error: (errore) => {
         this.messaggioErrore = 'Errore durante il download della ricevuta';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
       },
     });
   }
@@ -64,9 +64,9 @@ export class PagamentoCompletatoComponent implements OnInit {
         this.messaggioSuccesso = 'Ricevuta inviata via email';
         this.toastService.mostraSuccesso('Ricevuta inviata via email');
       },
-      error: () => {
+      error: (errore) => {
         this.messaggioErrore = 'Errore durante invio ricevuta email';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
       },
     });
   }

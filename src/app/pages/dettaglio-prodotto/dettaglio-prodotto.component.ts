@@ -67,7 +67,7 @@ export class DettaglioProdottoComponent implements OnInit {
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante aggiunta al carrello';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         },
       });
   }
@@ -110,7 +110,7 @@ export class DettaglioProdottoComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante la gestione dei preferiti';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
       },
     });
   }
@@ -127,7 +127,7 @@ export class DettaglioProdottoComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il recupero del prodotto';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         this.caricamento = false;
       },
     });

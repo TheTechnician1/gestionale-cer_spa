@@ -20,20 +20,39 @@
   </section>
 
   <section id="categorie" class="category-grid">
-    <a
-      class="category-card"
-      *ngFor="let categoria of categorie"
-      [routerLink]="['/prodotti/categoria', categoria.nome]"
-    >
-      <img
-        [src]="'assets/immages/categorie/' + categoria.immagine"
-        [alt]="categoria.nome"
-      />
+    <div class="category-track">
+      <a
+        class="category-card"
+        *ngFor="let categoria of categorie"
+        [routerLink]="['/prodotti/categoria', categoria.nome]"
+      >
+        <img
+          [src]="'assets/immages/categorie/' + categoria.immagine"
+          [alt]="categoria.nome"
+        />
 
-      <div class="category-card-overlay"></div>
+        <div class="category-card-overlay"></div>
 
-      <h3>{{ categoria.nome }}</h3>
-    </a>
+        <h3>{{ categoria.nome }}</h3>
+      </a>
+
+      <a
+        class="category-card"
+        *ngFor="let categoria of categorie"
+        [routerLink]="['/prodotti/categoria', categoria.nome]"
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        <img
+          [src]="'assets/immages/categorie/' + categoria.immagine"
+          [alt]="categoria.nome"
+        />
+
+        <div class="category-card-overlay"></div>
+
+        <h3>{{ categoria.nome }}</h3>
+      </a>
+    </div>
   </section>
 
   <section

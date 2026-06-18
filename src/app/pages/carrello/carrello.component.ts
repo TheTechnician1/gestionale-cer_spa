@@ -65,7 +65,7 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il recupero del carrello';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         this.caricamento = false;
       },
     });
@@ -110,7 +110,7 @@ export class CarrelloComponent implements OnInit {
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante la modifica quantita';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         },
       });
   }
@@ -135,7 +135,7 @@ export class CarrelloComponent implements OnInit {
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante la rimozione prodotto';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         },
       });
   }
@@ -155,7 +155,7 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante lo svuotamento carrello';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
       },
     });
   }
@@ -209,8 +209,8 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il checkout';
-        this.toastService.mostraErrore('Pagamento non riuscito');
-        this.toastService.mostraErrore('Transazione fallita');
+        this.toastService.mostraErrore('Pagamento non riuscito', errore.status);
+        this.toastService.mostraErrore('Transazione fallita', errore.status);
         this.checkoutInCorso = false;
       },
     });

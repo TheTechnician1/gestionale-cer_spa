@@ -15,6 +15,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   messaggioErrore = '';
   caricamento = false;
+  passwordVisibile = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +28,10 @@ export class LoginComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
+  }
+
+  cambiaVisibilitaPassword(): void {
+    this.passwordVisibile = !this.passwordVisibile;
   }
 
   login(): void {
@@ -65,9 +70,9 @@ export class LoginComponent {
         this.toastService.mostraSuccesso('Accesso effettuato con successo');
         this.router.navigate(['/home']);
       },
-      error: () => {
+      error: (errore) => {
         this.messaggioErrore = 'Email o password non valide';
-        this.toastService.mostraErrore('Email o password non valide');
+        this.toastService.mostraErrore('Email o password non valide', errore.status);
         this.caricamento = false;
       },
     });

@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
           this.messaggioErrorePreferiti =
             errore.error?.messaggio ||
             'Errore durante la rimozione del preferito';
-        this.toastService.mostraErrore(this.messaggioErrorePreferiti);
+        this.toastService.mostraErrore(this.messaggioErrorePreferiti, errore.status);
         },
       });
   }

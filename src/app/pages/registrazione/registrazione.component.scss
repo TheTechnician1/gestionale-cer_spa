@@ -198,3 +198,27 @@
     height: 42px;
   }
 }
+.password-group {
+  position: relative;
+}
+
+.password-group input {
+  padding-right: 92px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #444;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: #d9368b;
+}

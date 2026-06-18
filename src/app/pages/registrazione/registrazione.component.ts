@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ErroreResponse } from 'src/app/models/errore-response';
 import { RegisterRequest } from 'src/app/models/register-request';
 import { AuthService } from 'src/app/services/auth.service';
@@ -15,11 +16,14 @@ export class RegistrazioneComponent {
   messaggioErrore = '';
   messaggioSuccesso = '';
   caricamento = false;
+  passwordVisibile = false;
+  confermaPasswordVisibile = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastService: ToastService,
+    private router: Router,
   ) {
     this.registrazioneForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
@@ -28,6 +32,14 @@ export class RegistrazioneComponent {
       password: ['', [Validators.required, Validators.minLength(8)]],
       confermaPassword: ['', [Validators.required]],
     });
+  }
+
+  cambiaVisibilitaPassword(): void {
+    this.passwordVisibile = !this.passwordVisibile;
+  }
+
+  cambiaVisibilitaConfermaPassword(): void {
+    this.confermaPasswordVisibile = !this.confermaPasswordVisibile;
   }
 
   registrati(): void {
@@ -68,6 +80,7 @@ export class RegistrazioneComponent {
         this.messaggioSuccesso = 'Account creato con successo';
         this.toastService.mostraSuccesso('Account creato con successo');
         this.registrazioneForm.reset();
+        this.router.navigate(['/login']);
       },
       error: (errore) => {
         const erroreResponse = errore.error as ErroreResponse;
@@ -76,7 +89,7 @@ export class RegistrazioneComponent {
         );
 
         this.messaggioErrore = messaggioErrore;
-        this.toastService.mostraErrore(messaggioErrore);
+        this.toastService.mostraErrore(messaggioErrore, errore.status);
         this.caricamento = false;
       },
     });
@@ -121,7 +134,7 @@ export class RegistrazioneComponent {
 
   private mappaErroreRegistrazione(messaggioBackend?: string): string {
     if (!messaggioBackend) {
-      return 'Utente giÃ  registrato';
+      return 'Utente giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  registrato';
     }
 
     const messaggioNormalizzato = messaggioBackend.toLowerCase();
@@ -131,11 +144,11 @@ export class RegistrazioneComponent {
       (messaggioNormalizzato.includes('uso') ||
         messaggioNormalizzato.includes('registr'))
     ) {
-      return 'Esiste giÃ  un account associato a questa email';
+      return 'Esiste giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  un account associato a questa email';
     }
 
     if (messaggioNormalizzato.includes('registr')) {
-      return 'Utente giÃ  registrato';
+      return 'Utente giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  registrato';
     }
 
     if (messaggioNormalizzato.includes('password')) {

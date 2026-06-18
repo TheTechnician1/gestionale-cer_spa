@@ -63,7 +63,7 @@ export class FondiComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante aggiunta fondi';
-        this.toastService.mostraErrore(this.messaggioErrore);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         this.caricamento = false;
       },
     });

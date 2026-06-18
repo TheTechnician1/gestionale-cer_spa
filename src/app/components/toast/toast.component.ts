@@ -10,7 +10,7 @@ import { ToastService } from '../../services/toast.service';
 export class ToastComponent {
   toast$ = this.toastService.toast$;
 
-  constructor(private toastService: ToastService) {}
+  constructor(public toastService: ToastService) {}
 
   chiudiToast(): void {
     this.toastService.chiudiToast();

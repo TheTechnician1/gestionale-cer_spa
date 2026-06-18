@@ -1,4 +1,3 @@
-io ho questo css
 .home-page {
   min-height: calc(100vh - 74px);
   background: #f6f6f6;
@@ -80,12 +79,30 @@ io ho questo css
   scroll-margin-top: 96px;
   max-width: 100%;
   margin: 28px auto 0;
-  padding: 0 24px 56px;
+  padding: 0 0 56px;
+  overflow: hidden;
+}
+
+.category-track {
+  width: max-content;
   display: flex;
   gap: 16px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-behavior: smooth;
+  padding: 0 24px;
+  animation: categorie-scroll 42s linear infinite;
+}
+
+.category-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes categorie-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50%));
+  }
 }
 
 .category-card {
@@ -283,20 +300,6 @@ io ho questo css
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .category-grid {
-    margin-top: 24px;
-  }
-
-  .favorite-section {
-    margin-top: 0;
-    padding: 0 20px 48px;
-  }
-
-  .section-heading h2 {
-    font-size: 26px;
-  }
-
   .category-card {
     height: 140px;
   }

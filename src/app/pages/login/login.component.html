@@ -24,17 +24,23 @@
 
       <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="input-group">
-          <span class="input-icon">✉</span>
           <input type="email" placeholder="Email" formControlName="email" />
         </div>
 
-        <div class="input-group">
-          <span class="input-icon">⌕</span>
+        <div class="input-group password-group">
           <input
-            type="password"
+            [type]="passwordVisibile ? 'text' : 'password'"
             placeholder="Password"
             formControlName="password"
           />
+
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="cambiaVisibilitaPassword()"
+          >
+            {{ passwordVisibile ? "Nascondi" : "Mostra" }}
+          </button>
         </div>
 
         <button type="submit" class="primary-button" [disabled]="caricamento">
