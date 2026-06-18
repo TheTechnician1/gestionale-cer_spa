@@ -65,7 +65,17 @@ export class UtenteService {
 
   updateBalance(id: number, balance: number): Observable<any> {
     const endpoint = `/api/auth/edit/${id}/balance`;
-    return this.apiService.post<any>(endpoint, null, { params: { balance }, responseType: 'text' });
+    return this.apiService.post<any>(endpoint, null, { params: { balance }, responseType: 'text' }
+    ).pipe(
+      tap(() => {
+        const user = this.userSubject.value;
+        const updatedUser = new UtenteModel({
+          ...user,
+          balance: (user.balance ?? 0) + balance
+        });
+        this.persistUser(updatedUser);
+      })
+    );
   }
 
   private persistUser(utente: UtenteModel): void {

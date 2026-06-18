@@ -10,14 +10,10 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 })
 export class UtenteComponent {
   constructor(private utenteService: UtenteService, private snackBar: MatSnackBar) {}
-  utente = this.utenteService.currentUser;
+  utente$ = this.utenteService.user$;
   showPassword = false;
 
   addControl = new FormControl<number | null>(0, [Validators.min(0)]);
-
-  ngOnInit() {
-    this.utente = this.utenteService.currentUser;
-  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -26,13 +22,9 @@ export class UtenteComponent {
   addBalance() {
     const amount = Number(this.addControl.value);
     if (isNaN(amount) || amount <= 0) return;
+    const id = this.utenteService.currentUser!.id;
 
-    const newBalance = (this.utente!.balance ?? 0) + amount;
-    const id = this.utente!.id;
-
-    this.utente!.balance = newBalance;
-
-    this.utenteService.updateBalance(id!, newBalance).subscribe({
+    this.utenteService.updateBalance(id!, amount).subscribe({
       next: () => {
         this.snackBar.open("Saldo aggiunto con successo", "OK", { duration: 2000 });
         this.addControl.setValue(0);

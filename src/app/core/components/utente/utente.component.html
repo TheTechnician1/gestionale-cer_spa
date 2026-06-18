@@ -1,5 +1,5 @@
 <div class="profile-wrapper">
-  <div class="profile-card mat-elevation-z3" *ngIf="utente">
+  <div class="profile-card mat-elevation-z3" *ngIf="utente$ | async as utente">
     <h2 class="welcome">
       Benvenuto <span>{{ utente.name }} {{ utente.surname }}</span>!
     </h2>
