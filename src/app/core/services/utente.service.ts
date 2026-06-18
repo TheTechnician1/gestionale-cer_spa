@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
-import { Ruolo, RoleType } from "../enum/role.enum";
 import { isAuthenticated } from "../interfaces/auth.model";
 
 @Injectable({
@@ -16,7 +15,7 @@ export class UtenteService {
   private readonly userSubject = new BehaviorSubject<UtenteLoginModel | null>(this.loadFromStorage());
   readonly user$ = this.userSubject.asObservable();
   readonly isLoggedIn$ = this.user$.pipe(map((user) => !!user));
-  private user: { role: Ruolo } | null = null;
+  private user: { email: string } | null = null;
   private loggedIn$ = new BehaviorSubject<boolean>(false);
 
   isAuth: isAuthenticated = {
@@ -34,17 +33,13 @@ export class UtenteService {
     return this.isAuth;
   }
 
-  getRole(): RoleType | null {
-    return this.currentUser?.ruolo ?? null;
-  }
-
   get currentUser(): UtenteLoginModel | null {
     return this.userSubject.value;
   }
 
-  login(payload: { utente_email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
-    const endpoint = "autenticazione/logIn";
-    return this.apiService.postLogin<UtenteLogin>(endpoint, payload, options).pipe(
+  login(payload: { email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteLoginModel> {
+    const endpoint = "api/auth/login";
+    return this.apiService.postLogin<UtenteLogin>(endpoint, payload).pipe(
       map((utente) => new UtenteLoginModel({ ...utente })),
       tap((utente) => this.persistUser(utente)),
     );
@@ -77,7 +72,12 @@ export class UtenteService {
   }
 
   createUtente(payload: any, options: ApiRequestOptions = {}) {
-    const path = "/utente/inserisci";
+    const path = "/api/auth/register";
+    return this.apiService.postText(path, payload, options);
+  }
+
+  updateSaldo(payload: any, options: ApiRequestOptions = {}) {
+    const path = "/api/user/update-saldo";
     return this.apiService.postText(path, payload, options);
   }
 }

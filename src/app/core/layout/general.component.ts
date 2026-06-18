@@ -4,11 +4,11 @@ import { Observable } from "rxjs";
 import { ToastService } from "../services/toast.service";
 
 @Component({
-  selector: "app-full-layout",
-  templateUrl: "./full-layout.component.html",
-  styleUrls: ["./full-layout.component.scss"],
+  selector: "app-general",
+  templateUrl: "./general.component.html",
+  styleUrls: ["./general.component.scss"],
 })
-export class FullLayoutComponent implements OnInit, OnDestroy {
+export class GeneralComponent implements OnInit, OnDestroy {
   constructor(
     private authService: UtenteService,
     private toastService: ToastService,

@@ -12,10 +12,28 @@
   font-weight: 600;
 }
 
-.spacer {
+.spacer2 {
   flex: 1;
+}
+
+.spacer1 {
+  flex: 0.4;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-color: #ffffff;
+  
+}
+
+#search-icon {
+  color: #000000;
 }
 
 .app-toolbar .mat-icon {
   color: #ffffff;
 }
+
+

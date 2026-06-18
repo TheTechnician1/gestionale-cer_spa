@@ -1,19 +1,49 @@
 <mat-toolbar class="app-toolbar">
-  <button mat-icon-button (click)="toggleSidebar.emit()" aria-label="Apri/chiudi menu">
+  <!--<button mat-icon-button (click)="toggleSidebar.emit()" aria-label="Apri/chiudi menu">
     <mat-icon>menu</mat-icon>
-  </button>
+  </button>>-->
 
-  <span class="title">CER Gestionale</span>
+  <span class="title"><img> ATTILIO's General Store</span>
 
-  <span class="spacer"></span>
+  <span class="spacer1"></span>
+
+  <span *ngIf="isLoggedIn$ | async" class="search"> 
+    
+    <mat-form-field  appearance="outline">
+      <mat-label>Cerca tra i Prodotti</mat-label>
+      <input matInput placeholder="Cosa stai cercando?">
+      <mat-icon matSuffix id="search-icon" (click)="search">search</mat-icon>
+      
+    </mat-form-field>
+
+
+  
+  
+  </span>
+
+  <span class="spacer2"></span>
 
   <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
+    <span>
+      Accedi
+    </span>
     <mat-menu #menu="matMenu">
       <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/dashboard">Home</button>
+      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="">Lista Prodotti</button>
       <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo/:id">Profilo</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
+      <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="">Logout</button>
     </mat-menu>
   </button>
+
+  <button *ngIf="isLoggedIn$ | async" mat-icon-button aria-label="Carrello" [matMenuTriggerFor]="menu">
+    <mat-icon>shopping_cart</mat-icon>
+    <span>
+      Carrello
+    </span>
+
+  </button>
+  
+
+
 </mat-toolbar>

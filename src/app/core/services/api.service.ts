@@ -5,9 +5,10 @@ import { APP_SETTINGS } from "../config/app-settings";
 import { StorageService } from "./storage.service";
 import { UtenteLogin } from "../interfaces/utente.model";
 import { SKIP_HTTP_SNACKBAR } from "../interceptor/http-status/http-snackbar.context";
+import Decimal from "decimal.js";
 
 export interface ApiRequestOptions {
-  params?: Record<string, string | number | boolean>;
+  params?: Record<string, string | number | boolean | Decimal>;
   skipToast?: boolean;
 }
 
@@ -29,27 +30,27 @@ export class ApiService {
   }
 
   post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.email;
     return this.request<T>("POST", path, body, "json", options);
   }
 
   postText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.email;
     return this.request<string>("POST", path, body, "text", options);
   }
 
   put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.email;
     return this.request<T>("PUT", path, body, "json", options);
   }
 
-  putDelete<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
-    return this.request<T>("PUT", path, body, "json", options);
-  }
+  // putDelete<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
+  //   body.codiceFiscale = this.api.getLocal<UtenteLogin>("utente")?.codiceFiscale;
+  //   return this.request<T>("PUT", path, body, "json", options);
+  // }
 
   putText(path: string, body: any, options: ApiRequestOptions = {}): Observable<string> {
-    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.mail;
+    body.emailUtenteLoggato = this.api.getLocal<UtenteLogin>("utente")?.email;
     return this.request<string>("PUT", path, body, "text", options);
   }
 
@@ -111,7 +112,7 @@ export class ApiService {
     return `${trimmedBase}/${trimmedPath}`;
   }
 
-  private buildParams(params?: Record<string, string | number | boolean>): HttpParams | undefined {
+  private buildParams(params?: Record<string, string | number | boolean | Decimal>): HttpParams | undefined {
     if (!params) return undefined;
     return Object.entries(params).reduce((acc, [key, value]) => acc.set(key, String(value)), new HttpParams());
   }
