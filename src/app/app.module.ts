@@ -34,9 +34,14 @@ import { PaypageComponent } from './core/components/paypage/paypage.component';
 import { ConfirmOrderComponent } from './core/components/confirm-order/confirm-order.component';
 import { OrderCompletedComponent } from './core/components/order-completed/order-completed.component';
 import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
+import { SplashComponent } from "./shared/components/splash/splash.component";
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent, OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent, ModificaUtenteComponent, OrderDetailComponent, CheckoutComponent, PaypageComponent, ConfirmOrderComponent, OrderCompletedComponent, ResetPasswordComponent],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, UtenteComponent,
+    RegistrazioneUtenteComponent, LoginComponent, NotAuthorizedComponent, SellerComponent, CartComponent,
+    OrderComponent, DashboardComponent, ProductComponent, OfferteComponent, SearchComponent, ModificaUtenteComponent,
+    OrderDetailComponent, CheckoutComponent, PaypageComponent, ConfirmOrderComponent, OrderCompletedComponent,
+    ResetPasswordComponent, SplashComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },

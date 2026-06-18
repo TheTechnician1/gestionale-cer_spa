@@ -16,6 +16,8 @@ export class ModificaUtenteComponent {
   profileForm!: FormGroup;
   saving = false;
   originalBalance = this.utente?.balance;
+  userId = this.userService.currentUser?.id;
+
 
   ngOnInit() {
     this.initForm();

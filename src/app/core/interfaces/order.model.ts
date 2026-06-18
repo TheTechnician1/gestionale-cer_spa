@@ -1,5 +1,6 @@
 export interface Ordini {
-  id: string;
+  id: number;
+  codiceOrdine: string;
   date: Date;
   total: number;
   status: string;
@@ -12,4 +13,21 @@ export interface Ordini {
 export interface OrderDTO {
   orderId: number;
   message: string;
+}
+
+export interface OrderItemResponseDTO {
+  productId: number;
+  productName: string;
+  quantity: number;
+  prezzoUnitario: number;
+  totaleRiga: number;
+}
+
+export interface OrderResponseDTO {
+  id: number;
+  codiceOrdine: string;
+  dataOrdine: string;
+  totaleOrdine: number;
+  stato: string;
+  items: OrderItemResponseDTO[];
 }

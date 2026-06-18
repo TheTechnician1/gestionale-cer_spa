@@ -1,1 +1,4 @@
-<router-outlet></router-outlet>
+<app-splash (finished)="onSplashFinished()"></app-splash>
+<div class="app-shell" [class.blurred]="showSplash" [class.locked]="showSplash">
+  <router-outlet></router-outlet>
+</div>

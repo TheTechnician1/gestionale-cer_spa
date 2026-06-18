@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Prodotto } from '../../interfaces/product.model';
 import { ProductService } from '../../services/product.service';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UtenteService } from '../../services/utente.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,22 +13,49 @@ import { UtenteService } from '../../services/utente.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-  constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private route: Router, private snackBar: MatSnackBar) { }
-  productsByCategory: Prodotto[] = [];
-  categoria!: string | null;
+  constructor(
+    private productService: ProductService,
+    private authService: UtenteService,
+    private cartService: CartService,
+    private route: Router,
+    private snackBar: MatSnackBar) {}
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  products: Prodotto[] = [];
+  pagedProducts: Prodotto[] = [];
+
+  pageSize = 8;
+  pageIndex = 0;
+  totalProducts = 0;
 
   ngOnInit() {
     this.productService.getAllProducts().subscribe(products => {
-      const map = new Map<string, Prodotto>();
-
-      products.forEach(p => {
-        if (!map.has(p.categoria!)) {
-          map.set(p.categoria!, p);
-        }
-      });
-
-      this.productsByCategory = Array.from(map.values());
+      this.products = this.shuffle(products).filter(p => p.quantita! > 0);
+      this.totalProducts = this.products.length;
+      this.setPage(0, this.pageSize);
     });
+  }
+
+  shuffle(array: Prodotto[]) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  setPage(pageIndex: number, pageSize: number) {
+    const start = pageIndex * pageSize;
+    const end = start + pageSize;
+    this.pagedProducts = this.products.slice(start, end);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.setPage(this.pageIndex, this.pageSize);
   }
 
   getAvailable(product: Prodotto): number {
@@ -35,14 +63,16 @@ export class DashboardComponent {
     return product.quantita! - inCart;
   }
 
-  reloadProducts() {
-    this.productService.getAllProducts().subscribe(products => {
-      this.productsByCategory = products;
-    });
-  }
-
   details(id: number) {
     this.route.navigateByUrl(`/prodotto/${id}`);
+  }
+
+  reloadProducts() {
+    this.productService.getAllProducts().subscribe(products => {
+      this.products = this.shuffle(products);
+      this.totalProducts = this.products.length;
+      this.setPage(this.pageIndex, this.pageSize);
+    });
   }
 
   addToCart(product: Prodotto) {
@@ -64,7 +94,7 @@ export class DashboardComponent {
         quantita: 1
       } as any);
         this.snackBar.open(
-        `${product.nomeProdotto} aggiunto al carrello`,
+        `${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`,
         'OK',
         {
           duration: 2000,
@@ -90,7 +120,6 @@ export class DashboardComponent {
           panelClass: ['snackbar-success']
         }
       );
-      this.reloadProducts();
     },
     error: () => {
       this.snackBar.open(

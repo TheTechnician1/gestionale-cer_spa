@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { UtenteService } from "./core/services/utente.service";
-import { CartService } from "./core/services/cart.service";
+import { NavigationEnd, Router } from "@angular/router";
+import { filter, first } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -9,19 +10,35 @@ import { CartService } from "./core/services/cart.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-
-  constructor(private translate: TranslateService, private authService: UtenteService, private cartService: CartService) {
+  constructor(
+    private router: Router,
+    private translate: TranslateService,
+    private authService: UtenteService,
+  ) {
     this.translate.setDefaultLang("en");
     this.translate.use("en");
   }
+  showSplash = true;
+  private splashShownKey = 'splashShown';
+  private splashClosed = false;
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(user => {
-      if(user && user.id !== 26) {
-        this.cartService.getCart(user.id!).subscribe(cart => {
-          this.cartService.hydrateFromCart(cart);
-        });
-      }
-    });
+    const shown = sessionStorage.getItem(this.splashShownKey);
+    if(shown) { this.showSplash = false; return; }
+
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd), first()).subscribe(() => this.hideSplash());
+    this.authService.user$.pipe(first()).subscribe(() => this.hideSplash());
+    setTimeout(() => { if (this.showSplash) this.hideSplash(); }, 5000);
+  }
+
+  onSplashFinished(): void {
+    this.hideSplash();
+  }
+
+  private hideSplash(): void {
+    if(this.splashClosed) return;
+    this.splashClosed = true;
+    this.showSplash = false;
+    sessionStorage.setItem(this.splashShownKey, '1');
   }
 }

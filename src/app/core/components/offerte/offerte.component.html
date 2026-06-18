@@ -1,7 +1,7 @@
 <main class="offers-container">
   <h1 class="title">Offerte del giorno</h1>
   <div class="offers-grid">
-    <div *ngFor="let p of offers">
+    <div *ngFor="let p of pagedOffers">
       <mat-card class="offer-card" *ngIf="p.quantita! > 0">
         <div class="badge">-{{ p.sconto }}%</div>
         <img mat-card-image [src]="p.immagine" alt="{{ p.nomeProdotto }}" (click)="details(p.id!)">
@@ -20,4 +20,5 @@
       </mat-card>
     </div>
   </div>
+  <mat-paginator [length]="totalOffers" [pageSize]="pageSize" [pageSizeOptions]="[8]" [hidePageSize]="true" (page)="onPageChange($event)"></mat-paginator>
 </main>

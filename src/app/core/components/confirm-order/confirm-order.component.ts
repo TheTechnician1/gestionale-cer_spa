@@ -29,6 +29,10 @@ export class ConfirmOrderComponent {
   userId!: number;
 
   ngOnInit(): void {
+    this.loadOrder();
+  }
+
+  loadOrder() {
     this.user = this.authService.currentUser;
     this.userId = this.user?.id!;
 
@@ -56,6 +60,38 @@ export class ConfirmOrderComponent {
   }
 
   viewOrder(): void {
-    this.router.navigate(['/ricevuta-ordine', this.order.code]);
+    this.orderService.completeOrder(this.userId, this.orderId).subscribe({
+      next: (res) => {
+        console.log("Ordine completato:", res);
+        this.router.navigate(['/ricevuta-ordine', {
+          state: {
+            orderId: res.orderId,
+            total: this.total
+          }
+        }]);
+      },
+      error: (err) => {
+        console.error("Errore completamento ordine:", err);
+      }
+    });
+
+  }
+
+  backToShop() {
+    this.orderService.completeOrder(this.userId, this.orderId).subscribe({
+      next: (res) => {
+        console.log("Ordine completato:", res);
+        this.router.navigate(['/ricevuta-ordine', {
+          state: {
+            orderId: res.orderId,
+            total: this.total
+          }
+        }]);
+      },
+      error: (err) => {
+        console.error("Errore completamento ordine:", err);
+      }
+    });
+    this.router.navigate(['/']);
   }
 }

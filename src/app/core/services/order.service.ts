@@ -14,6 +14,11 @@ export class OrderService {
     return this.api.get<Ordini[]>(endpoint);
   }
 
+  getOrderById(orderId: number): Observable<any> {
+    const endpoint = `api/orders/${orderId}`;
+    return this.api.get<Ordini[]>(endpoint);
+  }
+
   checkout(userId: number, payload: any) {
     const endpoint = `/api/users/${userId}/orders/checkout`;
     return this.api.post<OrderDTO>(endpoint, payload);
@@ -21,11 +26,21 @@ export class OrderService {
 
   pay(userId: number, orderId: number) {
     const endpoint = `/api/users/${userId}/orders/payment/${orderId}`;
-    return this.api.post<any>(endpoint, {});
+    return this.api.post<OrderDTO>(endpoint, {});
   }
 
   completeOrder(userId: number, orderId: number) {
     const endpoint = `/api/users/${userId}/orders/completed/${orderId}`;
+    return this.api.post<OrderDTO>(endpoint, {});
+  }
+
+  downloadPDF(orderId: number) {
+    const endpoint = `/orders/${orderId}/receipt/email`;
     return this.api.post<any>(endpoint, {});
+  }
+
+  showOrderPDF(orderId: number) {
+    const endpoint = `/orders/${orderId}/receipt/pdf`;
+    return this.api.get<any>(endpoint, { responseType: 'blob' });
   }
 }

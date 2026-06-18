@@ -5,6 +5,7 @@ import { Prodotto } from '../../interfaces/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UtenteService } from '../../services/utente.service';
+import { PageEvent } from '@angular/material/paginator';
 
 type Offerta = Prodotto & {
   prezzoOriginale: number | null;
@@ -17,16 +18,28 @@ type Offerta = Prodotto & {
   styleUrls: ['./offerte.component.scss']
 })
 export class OfferteComponent {
-  constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private snackBar: MatSnackBar, private route: Router) {}
+  constructor(
+    private productService: ProductService,
+    private authService: UtenteService,
+    private cartService: CartService,
+    private snackBar: MatSnackBar,
+    private route: Router
+  ) {}
   offers: Offerta[] = [];
-  productsByCategory: Prodotto[] = [];
-  categoria!: string | null;
+  pagedOffers: Offerta[] = [];
+
+  pageSize = 8;
+  pageIndex = 0;
+  maxPages = 2;
+  maxItems = this.pageSize * this.maxPages;
+  totalOffers = 0;
   private offersKey = 'offers_cache';
 
   ngOnInit(): void {
     const cached = sessionStorage.getItem(this.offersKey);
     if(cached) {
       this.offers = JSON.parse(cached);
+      this.initPagination();
       return;
     }
     this.loadOffers();
@@ -37,6 +50,42 @@ export class OfferteComponent {
       const offers = this.buildOffers(products);
       this.offers = offers;
       sessionStorage.setItem(this.offersKey, JSON.stringify(offers));
+      this.initPagination();
+    });
+  }
+
+  initPagination() {
+    this.offers = this.offers.slice(0, this.maxItems);
+    this.totalOffers = this.offers.length;
+    this.setPage(0);
+  }
+
+  setPage(pageIndex: number) {
+    this.pageIndex = pageIndex;
+    const start = pageIndex * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedOffers = this.offers.slice(start, end);
+  }
+
+  onPageChange(event: PageEvent) {
+    const maxPageIndex = this.maxPages - 1;
+    const nextIndex = Math.min(event.pageIndex, maxPageIndex);
+    this.pageSize = event.pageSize;
+    this.setPage(nextIndex);
+  }
+
+  buildOffers(products: Prodotto[]): Offerta[] {
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+
+    return shuffled.map(p => {
+      const discount = Math.floor(Math.random() * 80) + 10;
+
+      return {
+        ...p,
+        prezzoOriginale: p.prezzo,
+        prezzoScontato: Number((p.prezzo! - (p.prezzo! * discount / 100)).toFixed(2)),
+        sconto: discount
+      };
     });
   }
 
@@ -48,21 +97,6 @@ export class OfferteComponent {
     return product.quantita! - this.cartService.getCartState(product.id!);
   }
 
-  buildOffers(products: Prodotto[]): Offerta[] {
-    const shuffled = [...products].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, 8);
-    return selected.map(p => {
-      const discount = Math.floor(Math.random() * 80) + 10;
-      return {
-        ...p,
-        prezzoOriginale: p.prezzo,
-        prezzoScontato: Number(
-          (p.prezzo! - (p.prezzo! * discount / 100)).toFixed(2)
-        ),
-        sconto: discount
-      };
-    });
-  }
   addToCart(product: Prodotto) {
     const user = this.authService.currentUser;
     const available = this.getAvailable(product);

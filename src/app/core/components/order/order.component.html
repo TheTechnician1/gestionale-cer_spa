@@ -11,7 +11,7 @@
       <div class="toolbar">
         <mat-form-field appearance="outline" class="search">
           <mat-label>Ricerca ordine o prodotto</mat-label>
-          <input matInput placeholder="ID, prodotto, stato, data..." />
+          <input matInput placeholder="ID, data, totale, stato..." [(ngModel)]="filterValue" (ngModelChange)="applyFilter($event)"/>
           <button mat-icon-button matSuffix *ngIf="filterValue" (click)="clearFilter()">
             <mat-icon>close</mat-icon>
           </button>
@@ -27,10 +27,10 @@
         <button mat-stroked-button color="primary" (click)="refresh()">Aggiorna</button>
       </div>
       <div class="table-wrapper" *ngIf="orders && orders.length; else empty">
-        <table mat-table class="mat-elevation-z1" matSort>
-          <ng-container matColumnDef="id">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z1" matSort>
+          <ng-container matColumnDef="codiceOrdine">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-            <td mat-cell *matCellDef="let o">{{ o.id }}</td>
+            <td mat-cell *matCellDef="let o">{{ o.codiceOrdine }}</td>
           </ng-container>
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Data</th>
@@ -43,17 +43,17 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Stato</th>
             <td mat-cell *matCellDef="let o">
-              <mat-chip [color]="statusColor(o.status)" selected>{{ o.status }}</mat-chip>
+              <mat-chip class="status-chip" [ngClass]="o.status">{{ o.status }}</mat-chip>
             </td>
           </ng-container>
-          <ng-container matColumnDef="items">
-            <th mat-header-cell *matHeaderCellDef>Prodotti</th>
-            <td mat-cell *matCellDef="let o">{{ o.items.length }} articoli</td>
+          <ng-container matColumnDef="itemsCount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Prodotti</th>
+            <td mat-cell *matCellDef="let o">{{ o.itemsCount }} articoli</td>
           </ng-container>
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Azioni</th>
             <td mat-cell *matCellDef="let o">
-              <button mat-icon-button color="primary" (click)="openDetails(o)">
+              <button mat-icon-button (click)="openDetails(o)">
                 <mat-icon>visibility</mat-icon>
               </button>
               <button mat-icon-button color="accent" *ngIf="o.status === 'In elaborazione'">
@@ -82,15 +82,6 @@
       <p><strong>Data</strong>: {{ order.date | date:'fullDate' }} {{ order.date | date:'shortTime' }}</p>
       <p><strong>Totale</strong>: {{ order.total | currency:'EUR' }}</p>
       <p><strong>Stato</strong>: {{ order.status }}</p>
-      <mat-divider></mat-divider>
-      <h3>Articoli</h3>
-      <mat-list>
-        <mat-list-item *ngFor="let it of order.items">
-          <img matListAvatar [src]="it.image" alt="{{ it.name }}" />
-          <div matLine>{{ it.name }}</div>
-          <div matLine class="muted">x{{ it.quantity }} • {{ it.price | currency:'EUR' }}</div>
-        </mat-list-item>
-      </mat-list>
       <mat-divider></mat-divider>
       <p *ngIf="order.shipping"><strong>Spedizione</strong>: {{ order.shipping.method }} - {{ order.shipping.cost | currency:'EUR' }}</p>
       <p *ngIf="order.address"><strong>Indirizzo</strong>: {{ order.address.street }}, {{ order.address.city }}</p>

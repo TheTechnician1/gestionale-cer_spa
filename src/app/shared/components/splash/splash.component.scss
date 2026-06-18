@@ -1,0 +1,60 @@
+.splash-backdrop {
+  position: fixed;
+  inset: 0;
+  background: url('../../../../assets/img/background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 700ms ease;
+  pointer-events: auto;
+}
+
+.splash-backdrop.fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.splash-logo {
+  width: 220px;
+  animation: logoIntro 1.2s ease-out forwards, logoGlow 2s ease-in-out infinite 1.2s;
+}
+
+.splash-text {
+  margin-left: 50px;
+  display: flex;
+}
+
+@keyframes logoIntro {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+    filter: blur(12px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes logoGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 0px rgba(255,255,255,0));
+  }
+  50% {
+    filter: drop-shadow(0 0 18px rgba(255,255,255,0.35));
+  }
+}

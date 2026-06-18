@@ -1,0 +1,31 @@
+.receipt-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.receipt-card {
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fff;
+  width: 420px;
+}
+
+.success-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  color: var(--app-secondary);
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.send-email-button {
+  background-color: var(--app-secondary);
+}

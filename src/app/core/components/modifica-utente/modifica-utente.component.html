@@ -54,7 +54,7 @@
         </div>
       </mat-card-content>
       <mat-card-actions align="end">
-        <button mat-stroked-button type="button" [disabled]="saving" routerLink="/">Annulla</button>
+        <button mat-stroked-button type="button" [disabled]="saving" [routerLink]="['/profilo', userId]">Annulla</button>
         <button mat-flat-button color="primary" class="btt-save" type="submit" [disabled]="profileForm.invalid || saving">
           <mat-icon *ngIf="!saving">save</mat-icon>
           <mat-progress-spinner *ngIf="saving" diameter="20" mode="indeterminate"></mat-progress-spinner>

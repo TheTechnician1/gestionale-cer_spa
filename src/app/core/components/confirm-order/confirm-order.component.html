@@ -9,7 +9,7 @@
       <p>Totale pagato: <strong>{{ order.total | number:'1.2-2' }} €</strong></p>
     </div>
     <div class="actions">
-      <button mat-raised-button routerLink="/">Torna allo shop</button>
+      <button mat-raised-button (click)="backToShop()">Torna allo shop</button>
       <button mat-raised-button color="primary" class="btt-view" (click)="viewOrder()">Visualizza ordine</button>
     </div>
   </div>

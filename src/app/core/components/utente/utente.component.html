@@ -1,53 +1,43 @@
-<h3>Profilo Utente</h3>
-<div class="profile-container">
-  <div *ngIf="utente" class="profile-header">
-    <div class="user-info">
-      <h4 class="title">Benvenuto <span class="value">{{ utente.name }} {{ utente.surname }}</span>!</h4>
-      <p>
-        <span class="label">Nome: </span>
-        <span class="value">{{ utente.name }}</span>
-      </p>
-      <p>
-        <span class="label">Cognome: </span>
-        <span class="value">{{ utente.surname }}</span>
-      </p>
-      <p>
-        <span class="label">E-mail: </span>
-        <span class="value">{{ utente.email }}</span>
-      </p>
-      <p>
-        <span class="label">Password: </span>
-        <span class="value">
-          {{ showPassword ? utente.password : '••••••••' }}
-        </span>
-        <button mat-button (click)="togglePassword()">
-          {{ showPassword ? 'Nascondi' : 'Mostra' }}
-        </button>
-      </p>
-      <p>
-        <span class="label">Saldo: </span>
-        <span *ngIf="!editing" class="value">
-          {{ utente.balance | number:'1.2-2' }} €
-        </span>
-        <button mat-icon-button class="edit-btt" *ngIf="!editing" (click)="startEdit()" aria-label="Modifica saldo">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <ng-container *ngIf="editing">
-          <mat-form-field appearance="outline" class="balance-input">
-            <input matInput type="number" [min]="originalBalance" [formControl]="balanceControl" aria-label="Saldo" />
-            <mat-error *ngIf="balanceControl.hasError('required')">Il saldo è obbligatorio</mat-error>
-            <mat-error *ngIf="balanceControl.hasError('min')">Il nuovo saldo non può essere inferiore a {{ originalBalance | number:'1.2-2' }} €</mat-error>
-          </mat-form-field>
-          <button mat-icon-button color="primary" (click)="saveBalance()" [disabled]="balanceControl.invalid || saving || isLowerThanOriginal()" aria-label="Salva saldo">
-            <mat-icon *ngIf="!saving">check</mat-icon>
-            <mat-progress-spinner *ngIf="saving" diameter="20" mode="indeterminate"></mat-progress-spinner>
-          </button>
-          <button mat-icon-button color="warn" (click)="cancelEdit()" [disabled]="saving" aria-label="Annulla modifica">
-            <mat-icon>close</mat-icon>
-          </button>
-        </ng-container>
-      </p>
+<div class="profile-wrapper">
+  <div class="profile-card mat-elevation-z3" *ngIf="utente">
+    <h2 class="welcome">
+      Benvenuto <span>{{ utente.name }} {{ utente.surname }}</span>!
+    </h2>
+    <div class="info-row">
+      <span class="label">Nome:</span>
+      <span class="value">{{ utente.name }}</span>
     </div>
+    <div class="info-row">
+      <span class="label">Cognome:</span>
+      <span class="value">{{ utente.surname }}</span>
+    </div>
+    <div class="info-row">
+      <span class="label">E-mail:</span>
+      <span class="value">{{ utente.email }}</span>
+    </div>
+    <div class="info-row password-row">
+      <span class="label">Password:</span>
+      <span class="value">{{ showPassword ? utente.password : '••••••••' }}</span>
+      <button mat-button (click)="togglePassword()">
+        {{ showPassword ? 'Nascondi' : 'Mostra' }}
+      </button>
+    </div>
+    <div class="info-row">
+      <span class="label">Saldo attuale:</span>
+      <span class="value saldo">{{ utente.balance | number:'1.2-2' }} €</span>
+    </div>
+    <div class="add-balance-box">
+      <mat-form-field appearance="outline" class="add-field">
+        <mat-label>Aggiungi saldo</mat-label>
+        <input matInput type="number" min="0" [formControl]="addControl" />
+        <mat-error *ngIf="addControl.hasError('min')">Non puoi inserire numeri negativi</mat-error>
+      </mat-form-field>
+      <button mat-raised-button (click)="addBalance()" [disabled]="addControl.invalid || addControl.value === 0">
+        Aggiungi
+      </button>
+    </div>
+    <button mat-raised-button class="edit-profile-btt" [routerLink]="['/modifica-profilo', utente?.id]">
+      Modifica Profilo
+    </button>
   </div>
-  <button mat-raised-button color="primary" class="btt" [routerLink]="['/modifica-profilo', utente?.id]">Modifica Profilo</button>
 </div>

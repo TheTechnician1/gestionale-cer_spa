@@ -1,1 +1,30 @@
-<p>order-detail works!</p>
+<h2 mat-dialog-title>
+  Ordine {{ data.codiceOrdine }}
+</h2>
+<mat-dialog-content>
+  <div class="order-meta">
+    <div class="meta-box">
+      <strong>Data</strong><br>
+      {{ data.dataOrdine | date:'short' }}
+    </div>
+    <div class="meta-box">
+      <strong>Stato</strong><br>
+      {{ data.stato }}
+    </div>
+  </div>
+  <div class="section-title">Prodotti</div>
+  <div *ngFor="let item of data.items" class="item-row">
+    <div class="item-name">{{ item.productName }}</div>
+    <div class="item-qty">{{ item.quantity }}</div>
+    <div class="item-price">
+      {{ item.prezzoUnitario | currency:'EUR' }}
+    </div>
+  </div>
+  <div class="total-box">
+    <span>Totale</span>
+    <span>{{ data.totaleOrdine | currency:'EUR' }}</span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Chiudi</button>
+</mat-dialog-actions>

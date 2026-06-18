@@ -1,1 +1,20 @@
-<p>order-completed works!</p>
+<main class="receipt-wrapper">
+  <div class="receipt-card mat-elevation-z2">
+    <mat-icon class="success-icon" color="primary">description</mat-icon>
+    <h3>Pagamento effettuato con successo!</h3>
+    <p>La tua ricevuta è pronta.</p>
+    <div class="actions">
+      <button mat-raised-button color="primary" class="send-email-button" (click)="sendEmail()">
+        <mat-icon>mail</mat-icon>
+        Invia ricevuta via email
+      </button>
+      <button mat-stroked-button (click)="downloadPDF()">
+        <mat-icon>download</mat-icon>
+        Scarica ricevuta (PDF)
+      </button>
+    </div>
+    <button mat-button routerLink="/">
+      Torna allo shop
+    </button>
+  </div>
+</main>

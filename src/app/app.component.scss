@@ -9,3 +9,18 @@
     0px 8px 10px 1px rgba(0, 0, 0, 0.14),
     0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
+
+.app-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.app-shell {
+  transition: filter 700ms ease, transform 700ms ease;
+}
+
+.app-shell.blurred {
+  filter: blur(14px);
+  transform: scale(1.02);
+  pointer-events: none;
+}

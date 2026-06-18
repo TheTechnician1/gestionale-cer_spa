@@ -7,7 +7,7 @@
     </div>
   </section>
   <section class="products-grid">
-    <div *ngFor="let p of productsByCategory">
+    <div *ngFor="let p of pagedProducts">
       <mat-card class="product-card" *ngIf="p.quantita! > 0">
         <div class="image-wrapper">
           <img mat-card-image [src]="p.immagine" alt="p.nomeProdotto" (click)="details(p.id!)">
@@ -18,7 +18,7 @@
           <p class="product-price">{{ p.prezzo }} €</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button color="primary" class="add-cart" (click)="addToCart(p)">
+          <button mat-raised-button class="add-cart" (click)="addToCart(p)">
             <mat-icon>add_shopping_cart</mat-icon>
             Aggiungi al carrello
           </button>
@@ -26,4 +26,5 @@
       </mat-card>
     </div>
   </section>
+  <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[8, 16, 24]" (page)="onPageChange($event)"></mat-paginator>
 </main>

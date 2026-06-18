@@ -7,6 +7,20 @@
 .empty-state { display:flex; flex-direction:column; align-items:center; gap:12px; padding:24px; color: rgba(0,0,0,0.6); }
 .loading-placeholder { display:flex; flex-direction:column; align-items:center; gap:12px; padding:24px; }
 .mat-title-order { font-weight: bolder; margin: 5px; margin-left: 10px;}
+.status-chip.CREATO {
+  background: #f2ce00;
+  color: white;
+}
+
+.status-chip.PAGATO {
+  background: #ff0000;
+  color: white;
+}
+
+.status-chip.COMPLETATO {
+  background: #4caf50;
+  color: white;
+}
 mat-chip { font-weight: 600; }
 @media (max-width: 800px) {
   .toolbar { flex-direction: column; align-items: stretch; }
