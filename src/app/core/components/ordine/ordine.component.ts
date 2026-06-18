@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { OrdineService } from '../../services/ordine.service';
 import { Ordine } from '../../interfaces/ordine';
 import { ActivatedRoute } from '@angular/router';
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: 'app-ordine',
   templateUrl: './ordine.component.html',
-  styleUrls: ['./ordine.component.scss']
+  styleUrls: ['./ordine.component.scss'],
 })
 export class OrdineComponent {
   ordine!: Ordine;

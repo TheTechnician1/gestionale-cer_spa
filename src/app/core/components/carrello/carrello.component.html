@@ -103,7 +103,8 @@
             mat-raised-button
             [disabled]="totaleArticoli===0"
             color="primary"
-            class="checkout">
+            class="checkout"
+            (click)="creaOrdine()">
                 Procedi all'ordine
           </button>
         </div>
