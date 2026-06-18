@@ -1,0 +1,260 @@
+.detail-page {
+  min-height: calc(100vh - 74px);
+  padding: 42px 48px 64px;
+  background: #f6f6f6;
+  color: #171717;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.product-detail {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+  gap: 44px;
+  align-items: start;
+}
+
+.detail-gallery {
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.detail-gallery img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-info {
+  padding: 4px 0;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.back-link:hover,
+.category-label {
+  color: #ff6338;
+}
+
+.category-label {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.detail-info h1 {
+  margin: 0;
+  font-size: 46px;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.short-description {
+  margin: 18px 0 0;
+  color: #555555;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.price-row {
+  margin-top: 26px;
+  padding: 22px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #dedede;
+  border-bottom: 1px solid #dedede;
+}
+
+.price-row strong {
+  font-size: 30px;
+}
+
+.price-row span {
+  color: #c0392b;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.price-row span.available {
+  color: #18864b;
+}
+
+.action-row {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 52px;
+  gap: 12px;
+}
+
+.cart-button,
+.favorite-button {
+  height: 52px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cart-button {
+  background: #171717;
+  color: #ffffff;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.cart-button:hover {
+  background: #ff6338;
+}
+
+.cart-button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.favorite-button {
+  background: #ffffff;
+  color: #171717;
+  border: 1px solid #dedede;
+  font-size: 22px;
+}
+
+.favorite-button:hover,
+.favorite-button.active {
+  background: #ff6338;
+  border-color: #ff6338;
+  color: #ffffff;
+}
+
+.info-strip {
+  margin-top: 28px;
+  display: grid;
+  gap: 10px;
+}
+
+.info-strip div {
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #dedede;
+}
+
+.info-strip span {
+  color: #777777;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.info-strip strong {
+  text-align: right;
+  font-size: 13px;
+}
+
+.description-section {
+  max-width: 1180px;
+  margin: 54px auto 0;
+  padding-top: 32px;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 42px;
+  border-top: 1px solid #dcdcdc;
+}
+
+.description-section > div p {
+  margin: 0 0 8px;
+  color: #ff6338;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.description-section h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.description-section > p {
+  margin: 0;
+  color: #444444;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.loading-message,
+.error-message,
+.success-message {
+  max-width: 1180px;
+  margin: 24px auto;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.error-message {
+  color: #c0392b;
+}
+
+.success-message {
+  color: #18864b;
+}
+
+@media (max-width: 900px) {
+  .detail-page {
+    padding: 32px 22px 52px;
+  }
+
+  .product-detail,
+  .description-section {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-info h1 {
+    font-size: 34px;
+  }
+}
+.service-notes {
+  margin-top: 24px;
+  display: grid;
+  gap: 10px;
+}
+
+.service-notes div {
+  padding: 14px;
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+
+.service-notes strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.service-notes span {
+  display: block;
+  margin-top: 4px;
+  color: #666666;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .detail-gallery {
+    position: static;
+  }
+}

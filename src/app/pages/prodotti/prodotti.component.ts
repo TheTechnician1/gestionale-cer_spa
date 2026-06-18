@@ -6,6 +6,7 @@ import { ProdottoResponse } from '../../models/prodotto-response';
 import { ProdottoService } from '../../services/prodotto.service';
 import { CarrelloService } from 'src/app/services/carrello.service';
 import { PreferitoService } from 'src/app/services/preferito.service';
+import { ToastService } from '../../services/toast.service';
 import { UtenteStorageService } from '../../services/utente-storage.service';
 
 @Component({
@@ -28,6 +29,7 @@ export class ProdottiComponent implements OnInit {
     private carrelloService: CarrelloService,
     private preferitoService: PreferitoService,
     private utenteStorageService: UtenteStorageService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -40,29 +42,14 @@ export class ProdottiComponent implements OnInit {
       const categoria = params.get('nomeCategoria');
       const ricerca = queryParams.get('nome') || queryParams.get('ricerca');
 
-      if (categoria) {
-        this.nomeCategoria = categoria;
-        this.testoRicerca = '';
-        this.recuperaProdottiPerCategoria(categoria);
-        return;
-      }
-
-      if (ricerca && ricerca.trim()) {
-        this.nomeCategoria = '';
-        this.testoRicerca = ricerca.trim();
-        this.cercaProdotti(this.testoRicerca);
-        return;
-      }
-
-      this.nomeCategoria = '';
-      this.testoRicerca = '';
-      this.recuperaProdotti();
+      this.gestisciCaricamentoProdotti(categoria, ricerca);
     });
   }
 
   recuperaProdotti(): void {
     this.caricamento = true;
     this.messaggioErrore = '';
+    this.messaggioSuccesso = '';
 
     this.prodottoService.recuperaProdotti().subscribe({
       next: (prodotti) => {
@@ -70,7 +57,9 @@ export class ProdottiComponent implements OnInit {
         this.caricamento = false;
       },
       error: () => {
+        this.prodotti = [];
         this.messaggioErrore = 'Errore durante il recupero dei prodotti';
+        this.toastService.mostraErrore(this.messaggioErrore);
         this.caricamento = false;
       },
     });
@@ -79,6 +68,7 @@ export class ProdottiComponent implements OnInit {
   recuperaProdottiPerCategoria(nomeCategoria: string): void {
     this.caricamento = true;
     this.messaggioErrore = '';
+    this.messaggioSuccesso = '';
 
     this.prodottoService.recuperaProdottiPerCategoria(nomeCategoria).subscribe({
       next: (prodotti) => {
@@ -86,8 +76,10 @@ export class ProdottiComponent implements OnInit {
         this.caricamento = false;
       },
       error: () => {
+        this.prodotti = [];
         this.messaggioErrore =
           'Errore durante il recupero dei prodotti della categoria';
+        this.toastService.mostraErrore(this.messaggioErrore);
         this.caricamento = false;
       },
     });
@@ -96,6 +88,7 @@ export class ProdottiComponent implements OnInit {
   cercaProdotti(nome: string): void {
     this.caricamento = true;
     this.messaggioErrore = '';
+    this.messaggioSuccesso = '';
 
     this.prodottoService.cercaProdottiPerNome(nome).subscribe({
       next: (prodotti) => {
@@ -104,9 +97,11 @@ export class ProdottiComponent implements OnInit {
       },
       error: (errore) => {
         console.error('Errore ricerca prodotti', errore);
+        this.prodotti = [];
         this.messaggioErrore =
           errore.error?.messaggio ||
           `Errore durante la ricerca dei prodotti. Status: ${errore.status}`;
+        this.toastService.mostraErrore(this.messaggioErrore);
         this.caricamento = false;
       },
     });
@@ -133,6 +128,7 @@ export class ProdottiComponent implements OnInit {
     if (!utente) {
       this.messaggioErrore =
         'Devi effettuare il login per aggiungere prodotti al carrello';
+        this.toastService.mostraErrore(this.messaggioErrore);
       return;
     }
 
@@ -141,10 +137,12 @@ export class ProdottiComponent implements OnInit {
       .subscribe({
         next: () => {
           this.messaggioSuccesso = 'Prodotto aggiunto al carrello';
+          this.toastService.mostraSuccesso('Prodotto aggiunto al carrello');
         },
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante aggiunta al carrello';
+        this.toastService.mostraErrore(this.messaggioErrore);
         },
       });
   }
@@ -158,6 +156,7 @@ export class ProdottiComponent implements OnInit {
     if (!utente) {
       this.messaggioErrore =
         'Devi effettuare il login per gestire i prodotti preferiti';
+        this.toastService.mostraErrore(this.messaggioErrore);
       return;
     }
 
@@ -172,16 +171,43 @@ export class ProdottiComponent implements OnInit {
         this.messaggioSuccesso = eraPreferito
           ? 'Prodotto rimosso dai preferiti'
           : 'Prodotto aggiunto ai preferiti';
+        this.toastService.mostraSuccesso(this.messaggioSuccesso);
       },
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante la gestione dei preferiti';
+        this.toastService.mostraErrore(this.messaggioErrore);
       },
     });
   }
 
   prodottoPreferito(idProdotto: number): boolean {
     return this.idProdottiPreferiti.has(idProdotto);
+  }
+
+  private gestisciCaricamentoProdotti(
+    categoria: string | null,
+    ricerca: string | null,
+  ): void {
+    const ricercaPulita = ricerca?.trim() || '';
+
+    if (categoria) {
+      this.nomeCategoria = categoria;
+      this.testoRicerca = '';
+      this.recuperaProdottiPerCategoria(categoria);
+      return;
+    }
+
+    if (ricercaPulita) {
+      this.nomeCategoria = '';
+      this.testoRicerca = ricercaPulita;
+      this.cercaProdotti(ricercaPulita);
+      return;
+    }
+
+    this.nomeCategoria = '';
+    this.testoRicerca = '';
+    this.recuperaProdotti();
   }
 
   private recuperaPreferitiUtente(): void {

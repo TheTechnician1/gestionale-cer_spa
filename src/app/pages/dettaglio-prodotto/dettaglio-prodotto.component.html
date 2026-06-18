@@ -1,0 +1,84 @@
+<app-navbar></app-navbar>
+
+<main class="detail-page">
+  <p class="loading-message" *ngIf="caricamento">Caricamento prodotto...</p>
+
+  <section class="product-detail" *ngIf="!caricamento && prodotto">
+    <div class="detail-gallery">
+      <img [src]="prodotto.immagine" [alt]="prodotto.nomeProdotto" />
+    </div>
+
+    <div class="detail-info">
+      <a class="back-link" routerLink="/prodotti">Torna ai prodotti</a>
+      <p class="category-label">{{ prodotto.categoriaNome }}</p>
+      <h1>{{ prodotto.nomeProdotto }}</h1>
+      <p class="short-description">{{ prodotto.descrizioneBreve }}</p>
+
+      <div class="price-row">
+        <strong>{{ prodotto.prezzo | currency: "EUR" }}</strong>
+        <span [class.available]="prodotto.quantitaDisponibile > 0">
+          {{ prodotto.quantitaDisponibile > 0 ? "Disponibili " + prodotto.quantitaDisponibile + " pezzi" : "Esaurito" }}
+        </span>
+      </div>
+
+      <div class="action-row">
+        <button
+          type="button"
+          class="cart-button"
+          [disabled]="prodotto.quantitaDisponibile === 0"
+          (click)="aggiungiAlCarrello()"
+        >
+          Aggiungi al carrello
+        </button>
+
+        <button
+          type="button"
+          class="favorite-button"
+          [class.active]="prodottoPreferito"
+          (click)="gestisciPreferito()"
+          [attr.aria-label]="
+            prodottoPreferito ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'
+          "
+        >
+          &hearts;
+        </button>
+      </div>
+
+      <div class="info-strip">
+        <div>
+          <span>Venditore</span>
+          <strong>{{ prodotto.venditoreNome }}</strong>
+        </div>
+        <div>
+          <span>Categoria</span>
+          <strong>{{ prodotto.categoriaNome }}</strong>
+        </div>
+        <div>
+          <span>Giacenza</span>
+          <strong>{{ prodotto.quantitaDisponibile }} pezzi</strong>
+        </div>
+      </div>
+
+      <div class="service-notes">
+        <div>
+          <strong>Pagamento virtuale</strong>
+          <span>Il saldo viene scalato solo al checkout.</span>
+        </div>
+        <div>
+          <strong>Ricevuta fiscale</strong>
+          <span>PDF disponibile dopo l'ordine.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="description-section" *ngIf="prodotto">
+    <div>
+      <p>Dettagli prodotto</p>
+      <h2>Descrizione</h2>
+    </div>
+    <p>{{ prodotto.descrizioneCompleta }}</p>
+  </section>
+</main>
+
+<app-footer></app-footer>

@@ -11,14 +11,15 @@
   </div>
 
   <div class="navbar-center">
-    <form class="search-box" (ngSubmit)="cercaProdotti(testoRicerca.value)">
+    <form class="search-box" (submit)="cercaProdotti($event)">
       <input
-        #testoRicerca
         type="text"
+        [value]="testoRicerca"
+        (input)="aggiornaTestoRicerca($event)"
         placeholder="Cerca prodotti..."
         aria-label="Cerca prodotti"
       />
-      <button type="submit">Cerca</button>
+      <button type="submit" class="icon-button" aria-label="Cerca prodotti">⌕</button>
     </form>
   </div>
 
@@ -41,7 +42,7 @@
       title="carrello"
       aria-label="Vai al carrello"
     >
-      &#128722;
+      <svg class="cart-svg" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6h15l-2 8H8L6 3H3"/><circle cx="9" cy="20" r="1.7"/><circle cx="18" cy="20" r="1.7"/></svg>
     </button>
 
     <div class="account-menu">
@@ -76,6 +77,14 @@
             <small>Ricarica saldo</small>
           </span>
         </a>
+
+        <button type="button" class="logout-button" (click)="logout()">
+          <span class="menu-icon logout-icon">OUT</span>
+          <span>
+            <strong>Logout</strong>
+            <small>Cambia utente</small>
+          </span>
+        </button>
       </div>
     </div>
   </div>

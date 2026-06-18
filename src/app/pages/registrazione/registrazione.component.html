@@ -9,7 +9,6 @@
 
     <div class="nav-links">
       <a routerLink="/login">ACCEDI</a>
-      <a href="#">AIUTO?</a>
     </div>
   </nav>
 
@@ -59,14 +58,6 @@
         <button type="submit" class="primary-button" [disabled]="caricamento">
           {{ caricamento ? "Registrazione..." : "Crea account" }}
         </button>
-
-        <p class="error-message" *ngIf="messaggioErrore">
-          {{ messaggioErrore }}
-        </p>
-
-        <p class="success-message" *ngIf="messaggioSuccesso">
-          {{ messaggioSuccesso }}
-        </p>
 
         <div class="auth-actions">
           <a routerLink="/login">Hai gia un account? Accedi</a>

@@ -22,21 +22,11 @@
         placeholder="Es. 50"
       />
 
-      <p class="field-error" *ngIf="fondiForm.get('importo')?.touched && fondiForm.get('importo')?.invalid">
-        Inserisci un importo maggiore di zero.
-      </p>
-
-      <p class="field-error" *ngIf="messaggioErrore">
-        {{ messaggioErrore }}
-      </p>
-
-      <p class="field-success" *ngIf="messaggioSuccesso">
-        {{ messaggioSuccesso }}
-      </p>
-
       <button type="submit" [disabled]="caricamento">
         {{ caricamento ? "Aggiunta in corso..." : "Aggiungi fondi" }}
       </button>
     </form>
   </section>
 </main>
+
+<app-footer></app-footer>

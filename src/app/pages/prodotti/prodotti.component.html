@@ -8,13 +8,6 @@
 
   <p class="loading-message" *ngIf="caricamento">Caricamento prodotti...</p>
 
-  <p class="error-message" *ngIf="messaggioErrore">
-    {{ messaggioErrore }}
-  </p>
-  <p class="success-message" *ngIf="messaggioSuccesso">
-    {{ messaggioSuccesso }}
-  </p>
-
   <section class="prodotti-grid" *ngIf="!caricamento && !messaggioErrore">
     <article class="product-card" *ngFor="let prodotto of prodotti">
       <div class="product-image">
@@ -46,6 +39,16 @@
         </a>
         <p class="product-description">{{ prodotto.descrizioneBreve }}</p>
 
+        <p
+          class="product-stock"
+          [class.low-stock]="
+            prodotto.quantitaDisponibile > 0 && prodotto.quantitaDisponibile <= 5
+          "
+          [class.out-stock]="prodotto.quantitaDisponibile === 0"
+        >
+          Disponibili: {{ prodotto.quantitaDisponibile }}
+        </p>
+
         <div class="product-footer">
           <strong>{{ prodotto.prezzo | currency: "EUR" }}</strong>
           <div class="product-actions">
@@ -68,7 +71,7 @@
     </article>
   </section>
 
-  <p class="empty-message" *ngIf="!caricamento && prodotti.length === 0">
+  <p class="empty-message" *ngIf="!caricamento && !messaggioErrore && prodotti.length === 0">
     Nessun prodotto trovato.
   </p>
 </main>

@@ -6,7 +6,8 @@
       <h1>MajorBit Marketplace</h1>
       <p class="hero-text">
         Trova cio che ti piace, aggiungilo al carrello e completa l'acquisto
-        prima che finisca in magazzino
+        prima che finisca in magazzino <br />
+        (Sito a cui ho preso ispirazione "https://www.redbullshopus.com/")
       </p>
 
       <div class="hero-actions">
@@ -53,10 +54,6 @@
       Caricamento preferiti...
     </p>
 
-    <p class="favorite-error" *ngIf="messaggioErrorePreferiti">
-      {{ messaggioErrorePreferiti }}
-    </p>
-
     <div class="favorite-list" *ngIf="!caricamentoPreferiti">
       <article class="favorite-item" *ngFor="let prodotto of prodottiPreferiti">
         <img
@@ -88,3 +85,5 @@
     </div>
   </section>
 </main>
+
+<app-footer></app-footer>

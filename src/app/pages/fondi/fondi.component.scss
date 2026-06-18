@@ -18,6 +18,14 @@
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.08);
 }
 
+.funds-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: #ff6338;
+}
+
 .funds-kicker {
   margin: 0 0 8px;
   color: #ff6338;

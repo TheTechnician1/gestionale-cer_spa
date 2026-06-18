@@ -8,14 +8,6 @@
 
   <p class="loading-message" *ngIf="caricamento">Caricamento carrello...</p>
 
-  <p class="error-message" *ngIf="messaggioErrore">
-    {{ messaggioErrore }}
-  </p>
-
-  <p class="success-message" *ngIf="messaggioSuccesso">
-    {{ messaggioSuccesso }}
-  </p>
-
   <section class="carrello-layout" *ngIf="!caricamento">
     <div class="carrello-lista">
       <article class="carrello-item" *ngFor="let elemento of elementiCarrello">
@@ -86,3 +78,5 @@
     </aside>
   </section>
 </main>
+
+<app-footer></app-footer>
