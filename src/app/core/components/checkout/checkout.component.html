@@ -2,33 +2,47 @@
   <div class="left">
     <mat-card class="card">
       <h2>1. Indirizzo di spedizione</h2>
-      <div class="form-row">
-        <mat-form-field appearance="fill" class="flex">
-          <mat-label>Nome</mat-label>
-          <input matInput [(ngModel)]="shipping.nome" />
+      <div [formGroup]="checkoutForm">
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="flex">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome"/>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="flex">
+            <mat-label>Cognome</mat-label>
+            <input matInput formControlName="cognome"/>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="fill" class="full">
+          <mat-label>Indirizzo</mat-label>
+          <input matInput formControlName="indirizzo"/>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="flex">
-          <mat-label>Cognome</mat-label>
-          <input matInput [(ngModel)]="shipping.cognome" />
-        </mat-form-field>
-      </div>
-      <mat-form-field appearance="fill" class="full">
-        <mat-label>Indirizzo</mat-label>
-        <input matInput [(ngModel)]="shipping.indirizzo" />
-      </mat-form-field>
-      <div class="form-row">
-        <mat-form-field appearance="fill" class="flex">
-          <mat-label>CAP</mat-label>
-          <input matInput [(ngModel)]="shipping.cap" />
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="flex">
-          <mat-label>Città</mat-label>
-          <input matInput [(ngModel)]="shipping.citta" />
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="flex">
-          <mat-label>Provincia</mat-label>
-          <input matInput [(ngModel)]="shipping.provincia" />
-        </mat-form-field>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="flex">
+            <mat-label>CAP</mat-label>
+            <input matInput formControlName="cap"  name="cap" maxlength="5" inputmode="numeric" required/>
+            <mat-error *ngIf="checkoutForm.get('cap')?.hasError('required')">
+              CAP obbligatorio
+            </mat-error>
+            <mat-error *ngIf="checkoutForm.get('cap')?.hasError('pattern')">
+              Il CAP deve contenere 5 cifre
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="flex">
+            <mat-label>Città</mat-label>
+            <input matInput formControlName="citta"/>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="flex">
+            <mat-label>Provincia</mat-label>
+            <input matInput formControlName="provincia" (input)="onProvinciaInput()" maxlength="2">
+            <mat-error *ngIf="checkoutForm.get('provincia')?.hasError('required')">
+              Provincia obbligatoria
+            </mat-error>
+            <mat-error *ngIf="checkoutForm.get('provincia')?.hasError('pattern')">
+              Deve essere di 2 lettere (es. PA)
+            </mat-error>
+          </mat-form-field>
+        </div>
       </div>
     </mat-card>
     <mat-card class="card" style="margin-top:16px;">
@@ -71,7 +85,11 @@
           <div>Totale</div>
           <div>€ {{ getFinalTotal(cart.items)  | number:'1.2-2' }}</div>
         </div>
-        <button mat-raised-button color="accent" class="pay-btn" (click)="payNow(cart)" [disabled]="!hasEnoughBalance(getFinalTotal(cart.items))">Paga ora</button>
+        <button mat-raised-button color="accent" class="pay-btn" (click)="payNow(cart)"
+        [disabled]="!checkoutForm.valid || !hasEnoughBalance(getFinalTotal(cart.items))"
+        [title]="!isShippingValid() ? 'Compila correttamente i dati di spedizione' : ''">
+          Paga ora
+        </button>
         <div class="error" *ngIf="cart.items && !hasEnoughBalance(getFinalTotal(cart.items))">
           <mat-icon style="font-size: 18px;">error</mat-icon>
           Saldo insufficiente per completare l'acquisto

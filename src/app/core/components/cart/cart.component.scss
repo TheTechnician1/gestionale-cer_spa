@@ -61,6 +61,7 @@ h2 {
   height: 60px;
   margin: 5px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .item-info {
@@ -232,6 +233,10 @@ h2 {
   background-color: #ff9900 !important;
   color: #fff;
   font-weight: 600;
+}
+
+.prod-name {
+  cursor: pointer;
 }
 
 @media (max-width: 900px) {

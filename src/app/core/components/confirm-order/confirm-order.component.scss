@@ -1,0 +1,36 @@
+h3 {
+  font-size: larger;
+}
+
+.confirmation-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.confirmation-card {
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+  background: #fff;
+  width: 400px;
+}
+
+.success-icon {
+  font-size: 80px;
+  width: 80px;
+  height: 80px;
+  color: #4caf50;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btt-view {
+  background-color: var(--app-secondary);
+}

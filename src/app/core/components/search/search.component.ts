@@ -40,28 +40,57 @@ export class SearchComponent {
     });
   }
 
+  getAvailable(product: Prodotto): number {
+    const inCart = this.cartService.getCartState(product.id!);
+    return product.quantita! - inCart;
+  }
+
+  reloadProducts() {
+    this.productService.getProductsAdvancedSearch({
+      category: this.categoria,
+      minPrice: this.minPrice,
+      maxPrice: this.maxPrice,
+      minQuantity: this.minQuantity
+    }).subscribe(res => {
+      this.products = res;
+    });
+  }
+
   details(id: number) {
     this.route.navigateByUrl(`/prodotto/${id}`);
   }
 
   addToCart(product: Prodotto) {
     const user = this.authService.currentUser;
-    this.cartService.addItem(user!.id!, product);
-
-    if (product.quantita && product.quantita > 0) {
-      product.quantita--;
+    const available = this.getAvailable(product);
+    if (available <= 0) {
+      this.snackBar.open(
+        'Quantità non disponibile',
+        'OK',
+        { duration: 2000 }
+      );
+      return;
     }
-
-    this.snackBar.open(
-      `${product.nomeProdotto} aggiunto al carrello (rimasti: ${product.quantita})`,
-      'OK',
-      {
-        duration: 2500,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        panelClass: ['snackbar-success']
+    this.cartService.addItem(user!.id!, { productId: product.id, quantity: 1 }).subscribe({
+      next: () => {
+        this.snackBar.open(
+          `${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`, 'OK',
+          {
+            duration: 2500,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar-success']
+          }
+        );
+      },
+      error: () => {
+        this.snackBar.open(
+          'Errore durante l\'aggiunta al carrello',
+          'OK',
+          { duration: 3000 }
+        );
       }
-    );
+    });
   }
 
   applyFilters() {

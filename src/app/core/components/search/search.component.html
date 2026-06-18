@@ -35,10 +35,11 @@
     <h1>Risultati:</h1>
     <div class="results-grid">
       <div *ngFor="let p of products">
-        <mat-card class="product-card" *ngIf="p.quantita! > 0">
+        <mat-card class="product-card" *ngIf="getAvailable(p) > 0">
           <img mat-card-image (click)="details(p.id!)" [src]="p.immagine" alt="{{ p.nomeProdotto }}">
           <mat-card-content>
             <h3>{{ p.nomeProdotto }}</h3>
+            <p class="quantity">Disponibilità: {{ getAvailable(p) }}</p>
             <p class="price">{{ p.prezzo }} €</p>
             <p class="category">{{ p.categoria }}</p>
           </mat-card-content>

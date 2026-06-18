@@ -31,23 +31,47 @@ export class ProductComponent {
     });
   }
 
+  getAvailable(product: Prodotto): number {
+    return product.quantita! - this.cartService.getCartState(product.id!);
+  }
+
+  reloadProduct(id: number) {
+    this.productService.getProductById(id).subscribe(data => {
+      this.prodotto = data;
+    });
+  }
+
   addToCart(product: Prodotto) {
-    const user = this.authService.currentUser;
-    this.cartService.addItem(user!.id!, product);
-
-    if (product.quantita && product.quantita > 0) {
-      product.quantita--;
+    const available = this.getAvailable(product);
+    if(this.quantity > available) {
+      this.snackBar.open(
+        `Disponibili solo ${product.quantita} pezzi`,
+        'OK',
+        { duration: 3000 }
+      );
+      return;
     }
+    const user = this.authService.currentUser;
 
-    this.snackBar.open(
-      `${product.nomeProdotto} aggiunto al carrello (rimasti: ${product.quantita})`,
-      'OK',
-      {
-        duration: 2500,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        panelClass: ['snackbar-success']
+    this.cartService.addItem(user!.id!, { productId: product.id, quantity: this.quantity }).subscribe({
+      next: () => {
+        this.snackBar.open(`${product.nomeProdotto} aggiunto al carrello ${this.quantity}`, 'OK',
+          {
+            duration: 2500,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+            panelClass: ['snackbar-success']
+          }
+        );
+        this.reloadProduct(product.id!);
+      },
+      error: () => {
+        this.snackBar.open(
+          'Errore durante l\'aggiunta al carrello',
+          'OK',
+          { duration: 3000 }
+        );
       }
-    );
+    });
   }
 }

@@ -30,31 +30,67 @@ export class DashboardComponent {
     });
   }
 
+  getAvailable(product: Prodotto): number {
+    const inCart = this.cartService.getCartState(product.id!);
+    return product.quantita! - inCart;
+  }
+
+  reloadProducts() {
+    this.productService.getAllProducts().subscribe(products => {
+      this.productsByCategory = products;
+    });
+  }
+
   details(id: number) {
     this.route.navigateByUrl(`/prodotto/${id}`);
   }
 
   addToCart(product: Prodotto) {
     const user = this.authService.currentUser;
+    const available = this.getAvailable(product);
 
-    this.cartService.addItem(user!.id!, {
-    productId: product.id,
-    quantity: 1
-  }).subscribe({
-    next: () => {
-      if (product.quantita && product.quantita > 0) {
-        product.quantita--;
-      }
-
+    if (available <= 0) {
       this.snackBar.open(
-        `${product.nomeProdotto} aggiunto al carrello`, 'OK',
+        'Quantità non disponibile',
+        'OK',
+        { duration: 2000 }
+      );
+      return;
+    }
+
+    if(user?.id === 26) {
+      this.cartService.addGuestItem({
+        productId: product.id!,
+        quantita: 1
+      } as any);
+        this.snackBar.open(
+        `${product.nomeProdotto} aggiunto al carrello`,
+        'OK',
         {
-          duration: 2500,
+          duration: 2000,
           horizontalPosition: 'right',
           verticalPosition: 'bottom',
           panelClass: ['snackbar-success']
         }
       );
+      return;
+    }
+
+    this.cartService.addItem(user!.id!, {
+      productId: product.id,
+      quantity: 1
+    }).subscribe({
+    next: () => {
+      this.snackBar.open(
+        `${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`, 'OK',
+        {
+          duration: 2000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        }
+      );
+      this.reloadProducts();
     },
     error: () => {
       this.snackBar.open(
@@ -63,20 +99,5 @@ export class DashboardComponent {
         { duration: 3000 }
       );
     }});
-
-    if (product.quantita && product.quantita > 0) {
-      product.quantita--;
-    }
-
-    this.snackBar.open(
-      `${product.nomeProdotto} aggiunto al carrello (rimasti: ${product.quantita})`,
-      'OK',
-      {
-        duration: 2500,
-        horizontalPosition: 'right',
-        verticalPosition: 'bottom',
-        panelClass: ['snackbar-success']
-      }
-    );
   }
 }

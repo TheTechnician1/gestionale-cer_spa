@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { UtenteService } from "src/app/core/services/utente.service";
 import { ToastService } from "src/app/core/services/toast.service";
 import { CartService } from "src/app/core/services/cart.service";
+import { of } from "rxjs";
 
 @Component({
   selector: "app-login",
@@ -34,24 +35,26 @@ export class LoginComponent {
     this.authService.login(this.loginForm.value).subscribe({
       next: (user) => {
         const guestItems = this.cartService.getGuestCart();
-        if (guestItems.length > 0) {
-          this.cartService.mergeGuestCartIntoUser(user.id!);
-        }
-        this.cartService.notifyCartChange();
-        this.authService['userSubject'].next(user);
-        console.log("Login riuscito", user);
-        this.loginError = false;
-        this.route.navigate(["/"]);
-      },
-      error: (err) => {
-        console.error("Errore login:", err);
-        this.loginError = true;
-
-        this.toastService.warning(
-          "Credenziali non valide",
-          "Login fallito"
-        );
-      },
+        const merge$ = guestItems.length > 0 ? this.cartService.mergeGuestCartIntoUser(user.id!) : of(null);
+        merge$.subscribe({
+          next: () => {
+            this.cartService.clearGuestCart();
+            this.authService['userSubject'].next(user);
+            console.log("Login riuscito", user);
+            this.cartService.notifyCartChange();
+            this.loginError = false;
+            this.route.navigate(['/']);
+          },
+          error: (err) => {
+            console.error("Errore login:", err);
+            this.loginError = true;
+            this.toastService.warning("Credenziali non valide", "Login fallito");
+            this.authService['userSubject'].next(user);
+            this.route.navigate(['/']);
+          }
+        });
+      }
     });
   }
 }
+

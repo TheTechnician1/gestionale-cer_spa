@@ -14,7 +14,7 @@
         </div>
         <mat-card-content>
           <h3 class="product-title">{{ p.nomeProdotto }}</h3>
-          <p class="quantity">Disponibilità: {{ p.quantita }}</p>
+          <p class="quantity">Disponibilità: {{ getAvailable(p) }}</p>
           <p class="product-price">{{ p.prezzo }} €</p>
         </mat-card-content>
         <mat-card-actions>

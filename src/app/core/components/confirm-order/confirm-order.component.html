@@ -1,1 +1,16 @@
-<p>confirm-order works!</p>
+<main class="confirmation-wrapper" *ngIf="order">
+  <div class="confirmation-card mat-elevation-z2">
+    <mat-icon color="primary" class="success-icon">check_circle</mat-icon>
+    <h3>Ordine completato con successo!</h3>
+    <p>Il tuo ordine è stato registrato.</p>
+    <p>Grazie per il tuo acquisto.</p>
+    <div class="order-details">
+      <p>Numero ordine: <strong>{{ order.code }}</strong></p>
+      <p>Totale pagato: <strong>{{ order.total | number:'1.2-2' }} €</strong></p>
+    </div>
+    <div class="actions">
+      <button mat-raised-button routerLink="/">Torna allo shop</button>
+      <button mat-raised-button color="primary" class="btt-view" (click)="viewOrder()">Visualizza ordine</button>
+    </div>
+  </div>
+</main>

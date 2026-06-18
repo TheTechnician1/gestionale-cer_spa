@@ -15,5 +15,13 @@ export class AppComponent {
     this.translate.use("en");
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.user$.subscribe(user => {
+      if(user && user.id !== 26) {
+        this.cartService.getCart(user.id!).subscribe(cart => {
+          this.cartService.hydrateFromCart(cart);
+        });
+      }
+    });
+  }
 }

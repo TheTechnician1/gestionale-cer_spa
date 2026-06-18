@@ -33,7 +33,7 @@ export const FULL_LAYOUT_ROUTES: Routes = [
   { path: "ordini/:id", component: OrderDetailComponent, canActivate: [AuthGuard] },
   { path: "checkout", component: CheckoutComponent, canActivate: [AuthGuard] },
   { path: "payment", component: PaypageComponent, canActivate: [AuthGuard] },
-  { path: "conferma-ordine", component: ConfirmOrderComponent, canActivate: [AuthGuard] },
+  { path: "ordine-confermato", component: ConfirmOrderComponent, canActivate: [AuthGuard] },
   { path: "ricevuta-ordine", component: OrderCompletedComponent, canActivate: [AuthGuard] },
   { path: "reset-password", component: ResetPasswordComponent },
   { path: "not-authorized", component: NotAuthorizedComponent },

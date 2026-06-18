@@ -1,1 +1,30 @@
-<p>paypage works!</p>
+<div class="payment-wrapper">
+  <div class="card">
+    <h2>Conferma pagamento</h2>
+    <div class="icon-box">
+      <ng-container *ngIf="status === 'idle'">
+        <img src="../../../../assets/img/Copilot_20260617_231227.png" alt="" class="payment-img"/>
+      </ng-container>
+      <ng-container *ngIf="status === 'processing'">
+        <div class="loader"></div>
+      </ng-container>
+      <ng-container *ngIf="status === 'success'">
+        <div class="check">✔</div>
+      </ng-container>
+    </div>
+    <p class="amount">
+      Stai pagando <b>€ {{ total | number:'1.2-2' }}</b>
+    </p>
+    <p class="subtext" *ngIf="status === 'idle'">
+      Il pagamento è finto e verrà simulato.
+    </p>
+    <p class="subtext" *ngIf="status === 'processing'">
+      Elaborazione pagamento... {{ countdown }}s
+    </p>
+    <p class="subtext success" *ngIf="status === 'success'">
+      Pagamento completato con successo
+    </p>
+    <button class="pay-btn" (click)="startPayment()" [disabled]="status === 'processing' || locked">
+      {{ status === 'processing' ? 'Elaborazione...' : 'Conferma pagamento' }}
+    </button>
+</div>

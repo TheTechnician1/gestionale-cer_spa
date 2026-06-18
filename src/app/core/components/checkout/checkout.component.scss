@@ -64,10 +64,16 @@ body, html {
 .total { display:flex; justify-content:space-between; font-weight:700; font-size:18px; margin-top:12px; }
 
 .pay-btn {
-  width:100%;
-  margin-top:14px;
+  width: 100%;
+  margin-top: 14px;
   background-color: var(--app-secondary);
   color: white;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pay-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
 }
 
 .error {
@@ -85,6 +91,14 @@ body, html {
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+.pay-btn.mat-mdc-button-disabled,
+.pay-btn:disabled {
+  background-color: #d1d5db !important;
+  color: #6b7280 !important;
+  opacity: 1 !important;
+  cursor: not-allowed;
 }
 
 @media (max-width: 900px) {

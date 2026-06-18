@@ -24,6 +24,8 @@ export interface CartItem {
   prezzoUnitario?: number | null;
   immagine: string | null;
   totaleRiga: number | null;
+  sellerName: string | null;
+  sconto: number | null;
 }
 
 export class CartItemModel implements CartItem {
@@ -34,6 +36,8 @@ export class CartItemModel implements CartItem {
   prezzoUnitario?: number | null;
   immagine: string | null;
   totaleRiga: number | null;
+  sellerName: string | null;
+  sconto: number | null;
 
   constructor(data?: Partial<CartItem>) {
     this.id = data?.id ?? null;
@@ -43,6 +47,8 @@ export class CartItemModel implements CartItem {
     this.prezzoUnitario = data?.prezzoUnitario ?? null;
     this.immagine = data?.immagine ?? null;
     this.totaleRiga = data?.totaleRiga ?? null;
+    this.sellerName = data?.sellerName ?? null;
+    this.sconto = data?.sconto ?? null;
   }
 }
 

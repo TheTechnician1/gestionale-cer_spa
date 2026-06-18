@@ -4,6 +4,8 @@ import { OrderService } from '../../services/order.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { Utente } from '../../interfaces/utente.model';
+import { UtenteService } from '../../services/utente.service';
 
 @Component({
   selector: 'app-order',
@@ -11,8 +13,8 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./order.component.scss']
 })
 export class OrderComponent {
-  constructor(private ordersService: OrderService, private dialog: MatDialog) {}
-  @Input() userId!: number;
+  constructor(private ordersService: OrderService, private auth: UtenteService, private dialog: MatDialog) {}
+  user = this.auth.currentUser;
 
   displayedColumns: string[] = ['id', 'date', 'total', 'status', 'items', 'actions'];
   dataSource = new MatTableDataSource<any>([]);
@@ -34,13 +36,8 @@ export class OrderComponent {
 
   loadOrders() {
     this.loading = true;
-    const params = {
-      page: this.pageIndex + 1,
-      size: this.pageSize,
-      q: this.filterValue,
-      status: this.statusFilter
-    };
-    this.ordersService.getAllOrders(this.userId, params).subscribe({
+    const userId = this.user?.id;
+    this.ordersService.getAllOrders(userId!).subscribe({
       next: (res) => {
         this.orders = res.items;
         this.totalOrders = res.total;
@@ -88,15 +85,6 @@ export class OrderComponent {
 
   openDetails(order: any) {
     this.dialog.open(this.orderDetailsTemplate, { data: { order } });
-  }
-
-  cancelOrder(order: any) {
-    // chiamata al servizio per annullare con conferma
-    if (!confirm(`Annullare l'ordine ${order.id}?`)) return;
-    this.ordersService.cancelOrder(order.id).subscribe({
-      next: () => this.loadOrders(),
-      error: () => alert('Impossibile annullare l\'ordine')
-    });
   }
 
   statusColor(status: string) {

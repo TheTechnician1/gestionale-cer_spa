@@ -3,13 +3,21 @@ import { Utente, UtenteModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { ApiResponse } from "../interfaces/api.model";
-import { CartService } from "./cart.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtenteService {
-  constructor(private apiService: ApiService, private cartService: CartService) {}
+  constructor(private apiService: ApiService) {
+    const savedUser = localStorage.getItem(this.storageKey);
+
+    if(savedUser) {
+      this.userSubject.next(
+        new UtenteModel(JSON.parse(savedUser))
+      );
+    }
+  }
+
   private guestUser: UtenteModel = new UtenteModel({
     id: 26,
     name: 'Guest',
@@ -36,10 +44,6 @@ export class UtenteService {
   }
 
   logout(): void {
-    const user = this.userSubject.value;
-    if (user?.id) {
-      this.cartService.clearCart(user.id).subscribe();
-    }
     localStorage.removeItem(this.storageKey);
     this.userSubject.next(this.guestUser);
   }

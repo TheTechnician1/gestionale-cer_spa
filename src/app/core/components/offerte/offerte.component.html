@@ -7,6 +7,7 @@
         <img mat-card-image [src]="p.immagine" alt="{{ p.nomeProdotto }}" (click)="details(p.id!)">
         <mat-card-content>
           <h3 class="product-name">{{ p.nomeProdotto }}</h3>
+          <p class="quantity">Disponibilità: {{ getAvailable(p) }}</p>
           <p class="old-price">{{ p.prezzoOriginale | number:'1.2-2'}} €</p>
           <p class="new-price">{{ p.prezzoScontato | number:'1.2-2' }} €</p>
         </mat-card-content>
