@@ -7,41 +7,39 @@ import { ToastService } from 'src/app/core/services/toast.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-
-  loginForm: FormGroup
+  loginForm: FormGroup;
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
-    private userService:UserService,
-    private router:Router,
-    private toast:ToastService
-  ){
+    private userService: UserService,
+    private router: Router,
+    private toast: ToastService,
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      ricordami:[false]
+      ricordami: [false],
     });
-
   }
   onSubmit(): void {
-  if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) return;
 
-  this.userService.login(this.loginForm.value).subscribe({
-    next: (utente) => {
-      if (this.loginForm.get('ricordami')?.value) {
-        localStorage.setItem('utente', JSON.stringify(utente));
-      } else {
-        sessionStorage.setItem('utente', JSON.stringify(utente));
-      }
-      this.router.navigate(['/prodotti']);
-    },
-    error: () => {
-      this.toast.error('Credenziali errate');
-    }
-  });
-}
-
+    this.userService.login(this.loginForm.value).subscribe({
+      next: (utente) => {
+        if (this.loginForm.get('ricordami')?.value) {
+          localStorage.setItem('utente', JSON.stringify(utente));
+        } else {
+          sessionStorage.setItem('utente', JSON.stringify(utente));
+        }
+        this.router.navigate(['/prodotti']);
+      },
+      error: () => {
+        this.toast.error('Credenziali errate');
+      },
+    });
+  }
 }
