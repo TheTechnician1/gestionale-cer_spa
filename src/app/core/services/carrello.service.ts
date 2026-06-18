@@ -29,4 +29,10 @@ export class CarrelloService {
     const endpoint = `api/users/${idUtente}/cart/items/${cartItemId}`;
     return this.api.put<Carrello>(endpoint, payload, options);
   }
+
+  checkSaldo(idUtente: number, totale: number, options: ApiRequestOptions = {}): Observable<boolean> {
+    const endpoint = `api/users/${idUtente}/saldo`;
+    return this.api.get<boolean>(endpoint, {totale:totale}, options);
+  }
+
 }

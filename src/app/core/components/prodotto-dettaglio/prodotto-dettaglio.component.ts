@@ -5,6 +5,7 @@ import { CarrelloService } from '../../services/carrello.service';
 import { map, Observable, of } from 'rxjs';
 import { ArticoloCarrelloDTOModel, Carrello } from '../../interfaces/carrello';
 import { Utente } from '../../interfaces/utente.model';
+import { ToastService } from '../../services/toast.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class ProdottoDettaglioComponent implements OnInit {
     private route: ActivatedRoute,
     private prodottiService: ProdottiService,
     private carrelloService: CarrelloService,
+    private toast : ToastService,
     private router: Router
   ) {}
 
@@ -69,4 +71,13 @@ export class ProdottoDettaglioComponent implements OnInit {
       this.quantita--;
     }
   } 
+
+  copyEmail(email: string): void {
+    navigator.clipboard.writeText(email).then(() => {
+      this.toast.info('Email copiata negli appunti');
+    }).catch(err => {
+      this.toast.error('Errore durante la copia dell\'email');
+      console.error('Errore durante la copia dell\'email', err);
+    });
+  }
 }

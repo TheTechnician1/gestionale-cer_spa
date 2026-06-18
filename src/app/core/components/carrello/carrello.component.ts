@@ -18,6 +18,8 @@ export class CarrelloComponent implements OnInit {
   idUtente?: number;
   carrello!: Carrello;
   formAggiunta!: FormGroup
+  flagCheckout : boolean = true;
+
 
   constructor(private carrelloService: CarrelloService, 
     private ordineService : OrdineService,
@@ -38,31 +40,46 @@ export class CarrelloComponent implements OnInit {
     this.carrelloService.getCarrello(this.idUtente).subscribe({
       next: (carrello) => {
         this.carrello = carrello;
-      },
-      error: (err) => {
-        console.error('Errore caricamento carrello', err);
-        this.toast.error('Errore caricamento carrello');
+
+        this.carrelloService.checkSaldo(
+          this.idUtente!,
+          this.totaleCarrello
+        ).subscribe({
+          next: (flag) => {
+            this.flagCheckout = flag;
+            console.log(flag);
+          },
+          error: (err) => {
+            this.flagCheckout = true;
+            console.error(err);
+          }
+        });
       }
     });
   }
 
-  get totaleCarrello(): number {
-    for(const articolo of this.carrello.articoli){
-      if(articolo.quantita>articolo.prodotto.quantitaDisponibile ||
-        articolo.quantita<=0)
-        return 0;
+
+get totaleCarrello(): number {
+  if (!this.carrello?.articoli) return 0;
+  for (const articolo of this.carrello.articoli) {
+    if (
+      articolo.quantita > articolo.prodotto.quantitaDisponibile ||
+      articolo.quantita <= 0
+    ) {
+      return 0;
     }
-    return this.carrello.articoli
-      .reduce(
-        (tot: number, a: ViewArticoloCarrelloDTO) => tot + (a.prezzo * a.quantita),
-        0
-      );
   }
+  return this.carrello.articoli.reduce(
+    (tot: number, a: ViewArticoloCarrelloDTO) =>
+      tot + (a.prezzo * a.quantita),
+    0
+  );
+}
 
   get totaleArticoli(): number {
     for(const articolo of this.carrello.articoli){
       if(articolo.quantita>articolo.prodotto.quantitaDisponibile ||
-        articolo.quantita<=0)
+        articolo.quantita<=0 || !this.flagCheckout)
         return 0;
     }
     return this.carrello.articoli
@@ -82,6 +99,19 @@ export class CarrelloComponent implements OnInit {
       ).subscribe({
         next: (carrello: Carrello) => {
           this.carrello = carrello;
+          this.carrelloService.checkSaldo(
+            this.idUtente!,
+            this.totaleCarrello
+          ).subscribe({
+            next: (flag) => {
+              this.flagCheckout = flag;
+              console.log(flag);
+            },
+            error: (err) => {
+              this.flagCheckout = true;
+              console.error(err);
+            }
+          });
           this.toast.success('Articolo aggiornato');
         },
         error: (err) => {
@@ -98,6 +128,20 @@ export class CarrelloComponent implements OnInit {
     this.carrelloService.cancellaArticoloCarrello(this.idUtente, articolo.idArticoloCarrello).subscribe({
       next: () => {
         this.carrello.articoli = this.carrello.articoli.filter(a => a.idArticoloCarrello !== articolo.idArticoloCarrello);
+        this.carrelloService.checkSaldo(
+          this.idUtente!,
+          this.totaleCarrello
+        ).subscribe({
+          next: (flag) => {
+            this.flagCheckout = flag;
+            console.log(flag);
+          },
+          error: (err) => {
+            this.flagCheckout = true;
+            console.error(err);
+          }
+        });
+
         this.toast.success('Articolo rimosso dal carrello');
       },
       error: (err) => {

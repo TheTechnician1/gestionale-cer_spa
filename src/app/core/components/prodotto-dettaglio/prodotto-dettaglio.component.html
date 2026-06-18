@@ -37,7 +37,12 @@
             <mat-icon>store</mat-icon>
             <div>
               <strong>{{ prodotto.venditore.nome }}</strong><br>
-              <small>{{ prodotto.venditore.email }}</small>
+              <small>
+                {{ prodotto.venditore.email }}
+                <mat-icon style="vertical-align: middle; margin-left: 4px;" (click)="copyEmail(prodotto.venditore.email)" [style.cursor]="'pointer'" [style.color]="'#3f51b5'">
+                file_copy
+              </mat-icon>
+              </small>
 
             </div>
           </div>

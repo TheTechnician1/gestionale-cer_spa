@@ -53,6 +53,7 @@
                     (keyup.enter)="aggiornaQuantita(articolo)"
                   />
                   </div>
+                  <mat-hint>qta max disponibile: {{articolo.prodotto.quantitaDisponibile}}</mat-hint>
                   <mat-error  *ngIf="articolo.quantita>articolo.prodotto.quantitaDisponibile || articolo.quantita <= 0">quantità non disponibile</mat-error>
                 </mat-form-field>
               
@@ -102,12 +103,13 @@
           </div>
           <button
             mat-raised-button
-            [disabled]="totaleArticoli===0"
+            [disabled]="totaleArticoli<=0 || !flagCheckout"
             color="primary"
             class="checkout"
             (click)="creaOrdine()">
                 Procedi all'ordine
           </button>
+          <mat-error *ngIf="!flagCheckout">Saldo insufficiente rimuovi degli articoli</mat-error>
         </div>
       </div>
     </div>
