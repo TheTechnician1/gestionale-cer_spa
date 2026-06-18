@@ -3,6 +3,7 @@ import { OrdineService } from '../../services/ordine.service';
 import { Ordine } from '../../interfaces/ordine';
 import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from "@angular/material/card";
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-ordine',
@@ -16,7 +17,8 @@ export class OrdineComponent {
 
   constructor(
     private ordineService: OrdineService,
-    private route:ActivatedRoute
+    private route:ActivatedRoute,
+    private toast:ToastService
   ) {}
 
   ngOnInit(): void {
@@ -37,12 +39,11 @@ export class OrdineComponent {
             'Errore recupero ordine',
             error
           );
+          this.toast.error("Errore recupero ordine")
           this.loading = false;
         }
       });
   }
-
-
 
   formatPrice(value: number): string {
     return new Intl.NumberFormat(
@@ -52,5 +53,9 @@ export class OrdineComponent {
         currency: 'EUR'
       }
     ).format(value);
+  }
+
+  invioRicevuta(){
+    this.ordineService.invioRicevuta(this.idOrdine);
   }
 }

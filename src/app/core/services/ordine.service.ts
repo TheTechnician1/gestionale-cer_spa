@@ -20,4 +20,10 @@ export class OrdineService {
     const endpoint = `api/orders/${userId}/orders/checkout`;
     return this.api.postLogin<Ordine>(endpoint,ordini, options);
   }
+
+  invioRicevuta(orderId: number|null, options: ApiRequestOptions = {}) : void{
+      const endpoint = `api/orders/${orderId}/receipt/email`;
+      this.api.post<any>(endpoint, {}, options).subscribe();
+  }
+
 }

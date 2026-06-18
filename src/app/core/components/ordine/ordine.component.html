@@ -8,6 +8,7 @@
       <div class="header-info">
         <h1>Il tuo ordine</h1>
         <span>Codice: {{ ordine.codiceOrdine }}</span>
+         <span>Data ordine: {{ ordine.dataOrdine | date:'dd/MM/yyyy' }}</span>
       </div>
 
       <button
@@ -30,11 +31,6 @@
           *ngFor="let articolo of ordine.articoliOrdine">
 
           <div class="articolo">
-
-            <img
-              class="articolo-img"
-              [src]="articolo.immagine"
-              [alt]="articolo.nomeProdotto">
 
             <div class="articolo-info">
 
@@ -99,12 +95,12 @@
               {{ formatPrice(ordine.totaleOrdine) }}
             </strong>
           </div>
-
           <button
             mat-raised-button
             color="primary"
-            class="checkout">
-            Procedi al checkout
+            class="checkout"
+            (click)="invioRicevuta()">
+              Invio mail ricevuta
           </button>
 
         </div>
