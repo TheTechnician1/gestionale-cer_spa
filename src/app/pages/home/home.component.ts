@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { ProdottoResponse } from '../../models/prodotto-response';
 import { PreferitoService } from '../../services/preferito.service';
+import { ToastService } from '../../services/toast.service';
 import { UtenteStorageService } from '../../services/utente-storage.service';
 
 @Component({
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private preferitoService: PreferitoService,
     private utenteStorageService: UtenteStorageService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class HomeComponent implements OnInit {
     if (!utente) {
       this.messaggioErrorePreferiti =
         'Devi effettuare il login per gestire i prodotti preferiti';
+        this.toastService.mostraErrore(this.messaggioErrorePreferiti);
       return;
     }
 
@@ -52,11 +55,13 @@ export class HomeComponent implements OnInit {
       .subscribe({
         next: (prodottiPreferiti) => {
           this.prodottiPreferiti = prodottiPreferiti;
+          this.toastService.mostraSuccesso('Prodotto rimosso dai preferiti');
         },
         error: (errore) => {
           this.messaggioErrorePreferiti =
             errore.error?.messaggio ||
             'Errore durante la rimozione del preferito';
+        this.toastService.mostraErrore(this.messaggioErrorePreferiti);
         },
       });
   }
@@ -81,6 +86,7 @@ export class HomeComponent implements OnInit {
         this.caricamentoPreferiti = false;
         this.messaggioErrorePreferiti =
           'Errore durante il recupero dei preferiti';
+        this.toastService.mostraErrore(this.messaggioErrorePreferiti);
       },
     });
   }

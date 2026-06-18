@@ -1,0 +1,6 @@
+<div class="toast-wrapper" *ngIf="toast$ | async as toast">
+  <div class="toast-message" [class.successo]="toast.tipo === 'successo'" [class.errore]="toast.tipo === 'errore'" [class.info]="toast.tipo === 'info'">
+    <span>{{ toast.testo }}</span>
+    <button type="button" aria-label="Chiudi notifica" (click)="chiudiToast()">x</button>
+  </div>
+</div>

@@ -17,6 +17,7 @@ import { ProductCardComponent } from './components/product-card/product-card.com
 import { PagamentoCompletatoComponent } from './pages/pagamento-completato/pagamento-completato.component';
 import { DettaglioProdottoComponent } from './pages/dettaglio-prodotto/dettaglio-prodotto.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { FooterComponent } from './components/footer/footer.component';
     PagamentoCompletatoComponent,
     DettaglioProdottoComponent,
     FooterComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

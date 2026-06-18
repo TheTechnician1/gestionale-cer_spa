@@ -6,6 +6,7 @@ import { CarrelloService } from '../../services/carrello.service';
 import { UtenteStorageService } from '../../services/utente-storage.service';
 import { Router } from '@angular/router';
 import { OrdineService } from '../../services/ordine.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-carrello',
@@ -29,6 +30,7 @@ export class CarrelloComponent implements OnInit {
     private utenteStorageService: UtenteStorageService,
     private ordineService: OrdineService,
     private router: Router,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class CarrelloComponent implements OnInit {
     if (!this.utente) {
       this.messaggioErrore =
         'Devi effettuare il login per visualizzare il carrello';
+        this.toastService.mostraErrore(this.messaggioErrore);
     }
   }
 
@@ -62,6 +65,7 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il recupero del carrello';
+        this.toastService.mostraErrore(this.messaggioErrore);
         this.caricamento = false;
       },
     });
@@ -100,10 +104,13 @@ export class CarrelloComponent implements OnInit {
         next: (elementiCarrello) => {
           this.elementiCarrello = elementiCarrello;
           this.aggiornaTotali();
+          this.messaggioSuccesso = 'Quantita aggiornata correttamente';
+          this.toastService.mostraSuccesso('Quantita aggiornata correttamente');
         },
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante la modifica quantita';
+        this.toastService.mostraErrore(this.messaggioErrore);
         },
       });
   }
@@ -123,10 +130,12 @@ export class CarrelloComponent implements OnInit {
           this.elementiCarrello = elementiCarrello;
           this.aggiornaTotali();
           this.messaggioSuccesso = 'Prodotto rimosso dal carrello';
+          this.toastService.mostraSuccesso('Prodotto rimosso dal carrello');
         },
         error: (errore) => {
           this.messaggioErrore =
             errore.error?.messaggio || 'Errore durante la rimozione prodotto';
+        this.toastService.mostraErrore(this.messaggioErrore);
         },
       });
   }
@@ -141,10 +150,12 @@ export class CarrelloComponent implements OnInit {
         this.elementiCarrello = [];
         this.aggiornaTotali();
         this.messaggioSuccesso = 'Carrello svuotato';
+        this.toastService.mostraSuccesso('Carrello svuotato');
       },
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante lo svuotamento carrello';
+        this.toastService.mostraErrore(this.messaggioErrore);
       },
     });
   }
@@ -164,10 +175,12 @@ export class CarrelloComponent implements OnInit {
     if (!this.utente) {
       this.messaggioErrore =
         'Devi effettuare il login per completare il pagamento';
+        this.toastService.mostraErrore(this.messaggioErrore);
       return;
     }
     if (this.elementiCarrello.length === 0) {
       this.messaggioErrore = 'Il carrello e vuoto';
+      this.toastService.mostraErrore('Il carrello e vuoto');
       return;
     }
     this.checkoutInCorso = true;
@@ -185,6 +198,9 @@ export class CarrelloComponent implements OnInit {
         this.elementiCarrello = [];
         this.aggiornaTotali();
         this.checkoutInCorso = false;
+        this.messaggioSuccesso = 'Ordine effettuato con successo';
+        this.toastService.mostraSuccesso('Ordine effettuato con successo');
+        this.toastService.mostraSuccesso('Grazie per il tuo acquisto');
 
         this.router.navigate(['/pagamento-completato'], {
           state: { ordine },
@@ -193,6 +209,8 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il checkout';
+        this.toastService.mostraErrore('Pagamento non riuscito');
+        this.toastService.mostraErrore('Transazione fallita');
         this.checkoutInCorso = false;
       },
     });

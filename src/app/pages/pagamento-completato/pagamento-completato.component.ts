@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { OrdineResponse } from '../../models/ordine-response';
 import { OrdineService } from '../../services/ordine.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-pagamento-completato',
@@ -17,6 +18,7 @@ export class PagamentoCompletatoComponent implements OnInit {
   constructor(
     private router: Router,
     private ordineService: OrdineService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -24,7 +26,11 @@ export class PagamentoCompletatoComponent implements OnInit {
 
     if (!this.ordine) {
       this.router.navigate(['/carrello']);
+      return;
     }
+
+    this.toastService.mostraSuccesso('Pagamento completato');
+    this.toastService.mostraSuccesso('Transazione riuscita');
   }
 
   scaricaRicevuta(): void {
@@ -43,6 +49,7 @@ export class PagamentoCompletatoComponent implements OnInit {
       },
       error: () => {
         this.messaggioErrore = 'Errore durante il download della ricevuta';
+        this.toastService.mostraErrore(this.messaggioErrore);
       },
     });
   }
@@ -55,9 +62,11 @@ export class PagamentoCompletatoComponent implements OnInit {
     this.ordineService.inviaRicevutaEmail(this.ordine.idOrdine).subscribe({
       next: () => {
         this.messaggioSuccesso = 'Ricevuta inviata via email';
+        this.toastService.mostraSuccesso('Ricevuta inviata via email');
       },
       error: () => {
         this.messaggioErrore = 'Errore durante invio ricevuta email';
+        this.toastService.mostraErrore(this.messaggioErrore);
       },
     });
   }

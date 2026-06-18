@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { ErroreResponse } from '../../models/errore-response';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 import { UtenteStorageService } from '../../services/utente-storage.service';
 
 @Component({
@@ -21,6 +21,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private utenteStorageService: UtenteStorageService,
+    private toastService: ToastService,
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -31,9 +32,27 @@ export class LoginComponent {
   login(): void {
     this.messaggioErrore = '';
 
+    const email = this.loginForm.get('email');
+    const password = this.loginForm.get('password');
+
+    if (email?.invalid && password?.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.messaggioErrore = 'Inserisci email e password';
+      this.toastService.mostraErrore('Inserisci email e password');
+      return;
+    }
+
+    if (password?.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.messaggioErrore = 'Inserisci la password';
+      this.toastService.mostraErrore('Inserisci la password');
+      return;
+    }
+
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.messaggioErrore = 'Compila correttamente email e password';
+      this.messaggioErrore = 'Inserisci email e password';
+      this.toastService.mostraErrore('Inserisci email e password');
       return;
     }
 
@@ -43,12 +62,12 @@ export class LoginComponent {
       next: (utente) => {
         this.utenteStorageService.salvaUtente(utente);
         this.caricamento = false;
+        this.toastService.mostraSuccesso('Accesso effettuato con successo');
         this.router.navigate(['/home']);
       },
-      error: (errore) => {
-        const erroreResponse = errore.error as ErroreResponse;
-        this.messaggioErrore =
-          erroreResponse?.messaggio || 'Errore durante il login';
+      error: () => {
+        this.messaggioErrore = 'Email o password non valide';
+        this.toastService.mostraErrore('Email o password non valide');
         this.caricamento = false;
       },
     });
