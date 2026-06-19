@@ -37,3 +37,8 @@
   --mdc-checkbox-unselected-pressed-state-layer-color: var(--app-secondary);
   --mat-checkbox-ripple-color: var(--app-secondary);
 }
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox.mat-accent .mdc-checkbox--selected ~ .mdc-checkbox__ripple {
+  background-color: var(--app-secondary) !important;
+  background: var(--app-secondary) !important;
+}
