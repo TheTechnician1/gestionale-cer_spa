@@ -10,6 +10,9 @@ export class NotAuthorizedComponent {
   constructor(private route: Router) {}
 
   onClick() {
-    this.route.navigate(["/login"]);
+    if(localStorage.getItem("utente"))
+      this.route.navigate(["/prodotti"]);
+    else
+      this.route.navigate(["/login"]);
   }
 }
