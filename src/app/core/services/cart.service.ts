@@ -121,6 +121,10 @@ export class CartService {
     this.emit(this.createCart(items));
   }
 
+  loadGuestCartState(): void {
+    this.loadGuestCart();
+  }
+
   private saveGuestCart(items: CartItem[]): void {
     localStorage.setItem(this.guestCartKey, JSON.stringify(items));
   }

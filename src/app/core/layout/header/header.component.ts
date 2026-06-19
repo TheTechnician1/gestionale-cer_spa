@@ -42,6 +42,7 @@ export class HeaderComponent {
 
   logout() {
     this.authService.logout();
+    this.cartService.loadGuestCartState();
   }
 
   search() {
