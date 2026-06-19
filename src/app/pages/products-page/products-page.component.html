@@ -1,0 +1,108 @@
+    <section class="section products-page">
+      <p class="eyebrow">{{ i18n.t('catalog') }}</p>
+      <h1>{{ i18n.t('productsTitle') }}</h1>
+
+      <div class="marketplace-layout product-browser">
+        <aside class="product-filters" [attr.aria-label]="i18n.t('filters')">
+          <form class="form" [formGroup]="searchForm" (ngSubmit)="simpleSearch()">
+            <section class="filter-group">
+              <h2>{{ i18n.t('search') }}</h2>
+              <label>{{ i18n.t('productName') }}
+                <input type="search" formControlName="name" [placeholder]="i18n.t('catalogSearchPlaceholder')">
+              </label>
+              <button class="button primary" type="submit">{{ i18n.t('search') }}</button>
+            </section>
+          </form>
+
+          <form class="form" [formGroup]="advancedForm" (ngSubmit)="advancedSearch()">
+            <section class="filter-group advanced-filter-card">
+              <button class="advanced-toggle" type="button" [attr.aria-expanded]="advancedOpen" (click)="advancedOpen = !advancedOpen">
+                <span>{{ i18n.t('advancedFilters') }}</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 8.59 4.59 4.58 4.59-4.58L18 10l-6 6-6-6z"/></svg>
+              </button>
+
+              <div class="advanced-panel" *ngIf="advancedOpen">
+                <label>{{ i18n.t('category') }}
+                  <select class="brand-filter-select" formControlName="category">
+                    <option value="">{{ i18n.t('allCategories') }}</option>
+                    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                  </select>
+                </label>
+                <label>{{ i18n.t('minPrice') }}
+                  <span class="number-stepper">
+                    <input type="number" min="0" step="0.01" formControlName="minPrice">
+                    <span class="stepper-buttons">
+                      <button type="button" [attr.aria-label]="i18n.t('increaseMinPrice')" (click)="stepFilter('minPrice', 0.01)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 15.41 4.59-4.58 4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                      </button>
+                      <button type="button" [attr.aria-label]="i18n.t('decreaseMinPrice')" (click)="stepFilter('minPrice', -0.01)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 8.59 4.59 4.58 4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                      </button>
+                    </span>
+                  </span>
+                </label>
+                <label>{{ i18n.t('maxPrice') }}
+                  <span class="number-stepper">
+                    <input type="number" min="0" step="0.01" formControlName="maxPrice">
+                    <span class="stepper-buttons">
+                      <button type="button" [attr.aria-label]="i18n.t('increaseMaxPrice')" (click)="stepFilter('maxPrice', 0.01)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 15.41 4.59-4.58 4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                      </button>
+                      <button type="button" [attr.aria-label]="i18n.t('decreaseMaxPrice')" (click)="stepFilter('maxPrice', -0.01)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 8.59 4.59 4.58 4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                      </button>
+                    </span>
+                  </span>
+                </label>
+                <label>{{ i18n.t('minQuantity') }}
+                  <span class="number-stepper">
+                    <input type="number" min="0" step="1" formControlName="minQuantity">
+                    <span class="stepper-buttons">
+                      <button type="button" [attr.aria-label]="i18n.t('increaseMinQuantity')" (click)="stepFilter('minQuantity', 1)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 15.41 4.59-4.58 4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                      </button>
+                      <button type="button" [attr.aria-label]="i18n.t('decreaseMinQuantity')" (click)="stepFilter('minQuantity', -1)">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7.41 8.59 4.59 4.58 4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                      </button>
+                    </span>
+                  </span>
+                </label>
+                <div class="actions filter-actions">
+                  <button class="button primary" type="submit">{{ i18n.t('apply') }}</button>
+                </div>
+              </div>
+            </section>
+          </form>
+        </aside>
+
+        <div>
+          <p class="filter-count">{{ products.length }} {{ i18n.t('productsAvailable') }}</p>
+          <p class="error" *ngIf="error">{{ error }}</p>
+          <div class="gumroad-grid">
+            <article class="gumroad-card interactive" *ngFor="let item of products; trackBy: trackById">
+              <a class="gumroad-art" [routerLink]="['/product', item.id]">
+                <img [src]="imageFor(item)" [alt]="item.nomeProdotto" (error)="replaceImage($event)">
+              </a>
+              <div class="gumroad-name">
+                <a [routerLink]="['/product', item.id]">{{ item.nomeProdotto }}</a>
+                <p>{{ item.descrizioneBreve }}</p>
+                <div class="tag-row compact-tags">
+                  <span>{{ item.categoria }}</span>
+                  <span>{{ item.quantitaDisponibile }} {{ i18n.t('available') }}</span>
+                </div>
+              </div>
+              <div class="gumroad-buy">
+                <a [routerLink]="['/product', item.id]">
+                  {{ item.prezzo | currency:'EUR':'symbol':'1.2-2':'it' }}
+                </a>
+                <a class="button secondary" [routerLink]="['/product', item.id]">{{ i18n.t('details') }}</a>
+              </div>
+            </article>
+          </div>
+          <div class="empty-state panel" *ngIf="!loading && !products.length">
+            <h2>{{ i18n.t('noProductsAvailable') }}</h2>
+            <p>{{ i18n.t('noProductsCopy') }}</p>
+          </div>
+        </div>
+      </div>
+    </section>

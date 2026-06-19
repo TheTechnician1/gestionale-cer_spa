@@ -1,0 +1,104 @@
+    <section class="section">
+      @if (auth.user()?.role !== 'admin') {
+        <div class="empty-state">
+          <p class="eyebrow">Admin</p>
+          <h1>Access denied</h1>
+          <p>Sign in with an admin account to manage products.</p>
+        </div>
+      } @else {
+        <p class="eyebrow">Admin dashboard</p>
+        <h1>Videa catalog manager</h1>
+        <div class="admin-grid">
+          <form class="panel form" (ngSubmit)="save()">
+            <h2>{{ editing ? 'Edit product' : 'Add product' }}</h2>
+            <label>Name<input required name="name" [(ngModel)]="draft.name"></label>
+            <label>Price EUR<input required type="number" step="0.01" name="price" [(ngModel)]="draft.priceEUR"></label>
+            <label>Purchase type<select name="purchaseType" [(ngModel)]="draft.purchaseType">
+              <option value="lifetime">Lifetime</option>
+              <option value="subscription">Subscription</option>
+            </select></label>
+            <label>Category<select name="category" [(ngModel)]="categorySlug">
+              @for (category of products.categories(); track category.id) {
+                <option [value]="category.slug">{{ category.name }}</option>
+              }
+            </select></label>
+            <label>Tags<select multiple name="tags" [(ngModel)]="tagSlugs">
+              @for (tag of products.tags(); track tag.id) {
+                <option [value]="tag.slug">{{ tag.name }}</option>
+              }
+            </select></label>
+            <label>Short description<textarea name="short" [(ngModel)]="draft.shortDescription"></textarea></label>
+            <label>Description<textarea name="description" [(ngModel)]="draft.description"></textarea></label>
+            <label>IT short description<textarea name="itShort" [(ngModel)]="itShort"></textarea></label>
+            <label>FR short description<textarea name="frShort" [(ngModel)]="frShort"></textarea></label>
+            <button class="button primary" type="submit">Save product</button>
+          </form>
+
+          <div class="panel">
+            <h2>Products</h2>
+            <label>Featured product<select [ngModel]="products.featuredProductId()" name="featured" (ngModelChange)="products.setFeaturedProduct(+($event))">
+              @for (product of products.products(); track product.id) {
+                <option [value]="product.id">{{ product.name }}</option>
+              }
+            </select></label>
+            @for (product of products.products(); track product.id) {
+              <article class="admin-product">
+                <div><strong>{{ product.name }}</strong><p>{{ currency.format(product.priceEUR) }} / {{ product.category.name }}</p></div>
+                <button type="button" (click)="edit(product)">Edit</button>
+                <button type="button" (click)="products.deleteProduct(product.id)">Delete</button>
+              </article>
+            }
+          </div>
+
+          <form class="panel form" (ngSubmit)="addCategory()">
+            <h2>Categories</h2>
+            <label>New category<input name="categoryName" [(ngModel)]="categoryName"></label>
+            <label>Category description<textarea name="categoryDescription" [(ngModel)]="categoryDescription"></textarea></label>
+            <button class="button secondary" type="submit">Add category</button>
+          </form>
+
+          <form class="panel form" (ngSubmit)="addTag()">
+            <h2>Tags</h2>
+            <label>New tag<input name="tagName" [(ngModel)]="tagName"></label>
+            <button class="button secondary" type="submit">Add tag</button>
+          </form>
+
+          <form class="panel form" (ngSubmit)="saveDiscountCode()">
+            <h2>Discount codes</h2>
+            <label>Code<input name="discountCode" [(ngModel)]="discountDraft.code"></label>
+            <label>Type<select name="discountType" [(ngModel)]="discountDraft.discountType"><option value="percentage">Percentage</option><option value="fixed">Fixed amount</option></select></label>
+            <label>Value<input type="number" name="discountValue" [(ngModel)]="discountDraft.value"></label>
+            <label>Scope<select name="discountScope" [(ngModel)]="discountDraft.scope"><option value="all">All products</option><option value="product">Specific product</option><option value="category">Specific category</option></select></label>
+            <label>Product<select name="discountProduct" [(ngModel)]="discountDraft.productId">@for (product of products.products(); track product.id) { <option [ngValue]="product.id">{{ product.name }}</option> }</select></label>
+            <label>Category<select name="discountCategory" [(ngModel)]="discountDraft.categoryId">@for (category of products.categories(); track category.id) { <option [ngValue]="category.id">{{ category.name }}</option> }</select></label>
+            <label>Starts at<input type="datetime-local" name="discountStart" [(ngModel)]="discountDraft.startsAt"></label>
+            <label>Ends at<input type="datetime-local" name="discountEnd" [(ngModel)]="discountDraft.endsAt"></label>
+            <label>Status<select name="discountActive" [(ngModel)]="discountDraft.active"><option [ngValue]="true">Active</option><option [ngValue]="false">Inactive</option></select></label>
+            <label>Max uses<input type="number" name="maxUses" [(ngModel)]="discountDraft.maxUses"></label>
+            <label>Minimum order<input type="number" name="minimumOrder" [(ngModel)]="discountDraft.minimumOrderAmount"></label>
+            <button class="button primary" type="submit">Save code</button>
+            @for (code of discounts.codes(); track code.id) {
+              <article class="admin-product"><div><strong>{{ code.code }}</strong><p>{{ code.scope }} · {{ code.value }}</p></div><button type="button" (click)="editDiscount(code)">Edit</button><button type="button" (click)="discounts.deleteCode(code.id)">Delete</button></article>
+            }
+          </form>
+
+          <form class="panel form" (ngSubmit)="saveSale()">
+            <h2>Sale campaigns</h2>
+            <label>Name<input name="saleName" [(ngModel)]="saleDraft.name"></label>
+            <label>Type<select name="saleType" [(ngModel)]="saleDraft.discountType"><option value="percentage">Percentage</option><option value="fixed">Fixed amount</option></select></label>
+            <label>Value<input type="number" name="saleValue" [(ngModel)]="saleDraft.value"></label>
+            <label>Scope<select name="saleScope" [(ngModel)]="saleDraft.scope"><option value="all">All products</option><option value="product">Specific product</option><option value="category">Specific category</option></select></label>
+            <label>Product<select name="saleProduct" [(ngModel)]="saleDraft.productId">@for (product of products.products(); track product.id) { <option [ngValue]="product.id">{{ product.name }}</option> }</select></label>
+            <label>Category<select name="saleCategory" [(ngModel)]="saleDraft.categoryId">@for (category of products.categories(); track category.id) { <option [ngValue]="category.id">{{ category.name }}</option> }</select></label>
+            <label>Starts at<input type="datetime-local" name="saleStart" [(ngModel)]="saleDraft.startsAt"></label>
+            <label>Ends at<input type="datetime-local" name="saleEnd" [(ngModel)]="saleDraft.endsAt"></label>
+            <label>Status<select name="saleActive" [(ngModel)]="saleDraft.active"><option [ngValue]="true">Active</option><option [ngValue]="false">Inactive</option></select></label>
+            <span class="sale-badge admin-sale-preview">Sale -{{ saleDraft.value }}{{ saleDraft.discountType === 'percentage' ? '%' : ' EUR' }}</span>
+            <button class="button primary" type="submit">Save sale</button>
+            @for (sale of sales.sales(); track sale.id) {
+              <article class="admin-product"><div><strong>{{ sale.name }}</strong><p>{{ sale.scope }} · {{ sale.value }}</p></div><button type="button" (click)="editSale(sale)">Edit</button><button type="button" (click)="sales.deleteSale(sale.id)">Delete</button></article>
+            }
+          </form>
+        </div>
+      }
+    </section>

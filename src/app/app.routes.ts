@@ -1,22 +1,26 @@
-import { Routes } from "@angular/router";
-import { FullLayoutComponent } from "./core/layout/full-layout.component";
-import { AuthGuard } from "./core/guard/auth.guard";
-import { RegistrazioneUtenteComponent } from "./core/components/login/registrazione-utente/registrazione-utente.component";
-import { LoginComponent } from "./core/components/login/login/login.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { UtenteComponent } from "./core/components/utente/utente.component";
-import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
+import { Routes } from '@angular/router';
+import { authGuard } from './guards';
+import { CartPage } from './pages/cart-page/cart-page.component';
+import { CheckoutPage } from './pages/checkout-page/checkout-page.component';
+import { HomePage } from './pages/home-page/home-page.component';
+import { OrderConfirmationPage } from './pages/order-confirmation-page/order-confirmation-page.component';
+import { ProductPage } from './pages/product-page/product-page.component';
+import { ProductsPage } from './pages/products-page/products-page.component';
+import { SignInPage } from './pages/sign-in-page/sign-in-page.component';
+import { SignUpPage } from './pages/sign-up-page/sign-up-page.component';
 
-export const FULL_LAYOUT_ROUTES: Routes = [
-  { path: "", redirectTo: "dashboard", data: { role: ["ADMIN", "GEST", "GUEST"] }, pathMatch: "full" },
-  { path: "dashboard", component: DashboardComponent, data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "registrazione", component: RegistrazioneUtenteComponent, data: { role: ["ADMIN"] }, canActivate: [AuthGuard] },
-  { path: "impianto", loadChildren: () => import("./core/modules/impianto.module").then((m) => m.ImpiantoModule), data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "dati-energetici", loadChildren: () => import("./core/modules/dati-energetici.module").then((m) => m.DatiEnergeticiModule), data: { role: ["ADMIN", "GEST", "GUEST"] }, canActivate: [AuthGuard] },
-  { path: "profilo/:id", component: UtenteComponent, data: { role: ["ADMIN", "GEST"] }, canActivate: [AuthGuard] },
-  { path: "login", component: LoginComponent },
-  { path: "not-authorized", component: NotAuthorizedComponent },
-  { path: "**", redirectTo: "not-authorized" },
+export const routes: Routes = [
+  { path: '', component: HomePage },
+  { path: 'products', component: ProductsPage, canActivate: [authGuard] },
+  { path: 'product/:id', component: ProductPage, canActivate: [authGuard] },
+  { path: 'cart', component: CartPage, canActivate: [authGuard] },
+  { path: 'checkout', component: CheckoutPage, canActivate: [authGuard] },
+  { path: 'order-completed/:id', component: OrderConfirmationPage, canActivate: [authGuard] },
+  { path: 'sign-in', component: SignInPage },
+  { path: 'sign-up', component: SignUpPage },
+  { path: 'signin', redirectTo: 'sign-in', pathMatch: 'full' },
+  { path: 'login', redirectTo: 'sign-in', pathMatch: 'full' },
+  { path: 'signup', redirectTo: 'sign-up', pathMatch: 'full' },
+  { path: 'register', redirectTo: 'sign-up', pathMatch: 'full' },
+  { path: '**', redirectTo: '' }
 ];
-
-export const routes: Routes = [{ path: "", component: FullLayoutComponent, data: { title: "content Views" }, children: FULL_LAYOUT_ROUTES }];

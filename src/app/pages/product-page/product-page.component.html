@@ -1,0 +1,29 @@
+    <section class="product-detail" *ngIf="product; else missing">
+      <div class="detail-media product-gallery">
+        <img [src]="imageFor(product)" [alt]="product.nomeProdotto" (error)="replaceImage($event)">
+      </div>
+      <div class="detail-copy">
+        <p class="eyebrow">{{ product.categoria }}</p>
+        <h1>{{ product.nomeProdotto }}</h1>
+        <span class="price-with-badge detail-price">
+          <strong class="price big">{{ product.prezzo | currency:'EUR':'symbol':'1.2-2':'it' }}</strong>
+          <span class="purchase-inline">{{ product.quantitaDisponibile }} {{ i18n.t('available') }}</span>
+        </span>
+        <p class="lead small">{{ product.descrizioneCompleta || product.descrizioneBreve }}</p>
+        <p *ngIf="product.seller"><strong>{{ i18n.t('seller') }}:</strong> {{ product.seller.nome }}</p>
+        <form class="actions" [formGroup]="form" (ngSubmit)="addToCart()">
+          <label class="quantity-inline">{{ i18n.t('quantity') }}
+            <input type="number" min="1" [max]="product.quantitaDisponibile" formControlName="quantita">
+          </label>
+          <button class="button primary add-cart-action" type="submit" [disabled]="form.invalid || loading || product.quantitaDisponibile <= 0">{{ i18n.t('addToCart') }}</button>
+          <a class="button secondary" routerLink="/products">{{ i18n.t('backToCatalog') }}</a>
+        </form>
+        <p class="error" *ngIf="error">{{ error }}</p>
+      </div>
+    </section>
+    <ng-template #missing>
+      <section class="section empty-state">
+        <h1>{{ i18n.t('productNotFound') }}</h1>
+        <a class="button primary" routerLink="/products">{{ i18n.t('backToCatalog') }}</a>
+      </section>
+    </ng-template>

@@ -1,0 +1,101 @@
+    <section class="section account-page">
+      <h1>{{ lang.t('account') }}</h1>
+      @if (auth.user(); as user) {
+        <div class="account-grid">
+          <article class="panel profile-overview">
+            <div class="avatar">{{ initials(user.name) }}</div>
+            <div>
+              <p class="eyebrow">{{ lang.t('profileOverview') }}</p>
+              <h2>{{ editableName || user.name }}</h2>
+              <p>{{ user.email }}</p>
+              <div class="tag-row">
+                <span>{{ user.role }}</span>
+                <span>{{ lang.t('active') }}</span>
+                <span>{{ lang.t('joined') }} {{ user.registeredAt || '2026-06-16' }}</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel form">
+            <h2>{{ lang.t('accountSettings') }}</h2>
+            <label>{{ lang.t('name') }}<input [(ngModel)]="editableName" name="editableName"></label>
+            <label>Email<input [value]="user.email" readonly></label>
+            <a class="button secondary" routerLink="/account/change-password">{{ lang.t('changePassword') }}</a>
+            <button class="button primary" type="button">{{ lang.t('saveChanges') }}</button>
+          </article>
+
+          <article class="panel">
+            <h2>{{ lang.t('orders') }}</h2>
+            @for (order of accountOrders; track order.id) {
+              <div class="account-row">
+                <div><strong>{{ order.id }}</strong><p>{{ order.date }} · {{ order.status }}</p></div>
+                <strong>{{ currency.format(order.totalEUR) }}</strong>
+                <button type="button">{{ lang.t('viewDetails') }}</button>
+              </div>
+            } @empty {
+              <p>{{ lang.t('emptyCart') }}</p>
+            }
+          </article>
+
+          <article class="panel">
+            <h2>{{ lang.t('licensesDownloads') }}</h2>
+            @for (license of accountLicenses; track license.key) {
+              <div class="license-card">
+                <div>
+                  <strong>{{ license.product }}</strong>
+                  <p>{{ lang.t('lifetime') }} · {{ license.key }}</p>
+                </div>
+                <button type="button">{{ lang.t('download') }}</button>
+                <button type="button" (click)="copy(license.key)">{{ lang.t('copyLicense') }}</button>
+              </div>
+            }
+          </article>
+
+          <article class="panel">
+            <h2>{{ lang.t('billing') }}</h2>
+            <p>{{ lang.t('paymentMethod') }} <strong>{{ lang.t('cardEnding') }} 4242</strong></p>
+            <p>{{ lang.t('billingEmail') }} <strong>{{ user.email }}</strong></p>
+            <p>{{ lang.t('noSubscriptionRequired') }}</p>
+          </article>
+
+          <article class="panel form preferences-panel">
+            <h2>{{ lang.t('preferences') }}</h2>
+            <label>{{ lang.t('language') }}
+              <span class="brand-select" [class.open]="languageSelectOpen">
+                <select [ngModel]="lang.language()" (pointerdown)="togglePreferenceSelect('language')" (blur)="closePreferenceSelect('language')" (keydown)="preferenceSelectKeydown($event, 'language')" (ngModelChange)="lang.setLanguage($event); closePreferenceSelect('language')">
+                  <option value="it">Italiano</option>
+                  <option value="en">English</option>
+                  <option value="fr">Francais</option>
+                </select>
+              </span>
+            </label>
+            <label>{{ lang.t('currency') }}
+              <span class="brand-select" [class.open]="currencySelectOpen">
+                <select [ngModel]="currency.currency()" (pointerdown)="togglePreferenceSelect('currency')" (blur)="closePreferenceSelect('currency')" (keydown)="preferenceSelectKeydown($event, 'currency')" (ngModelChange)="currency.setCurrency($event); closePreferenceSelect('currency')">
+                  @for (code of currency.currencies; track code) {
+                    <option [value]="code">{{ code }}</option>
+                  }
+                </select>
+              </span>
+            </label>
+          </article>
+
+          <article class="panel">
+            <h2>{{ lang.t('security') }}</h2>
+            <p>{{ lang.t('lastLogin') }} <strong>{{ user.lastLoginAt || '2026-06-16 15:20' }}</strong></p>
+            <p>{{ lang.t('loginProvider') }} <strong>{{ user.provider || 'Email' }}</strong></p>
+            <button type="button">{{ lang.t('manageConnectedAccounts') }}</button>
+          </article>
+
+          @if (user.role === 'admin') {
+            <a class="panel category-card" routerLink="/admin">
+              <h2>{{ lang.t('adminShortcut') }}</h2>
+              <p>{{ lang.t('adminDashboard') }}</p>
+            </a>
+          }
+        </div>
+        <div class="actions">
+          <button class="button primary" type="button" (click)="logout()">{{ lang.t('logout') }}</button>
+        </div>
+      }
+    </section>

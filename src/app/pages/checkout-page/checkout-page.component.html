@@ -1,0 +1,60 @@
+    <section class="section">
+      <h1>{{ i18n.t('checkout') }}</h1>
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <div class="checkout-grid" *ngIf="cart.items.length; else empty">
+        <div class="checkout-main">
+          <div class="panel">
+            <p class="eyebrow">{{ i18n.t('checkoutPayment') }}</p>
+            <h2>{{ i18n.t('confirmOrder') }}</h2>
+            <p>{{ i18n.t('checkoutCopy') }}</p>
+            <button class="button primary rainbow-action" type="button" [disabled]="loading" (click)="checkout()">
+              {{ loading ? i18n.t('paymentInProgress') : i18n.t('completePayment') }}
+            </button>
+          </div>
+
+          <section class="checkout-products panel" [attr.aria-label]="i18n.t('selectedProducts')">
+            <div class="checkout-products-header">
+              <div>
+                <p class="eyebrow">{{ i18n.t('selectedProducts') }}</p>
+                <h2>{{ i18n.t('inYourOrder') }}</h2>
+              </div>
+              <span>{{ cart.totalItems }} {{ cart.totalItems === 1 ? i18n.t('itemSingular') : i18n.t('itemPlural') }}</span>
+            </div>
+
+            <article class="checkout-product-card" *ngFor="let item of cart.items; trackBy: trackById">
+              <a class="checkout-product-media" [routerLink]="['/product', item.productId]">
+                <img [src]="imageFor(item.immagine)" [alt]="item.nomeProdotto" (error)="replaceImage($event)">
+              </a>
+              <div class="checkout-product-copy">
+                <a [routerLink]="['/product', item.productId]">{{ item.nomeProdotto }}</a>
+                <p>{{ item.prezzoUnitario | currency:'EUR':'symbol':'1.2-2':'it' }} {{ i18n.t('each') }}</p>
+                <span>{{ i18n.t('quantity') }}: {{ item.quantita }}</span>
+              </div>
+              <strong>{{ item.totaleRiga | currency:'EUR':'symbol':'1.2-2':'it' }}</strong>
+            </article>
+          </section>
+        </div>
+
+        <aside class="summary">
+          <h2>{{ i18n.t('orderSummary') }}</h2>
+          <p *ngFor="let item of cart.items">{{ item.nomeProdotto }} x {{ item.quantita }} <strong>{{ item.totaleRiga | currency:'EUR':'symbol':'1.2-2':'it' }}</strong></p>
+          <p>{{ i18n.t('items') }} <strong>{{ cart.totalItems }}</strong></p>
+          <p>{{ i18n.t('total') }} <strong>{{ cart.totalAmount | currency:'EUR':'symbol':'1.2-2':'it' }}</strong></p>
+        </aside>
+      </div>
+
+      <div class="checkout-loader" *ngIf="loading" role="status" aria-live="polite">
+        <div class="checkout-loader-ring">
+          <img src="assets/logo.png" alt="Videa">
+        </div>
+        <p>{{ i18n.t('completingOrder') }}</p>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty-state panel">
+          <h2>{{ i18n.t('emptyCart') }}</h2>
+          <a class="button primary" routerLink="/products">{{ i18n.t('backToCatalog') }}</a>
+        </div>
+      </ng-template>
+    </section>

@@ -1,0 +1,42 @@
+    <section class="section">
+      <h1>{{ i18n.t('cart') }}</h1>
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <div class="cart-layout" *ngIf="cart.items.length; else empty">
+        <div class="cart-list">
+          <article class="cart-item" *ngFor="let item of cart.items; trackBy: trackById">
+            <img [src]="imageFor(item.immagine)" [alt]="item.nomeProdotto" (error)="replaceImage($event)">
+            <div>
+              <h2>{{ item.nomeProdotto }}</h2>
+              <p>{{ item.prezzoUnitario | currency:'EUR':'symbol':'1.2-2':'it' }} {{ i18n.t('each') }}</p>
+              <p>{{ i18n.t('total') }} <strong>{{ item.totaleRiga | currency:'EUR':'symbol':'1.2-2':'it' }}</strong></p>
+            </div>
+            <div class="quantity-controls">
+              <button class="quantity-button" type="button" [attr.aria-label]="i18n.t('decreaseMinQuantity')" (click)="change(item, item.quantita - 1)">
+                <span>−</span>
+              </button>
+              <strong>{{ item.quantita }}</strong>
+              <button class="quantity-button" type="button" [attr.aria-label]="i18n.t('increaseMinQuantity')" (click)="change(item, item.quantita + 1)">
+                <span>+</span>
+              </button>
+            </div>
+            <button class="button secondary cart-remove-button" type="button" (click)="remove(item)">{{ i18n.t('remove') }}</button>
+          </article>
+        </div>
+
+        <aside class="summary">
+          <h2>{{ i18n.t('summary') }}</h2>
+          <p>{{ i18n.t('items') }} <strong>{{ cart.totalItems }}</strong></p>
+          <p>{{ i18n.t('total') }} <strong>{{ cart.totalAmount | currency:'EUR':'symbol':'1.2-2':'it' }}</strong></p>
+          <a class="button primary" routerLink="/checkout">{{ i18n.t('checkout') }}</a>
+        </aside>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty-state panel">
+          <h2>{{ i18n.t('emptyCart') }}</h2>
+          <p>{{ i18n.t('emptyCartCopy') }}</p>
+          <a class="button primary" routerLink="/products">{{ i18n.t('goCatalog') }}</a>
+        </div>
+      </ng-template>
+    </section>

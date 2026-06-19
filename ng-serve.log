@@ -1,0 +1,492 @@
+
+> videa-shop@1.0.0 start
+> ng serve --host localhost --port=4200 --host 0.0.0.0 --port 4200
+
+Option 'host' has been specified multiple times. The value '0.0.0.0' will be used.
+Option 'port' has been specified multiple times. The value '4200' will be used.
+Warning: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disable-host-check" if that's the
+case.
+- Generating browser application bundles (phase: setup)...
+√ Browser application bundle generation complete.
+
+Initial Chunk Files   | Names         |  Raw Size
+vendor.js             | vendor        |   2.34 MB |
+polyfills.js          | polyfills     | 234.35 kB |
+main.js               | main          | 207.62 kB |
+styles.css, styles.js | styles        | 178.08 kB |
+runtime.js            | runtime       |   6.50 kB |
+
+| Initial Total |   2.96 MB
+
+Build at: 2026-06-18T12:47:34.317Z - Hash: ac285b76b0e60023 - Time: 11735ms
+
+** Angular Live Development Server is listening on 0.0.0.0:4200, open your browser on http://localhost:4200/ **
+
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T12:48:30.010Z - Hash: 795b63020a8fc588 - Time: 1418ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T12:49:39.082Z - Hash: 247a6bb4ef58fbdd - Time: 847ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T12:50:21.603Z - Hash: 4175125b6dc00f52 - Time: 1209ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 208.43 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T12:54:17.209Z - Hash: 9d10ef1abfc04109 - Time: 1817ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T12:54:26.629Z - Hash: abdc26c2e903b41a - Time: 583ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 208.43 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T12:55:23.916Z - Hash: 6238a24bee58f26d - Time: 3327ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 208.85 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T12:56:06.628Z - Hash: a0df2fe668efed77 - Time: 2913ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 215.52 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:15:24.486Z - Hash: 87e3bd5282bfd3d5 - Time: 1154ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 215.54 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:15:49.624Z - Hash: e11b815da7a258a5 - Time: 941ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:16:14.501Z - Hash: 1ef47078c7fc0d6d - Time: 675ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:16:25.127Z - Hash: 9be93143621a717d - Time: 436ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:16:34.094Z - Hash: 9fa97d39075e8743 - Time: 357ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:16:41.149Z - Hash: 498070afafc2094f - Time: 306ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 216.75 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:22:30.682Z - Hash: f3c2b85a1c689a71 - Time: 1219ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:22:43.202Z - Hash: 8a5355e7d830bb2e - Time: 400ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:23:02.247Z - Hash: 835ffd60e71c8f10 - Time: 281ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:23:09.981Z - Hash: b47350fcd4bdc902 - Time: 382ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:23:20.148Z - Hash: 10d4828eb2b9fd13 - Time: 392ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:23:27.446Z - Hash: ebf6a6ab6accfa39 - Time: 705ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 216.87 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:24:36.897Z - Hash: da2c7e80653a2956 - Time: 1463ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:24:46.011Z - Hash: 82b36a113a5339e8 - Time: 458ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:25:11.415Z - Hash: 2d2f3378f33dc822 - Time: 616ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:25:36.012Z - Hash: 4a89818d85577644 - Time: 417ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 225.02 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:27:18.168Z - Hash: 680c591278b96e4b - Time: 1573ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:27:27.910Z - Hash: 0056cf5ca488cce5 - Time: 602ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:27:42.375Z - Hash: 79059d196f390db7 - Time: 387ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 225.13 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:35:08.716Z - Hash: 4260b8264597f2de - Time: 2515ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:35:19.407Z - Hash: dde05549c1d84e3a - Time: 741ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:35:59.789Z - Hash: ec832ebd518f3308 - Time: 457ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:37:53.637Z - Hash: 1bab524b2625700c - Time: 646ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:38:09.842Z - Hash: c778095e04a5155f - Time: 531ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:39:04.948Z - Hash: 033ed62e482e87b7 - Time: 616ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:39:16.792Z - Hash: 9e1b0fedae8fb4af - Time: 719ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:39:38.375Z - Hash: 55a3cc3219d2fd11 - Time: 1201ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 227.66 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:47:44.680Z - Hash: 7b426708437b038d - Time: 1782ms
+
+Error: src/app/pages/sign-up.page.ts:18:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+18         <small class="error" *ngIf="showFieldError('nome')">Inserisci il nome.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:20:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+20         <small class="error" *ngIf="showFieldError('cognome')">Inserisci il cognome.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:22:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+22         <small class="error" *ngIf="showFieldError('email')">Inserisci una email valida.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:34:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+34         <small class="error" *ngIf="showFieldError('password')">La password deve avere almeno 6 caratteri.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+
+
+× Failed to compile.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 227.58 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:47:57.206Z - Hash: ef5f9f45a3752328 - Time: 1101ms
+
+Error: src/app/pages/sign-up.page.ts:18:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+18         <small class="error" *ngIf="showFieldError('nome')">Inserisci il nome.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:20:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+20         <small class="error" *ngIf="showFieldError('cognome')">Inserisci il cognome.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:22:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+22         <small class="error" *ngIf="showFieldError('email')">Inserisci una email valida.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:34:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+34         <small class="error" *ngIf="showFieldError('password')">La password deve avere almeno 6 caratteri.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+Error: src/app/pages/sign-up.page.ts:38:37 - error TS2339: Property 'showFieldError' does not exist on type 'SignUpPage'.
+
+38         <small class="error" *ngIf="showFieldError('saldo')">Il saldo non puo essere negativo.</small>
+                                       ~~~~~~~~~~~~~~
+
+
+
+
+× Failed to compile.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 227.74 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:48:05.668Z - Hash: abb2fcd86590c701 - Time: 868ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   |  Raw Size
+main.js             | main    | 227.74 kB |
+runtime.js          | runtime |   6.50 kB |
+
+3 unchanged chunks
+
+Build at: 2026-06-18T13:48:14.401Z - Hash: 75d7d5a8e9227686 - Time: 1328ms
+
+√ Compiled successfully.
+√ Browser application bundle generation complete.
+
+Initial Chunk Files | Names   | Raw Size
+runtime.js          | runtime |  6.50 kB |
+
+4 unchanged chunks
+
+Build at: 2026-06-18T13:48:24.031Z - Hash: 30f8aac4f8298104 - Time: 536ms
+
+√ Compiled successfully.

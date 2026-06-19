@@ -1,0 +1,16 @@
+    <section class="section">
+      <p class="eyebrow">{{ lang.t('categoriesTitle') }}</p>
+      <h1>{{ lang.t('categoriesTitle') }}</h1>
+      <div class="category-grid">
+        @for (category of categories(); track category.id) {
+          <a class="category-card interactive" [routerLink]="['/category', category.slug]">
+            <div class="category-card-media">
+              <img src="assets/logo.png" [alt]="lang.categoryName(category)">
+            </div>
+            <h2>{{ lang.categoryName(category) }}</h2>
+            <p>{{ lang.categoryDescription(category) }}</p>
+            <strong>{{ productCount(category.slug) }} {{ lang.t('productsTitle') }}</strong>
+          </a>
+        }
+      </div>
+    </section>

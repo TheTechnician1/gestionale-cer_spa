@@ -1,0 +1,32 @@
+    <section class="auth-page">
+      <form class="panel auth-card form" [formGroup]="form" (ngSubmit)="submit()">
+        <p class="eyebrow">{{ i18n.t('signUp') }}</p>
+        <h1>{{ i18n.t('registerTitle') }}</h1>
+        <label>{{ i18n.t('firstName') }}<input formControlName="nome" autocomplete="given-name"></label>
+        <small class="error" *ngIf="showFieldError('nome')">{{ i18n.t('firstNameRequiredError') }}</small>
+        <label>{{ i18n.t('lastName') }}<input formControlName="cognome" autocomplete="family-name"></label>
+        <small class="error" *ngIf="showFieldError('cognome')">{{ i18n.t('lastNameRequiredError') }}</small>
+        <label>{{ i18n.t('email') }}<input type="email" formControlName="email" autocomplete="email"></label>
+        <small class="error" *ngIf="showFieldError('email')">{{ i18n.t('validEmailError') }}</small>
+        <label>{{ i18n.t('password') }}
+          <span class="password-field">
+            <input [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="new-password">
+            <button type="button" [attr.aria-label]="showPassword ? i18n.t('hidePassword') : i18n.t('showPassword')" (click)="showPassword = !showPassword">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path *ngIf="!showPassword" d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.8A2.2 2.2 0 1 0 12 9.8a2.2 2.2 0 0 0 0 4.4Z"/>
+                <path *ngIf="showPassword" d="m2.3 3.7 18 18 1.4-1.4-3.07-3.07A13.2 13.2 0 0 0 23 12c-1.73-3.89-6-7-11-7-1.67 0-3.25.35-4.66.98L3.7 2.3 2.3 3.7ZM12 7a5 5 0 0 1 5 5c0 .72-.15 1.4-.42 2.02l-2.2-2.2A2.5 2.5 0 0 0 12.18 9.6L10 7.42c.61-.27 1.29-.42 2-.42ZM1 12c.8 1.8 2.13 3.38 3.79 4.58L7.3 14.06A5 5 0 0 1 9.94 7.3L7.83 5.2C4.68 6.23 2.2 8.77 1 12Zm11 7c1.08 0 2.12-.15 3.1-.43l-2.2-2.2a5.02 5.02 0 0 1-5.27-5.27l-2.2-2.2A13.21 13.21 0 0 0 1 12c1.73 3.89 6 7 11 7Z"/>
+              </svg>
+            </button>
+          </span>
+        </label>
+        <small class="error" *ngIf="showFieldError('password')">{{ i18n.t('passwordMinError') }}</small>
+        <label>{{ i18n.t('initialBalance') }}
+          <span class="money-input"><span>€</span><input type="number" min="0" step="0.01" formControlName="saldo"></span>
+        </label>
+        <small class="error" *ngIf="showFieldError('saldo')">{{ i18n.t('balanceNegativeError') }}</small>
+        <small>{{ i18n.t('balanceHint') }}</small>
+        <p class="error" *ngIf="error">{{ error }}</p>
+        <button class="button primary" type="submit" [disabled]="form.invalid || loading">{{ loading ? i18n.t('registering') : i18n.t('signUp') }}</button>
+        <p>{{ i18n.t('alreadyAccount') }} <button class="inline-link" type="button" (click)="goToSignIn()">{{ i18n.t('signIn') }}</button></p>
+      </form>
+    </section>

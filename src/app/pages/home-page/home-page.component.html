@@ -1,0 +1,156 @@
+    <ng-container *ngIf="!user; else loggedHome">
+      <section class="hero simple-hero">
+        <img class="hero-logo" src="assets/logo.png" alt="" aria-hidden="true">
+        <div class="hero-copy">
+          <p class="eyebrow">Videa Shop</p>
+          <h1 class="product-title">{{ i18n.t('marketplaceTitle') }}</h1>
+          <p class="lead">{{ i18n.t('guestLead') }}</p>
+          <div class="actions">
+            <button class="button primary" type="button" (click)="goToSignUp()">{{ i18n.t('createAccount') }}</button>
+            <button class="button secondary" type="button" (click)="goToSignIn()">{{ i18n.t('signIn') }}</button>
+          </div>
+        </div>
+        <div class="hero-card product-card interactive">
+          <img src="assets/logo.png" alt="Videa">
+          <h2>{{ i18n.t('guestPromoTitle') }}</h2>
+          <p>{{ i18n.t('guestPromoCopy') }}</p>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-template #loggedHome>
+      <section class="search-hero" (click)="boostHeroLogo($event)">
+        <div class="hero-backdrop">
+          <img #heroLogo src="assets/logo.png" alt="" aria-hidden="true">
+        </div>
+        <div class="search-hero-content">
+          <h1>{{ i18n.t('loggedHeroTitle') }}</h1>
+          <div class="search-tabs animated-tabs"
+            #categoryTabs
+            role="tablist"
+            aria-label="Categorie prodotti"
+            [class.tab-glow-wave]="heroCategoryWave"
+            [class.tab-press]="heroCategoryPress"
+            [style.--tab-left.px]="tabLeftPx"
+            [style.--tab-width.px]="tabWidthPx"
+            [style.--wave-x.px]="heroWaveX"
+            [style.--wave-y.px]="heroWaveY"
+            (mouseleave)="setHoveredCategory(null)">
+            <button #categoryTab type="button" role="tab" [attr.aria-selected]="selectedCategory === ''" [class.active]="selectedCategory === ''" (mouseenter)="setHoveredCategory('')" (focus)="setHoveredCategory('')" (click)="selectHeroCategory($event, '')">{{ i18n.t('all') }}</button>
+            <button #categoryTab type="button" role="tab" *ngFor="let category of categories" [attr.aria-selected]="selectedCategory === category" [class.active]="selectedCategory === category" (mouseenter)="setHoveredCategory(category)" (focus)="setHoveredCategory(category)" (click)="selectHeroCategory($event, category)">
+              {{ category }}
+            </button>
+          </div>
+          <form class="hero-search" role="search" (ngSubmit)="searchProducts()">
+            <input type="search" [placeholder]="i18n.t('searchPlaceholder')" [attr.aria-label]="i18n.t('searchProductsAria')" name="heroSearch" [(ngModel)]="searchQuery">
+            <button type="submit">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 3A6.5 6.5 0 0 1 14.69 13.41L20.29 19 19 20.29 13.41 14.69A6.5 6.5 0 1 1 9.5 3ZM9.5 5A4.5 4.5 0 1 0 9.5 14 4.5 4.5 0 0 0 9.5 5Z"/></svg>
+              {{ i18n.t('search') }}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <section class="section featured-product-section" *ngIf="featuredProduct">
+        <p class="eyebrow">{{ i18n.t('featured') }}</p>
+        <div class="featured-carousel" [class.carousel-next]="carouselDirection === 'next'" [class.carousel-prev]="carouselDirection === 'prev'" [attr.aria-label]="i18n.t('featuredProductAria')">
+          <button class="carousel-arrow carousel-arrow-left" type="button" (click)="previousFeatured()" [attr.aria-label]="i18n.t('previousProduct')">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <div class="featured-stage">
+            <article class="featured-product featured-side featured-prev" *ngIf="previousFeaturedProduct as previous">
+              <div class="featured-art">
+                <img class="featured-orbit-logo" src="assets/logo.png" alt="" aria-hidden="true">
+                <span class="featured-image-link">
+                  <img [src]="imageFor(previous)" [alt]="previous.nomeProdotto" (error)="replaceImage($event)">
+                </span>
+              </div>
+              <div class="featured-copy">
+                <span class="pill">{{ previous.categoria }}</span>
+                <h2>{{ previous.nomeProdotto }}</h2>
+                <p>{{ previous.descrizioneBreve }}</p>
+              </div>
+            </article>
+            <article class="featured-product featured-main interactive">
+              <div class="featured-art">
+                <img class="featured-orbit-logo" src="assets/logo.png" alt="" aria-hidden="true">
+                <a class="featured-image-link" [routerLink]="['/product', featuredProduct.id]">
+                  <img [src]="imageFor(featuredProduct)" [alt]="featuredProduct.nomeProdotto" (error)="replaceImage($event)">
+                </a>
+              </div>
+              <div class="featured-copy">
+                <button class="pill category-filter-link" type="button" (click)="openCategory(featuredProduct.categoria)">{{ featuredProduct.categoria }}</button>
+                <span class="pill purchase-pill">{{ featuredProduct.quantitaDisponibile }} {{ i18n.t('available') }}</span>
+                <h2><a class="featured-title-link" [routerLink]="['/product', featuredProduct.id]">{{ featuredProduct.nomeProdotto }}</a></h2>
+                <p>{{ featuredProduct.descrizioneBreve }}</p>
+                <span class="price-with-badge">
+                  <strong class="price">{{ featuredProduct.prezzo | currency:'EUR':'symbol':'1.2-2':'it' }}</strong>
+                </span>
+                <div class="actions">
+                  <a class="button secondary" [routerLink]="['/product', featuredProduct.id]">{{ i18n.t('details') }}</a>
+                  <button class="button primary add-cart-action" type="button" (click)="addToCart(featuredProduct)">{{ i18n.t('addToCart') }}</button>
+                </div>
+              </div>
+            </article>
+            <article class="featured-product featured-side featured-next" *ngIf="nextFeaturedProduct as next">
+              <div class="featured-art">
+                <img class="featured-orbit-logo" src="assets/logo.png" alt="" aria-hidden="true">
+                <span class="featured-image-link">
+                  <img [src]="imageFor(next)" [alt]="next.nomeProdotto" (error)="replaceImage($event)">
+                </span>
+              </div>
+              <div class="featured-copy">
+                <span class="pill">{{ next.categoria }}</span>
+                <h2>{{ next.nomeProdotto }}</h2>
+                <p>{{ next.descrizioneBreve }}</p>
+              </div>
+            </article>
+          </div>
+          <button class="carousel-arrow carousel-arrow-right" type="button" (click)="nextFeatured()" [attr.aria-label]="i18n.t('nextProduct')">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <section class="section marketplace-section">
+        <div class="best-selling-header">
+          <h2 class="best-selling-title">{{ i18n.t('recommended') }}</h2>
+          <a class="button secondary" routerLink="/products">{{ i18n.t('viewCatalog') }}</a>
+        </div>
+        <p class="error" *ngIf="error">{{ error }}</p>
+        <div class="best-selling-layout">
+          <div class="category-wheel-panel">
+            <div class="category-wheel" role="listbox" aria-label="Categorie consigliate">
+              <button type="button" role="option" [attr.aria-selected]="selectedCategory === ''" [class.active]="selectedCategory === ''" (click)="selectCategory('')">{{ i18n.t('all') }}</button>
+              <button type="button" role="option" *ngFor="let category of categories" [attr.aria-selected]="selectedCategory === category" [class.active]="selectedCategory === category" (click)="selectCategory(category)">
+                {{ category }}
+              </button>
+            </div>
+          </div>
+          <div class="best-selling-products">
+            <div class="marketplace-preview">
+              <div class="gumroad-grid">
+                <article class="gumroad-card interactive" *ngFor="let item of visibleProducts(); trackBy: trackById">
+                  <a class="gumroad-art" [routerLink]="['/product', item.id]">
+                    <img class="product-orbit-logo" src="assets/logo.png" alt="" aria-hidden="true">
+                    <img [src]="imageFor(item)" [alt]="item.nomeProdotto" (error)="replaceImage($event)">
+                  </a>
+                  <div class="gumroad-name">
+                    <a [routerLink]="['/product', item.id]">{{ item.nomeProdotto }}</a>
+                    <p>{{ item.descrizioneBreve }}</p>
+                    <div class="tag-row compact-tags">
+                      <span>{{ item.categoria }}</span>
+                      <span>{{ item.quantitaDisponibile }} {{ i18n.t('available') }}</span>
+                    </div>
+                  </div>
+                  <div class="gumroad-buy">
+                    <a [routerLink]="['/product', item.id]">{{ item.prezzo | currency:'EUR':'symbol':'1.2-2':'it' }}</a>
+                    <a class="button secondary" [routerLink]="['/product', item.id]">{{ i18n.t('details') }}</a>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-template>

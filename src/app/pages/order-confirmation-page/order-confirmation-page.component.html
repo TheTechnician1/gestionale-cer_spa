@@ -1,0 +1,53 @@
+    <section class="section">
+      <div class="empty-state success panel" *ngIf="order; else loadingState">
+        <p class="eyebrow">{{ i18n.t('paymentCompleted') }}</p>
+        <h1>{{ i18n.t('orderConfirmed') }}</h1>
+        <p>{{ i18n.t('orderCode') }}: <strong>{{ order.codiceOrdine }}</strong></p>
+        <p>{{ i18n.t('orderDate') }}: <strong>{{ order.dataOrdine | date:'dd/MM/yyyy HH:mm' }}</strong></p>
+        <p>{{ i18n.t('orderTotal') }}: <strong>{{ order.totaleOrdine | currency:'EUR':'symbol':'1.2-2':'it' }}</strong></p>
+        <div class="actions">
+          <button class="button secondary" type="button" (click)="sendEmail()">{{ i18n.t('sendReceiptEmail') }}</button>
+          <button class="button primary rainbow-action" type="button" (click)="downloadPdf()">{{ i18n.t('downloadReceiptPdf') }}</button>
+          <a class="button secondary" routerLink="/products">{{ i18n.t('backToCatalog') }}</a>
+        </div>
+        <p class="success-text" *ngIf="message">{{ message }}</p>
+        <p class="error" *ngIf="error">{{ error }}</p>
+      </div>
+
+      <div class="related-products-section" *ngIf="order && relatedProducts.length">
+        <div class="best-selling-header">
+          <div>
+            <p class="eyebrow">{{ i18n.t('chosenForYou') }}</p>
+            <h2 class="best-selling-title">{{ i18n.t('youMayLike') }}</h2>
+          </div>
+          <a class="button secondary" routerLink="/products">{{ i18n.t('viewCatalog') }}</a>
+        </div>
+        <div class="gumroad-grid">
+          <article class="gumroad-card interactive" *ngFor="let product of relatedProducts; trackBy: trackById">
+            <a class="gumroad-art" [routerLink]="['/product', product.id]">
+              <img class="product-orbit-logo" src="assets/logo.png" alt="" aria-hidden="true">
+              <img [src]="imageFor(product)" [alt]="product.nomeProdotto" (error)="replaceImage($event)">
+            </a>
+            <div class="gumroad-name">
+              <a [routerLink]="['/product', product.id]">{{ product.nomeProdotto }}</a>
+              <p>{{ product.descrizioneBreve }}</p>
+              <div class="tag-row compact-tags">
+                <span>{{ product.categoria }}</span>
+                <span>{{ product.quantitaDisponibile }} {{ i18n.t('available') }}</span>
+              </div>
+            </div>
+            <div class="gumroad-buy">
+              <a [routerLink]="['/product', product.id]">{{ product.prezzo | currency:'EUR':'symbol':'1.2-2':'it' }}</a>
+              <a class="button secondary" [routerLink]="['/product', product.id]">{{ i18n.t('details') }}</a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <ng-template #loadingState>
+        <div class="empty-state panel">
+          <h1>{{ error || i18n.t('loadingOrder') }}</h1>
+          <a class="button primary" routerLink="/products">{{ i18n.t('goToCatalog') }}</a>
+        </div>
+      </ng-template>
+    </section>

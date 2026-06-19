@@ -1,0 +1,122 @@
+    <section class="section products-page category-page">
+      @if (category; as currentCategory) {
+        <header class="category-browser-heading">
+          <p class="eyebrow">{{ lang.t('category') }}</p>
+          <h1>{{ lang.categoryName(currentCategory) }}</h1>
+          <p class="lead small">{{ lang.categoryDescription(currentCategory) }}</p>
+        </header>
+
+        <div class="marketplace-layout product-browser category-browser">
+          <aside class="product-filters" aria-label="Category product filters">
+            <div class="filter-count">{{ filteredProducts().length }} {{ lang.t('showingOf') }} {{ products.length }} {{ lang.t('productsTitle') }}</div>
+
+            <section class="filter-group">
+              <h2>{{ lang.t('search') }}</h2>
+              <input type="search" [(ngModel)]="searchText" aria-label="Search products in this category">
+            </section>
+
+            <section class="filter-group">
+              <h2>{{ lang.t('sortBy') }}</h2>
+              <select [(ngModel)]="sortBy" aria-label="Sort products">
+                <option value="custom">{{ lang.t('custom') }}</option>
+                <option value="newest">{{ lang.t('newest') }}</option>
+                <option value="highest-rated">{{ lang.t('highestRated') }}</option>
+                <option value="most-reviewed">{{ lang.t('mostReviewed') }}</option>
+                <option value="price-low-high">{{ lang.t('priceLowHigh') }}</option>
+                <option value="price-high-low">{{ lang.t('priceHighLow') }}</option>
+              </select>
+            </section>
+
+            <section class="filter-group">
+              <h2>{{ lang.t('purchaseType') }}</h2>
+              <select [(ngModel)]="purchaseType" aria-label="Purchase type">
+                <option value="all">All</option>
+                <option value="subscription">{{ lang.t('subscription') }}</option>
+                <option value="lifetime">{{ lang.t('lifetime') }}</option>
+              </select>
+            </section>
+
+            <button class="advanced-toggle" type="button" (click)="showAdvancedFilters = !showAdvancedFilters">
+              <span>{{ showAdvancedFilters ? lang.t('hideAdvancedFilters') : lang.t('showAdvancedFilters') }}</span>
+              @if (showAdvancedFilters) {
+                <span aria-hidden="true">&#8963;</span>
+              } @else {
+                <span aria-hidden="true">&#8964;</span>
+              }
+            </button>
+
+            @if (showAdvancedFilters) {
+              <section class="filter-group advanced-panel">
+                <h2>{{ lang.t('tags') }}</h2>
+                <input type="search" [placeholder]="lang.t('searchTag')" [(ngModel)]="tagSearch" aria-label="Search tags">
+                <div class="tag-filter-list">
+                  @for (tag of visibleTags(); track tag.slug) {
+                    <button type="button" [class.selected]="selectedTagSlugs.includes(tag.slug)" (click)="toggleTag(tag.slug)">
+                      {{ tag.name }} <span>{{ tag.count }}</span>
+                    </button>
+                  }
+                </div>
+              </section>
+
+              <section class="filter-group advanced-panel">
+                <h2>{{ lang.t('compatibility') }}</h2>
+                <label class="check-row">
+                  <input type="checkbox" [(ngModel)]="windowsOnly">
+                  <span>Windows</span>
+                </label>
+              </section>
+
+              <section class="filter-group advanced-panel">
+                <h2>{{ lang.t('price') }}</h2>
+                <label>{{ lang.t('minimumPrice') }}<input type="number" min="0" step="0.01" [(ngModel)]="minimumPrice"></label>
+                <label>{{ lang.t('maximumPrice') }}<input type="number" min="0" step="0.01" [(ngModel)]="maximumPrice"></label>
+              </section>
+            }
+          </aside>
+
+          <div class="gumroad-grid">
+            @for (product of filteredProducts(); track product.id) {
+              <article class="gumroad-card interactive">
+                <a class="gumroad-art" [routerLink]="['/product', product.slug]">
+                  <img [src]="product.image" [alt]="lang.productName(product)">
+                  @if (sales.activeSaleFor(product); as sale) {
+                    <span class="sale-badge">{{ lang.t('sale') }} -{{ sale.value }}{{ sale.discountType === 'percentage' ? '%' : ' EUR' }}</span>
+                    @if (sale.endsAt) { <span class="sale-timer">{{ lang.t('endsIn') }} {{ sales.endsIn(sale) }}</span> }
+                  }
+                </a>
+                <div class="gumroad-name">
+                  <a [routerLink]="['/product', product.slug]">{{ lang.productName(product) }}</a>
+                  <p>{{ lang.productShort(product) }}</p>
+                  <div class="tag-row compact-tags">
+                    @for (tag of product.tags; track tag.id) {
+                      <span>{{ lang.tagName(tag) }}</span>
+                    }
+                  </div>
+                </div>
+                <div class="gumroad-buy">
+                  <a [routerLink]="['/product', product.slug]">
+                    @if (sales.activeSaleFor(product)) {
+                      <span><s>{{ currency.format(product.priceEUR) }}</s> {{ currency.format(sales.salePrice(product)) }}</span>
+                    } @else {
+                      <span>{{ currency.format(product.priceEUR) }}</span>
+                    }
+                    <span class="purchase-inline">{{ lang.purchaseType(product.purchaseType) }}</span>
+                  </a>
+                </div>
+              </article>
+            } @empty {
+              <div class="empty-state panel">
+                <h2>{{ lang.t('noProducts') }}</h2>
+                <p>{{ lang.t('clearFiltersHint') }}</p>
+                <a class="button secondary" routerLink="/products">{{ lang.t('allProducts') }}</a>
+              </div>
+            }
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state panel">
+          <h1>{{ lang.t('noProducts') }}</h1>
+          <a class="button primary" routerLink="/categories">{{ lang.t('categoriesTitle') }}</a>
+        </div>
+      }
+    </section>

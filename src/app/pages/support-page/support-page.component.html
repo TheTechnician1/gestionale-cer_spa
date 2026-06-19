@@ -1,0 +1,17 @@
+    <section class="section support-layout">
+      <div>
+        <p class="eyebrow">{{ i18n.t('supportEyebrow') }}</p>
+        <h1>{{ i18n.t('supportTitle') }}</h1>
+        <details open><summary>{{ i18n.t('purchaseQuestion') }}</summary><p>{{ i18n.t('purchaseAnswer') }}</p></details>
+        <details><summary>{{ i18n.t('licenseQuestion') }}</summary><p>{{ i18n.t('licenseAnswer') }}</p></details>
+        <details><summary>{{ i18n.t('downloadQuestion') }}</summary><p>{{ i18n.t('downloadAnswer') }}</p></details>
+        <details><summary>{{ i18n.t('accountQuestion') }}</summary><p>{{ i18n.t('accountAnswer') }}</p></details>
+      </div>
+      <form class="panel form" (ngSubmit)="sent = true">
+        <h2>{{ i18n.t('contactSupport') }}</h2>
+        <label>{{ i18n.t('email') }}<input required type="email" name="email" [(ngModel)]="email"></label>
+        <label>{{ i18n.t('message') }}<textarea required name="message" [(ngModel)]="message"></textarea></label>
+        <button class="button primary" type="submit">{{ i18n.t('sendRequest') }}</button>
+        @if (sent) { <p class="success-text">{{ i18n.t('requestReceived') }}</p> }
+      </form>
+    </section>
