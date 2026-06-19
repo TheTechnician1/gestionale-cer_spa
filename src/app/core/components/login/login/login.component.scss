@@ -18,7 +18,7 @@
   --mdc-protected-button-container-color: var(--app-secondary);
 }
 
-.remember-me,::ng-deep .mat-mdc-checkbox .mat-mdc-focus-indicator::before  {
+.remember-me {
   color: var(--app-secondary) !important;
   --mdc-checkbox-selected-checkmark-color: #fff !important;
   --mdc-checkbox-selected-focus-icon-color: var(--app-secondary) !important;
@@ -40,11 +40,38 @@
   --mdc-ripple-surface--primary: var(--app-secondary) !important;
 }
 
-::ng-deep .mat-mdc-checkbox .mat-mdc-focus-indicator::before {
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mat-mdc-focus-indicator::before {
   background-color: var(--app-secondary) !important;
 }
 
 :host ::ng-deep .remember-me.mat-mdc-checkbox.mat-accent .mdc-checkbox--selected ~ .mdc-checkbox__ripple {
   background-color: var(--app-secondary) !important;
   background: var(--app-secondary) !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+  background-color: var(--app-secondary) !important;
+  border-color: var(--app-secondary) !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate) ~ .mdc-checkbox__background {
+  border-color: var(--app-secondary) !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__checkmark {
+  color: var(--app-secondary) !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__checkmark-path {
+  stroke: white !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__mixedmark {
+  border-color: var(--app-secondary) !important;
+}
+
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__ripple::before,
+:host ::ng-deep .remember-me.mat-mdc-checkbox .mdc-checkbox__ripple::after {
+  background-color: var(--app-secondary) !important;
 }
