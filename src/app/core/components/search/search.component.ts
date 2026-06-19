@@ -55,6 +55,17 @@ export class SearchComponent implements OnDestroy {
     this.visibleProducts = this.products.filter(p => this.getAvailable(p) > 0);
   }
 
+  normalizeFilters(): void {
+    this.minPrice = this.normalizeMinValue(this.minPrice, 0);
+    this.maxPrice = this.normalizeMinValue(this.maxPrice);
+    this.minQuantity = this.normalizeMinValue(this.minQuantity);
+  }
+
+  private normalizeMinValue(value: number | null, min = 1): number | null {
+    if (value === null || value === undefined) return null;
+    return value < min ? min : value;
+  }
+
   getAvailable(product: Prodotto): number {
     const inCart = this.cartService.getCartState(product.id!);
     return product.quantita! - inCart;
@@ -125,6 +136,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   applyFilters() {
+    this.normalizeFilters();
     this.loadResults();
   }
 
