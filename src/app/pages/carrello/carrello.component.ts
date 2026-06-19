@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 
 import { CarrelloResponse } from '../../models/carrello-response';
 import { UserResponse } from '../../models/user-response';
@@ -160,6 +160,7 @@ export class CarrelloComponent implements OnInit {
     });
   }
 
+
   aggiornaTotali(): void {
     if (this.elementiCarrello.length === 0) {
       this.totaleCarrello = 0;
@@ -209,10 +210,10 @@ export class CarrelloComponent implements OnInit {
       error: (errore) => {
         this.messaggioErrore =
           errore.error?.messaggio || 'Errore durante il checkout';
-        this.toastService.mostraErrore('Pagamento non riuscito', errore.status);
-        this.toastService.mostraErrore('Transazione fallita', errore.status);
+        this.toastService.mostraErrore(this.messaggioErrore, errore.status);
         this.checkoutInCorso = false;
       },
     });
   }
 }
+

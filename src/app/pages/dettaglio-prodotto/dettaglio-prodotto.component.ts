@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProdottoResponse } from '../../models/prodotto-response';
@@ -47,6 +47,11 @@ export class DettaglioProdottoComponent implements OnInit {
       return;
     }
 
+    if (this.prodotto.quantitaDisponibile <= 0) {
+      this.toastService.mostraErrore('Prodotto non disponibile');
+      return;
+    }
+
     const utente = this.utenteStorageService.recuperaUtente();
 
     if (!utente) {
@@ -61,6 +66,10 @@ export class DettaglioProdottoComponent implements OnInit {
       .aggiungiProdottoAlCarrello(utente.id, this.prodotto.idProdotto, 1)
       .subscribe({
         next: () => {
+          if (this.prodotto) {
+            this.prodotto.quantitaDisponibile = Math.max(this.prodotto.quantitaDisponibile - 1, 0);
+          }
+
           this.messaggioSuccesso = 'Prodotto aggiunto al carrello';
           this.toastService.mostraSuccesso('Prodotto aggiunto al carrello');
         },
@@ -149,3 +158,5 @@ export class DettaglioProdottoComponent implements OnInit {
     });
   }
 }
+
+

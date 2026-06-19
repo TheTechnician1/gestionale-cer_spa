@@ -1,4 +1,4 @@
-.prodotti-page {
+﻿.prodotti-page {
   min-height: calc(100vh - 74px);
   padding: 42px 48px 64px;
   background: #f6f6f6;
@@ -164,6 +164,16 @@
   background: #ff6338;
 }
 
+.product-footer button:disabled {
+  cursor: not-allowed;
+  background: #b9b9b9;
+  color: #ffffff;
+}
+
+.product-footer button:disabled:hover {
+  background: #b9b9b9;
+}
+
 @media (max-width: 1050px) {
   .prodotti-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -238,3 +248,4 @@
     gap: 12px;
   }
 }
+

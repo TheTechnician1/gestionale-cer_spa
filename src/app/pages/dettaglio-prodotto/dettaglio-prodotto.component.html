@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+﻿<app-navbar></app-navbar>
 
 <main class="detail-page">
   <p class="loading-message" *ngIf="caricamento">Caricamento prodotto...</p>
@@ -25,7 +25,7 @@
         <button
           type="button"
           class="cart-button"
-          [disabled]="prodotto.quantitaDisponibile === 0"
+          [disabled]="prodotto.quantitaDisponibile <= 0"
           (click)="aggiungiAlCarrello()"
         >
           Aggiungi al carrello
@@ -82,3 +82,4 @@
 </main>
 
 <app-footer></app-footer>
+

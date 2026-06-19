@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 
@@ -123,6 +123,13 @@ export class ProdottiComponent implements OnInit {
     this.messaggioErrore = '';
     this.messaggioSuccesso = '';
 
+    const prodotto = this.prodotti.find((prodottoCorrente) => prodottoCorrente.idProdotto === idProdotto);
+
+    if (prodotto && prodotto.quantitaDisponibile <= 0) {
+      this.toastService.mostraErrore('Prodotto non disponibile');
+      return;
+    }
+
     const utente = this.recuperaUtenteLoggato();
 
     if (!utente) {
@@ -136,6 +143,10 @@ export class ProdottiComponent implements OnInit {
       .aggiungiProdottoAlCarrello(utente.id, idProdotto, 1)
       .subscribe({
         next: () => {
+          if (prodotto) {
+            prodotto.quantitaDisponibile = Math.max(prodotto.quantitaDisponibile - 1, 0);
+          }
+
           this.messaggioSuccesso = 'Prodotto aggiunto al carrello';
           this.toastService.mostraSuccesso('Prodotto aggiunto al carrello');
         },
@@ -237,3 +248,4 @@ export class ProdottiComponent implements OnInit {
     return this.utenteStorageService.recuperaUtente();
   }
 }
+

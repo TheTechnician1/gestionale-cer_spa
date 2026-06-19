@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+﻿<app-navbar></app-navbar>
 
 <main class="funds-page">
   <section class="funds-card" *ngIf="utente as utenteLoggato">
@@ -22,7 +22,7 @@
         placeholder="Es. 50"
       />
 
-      <button type="submit" [disabled]="caricamento">
+      <button type="submit" [disabled]="caricamento || fondiForm.invalid">
         {{ caricamento ? "Aggiunta in corso..." : "Aggiungi fondi" }}
       </button>
     </form>
@@ -30,3 +30,4 @@
 </main>
 
 <app-footer></app-footer>
+

@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+﻿<app-navbar></app-navbar>
 
 <main class="prodotti-page">
   <section class="prodotti-header">
@@ -8,7 +8,7 @@
 
   <p class="loading-message" *ngIf="caricamento">Caricamento prodotti...</p>
 
-  <section class="prodotti-grid" *ngIf="!caricamento && !messaggioErrore">
+  <section class="prodotti-grid" *ngIf="!caricamento">
     <article class="product-card" *ngFor="let prodotto of prodotti">
       <div class="product-image">
         <a [routerLink]="['/prodotti/dettaglio', prodotto.idProdotto]">
@@ -60,7 +60,7 @@
             </a>
             <button
               type="button"
-              [disabled]="prodotto.quantitaDisponibile === 0"
+              [disabled]="prodotto.quantitaDisponibile <= 0"
               (click)="aggiungiAlCarrello(prodotto.idProdotto)"
             >
               Aggiungi
@@ -71,7 +71,7 @@
     </article>
   </section>
 
-  <p class="empty-message" *ngIf="!caricamento && !messaggioErrore && prodotti.length === 0">
+  <p class="empty-message" *ngIf="!caricamento && prodotti.length === 0">
     Nessun prodotto trovato.
   </p>
 </main>

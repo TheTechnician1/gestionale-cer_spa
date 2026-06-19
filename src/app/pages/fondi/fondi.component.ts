@@ -39,6 +39,7 @@ export class FondiComponent implements OnInit {
 
     if (this.fondiForm.invalid) {
       this.fondiForm.markAllAsTouched();
+      this.toastService.mostraErrore('Inserisci un importo maggiore di zero');
       return;
     }
 

@@ -5,6 +5,7 @@ export interface CarrelloResponse {
   idProdotto: number;
   nomeProdotto: string;
   immagine: string;
+  quantitaDisponibile: number;
   quantita: number;
   prezzoUnitario: number;
   totaleRiga: number;
