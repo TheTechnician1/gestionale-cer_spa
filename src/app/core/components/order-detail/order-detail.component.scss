@@ -71,4 +71,9 @@ mat-dialog-content {
 
 mat-dialog-actions {
   margin-top: 12px;
+  gap: 8px;
+}
+
+mat-dialog-actions button mat-icon {
+  margin-right: 4px;
 }

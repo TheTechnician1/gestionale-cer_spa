@@ -53,6 +53,19 @@ export class ProductComponent {
     }
     const user = this.authService.currentUser;
 
+    if (this.authService.isGuest(user)) {
+      this.cartService.addGuestProduct(product, this.quantity);
+      this.snackBar.open(`${product.nomeProdotto} aggiunto al carrello ${this.quantity}`, 'OK',
+        {
+          duration: 2500,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        }
+      );
+      return;
+    }
+
     this.cartService.addItem(user!.id!, { productId: product.id, quantity: this.quantity }).subscribe({
       next: () => {
         this.snackBar.open(`${product.nomeProdotto} aggiunto al carrello ${this.quantity}`, 'OK',

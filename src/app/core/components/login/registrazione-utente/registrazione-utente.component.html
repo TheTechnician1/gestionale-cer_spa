@@ -21,15 +21,14 @@
           <mat-label>Email</mat-label>
           <input type="text" matInput formControlName="email" aria-label="email" required />
           <mat-icon matSuffix>email</mat-icon>
-          <mat-error appFormControlError [control]="form.get('email')" label="Email"></mat-error>
+          <mat-error appFormControlError [control]="form.get('email')" label="Email" [customMessages]="emailErrorMessages"></mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Conferma Email</mat-label>
           <input type="email" matInput formControlName="confirmEmail" aria-label="confirmEmail" required />
           <mat-icon matSuffix>mark_email_read</mat-icon>
-          <mat-error appFormControlError [control]="form.get('confirmEmail')" label="Conferma Email"></mat-error>
+          <mat-error appFormControlError [control]="form.get('confirmEmail')" label="Conferma Email" [customMessages]="confermaEmailErrorMessages"></mat-error>
         </mat-form-field>
-        <mat-error *ngIf="form.get('confirmEmail')?.hasError('emailMismatch')">Le email non coincidono.</mat-error>
       </div>
       <div rows="2">
         <mat-form-field appearance="fill" class="password">
@@ -49,11 +48,10 @@
           </button>
           <mat-hint>Minimo 6 caratteri</mat-hint>
           <mat-error appFormControlError [control]="form.get('confermaPassword')" label="Conferma password" [customMessages]="confermaPasswordErrorMessages"></mat-error>
-          <mat-error *ngIf="form.get('confermaPassword')?.hasError('passwordMismatch')">Le password non coincidono.</mat-error>
         </mat-form-field>
       </div>
       <div rows="2" class="button">
-        <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Registrati</button>
         <button mat-raised-button color="primary" routerLink="/">Annulla</button>
       </div>
     </div>

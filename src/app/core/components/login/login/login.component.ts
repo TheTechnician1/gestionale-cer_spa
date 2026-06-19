@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { UtenteService } from "src/app/core/services/utente.service";
 import { ToastService } from "src/app/core/services/toast.service";
 import { CartService } from "src/app/core/services/cart.service";
-import { of } from "rxjs";
+import { map, of, switchMap } from "rxjs";
 
 @Component({
   selector: "app-login",
@@ -15,6 +15,10 @@ export class LoginComponent {
   loginForm!: FormGroup;
   loginError = false;
   hide = false;
+  readonly emailErrorMessages: Record<string, string>[] = [
+    { required: "Email obbligatoria" },
+    { email: "Inserisci un indirizzo email valido." }
+  ];
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Password non valida per formato o lunghezza." }];
   constructor(private fb: FormBuilder, private authService: UtenteService, private cartService: CartService, private route: Router, private toastService: ToastService) {}
 
@@ -32,27 +36,23 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.loginForm.value).subscribe({
+    this.authService.login(this.loginForm.value).pipe(
+      switchMap(user => { const guestItems = this.cartService.getGuestItems();
+        return guestItems.length > 0
+          ? this.cartService.mergeGuestCartIntoUser(user.id!).pipe(map(() => user))
+          : of(user);
+      })
+    ).subscribe({
       next: (user) => {
-        const guestItems = this.cartService.getGuestCart();
-        const merge$ = guestItems.length > 0 ? this.cartService.mergeGuestCartIntoUser(user.id!) : of(null);
-        merge$.subscribe({
-          next: () => {
-            this.cartService.clearGuestCart();
-            this.authService['userSubject'].next(user);
-            console.log("Login riuscito", user);
-            this.cartService.notifyCartChange();
-            this.loginError = false;
-            this.route.navigate(['/']);
-          },
-          error: (err) => {
-            console.error("Errore login:", err);
-            this.loginError = true;
-            this.toastService.warning("Credenziali non valide", "Login fallito");
-            this.authService['userSubject'].next(user);
-            this.route.navigate(['/']);
-          }
-        });
+        this.authService['userSubject'].next(user);
+        this.cartService.clearGuestCart();
+        this.cartService.notifyCartChange();
+        this.loginError = false;
+        this.route.navigate(['/']);
+      },
+      error: (err) => {
+        this.loginError = true;
+        this.toastService.warning("Credenziali non valide", "Login fallito");
       }
     });
   }

@@ -27,6 +27,15 @@ export class RegistrazioneUtenteComponent {
   hide = true;
   readonly nomeErrorMessages: Record<string, string>[] = [{ pattern: "Il nome puo contenere solo lettere." }];
   readonly cognomeErrorMessages: Record<string, string>[] = [{ pattern: "Il cognome puo contenere solo lettere." }];
+  readonly emailErrorMessages: Record<string, string>[] = [
+    { required: "Email obbligatoria" },
+    { email: "Inserisci un indirizzo email valido." }
+  ];
+  readonly confermaEmailErrorMessages: Record<string, string>[] = [
+    { required: "Conferma email obbligatoria" },
+    { email: "Inserisci un indirizzo email valido." },
+    { emailMismatch: "Le email non coincidono." }
+  ];
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }];
   readonly confermaPasswordErrorMessages: Record<string, string>[] = [{ pattern: "Usa almeno una maiuscola, una minuscola, un numero e un carattere speciale." }, { passwordMismatch: "Le password non coincidono." }];
 
@@ -86,17 +95,25 @@ export class RegistrazioneUtenteComponent {
 
   emailMatchValidator(form: AbstractControl) {
     const email = form.get("email")?.value;
-    const confirmEmailControl = form.get("confirmEmail")?.value;
+    const confirmEmailControl = form.get("confirmEmail");
     const confirmEmail = confirmEmailControl?.value;
 
     if (!confirmEmailControl) return null;
 
-    if (email && confirmEmail && email !== confirmEmail) {
-      confirmEmailControl.setErrors({ emailMismatch: true });
-    } else {
-      if (confirmEmailControl.hasError("emailMismatch")) {
-        confirmEmailControl.setErrors(null);
+    const existingErrors: ValidationErrors = confirmEmailControl.errors ?? {};
+    const hasMismatchError = "emailMismatch" in existingErrors;
+    const hasMismatch = Boolean(email && confirmEmail && email !== confirmEmail);
+
+    if (hasMismatch) {
+      if (!hasMismatchError) {
+        confirmEmailControl.setErrors({ ...existingErrors, emailMismatch: true });
       }
+      return null;
+    }
+
+    if (hasMismatchError) {
+      const { emailMismatch, ...remainingErrors } = existingErrors;
+      confirmEmailControl.setErrors(Object.keys(remainingErrors).length > 0 ? remainingErrors : null);
     }
 
     return null;

@@ -16,6 +16,7 @@ export interface OrderDTO {
 }
 
 export interface OrderItemResponseDTO {
+  id?: number | string;
   productId: number;
   productName: string;
   quantity: number;

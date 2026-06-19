@@ -8,7 +8,7 @@ import { SKIP_HTTP_SNACKBAR } from "../interceptor/http-status/http-snackbar.con
 export interface ApiRequestOptions {
   params?: Record<string, string | number | boolean>;
   skipToast?: boolean;
-  responseType?: "json" | "text";
+  responseType?: "json" | "text" | "blob";
 }
 
 @Injectable({ providedIn: "root" })
@@ -21,7 +21,7 @@ export class ApiService {
   ) {}
 
   get<T>(path: string, params?: Record<string, string | number | boolean>, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("GET", path, undefined, "json", { ...options, params });
+    return this.request<T>("GET", path, undefined, options.responseType ?? "json", { ...options, params });
   }
 
   getText(path: string, params?: Record<string, string | number | boolean>) {
@@ -29,7 +29,7 @@ export class ApiService {
   }
 
   post<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
-    return this.request<T>("POST", path, body, options.responseType === 'text' ? 'text' : 'json', options);
+    return this.request<T>("POST", path, body, options.responseType ?? "json", options);
   }
 
   put<T>(path: string, body: any, options: ApiRequestOptions = {}): Observable<T> {
@@ -40,7 +40,7 @@ export class ApiService {
     return this.request<T>("DELETE", path, undefined, "json", { ...options, params });
   }
 
-  private request<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, body?: any, responseType: "json" | "text" = "json", options: ApiRequestOptions = {}): Observable<T> {
+  private request<T>(method: "GET" | "POST" | "PUT" | "DELETE", path: string, body?: any, responseType: "json" | "text" | "blob" = "json", options: ApiRequestOptions = {}): Observable<T> {
     const url = this.buildUrl(path);
     const context = new HttpContext().set(SKIP_HTTP_SNACKBAR, options.skipToast ?? false);
     const params = this.buildParams(options.params);
@@ -66,6 +66,27 @@ export class ApiService {
       }
 
 
+    }
+
+    if (responseType === "blob") {
+      const blobOptions = {
+        context,
+        params,
+        responseType: "blob" as const,
+      };
+
+      switch (method) {
+        case "GET":
+          return this.http.get(url, blobOptions) as Observable<T>;
+        case "POST":
+          return this.http.post(url, body, blobOptions) as Observable<T>;
+        case "PUT":
+          return this.http.put(url, body, blobOptions) as Observable<T>;
+        case "DELETE":
+          return this.http.delete(url, blobOptions) as Observable<T>;
+        default:
+          throw new Error(`Metodo HTTP non supportato: ${method}`);
+      }
     }
 
     const jsonOptions = {

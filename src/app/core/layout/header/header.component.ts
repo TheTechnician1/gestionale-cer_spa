@@ -1,10 +1,9 @@
 import { Component } from "@angular/core";
 import { UtenteService } from "../../services/utente.service";
-import { filter, map, Observable, switchMap } from "rxjs";
+import { combineLatest, map, Observable, switchMap } from "rxjs";
 import { Router } from "@angular/router";
 import { CartService } from "../../services/cart.service";
 import { ApiService } from "../../services/api.service";
-import { UtenteModel } from "../../interfaces/utente.model";
 
 @Component({
   selector: "app-header",
@@ -26,10 +25,19 @@ export class HeaderComponent {
   newBalance!: number | null;
 
   ngOnInit(): void {
-    this.cartCount$ = this.cartService.cartRefresh$.pipe(
-      switchMap(() => this.user$.pipe(
-        switchMap(user => this.cartService.getCart(user.id!)))),
-        map(cart => (cart.items ?? []).reduce((sum, item) => sum + (item.quantita ?? 0), 0)));
+    this.cartCount$ = combineLatest([
+    this.user$,
+    this.cartService.cart$
+    ]).pipe(
+      map(([user, cart]) => {
+        if (!user?.id) return 0;
+
+        return (cart.items ?? []).reduce(
+          (sum, item) => sum + (item.quantita ?? 0),
+          0
+        );
+      })
+    );
   }
 
   logout() {
@@ -62,12 +70,10 @@ export class HeaderComponent {
 
   onSearchChange() {
     clearTimeout(this.searchTimeout);
-
     if (this.searchTerm.trim().length < 2) {
       this.results = [];
       return;
     }
-
     this.searchTimeout = setTimeout(() => {
       this.apiService.get<any[]>(`/api/products/search/${this.searchTerm}`)
         .subscribe(res => {

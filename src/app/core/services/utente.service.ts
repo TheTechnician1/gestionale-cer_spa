@@ -30,10 +30,14 @@ export class UtenteService {
   private readonly storageKey = "utente";
   private userSubject = new BehaviorSubject<UtenteModel>(this.guestUser);
   readonly user$ = this.userSubject.asObservable();
-  readonly isLoggedIn$ = this.user$.pipe(map(user => user.id !== this.guestUser.id));
+  readonly isLoggedIn$ = this.user$.pipe(map(user => !this.isGuest(user)));
 
   get currentUser(): UtenteModel | null {
     return this.userSubject.value;
+  }
+
+  isGuest(user: UtenteModel | null): boolean {
+    return !!user && user.id === this.guestUser.id;
   }
 
   login(payload: { email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteModel> {
@@ -76,6 +80,23 @@ export class UtenteService {
         this.persistUser(updatedUser);
       })
     );
+  }
+
+  applyBalance(balance: number): void {
+    const user = this.userSubject.value;
+    if (this.isGuest(user)) return;
+
+    this.persistUser(new UtenteModel({
+      ...user,
+      balance
+    }));
+  }
+
+  decrementBalance(amount: number): void {
+    const user = this.userSubject.value;
+    if (this.isGuest(user)) return;
+
+    this.applyBalance(Number(((user.balance ?? 0) - amount).toFixed(2)));
   }
 
   private persistUser(utente: UtenteModel): void {

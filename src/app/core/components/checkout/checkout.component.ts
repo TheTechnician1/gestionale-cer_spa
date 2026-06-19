@@ -89,16 +89,29 @@ export class CheckoutComponent {
     return (this.user?.balance ?? 0) >= total;
   }
 
+  private roundMoney(value: number | null | undefined): number {
+    return Number((value ?? 0).toFixed(2));
+  }
+
   getTotal(items: CartItem[] | null): number {
-    return (items ?? []).reduce(
+    const total = (items ?? []).reduce(
       (sum, item) => sum + (item.totaleRiga ?? 0),
       0
     );
+
+    return this.roundMoney(total);
+  }
+
+  getTotalSaved(items: CartItem[] | null): number {
+    return (items ?? []).reduce((sum, item) => {
+      if (!item.sconto || !item.prezzoOriginale || !item.prezzoUnitario) return sum;
+      return sum + ((item.prezzoOriginale - item.prezzoUnitario) * (item.quantita ?? 0));
+    }, 0);
   }
 
   getFinalTotal(items: CartItem[] | null): number {
     const subtotal = this.getTotal(items);
-    return subtotal + this.order.shippingCost;
+    return this.roundMoney(subtotal + this.order.shippingCost);
   }
 
   payNow(cart: Cart): void {
@@ -107,8 +120,8 @@ export class CheckoutComponent {
     const shipping = this.checkoutForm.value;
     const items = cart.items ?? [];
     const totaleProdotti = this.getTotal(items);
-    const costoSpedizione = this.order.shippingCost;
-    const totaleOrdine = totaleProdotti + costoSpedizione;
+    const costoSpedizione = this.roundMoney(this.order.shippingCost);
+    const totaleOrdine = this.roundMoney(totaleProdotti + costoSpedizione);
 
     const payload = {
       shipping: {
@@ -124,15 +137,20 @@ export class CheckoutComponent {
         metodoPagamento: "saldo"
       },
 
-      prodotti: items.map(item => ({
-        productId: item.productId,
-        productName: item.productName,
-        sellerName: item.sellerName ?? null,
-        quantity: item.quantita,
-        prezzoUnitario: item.prezzoUnitario,
-        sconto: item.sconto ?? 0,
-        totaleRiga: item.totaleRiga
-      })),
+      prodotti: items.map(item => {
+        const quantity = item.quantita ?? 0;
+        const prezzoUnitario = this.roundMoney(item.prezzoUnitario);
+
+        return {
+          productId: item.productId,
+          productName: item.productName,
+          sellerName: item.sellerName ?? null,
+          quantity,
+          prezzoUnitario,
+          sconto: item.sconto ?? 0,
+          totaleRiga: this.roundMoney(prezzoUnitario * quantity)
+        };
+      }),
 
       totaleProdotti: totaleProdotti,
       costoSpedizione: this.order.shippingCost,

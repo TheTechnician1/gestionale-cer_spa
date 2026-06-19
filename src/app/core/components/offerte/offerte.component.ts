@@ -97,6 +97,10 @@ export class OfferteComponent {
     return product.quantita! - this.cartService.getCartState(product.id!);
   }
 
+  private roundMoney(value: number | null | undefined): number {
+    return Number((value ?? 0).toFixed(2));
+  }
+
   addToCart(product: Prodotto) {
     const user = this.authService.currentUser;
     const available = this.getAvailable(product);
@@ -105,7 +109,40 @@ export class OfferteComponent {
       return;
     }
 
-    this.cartService.addItem(user!.id!, { productId: product.id, quantity: 1 }).subscribe({
+    if (this.authService.isGuest(user)) {
+      const offer = product as Offerta;
+      this.cartService.addGuestProduct(
+        product,
+        1,
+        offer.prezzoScontato ?? product.prezzo,
+        offer.sconto ?? null,
+        offer.prezzoOriginale ?? product.prezzo
+      );
+      this.snackBar.open(`${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`,
+      'OK',
+        {
+          duration: 2500,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        }
+      );
+      return;
+    }
+
+    const offer = product as Offerta;
+    const prezzoUnitario = this.roundMoney(offer.prezzoScontato ?? product.prezzo);
+    const payload = {
+      productId: product.id,
+      quantity: 1,
+      prezzoUnitario,
+      prezzoOriginale: this.roundMoney(offer.prezzoOriginale ?? product.prezzo),
+      prezzoScontato: prezzoUnitario,
+      sconto: offer.sconto ?? 0,
+      totaleRiga: prezzoUnitario
+    };
+
+    this.cartService.addItem(user!.id!, payload).subscribe({
       next: () => {
         this.snackBar.open(`${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`,
         'OK',

@@ -67,14 +67,27 @@
       <ng-container *ngIf="cart$ | async as cart">
         <div class="summary-line" *ngFor="let item of cart.items">
           <div>{{ item.productName }}</div>
-          <div>
-            € {{ item.prezzoUnitario }} x {{ item.quantita }}
+          <div class="summary-price">
+            <span class="old-price" *ngIf="item.prezzoOriginale && item.sconto">
+              € {{ item.prezzoOriginale | number:'1.2-2' }}
+            </span>
+            <span>€ {{ item.prezzoUnitario | number:'1.2-2' }} x {{ item.quantita }}</span>
+            <span class="summary-discount" *ngIf="item.sconto">
+              Sconto -{{ item.sconto }}%
+            </span>
+            <span class="summary-saved" *ngIf="item.prezzoOriginale && item.prezzoUnitario && item.sconto">
+              Risparmi {{ ((item.prezzoOriginale - item.prezzoUnitario) * (item.quantita ?? 1)) | number:'1.2-2' }} €
+            </span>
           </div>
         </div>
         <mat-divider></mat-divider>
         <div class="summary-line">
           <div>Subtotale</div>
           <div>€ {{ getTotal(cart.items) | number:'1.2-2' }}</div>
+        </div>
+        <div class="summary-line saved-total" *ngIf="getTotalSaved(cart.items) > 0">
+          <div>Risparmiato</div>
+          <div>€ {{ getTotalSaved(cart.items) | number:'1.2-2' }}</div>
         </div>
         <div class="summary-line">
           <div>Spedizione</div>

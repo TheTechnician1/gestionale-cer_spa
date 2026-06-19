@@ -3,6 +3,7 @@ import { UtenteService } from '../../services/utente.service';
 import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
 import { UtenteModel } from '../../interfaces/utente.model';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-paypage',
@@ -13,7 +14,8 @@ export class PaypageComponent {
   constructor(
     private router: Router,
     private orderService: OrderService,
-    private authService: UtenteService)
+    private authService: UtenteService,
+    private cartService: CartService)
   {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras.state as any;
@@ -69,13 +71,8 @@ export class PaypageComponent {
     this.orderService.pay(this.user.id, this.orderId).subscribe({
       next: (res) => {
         this.loading = false;
-
-        this.router.navigate(['/ordine-confermato'], {
-          state: {
-            orderId: res.orderId,
-            total: this.total
-          }
-        });
+        this.authService.decrementBalance(this.total);
+        this.clearCartAndNavigate(res.orderId);
       },
       error: (err) => {
         if (this.retryCount < this.maxRetry) {
@@ -86,6 +83,29 @@ export class PaypageComponent {
           this.status = 'error';
           this.locked = false;
         }
+      }
+    });
+  }
+
+  private clearCartAndNavigate(orderId: number): void {
+    const navigate = () => {
+      this.router.navigate(['/ordine-confermato'], {
+        state: {
+          orderId,
+          total: this.total
+        }
+      });
+    };
+
+    this.cartService.clearCart(this.user!.id!).subscribe({
+      next: () => {
+        this.cartService.clearLocalCart();
+        navigate();
+      },
+      error: (err) => {
+        console.error("Errore svuotamento carrello dopo pagamento:", err);
+        this.cartService.clearLocalCart();
+        navigate();
       }
     });
   }

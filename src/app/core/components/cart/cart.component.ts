@@ -22,6 +22,7 @@ export class CartComponent {
   ) {}
   cart$!: Observable<Cart>;
   userId!: number;
+  isGuest = false;
 
   displayedColumns: string[] = [
   'image',
@@ -33,21 +34,18 @@ export class CartComponent {
   ];
 
   ngOnInit(): void {
+    this.cart$ = this.cartService.cart$;
+
     this.authService.user$.subscribe(user => {
-      if (user) {
-        this.userId = user.id!;
-        this.loadCart();
+      if (!user?.id) return;
+
+      this.userId = user.id;
+      this.isGuest = this.authService.isGuest(user);
+
+      if (!this.isGuest) {
+        this.cartService.refreshCartState(this.userId).subscribe();
       }
     });
-  }
-
-  loadCart(): void {
-    this.cart$ = this.cartService.getCart(this.userId).pipe(
-      tap(cart => {
-        if (!cart.items) cart.items = [];
-        this.cartService.hydrateFromCart(cart);
-      })
-    );
   }
 
   details(id: number) {
@@ -68,27 +66,40 @@ export class CartComponent {
         quantity: item.quantita! + 1
       };
 
+      if (this.isGuest) {
+        this.cartService.updateGuestItem(item.productId!, request.quantity);
+        return;
+      }
+
       this.cartService
         .updateItem(this.userId, item.id!, request)
-        .subscribe(() => this.loadCart());
-    });
+        .subscribe();
+    })
   }
 
   decrease(item: CartItem) {
     const newQty = (item.quantita ?? 0) - 1;
+    if (this.isGuest) {
+      this.cartService.updateGuestItem(item.productId!, newQty);
+      return;
+    }
+
     if (newQty <= 0) {
-      const request = { productId: item.productId, quantity: 0 };
-      this.cartService.remove(this.userId, item.id!).subscribe(() => this.loadCart());
+      this.cartService.remove(this.userId, item.id!).subscribe();
       return;
     }
 
     const request = { productId: item.productId, quantity: newQty };
-    this.cartService.updateItem(this.userId, item.id!, request).subscribe(() => this.loadCart());
+    this.cartService.updateItem(this.userId, item.id!, request).subscribe();
   }
 
   removeItem(item: CartItem) {
-    const request = { productId: item.productId, quantity: 0 };
-    this.cartService.remove(this.userId, item.id!).subscribe(() => this.loadCart());
+    if (this.isGuest) {
+      this.cartService.removeGuestItem(item.productId!);
+      return;
+    }
+
+    this.cartService.remove(this.userId, item.id!).subscribe();
   }
 
   getTotal(items: CartItem[] | null): number {
@@ -97,6 +108,14 @@ export class CartComponent {
       0
     );
   }
+
+  getTotalSaved(items: CartItem[] | null): number {
+    return (items ?? []).reduce((sum, item) => {
+      if (!item.sconto || !item.prezzoOriginale || !item.prezzoUnitario) return sum;
+      return sum + ((item.prezzoOriginale - item.prezzoUnitario) * (item.quantita ?? 0));
+    }, 0);
+  }
+
   goToCheckout(cart: Cart): void {
     const user = this.authService.currentUser;
     if (user?.id === 26) {

@@ -181,6 +181,28 @@ h2 {
 
 .prod-price {
   color: #444;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+}
+
+.summary-discount {
+  color: #ff9900;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.summary-saved {
+  color: #008a00;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.saved-total {
+  color: #008a00;
+  font-weight: 700;
 }
 
 .summary-row {

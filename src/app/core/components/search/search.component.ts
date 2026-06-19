@@ -71,6 +71,21 @@ export class SearchComponent {
       );
       return;
     }
+
+    if (this.authService.isGuest(user)) {
+      this.cartService.addGuestProduct(product);
+      this.snackBar.open(
+        `${product.nomeProdotto} aggiunto al carrello (rimasti: ${this.getAvailable(product)})`, 'OK',
+        {
+          duration: 2500,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+          panelClass: ['snackbar-success']
+        }
+      );
+      return;
+    }
+
     this.cartService.addItem(user!.id!, { productId: product.id, quantity: 1 }).subscribe({
       next: () => {
         this.snackBar.open(

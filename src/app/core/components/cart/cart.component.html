@@ -25,17 +25,11 @@
             <th mat-header-cell *matHeaderCellDef> Prezzo </th>
             <td mat-cell *matCellDef="let item">
               <div class="price-box">
-                <span class="old-price" *ngIf="!item.prezzoUnitario">
-                  {{ item.prezzoUnitario | number:'1.2-2' }} €
+                <span class="old-price" *ngIf="item.prezzoOriginale && item.sconto">
+                  {{ item.prezzoOriginale | number:'1.2-2' }} €
                 </span>
                 <span class="new-price">
                   {{ item.prezzoUnitario | number:'1.2-2' }} €
-                </span>
-                <span class="discount" *ngIf="item.sconto">
-                  -{{ item.sconto }}%
-                </span>
-                <span class="saved" *ngIf="item.prezzoOriginale">
-                  Risparmi: {{ (item.prezzoOriginale - item.prezzo) | number:'1.2-2' }} €
                 </span>
               </div>
             </td>
@@ -81,10 +75,21 @@
           <div class="summary-products">
             <div class="summary-product" *ngFor="let item of cart.items">
               <span class="prod-name">{{ item.productName }}</span>
-              <span class="prod-price">
-                {{ item.prezzoUnitario | number:'1.2-2' }} € x {{ item.quantita }} =
-                <strong>{{ item.prezzoUnitario! * item.quantita! | number:'1.2-2' }} €</strong>
-              </span>
+              <div class="prod-price">
+                <span class="old-price" *ngIf="item.prezzoOriginale && item.sconto">
+                  {{ item.prezzoOriginale | number:'1.2-2' }} €
+                </span>
+                <span>
+                  {{ item.prezzoUnitario | number:'1.2-2' }} € x {{ item.quantita }} =
+                  <strong>{{ item.prezzoUnitario! * item.quantita! | number:'1.2-2' }} €</strong>
+                </span>
+                <span class="summary-discount" *ngIf="item.sconto">
+                  Sconto -{{ item.sconto }}%
+                </span>
+                <span class="summary-saved" *ngIf="item.prezzoOriginale && item.prezzoUnitario && item.sconto">
+                  Risparmi {{ ((item.prezzoOriginale - item.prezzoUnitario) * (item.quantita ?? 1)) | number:'1.2-2' }} €
+                </span>
+              </div>
             </div>
           </div>
           <mat-divider></mat-divider>
@@ -92,12 +97,10 @@
             <span>Subtotale</span>
             <span>{{ getTotal(cart.items) | number:'1.2-2' }} €</span>
           </div>
-          <!--
-          <div class="summary-row">
-            <span>Risparmio totale</span>
-            <span class="saved"> €</span>
+          <div class="summary-row saved-total" *ngIf="getTotalSaved(cart.items) > 0">
+            <span>Risparmiato</span>
+            <span>{{ getTotalSaved(cart.items) | number:'1.2-2' }} €</span>
           </div>
-          -->
           <mat-divider></mat-divider>
           <div class="summary-row total">
             <span>Totale</span>

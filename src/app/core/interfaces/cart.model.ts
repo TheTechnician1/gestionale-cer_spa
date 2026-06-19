@@ -22,7 +22,10 @@ export interface CartItem {
   productName: string | null;
   quantita: number | null;
   prezzoUnitario?: number | null;
+  prezzoOriginale?: number | null;
+  prezzoScontato?: number | null;
   immagine: string | null;
+  quantitaDisponibile?: number | null;
   totaleRiga: number | null;
   sellerName: string | null;
   sconto: number | null;
@@ -34,7 +37,10 @@ export class CartItemModel implements CartItem {
   productName: string | null;
   quantita: number | null;
   prezzoUnitario?: number | null;
+  prezzoOriginale?: number | null;
+  prezzoScontato?: number | null;
   immagine: string | null;
+  quantitaDisponibile?: number | null;
   totaleRiga: number | null;
   sellerName: string | null;
   sconto: number | null;
@@ -45,7 +51,10 @@ export class CartItemModel implements CartItem {
     this.productName = data?.productName ?? null;
     this.quantita = data?.quantita ?? null;
     this.prezzoUnitario = data?.prezzoUnitario ?? null;
+    this.prezzoOriginale = data?.prezzoOriginale ?? null;
+    this.prezzoScontato = data?.prezzoScontato ?? null;
     this.immagine = data?.immagine ?? null;
+    this.quantitaDisponibile = data?.quantitaDisponibile ?? null;
     this.totaleRiga = data?.totaleRiga ?? null;
     this.sellerName = data?.sellerName ?? null;
     this.sconto = data?.sconto ?? null;

@@ -11,9 +11,6 @@ import { UtenteModel } from '../../interfaces/utente.model';
 })
 export class ConfirmOrderComponent {
   constructor(private router: Router, private orderService: OrderService, private authService: UtenteService) {
-    const nav = this.router.getCurrentNavigation();
-    const state = nav?.extras.state as any;
-
     this.orderId = history.state?.orderId;
     this.total = history.state?.total ?? 0;
 
@@ -49,49 +46,55 @@ export class ConfirmOrderComponent {
       return;
     }
 
+    localStorage.setItem('lastOrderId', String(this.orderId));
+
     this.orderService.completeOrder(this.userId, this.orderId).subscribe({
       next: (res) => {
         console.log("Ordine completato:", res);
+        this.loadOrderDetails();
       },
       error: (err) => {
         console.error("Errore completamento ordine:", err);
+        this.loadOrderDetails();
+      }
+    });
+  }
+
+  loadOrderDetails(): void {
+    this.orderService.getOrderById(this.orderId).subscribe({
+      next: (order) => {
+        this.order = {
+          code: order.codiceOrdine ?? order.code ?? String(this.orderId),
+          total: order.totaleOrdine ?? order.total ?? this.total
+        };
+        localStorage.setItem('lastOrder', JSON.stringify(this.order));
+        localStorage.setItem('lastOrderId', String(this.orderId));
+      },
+      error: (err) => {
+        console.error("Errore caricamento ordine:", err);
+        this.order = {
+          code: String(this.orderId),
+          total: this.total
+        };
       }
     });
   }
 
   viewOrder(): void {
-    this.orderService.completeOrder(this.userId, this.orderId).subscribe({
-      next: (res) => {
-        console.log("Ordine completato:", res);
-        this.router.navigate(['/ricevuta-ordine', {
-          state: {
-            orderId: res.orderId,
-            total: this.total
-          }
-        }]);
-      },
-      error: (err) => {
-        console.error("Errore completamento ordine:", err);
+    this.router.navigate(['/ricevuta-ordine'], {
+      state: {
+        orderId: this.orderId,
+        total: this.total
       }
     });
-
   }
 
   backToShop() {
-    this.orderService.completeOrder(this.userId, this.orderId).subscribe({
-      next: (res) => {
-        console.log("Ordine completato:", res);
-        this.router.navigate(['/ricevuta-ordine', {
-          state: {
-            orderId: res.orderId,
-            total: this.total
-          }
-        }]);
-      },
-      error: (err) => {
-        console.error("Errore completamento ordine:", err);
+    this.router.navigate(['/'], {
+      state: {
+        orderId: this.orderId,
+        total: this.total
       }
     });
-    this.router.navigate(['/']);
   }
 }

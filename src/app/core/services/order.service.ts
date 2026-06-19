@@ -35,12 +35,12 @@ export class OrderService {
   }
 
   downloadPDF(orderId: number) {
-    const endpoint = `/orders/${orderId}/receipt/email`;
-    return this.api.post<any>(endpoint, {});
+    const endpoint = `/api/orders/${orderId}/receipt/email`;
+    return this.api.post<string>(endpoint, {}, { responseType: 'text' });
   }
 
   showOrderPDF(orderId: number) {
-    const endpoint = `/orders/${orderId}/receipt/pdf`;
-    return this.api.get<any>(endpoint, { responseType: 'blob' });
+    const endpoint = `/api/orders/${orderId}/receipt/pdf`;
+    return this.api.get<Blob>(endpoint, undefined, { responseType: 'blob' });
   }
 }
