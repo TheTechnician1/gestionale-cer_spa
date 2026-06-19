@@ -37,25 +37,30 @@
               <span class="prezzo">
                 {{ articolo.prezzo | currency:'EUR' }}
               </span>
-                <mat-form-field appearance="outline" >
-                  <mat-label>
-                    Quantità
-                  </mat-label>
-                  <div [formGroup]="formAggiunta">
-                  <input
-                    matInput
-                    formControlName="quantita"
-                    type="number"
-                    [min]="1"
-                    [max]="articolo.prodotto.quantitaDisponibile"
-                    [(ngModel)]="articolo.quantita"
-                    (change)="aggiornaQuantita(articolo)"
-                    (keyup.enter)="aggiornaQuantita(articolo)"
-                  />
-                  </div>
-                  <mat-hint>qta max disponibile: {{articolo.prodotto.quantitaDisponibile}}</mat-hint>
-                  <mat-error  *ngIf="articolo.quantita>articolo.prodotto.quantitaDisponibile || articolo.quantita <= 0">quantità non disponibile</mat-error>
-                </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Quantità</mat-label>
+
+              <input
+                matInput
+                type="number"
+                [min]="1"
+                [max]="articolo.prodotto.quantitaDisponibile"
+                [(ngModel)]="articolo.quantita"
+                (change)="aggiornaQuantita(articolo)"
+                (keyup.enter)="aggiornaQuantita(articolo)"
+              />
+
+              <mat-hint>
+                qta max disponibile:
+                {{ articolo.prodotto.quantitaDisponibile }}
+              </mat-hint>
+
+              <mat-error
+                *ngIf="articolo.quantita > articolo.prodotto.quantitaDisponibile ||
+                      articolo.quantita <= 0">
+                quantità non disponibile
+              </mat-error>
+            </mat-form-field>
               
               <span class="totale">
                 Totale:

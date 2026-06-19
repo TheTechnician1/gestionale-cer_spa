@@ -17,7 +17,6 @@ export class CarrelloComponent implements OnInit {
 
   idUtente?: number;
   carrello!: Carrello;
-  formAggiunta!: FormGroup
   flagCheckout : boolean = true;
 
 
@@ -27,11 +26,6 @@ export class CarrelloComponent implements OnInit {
     private router : Router,
     private toast: ToastService,
     private fb:FormBuilder){
-      this.formAggiunta= this.fb.group({
-        quantita:[null,[Validators.required, Validators.min(1)]]
-      });
-
-      this.formAggiunta.get('quantita')?.markAsTouched();
     }
 
   ngOnInit(): void {
@@ -92,11 +86,18 @@ get totaleCarrello(): number {
   aggiornaQuantita(
     articolo: ViewArticoloCarrelloDTO
   ){
-    if(this.formAggiunta.valid){
-      this.carrelloService.aggiornaArticoloCarrello(this.idUtente, 
-        articolo.idArticoloCarrello,
-        this.mapToArticoloCarrelloDTO(articolo)
-      ).subscribe({
+    if (
+      articolo.quantita <= 0 ||
+      articolo.quantita > articolo.prodotto.quantitaDisponibile
+    ) {
+      return;
+    }
+  this.carrelloService
+    .aggiornaArticoloCarrello(
+      this.idUtente,
+      articolo.idArticoloCarrello,
+      this.mapToArticoloCarrelloDTO(articolo)
+    ).subscribe({
         next: (carrello: Carrello) => {
           this.carrello = carrello;
           this.carrelloService.checkSaldo(
@@ -118,8 +119,7 @@ get totaleCarrello(): number {
           console.error('Errore rimozione articolo', err);
           this.toast.error('Errore aggiornamento articolo');
         }
-      });
-    }
+    });
   }
 
   rimuovi(
