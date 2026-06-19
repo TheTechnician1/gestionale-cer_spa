@@ -55,7 +55,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadProducts() {
     this.productService.getAllProducts().subscribe(products => {
       this.products = this.shuffle(products).filter(p => p.quantita! > 0);
-      this.totalProducts = this.products.length;
       this.setPage(0, this.pageSize);
     });
   }
@@ -74,9 +73,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setPage(pageIndex: number, pageSize: number) {
-    const start = pageIndex * pageSize;
-    const end = start + pageSize;
-    this.pagedProducts = this.products.slice(start, end);
+    const availableProducts = this.products.filter(p => this.getAvailable(p) > 0);
+    const maxPageIndex = Math.max(Math.ceil(availableProducts.length / pageSize) - 1, 0);
+    const nextPageIndex = Math.min(pageIndex, maxPageIndex);
+    this.pageIndex = nextPageIndex;
+    this.totalProducts = availableProducts.length;
+    this.pagedProducts = availableProducts.slice(nextPageIndex * pageSize, nextPageIndex * pageSize + pageSize);
+
+    if (this.paginator && this.paginator.pageIndex !== nextPageIndex) {
+      this.paginator.pageIndex = nextPageIndex;
+    }
   }
 
   onPageChange(event: PageEvent) {
