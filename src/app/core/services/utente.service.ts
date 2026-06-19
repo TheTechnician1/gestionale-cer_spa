@@ -9,7 +9,7 @@ import { ApiResponse } from "../interfaces/api.model";
 })
 export class UtenteService {
   constructor(private apiService: ApiService) {
-    const savedUser = localStorage.getItem(this.storageKey);
+    const savedUser = localStorage.getItem(this.storageKey) ?? sessionStorage.getItem(this.storageKey);
 
     if(savedUser) {
       this.userSubject.next(
@@ -40,15 +40,16 @@ export class UtenteService {
     return !!user && user.id === this.guestUser.id;
   }
 
-  login(payload: { email: string; password: string }, options: ApiRequestOptions = {}): Observable<UtenteModel> {
+  login(payload: { email: string; password: string }, rememberMe = false, options: ApiRequestOptions = {}): Observable<UtenteModel> {
     const endpoint = "api/auth/login";
     return this.apiService.post<ApiResponse<Utente>>(endpoint, payload, options).pipe(
       map((res) => new UtenteModel(res.data)),
-      tap((utente) => this.persistUser(utente)));
+      tap((utente) => this.persistUser(utente, rememberMe)));
   }
 
   logout(): void {
     localStorage.removeItem(this.storageKey);
+    sessionStorage.removeItem(this.storageKey);
     this.userSubject.next(this.guestUser);
   }
 
@@ -99,8 +100,15 @@ export class UtenteService {
     this.applyBalance(Number(((user.balance ?? 0) - amount).toFixed(2)));
   }
 
-  private persistUser(utente: UtenteModel): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(utente));
+  private persistUser(utente: UtenteModel, rememberMe?: boolean): void {
+    const shouldUseLocalStorage = rememberMe ?? localStorage.getItem(this.storageKey) !== null;
+    const targetStorage = shouldUseLocalStorage
+      ? localStorage
+      : sessionStorage;
+    const otherStorage = targetStorage === localStorage ? sessionStorage : localStorage;
+
+    targetStorage.setItem(this.storageKey, JSON.stringify(utente));
+    otherStorage.removeItem(this.storageKey);
     this.userSubject.next(utente);
   }
 

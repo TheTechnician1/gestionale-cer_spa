@@ -20,6 +20,9 @@
         <mat-error appFormControlError [control]="loginForm.get('password')" label="Password" [customMessages]="passwordErrorMessages"></mat-error>
       </mat-form-field>
       <div class="error" *ngIf="loginError">Email o password errati</div>
+      <mat-checkbox class="remember-me" formControlName="rememberMe" style="display: block; margin-bottom: 8px;">
+        Ricordami
+      </mat-checkbox>
       <span style="font-size: 12px; color: grey; display: block;">Hai dimenticato la password? <a routerLink="/reset-password" style="color: #3f51b5; text-decoration: none;">Recupera qui</a></span>
       <div style="display: flex; justify-content: center; margin-top: 10px;">
         <button mat-raised-button color="primary" type="submit" style="width: 100%;">Accedi</button>

@@ -25,7 +25,8 @@ export class LoginComponent {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{6,64}$")]]
+      password: ["", [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{6,64}$")]],
+      rememberMe: [false]
     });
   }
 
@@ -36,7 +37,9 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.loginForm.value).pipe(
+    const { rememberMe, ...payload } = this.loginForm.getRawValue();
+
+    this.authService.login(payload, Boolean(rememberMe)).pipe(
       switchMap(user => { const guestItems = this.cartService.getGuestItems();
         return guestItems.length > 0
           ? this.cartService.mergeGuestCartIntoUser(user.id!).pipe(map(() => user))
@@ -44,7 +47,6 @@ export class LoginComponent {
       })
     ).subscribe({
       next: (user) => {
-        this.authService['userSubject'].next(user);
         this.cartService.clearGuestCart();
         this.cartService.notifyCartChange();
         this.loginError = false;
