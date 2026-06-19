@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Prodotto } from '../../interfaces/product.model';
@@ -6,19 +6,22 @@ import { Category } from '../../enum/category.enum';
 import { CartService } from '../../services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UtenteService } from '../../services/utente.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent {
+export class SearchComponent implements OnDestroy {
   constructor(private productService: ProductService, private authService: UtenteService, private cartService: CartService, private snackBar: MatSnackBar, private router: ActivatedRoute, private route: Router) {}
   categoria: string | null = null;
   minPrice: number | null = null;
   maxPrice: number | null = null;
   minQuantity: number | null = null;
   products: Prodotto[] = [];
+  visibleProducts: Prodotto[] = [];
+  private sub = new Subscription();
 
   categorie = Object.values(Category);
 
@@ -27,6 +30,13 @@ export class SearchComponent {
       this.categoria = params['category'] || null;
       this.loadResults();
     });
+    this.sub.add(
+      this.cartService.cart$.subscribe(() => this.updateVisibleProducts())
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   loadResults() {
@@ -37,7 +47,12 @@ export class SearchComponent {
       minQuantity: this.minQuantity
     }).subscribe(res => {
       this.products = res;
+      this.updateVisibleProducts();
     });
+  }
+
+  updateVisibleProducts(): void {
+    this.visibleProducts = this.products.filter(p => this.getAvailable(p) > 0);
   }
 
   getAvailable(product: Prodotto): number {
@@ -53,6 +68,7 @@ export class SearchComponent {
       minQuantity: this.minQuantity
     }).subscribe(res => {
       this.products = res;
+      this.updateVisibleProducts();
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { Prodotto } from '../../interfaces/product.model';
@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UtenteService } from '../../services/utente.service';
 import { PageEvent } from '@angular/material/paginator';
+import { Subscription } from 'rxjs';
 
 type Offerta = Prodotto & {
   prezzoOriginale: number | null;
@@ -17,7 +18,7 @@ type Offerta = Prodotto & {
   templateUrl: './offerte.component.html',
   styleUrls: ['./offerte.component.scss']
 })
-export class OfferteComponent {
+export class OfferteComponent implements OnDestroy {
   constructor(
     private productService: ProductService,
     private authService: UtenteService,
@@ -34,15 +35,19 @@ export class OfferteComponent {
   maxItems = this.pageSize * this.maxPages;
   totalOffers = 0;
   private offersKey = 'offers_cache';
+  private sub = new Subscription();
 
   ngOnInit(): void {
-    const cached = sessionStorage.getItem(this.offersKey);
-    if(cached) {
-      this.offers = JSON.parse(cached);
-      this.initPagination();
-      return;
-    }
+    this.sub.add(
+      this.cartService.cart$.subscribe(() => {
+        this.setPage(this.pageIndex);
+      })
+    );
     this.loadOffers();
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   loadOffers(): void {
@@ -56,15 +61,17 @@ export class OfferteComponent {
 
   initPagination() {
     this.offers = this.offers.slice(0, this.maxItems);
-    this.totalOffers = this.offers.length;
     this.setPage(0);
   }
 
   setPage(pageIndex: number) {
-    this.pageIndex = pageIndex;
-    const start = pageIndex * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedOffers = this.offers.slice(start, end);
+    const availableOffers = this.offers.filter(p => this.getAvailable(p) > 0).slice(0, this.maxItems);
+    const maxPageIndex = Math.min(Math.max(Math.ceil(availableOffers.length / this.pageSize) - 1, 0), this.maxPages - 1);
+    const nextPageIndex = Math.min(pageIndex, maxPageIndex);
+
+    this.pageIndex = nextPageIndex;
+    this.totalOffers = availableOffers.length;
+    this.pagedOffers = availableOffers.slice(nextPageIndex * this.pageSize, nextPageIndex * this.pageSize + this.pageSize);
   }
 
   onPageChange(event: PageEvent) {
@@ -75,15 +82,19 @@ export class OfferteComponent {
   }
 
   buildOffers(products: Prodotto[]): Offerta[] {
+    const cached = sessionStorage.getItem(this.offersKey);
+    const cachedOffers: Offerta[] = cached ? JSON.parse(cached) : [];
+    const cachedById = new Map(cachedOffers.map(offer => [offer.id, offer]));
     const shuffled = [...products].sort(() => 0.5 - Math.random());
 
     return shuffled.map(p => {
-      const discount = Math.floor(Math.random() * 80) + 10;
+      const cachedOffer = cachedById.get(p.id);
+      const discount = cachedOffer?.sconto ?? Math.floor(Math.random() * 80) + 10;
 
       return {
         ...p,
         prezzoOriginale: p.prezzo,
-        prezzoScontato: Number((p.prezzo! - (p.prezzo! * discount / 100)).toFixed(2)),
+        prezzoScontato: cachedOffer?.prezzoScontato ?? Number((p.prezzo! - (p.prezzo! * discount / 100)).toFixed(2)),
         sconto: discount
       };
     });
