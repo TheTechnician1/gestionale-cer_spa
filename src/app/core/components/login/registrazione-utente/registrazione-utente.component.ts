@@ -57,7 +57,7 @@ export class RegistrazioneUtenteComponent {
       next: (result) => {
         console.log(result);
         this.form.reset();
-        this.route.navigateByUrl("");
+        this.route.navigateByUrl("bonus-saldo");
       },
       error: (error) => {
         console.error("Register error", error);

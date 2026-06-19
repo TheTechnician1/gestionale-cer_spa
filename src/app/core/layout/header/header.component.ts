@@ -21,7 +21,5 @@ export class HeaderComponent {
     this.authService.logout();
   }
 
-  search(){
-    
-  }
+  
 }

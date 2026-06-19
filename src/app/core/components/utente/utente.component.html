@@ -3,7 +3,7 @@
 <div class="profile-container">
   <div *ngIf="utente" class="profile-header">
     <div class="user-info">
-      <h4 class="title">Benvenuto! {{ utente.nome }} {{ utente.cognome }}</h4>
+      <h4 class="title">Benvenuto, {{ utente.nome }} {{ utente.cognome }}!</h4>
       <br />
       <p>
         <span class="label">Nome: </span>
@@ -27,14 +27,16 @@
         Aggiorna il mio saldo
       </button>
 
-
-      <mat-form-field *ngIf="update === true" appearance="outline">
+      <div *ngIf="update === true">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field  appearance="outline">
         <mat-label>Inserisci il saldo da aggiungere</mat-label>
-        <input matInput placeholder="Quanto vuoi aggiungere?">
+        <input matInput type="number" formControlName="nuovoSaldo" placeholder="Quanto vuoi aggiungere?">
       </mat-form-field>
-
-      <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
-
+      <button mat-raised-button color="primary" type ="submit">Aggiungi Saldo</button>
+      </form>
+    
+    </div>
     </div>
   </div>
 </div>

@@ -7,7 +7,7 @@
 
   <span class="spacer1"></span>
 
-  <span *ngIf="isLoggedIn$ | async" class="search"> 
+  <!-- <span *ngIf="isLoggedIn$ | async" class="search"> 
     
     <mat-form-field  appearance="outline">
       <mat-label>Cerca tra i Prodotti</mat-label>
@@ -19,30 +19,30 @@
 
   
   
-  </span>
+  </span> -->
 
   <span class="spacer2"></span>
 
   <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
     <mat-icon>account_circle</mat-icon>
-    <span>
+    <!-- <span>
       Accedi
-    </span>
+    </span> -->
     <mat-menu #menu="matMenu">
       <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="">Lista Prodotti</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo/:id">Profilo</button>
+      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="dashboard">Lista Prodotti</button>
+      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo">Profilo</button>
       <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="">Logout</button>
     </mat-menu>
   </button>
 
-  <button *ngIf="isLoggedIn$ | async" mat-icon-button aria-label="Carrello" [matMenuTriggerFor]="menu">
+  <!-- <button *ngIf="isLoggedIn$ | async" mat-icon-button aria-label="Carrello">
     <mat-icon>shopping_cart</mat-icon>
     <span>
       Carrello
     </span>
 
-  </button>
+  </button> -->
   
 
 

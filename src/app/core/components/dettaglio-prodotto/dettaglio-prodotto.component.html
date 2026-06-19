@@ -1,0 +1,33 @@
+<div class="detail-actions">
+  <button mat-button type="button" (click)="tornaAllaDashboard()">
+    <mat-icon>arrow_back</mat-icon>
+    Prodotti
+  </button>
+</div>
+
+<mat-card *ngIf="isLoading" class="prodotto-detail">
+  <mat-card-content>Caricamento prodotto...</mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="errorMessage && !isLoading" class="prodotto-detail">
+  <mat-card-content>{{ errorMessage }}</mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="prodotto && !isLoading" class="prodotto-detail" appearance="outlined">
+  <img mat-card-image [src]="prodotto.immagine" [alt]="prodotto.descrizioneBreve || prodotto.nomeProdotto" />
+
+  <mat-card-header>
+    <mat-card-title>{{ prodotto.nomeProdotto }}</mat-card-title>
+    <mat-card-subtitle>{{ prodotto.categoria }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p>{{ prodotto.descrizioneCompleta || prodotto.descrizioneBreve }}</p>
+    <p><strong>Prezzo:</strong> {{ prodotto.prezzo }} euro</p>
+    <p><strong>Disponibilita:</strong> {{ prodotto.quantitaDisponibile }} pz.</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" type="button" [disabled]="true">Aggiungi al carrello</button>
+  </mat-card-actions>
+</mat-card>

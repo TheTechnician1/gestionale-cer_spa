@@ -3,12 +3,15 @@ import { UtenteLogin, UtenteLoginModel } from "../interfaces/utente.model";
 import { ApiRequestOptions, ApiService } from "./api.service";
 import { BehaviorSubject, map, Observable, tap } from "rxjs";
 import { isAuthenticated } from "../interfaces/auth.model";
+import { HttpClient, HttpParams } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
 })
 export class UtenteService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService,
+  private http: HttpClient
+  ) {}
   utente?: UtenteLogin;
 
   private readonly storageKey = "utente";
@@ -76,8 +79,18 @@ export class UtenteService {
     return this.apiService.postText(path, payload, options);
   }
 
-  updateSaldo(payload: any, options: ApiRequestOptions = {}) {
-    const path = "/api/user/update-saldo";
-    return this.apiService.postText(path, payload, options);
+  updateSaldo(nuovoSaldo: string, email: string) {
+     const params = new HttpParams()
+    .set('nuovoSaldo', nuovoSaldo)
+    .set('email', email)
+
+     return this.http.post(
+    'http://localhost:8081/api/user/update-saldo',
+    null,
+    { params, responseType: 'text' }
+  );
+
+    // const path = "/api/user/update-saldo";
+    // return this.apiService.postText(path, payload, options);
   }
 }

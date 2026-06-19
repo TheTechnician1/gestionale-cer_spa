@@ -1,0 +1,65 @@
+<div>
+  <div class="h3-header">
+    <h1>
+      <span [matBadge]="prod.length" matBadgeOverlap="true" class="span-h2">{{ "app.dashboard-title" | translate }}</span>
+    </h1>
+  </div>
+
+
+  <form [formGroup]="SearchFormByName" (ngSubmit)="onSubmit()">
+  <mat-form-field  appearance="outline">
+      <mat-label>Cerca tra i Prodotti</mat-label>
+      <input matInput formControlName="nome" placeholder="Cosa stai cercando?" />
+      <button mat-icon-button type="submit" matSuffix id="search-icon" aria-label="Cerca prodotto">
+        <mat-icon>search</mat-icon>
+      </button>
+  </mat-form-field>
+  </form>
+
+  
+
+<div *ngFor="let x of paginatedProducts">
+  <mat-card class="prodotto-card" appearance="outlined">
+  <mat-card-header>
+    <div mat-card-avatar class="prodotto-image"></div>
+    <mat-card-title>{{x.nomeProdotto}}</mat-card-title>
+    <mat-card-subtitle>{{x.categoria}}</mat-card-subtitle>
+  </mat-card-header>
+  <img mat-card-image [src]="x.immagine" [alt]="x.descrizioneBreve || x.nomeProdotto">
+  <mat-card-content>
+    <p>
+      {{x.descrizioneBreve}}
+    </p>
+    <p>
+      {{x.prezzo}}€
+    </p>
+    <p>
+      {{x.quantitaDisponibile}} pz. disponibili
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button [routerLink]="['/products', x.idProdotto]" [disabled]="!x.idProdotto">Dettaglio</button>
+    <button mat-button [disabled]="true">Aggiungi al carrello</button>
+  </mat-card-actions>
+</mat-card>
+</div>
+ <mat-paginator
+  class="mat-elevation-z8"
+  [length]="prod.length"
+  [pageIndex]="pageIndex"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[5, 10, 20]"
+  (page)="onPageChange($event)"
+  showFirstLastButtons
+  aria-label="Paginazione prodotti">
+</mat-paginator>
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 <div class="register">
   <h3>Registrazione</h3>
   <br />
-  <div [formGroup]="form">
+  <div [formGroup]="form" appearance="fill" style="width: 100%; margin-bottom: 15px">
     <div rows="2">
       <mat-form-field appearance="fill">
         <mat-label>Nome</mat-label>
@@ -44,7 +44,7 @@
         <mat-error appFormControlError [control]="form.get('confermaPassword')" label="Conferma password" [customMessages]="confermaPasswordErrorMessages"></mat-error>
       </mat-form-field>
     </div>
-    <div rows="2" class="button">
+    <div rows="2" class="button" style="display: flex; justify-content: center;">
       <button mat-raised-button color="primary" (click)="onSubmit()">Registrati</button>
       <button mat-raised-button color="primary" routerLink="">Annulla</button>
     </div>

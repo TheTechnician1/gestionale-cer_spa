@@ -15,15 +15,17 @@ import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { UtenteComponent } from "./core/components/utente/utente.component";
 import { LoginComponent } from "./core/components/login/login/login.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { DashboardComponent } from "./core/components/dashboard/dashboard.component";
 import { RegistrazioneUtenteComponent } from "./core/components/login/registrazione-utente/registrazione-utente.component";
 import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
 import { A11yModule } from "@angular/cdk/a11y";
+import { DettaglioProdottoComponent } from './core/components/dettaglio-prodotto/dettaglio-prodotto.component';
+import { BonusSaldoComponent } from './core/components/bonus-saldo/bonus-saldo.component';
 
 @NgModule({
-  declarations: [AppComponent, GeneralComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],
+  declarations: [AppComponent, GeneralComponent, HeaderComponent, FooterComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent, DettaglioProdottoComponent, BonusSaldoComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
