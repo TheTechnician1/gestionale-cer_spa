@@ -112,7 +112,7 @@ get totaleCarrello(): number {
               console.error(err);
             }
           });
-          this.toast.success('Articolo aggiornato');
+          this.toast.success('Quantità articolo aggiornata');
         },
         error: (err) => {
           console.error('Errore rimozione articolo', err);
@@ -185,5 +185,21 @@ get totaleCarrello(): number {
     articoli: ViewArticoloCarrelloDTO[]
   ): ArticoloCarrelloDTO[]{
     return articoli.map(a=>this.mapToArticoloCarrelloDTO(a));
+  }
+
+  checkSaldo(){
+    this.carrelloService.checkSaldo(
+      this.idUtente!,
+      this.totaleCarrello
+    ).subscribe({
+      next: (flag) => {
+        this.flagCheckout = flag;
+        console.log(flag);
+          },
+      error: (err) => {
+        this.flagCheckout = true;
+        console.error(err);
+      }
+    });
   }
 }

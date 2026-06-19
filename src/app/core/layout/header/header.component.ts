@@ -20,7 +20,6 @@ export class HeaderComponent {
   isProdottiPage$: Observable<boolean>;
   constructor(private authService: UtenteService, private router: Router) {
     this.isLoggedIn$ = this.authService.isLoggedIn$;
-    this.idUtente = this.authService.currentUser?.id;
     this.isProdottiPage$ = this.router.events.pipe(
       filter((event): event is NavigationEnd =>
         event instanceof NavigationEnd
@@ -41,5 +40,9 @@ export class HeaderComponent {
 
   logout() {
     this.authService.logout();
+  }
+
+  toCarrello(){
+    this.router.navigate(['/carrello', this.authService.currentUser?.id]);
   }
 }

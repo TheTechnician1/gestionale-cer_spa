@@ -56,6 +56,7 @@ export class OrdineComponent {
   }
 
   invioRicevuta(){
+    this.toast.info("Invio ricevuta in corso")
     this.ordineService.invioRicevuta(this.idOrdine);
   }
 }
