@@ -1,0 +1,87 @@
+<div class="prodotti-wrapper">
+
+  <div class="search-bar">
+    <span class="search-title"><mat-icon style="vertical-align: middle; margin-right: 6px;">search</mat-icon>Cerca il tuo prossimo acquisto</span>
+    <form [formGroup]="searchForm" (ngSubmit)="ricerca()" class="search-form">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Cerca prodotto</mat-label>
+        <input matInput formControlName="nomeProdotto" placeholder="Cerca prodotto..."  />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="btn-cerca">Cerca</button>
+      <button mat-stroked-button type="button" (click)="resetRicerca()" class="btn-reset">Reset</button>
+    </form>
+    <span class="ricerca-avanzata-link" (click)="mostraRicercaAvanzata = !mostraRicercaAvanzata">
+      Non trovi quello che cerchi? Clicca qui
+    </span>
+
+    <mat-card *ngIf="mostraRicercaAvanzata" class="advanced-search-card">
+  <mat-card-title>Ricerca Avanzata</mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="advancedSearchForm"(ngSubmit)="ricercaAvanzata()"class="advanced-form">
+
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Categoria</mat-label>
+        <mat-select formControlName="categoria">
+          <mat-option value="">Tutte le categorie</mat-option>
+          <mat-option *ngFor="let cat of categorie" [value]="cat">
+            {{ cat | categoria }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Prezzo minimo</mat-label>
+        <input matInput type="number" formControlName="minPrezzo" min="0" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Prezzo massimo</mat-label>
+        <input matInput type="number" formControlName="maxPrezzo" min="0" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Quantità minima</mat-label>
+        <input matInput type="number" formControlName="minQuantita" min="0" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" class="btn-cerca">Cerca</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+  </div>
+
+  <div class="prodotti-grid">
+    <mat-card *ngFor="let prodotto of prodottiPaginati" class="prodotto-card">
+      <img mat-card-image [src]="prodotto.immagine" [alt]="prodotto.nomeProdotto"
+           (click)="vaiADettaglio(prodotto.idProdotto)" style="cursor:pointer" />
+      <mat-card-content>
+        <h3>{{ prodotto.nomeProdotto }}</h3>
+        <p class="descrizione">{{ prodotto.descrizioneBreve }}</p>
+        <p class="prezzo">{{ prodotto.prezzo }} €</p>
+        <p class="disponibilita" [class.esaurito]="disponibilitaEffettiva(prodotto) === 0">
+          Disponibilità: {{ disponibilitaEffettiva(prodotto) }}
+        </p>
+        <p class="categoria">{{ prodotto.categoria | categoria }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="primary" (click)="$event.stopPropagation(); vaiADettaglio(prodotto.idProdotto)">
+          <mat-icon>info</mat-icon> Dettagli
+        </button>
+        <button mat-raised-button color="accent" (click)="$event.stopPropagation(); aggiungiAlCarrello(prodotto.idProdotto)"
+          [disabled]="disponibilitaEffettiva(prodotto) === 0">
+          <mat-icon>add_shopping_cart</mat-icon> Aggiungi al carrello
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-paginator
+    class="custom-paginator"
+    [length]="prodotti.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[8, 16, 24]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+
+</div>

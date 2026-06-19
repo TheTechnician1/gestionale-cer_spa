@@ -1,0 +1,91 @@
+<mat-toolbar color="primary" class="header">
+  <div class="header-left">
+    <img src="assets/images/logoShop.png" alt="ShopiDu" class="logo" routerLink="/prodotti"  matTooltip="L'acquisto migliore lo fai tu!" matTooltipPosition="below" />
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="header-right" *ngIf="isLoggedIn">
+    <a mat-button routerLink="/prodotti">
+      <mat-icon>store</mat-icon> Prodotti
+    </a>
+
+    <a mat-button
+       #cartMenuTrigger="matMenuTrigger"
+       [matMenuTriggerFor]="cartMenu"
+       (mouseenter)="onCartEnter()"
+       (mouseleave)="onCartLeave()"
+       (click)="vaiAlCarrello()">
+      <mat-icon>shopping_cart</mat-icon> Carrello
+      <span *ngIf="cartItems.length > 0" class="cart-badge">{{ cartItems.length }}</span>
+    </a>
+    <mat-menu #cartMenu="matMenu" [hasBackdrop]="false">
+  <div class="cart-preview-content"
+       (mouseenter)="onCartMenuEnter()"
+       (mouseleave)="onCartMenuLeave()"
+       (click)="$event.stopPropagation()">
+    <p *ngIf="cartItems.length === 0" class="empty-cart">Carrello vuoto</p>
+    <div *ngFor="let item of cartItems" class="cart-preview-item">
+  <img [src]="item.immagine" [alt]="item.nomeProdotto" width="40" />
+  <div class="item-info">
+    <p class="item-name">{{ item.nomeProdotto }}</p>
+    <p class="item-price">{{ item.prezzoUnitario }} € x {{ item.quantita }}</p>
+  </div>
+  <button mat-icon-button class="btn-rimuovi" (click)="rimuoviDalCarrello(item.id)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+    <div class="menu-footer">
+      <button mat-raised-button color="accent" routerLink="/carrello" (click)="cartMenuTrigger.closeMenu()">
+        <mat-icon>shopping_cart</mat-icon> Vai al carrello
+      </button>
+    </div>
+  </div>
+</mat-menu>
+
+<mat-menu #profiloMenu="matMenu" [hasBackdrop]="false">
+  <div class="profilo-preview-content"
+       (mouseenter)="onProfiloMenuEnter()"
+       (mouseleave)="onProfiloMenuLeave()">
+    <div class="profilo-info">
+      <mat-icon class="profilo-avatar">account_circle</mat-icon>
+      <p class="profilo-saluto">Ciao, {{ nomeUtente }} {{ cognomeUtente }}</p>
+      <p class="profilo-email">{{ emailUtente }}</p>
+    </div>
+    <div class="menu-footer">
+      <button mat-raised-button color="primary" routerLink="/profilo" (click)="profiloMenuTrigger.closeMenu()">
+        <mat-icon>person</mat-icon> Vai al profilo
+      </button>
+    </div>
+  </div>
+</mat-menu>
+
+   <a mat-button
+   #profiloMenuTrigger="matMenuTrigger"
+   [matMenuTriggerFor]="profiloMenu"
+   (mouseenter)="onProfiloEnter()"
+   (mouseleave)="onProfiloLeave()"
+   routerLink="/profilo">
+  <mat-icon>person</mat-icon> Profilo
+</a>
+    <mat-menu #profiloMenu="matMenu" [hasBackdrop]="false">
+      <div class="profilo-preview-content"
+           (mouseenter)="onProfiloMenuEnter()"
+           (mouseleave)="onProfiloMenuLeave()">
+        <div class="profilo-info">
+          <mat-icon class="profilo-avatar">account_circle</mat-icon>
+          <p class="profilo-saluto">Ciao, {{ nomeUtente }} {{ cognomeUtente }}</p>
+          <p class="profilo-email">{{ emailUtente }}</p>
+        </div>
+      </div>
+    </mat-menu>
+
+    <button mat-raised-button color="warn" (click)="logout()">
+      <mat-icon>logout</mat-icon> Logout
+    </button>
+  </div>
+
+  <div class="header-right" *ngIf="!isLoggedIn">
+    <a mat-raised-button color="accent" routerLink="/login">Accedi</a>
+  </div>
+</mat-toolbar>

@@ -1,0 +1,60 @@
+<div class="carrello-wrapper">
+  <div class="carrello-content">
+    <h2>Il tuo Carrello</h2>
+    <button mat-stroked-button color="primary" routerLink="/prodotti" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> Torna ai prodotti
+    </button>
+
+   <div *ngIf="items.length === 0" class="carrello-vuoto">
+  <div class="empty-icon-circle">
+    <mat-icon>shopping_cart</mat-icon>
+  </div>
+  <h2>Il tuo carrello è vuoto</h2>
+  <p>Non hai ancora aggiunto nessun prodotto al carrello</p>
+  <button mat-raised-button color="primary" routerLink="/prodotti">
+    <mat-icon>storefront</mat-icon>Vai ai prodotti</button>
+
+</div>
+
+    <div *ngIf="items.length > 0">
+      <mat-card *ngFor="let item of items" class="cart-item-card">
+        <mat-card-content class="cart-item-content">
+          <div class="item-left">
+            <img [src]="item.immagine" [alt]="item.nomeProdotto" class="item-img" />
+            <div class="item-info">
+              <p class="item-name">{{ item.nomeProdotto }}</p>
+              <p class="item-price">Prezzo unitario: {{ item.prezzoUnitario | number:'1.2-2' }} €</p>
+              <p class="item-total">Totale riga: {{ item.prezzoUnitario * item.quantita | number:'1.2-2' }} €</p>
+            </div>
+          </div>
+          <div class="item-actions">
+             <button mat-icon-button color="warn" (click)="riduciQuantita(item)">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="quantita">{{ item.quantita }}</span>
+             <button mat-icon-button color="primary" (click)="aggiungiQuantita(item)">
+              <mat-icon>add</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="rimuovi(item.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="riepilogo-card">
+        <mat-card-content>
+          <p>Numero articoli: <strong>{{ numeroArticoli }}</strong></p>
+          <p class="totale">Totale: <strong>{{ totale | number:'1.2-2' }} €</strong></p>
+          <p>Il tuo saldo: <strong [class.saldo-insufficiente]="saldoInsuffuciente">{{ saldo | number:'1.2-2' }} €</strong></p>
+          <p *ngIf="saldoInsuffuciente" class="avviso-saldo">
+            <mat-icon>warning</mat-icon> Saldo insufficiente per procedere al checkout
+          </p>
+          <button mat-raised-button color="primary" class="checkout-btn" (click)="checkout()" [disabled]="saldoInsuffuciente">
+            <mat-icon>payment</mat-icon> Procedi al checkout
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

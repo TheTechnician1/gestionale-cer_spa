@@ -1,0 +1,49 @@
+<div class="checkout-wrapper">
+
+  <div *ngIf="!ordine">
+    <mat-card class="checkout-card">
+      <mat-card-title>
+        <mat-icon>shopping_bag</mat-icon> Checkout
+      </mat-card-title>
+      <mat-card-content>
+        <p>Stai per confermare il tuo ordine. Procedi?</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="eseguiCheckout()">
+          <mat-icon>payment</mat-icon> Conferma ordine
+        </button>
+        <button mat-stroked-button (click)="torna()">
+          <mat-icon>arrow_back</mat-icon> Torna ai prodotti
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="ordine">
+    <mat-card class="checkout-card success-card">
+      <mat-card-title>
+        <mat-icon class="success-icon">check_circle</mat-icon> Ordine completato!
+      </mat-card-title>
+      <mat-card-content>
+        <div class="ordine-info">
+          <p><strong>Codice ordine:</strong> {{ ordine.codiceOrdine }}</p>
+          <p><strong>Data:</strong> {{ ordine.dataOrdine }}</p>
+          <p><strong>Totale:</strong> <span class="totale">{{ ordine.totaleOrdine | number:'1.2-2' }} €</span></p>
+          <p><strong>Stato:</strong> <span class="stato">{{ ordine.stato }}</span></p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="downloadPdf()">
+          <mat-icon>picture_as_pdf</mat-icon> Scarica ricevuta PDF
+        </button>
+        <button mat-raised-button color="accent" (click)="inviaEmail()">
+          <mat-icon>email</mat-icon> Invia ricevuta via email
+        </button>
+        <button mat-stroked-button (click)="torna()">
+          <mat-icon>store</mat-icon> Torna ai prodotti
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

@@ -4,27 +4,27 @@
   border: 1px solid transparent;
   padding: 10px 12px 12px;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
-  background: #ffffff;
+  background: #ff6f00;
 }
 
 .toast-card.success {
-  border-color: #b8e6c2;
-  background: #f3fcf5;
+  border-color: #e65100;
+  background: #ff6f00;
 }
 
 .toast-card.error {
-  border-color: #f5b7b7;
-  background: #fff4f4;
+  border-color: #b71c1c;
+  background: #e53935;
 }
 
 .toast-card.warning {
-  border-color: #f6dcab;
-  background: #fffaf1;
+  border-color: #e65100;
+  background: #ff8f00;
 }
 
 .toast-card.info {
-  border-color: #b7d7f8;
-  background: #f3f9ff;
+  border-color: #1565c0;
+  background: #1e88e5;
 }
 
 .toast-header {
@@ -44,42 +44,43 @@
   width: 20px;
   height: 20px;
   font-size: 20px;
+  color: white;
 }
 
 .toast-card.success .toast-icon {
-  color: #1f8a3c;
+  color: white;
 }
 
 .toast-card.error .toast-icon {
-  color: #c53939;
+  color: white;
 }
 
 .toast-card.warning .toast-icon {
-  color: #b86b00;
+  color: white;
 }
 
 .toast-card.info .toast-icon {
-  color: #1e6fbf;
+  color: white;
 }
 
 .toast-title {
   font-weight: 700;
-  color: #0f172a;
+  color: white;
 }
 
 .toast-status {
   font-size: 11px;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .toast-message {
   margin-top: 8px;
-  color: #334155;
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.35;
 }
 
 .toast-close {
   width: 28px;
   height: 28px;
-  color: #64748b;
+  color: white;
 }

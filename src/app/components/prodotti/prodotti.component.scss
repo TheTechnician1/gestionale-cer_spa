@@ -1,0 +1,295 @@
+.prodotti-wrapper {
+  padding: 24px;
+  min-height: 100vh;
+  background-image: url('/assets/images/sfondoProdotti.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.search-bar {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(242, 185, 135, 0.95), rgba(40, 54, 180, 0.701));
+  background-size: 400% 400%;
+  animation: gradientShift 16s ease infinite;
+  padding: 28px 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(26, 35, 126, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.search-title {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 860px;
+}
+
+.search-field {
+  width: 340px;
+  margin-bottom: -1.25em;
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.search-field ::ng-deep {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: #ff6f00 !important;
+  }
+
+  input {
+    color: white !important;
+  }
+
+  .mat-mdc-floating-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .mat-icon {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  .mat-mdc-select-value,
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-placeholder,
+  .mat-mdc-select-min-line {
+    color: white !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+}
+
+.btn-cerca {
+  background-color: #ff6f00 !important;
+  color: white !important;
+  font-weight: 600;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 8px !important;
+}
+
+.btn-reset {
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  color: white !important;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 8px !important;
+}
+
+.ricerca-avanzata-link {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 12px;
+  transition: 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: #ff6f00;
+  }
+}
+
+.advanced-search-card {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 860px;
+  color: white;
+
+}
+
+.advanced-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  align-items: center; 
+  justify-content: center;
+  width: 100%;
+}
+
+.prodotti-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.prodotto-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #f0ece9;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  h3 {
+  color: #1a237e;
+}
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  img {
+    height: 180px;
+    object-fit: contain;
+    padding: 12px;
+    background-color: #f0ece9;;
+  }
+
+  .prezzo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a237e;
+  }
+
+  .disponibilita {
+    font-size: 13px;
+    color: green;
+  }
+
+  .esaurito {
+    color: red;
+  }
+
+  .categoria {
+    font-size: 12px;
+    color: grey;
+  }
+
+  .descrizione {
+    font-size: 13px;
+    color: grey;
+  }
+  
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px;
+}
+
+.custom-paginator  ::ng-deep {
+  background: linear-gradient(135deg, rgba(242, 185, 135, 0.9), rgba(71, 86, 226, 0.75));
+  border-radius: 12px;
+  margin-top: 24px;
+  padding: 4px 16px;
+  box-shadow: 0 4px 16px rgba(26, 35, 126, 0.2);
+}
+
+
+
+
+
+.advanced-search-card {
+  margin-top: 20px;
+  padding: 20px 28px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(242, 185, 135, 0.85), rgba(40, 54, 180, 0.6));
+  background-size: 400% 400%;
+  animation: gradientShift 16s ease infinite;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 860px;
+}
+
+.advanced-title {
+  display: block;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.advanced-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+}
+
+.advanced-field {
+  flex: 1;
+  min-width: 140px;
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+}
+
+.advanced-field ::ng-deep {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: #ff6f00 !important;
+  }
+
+  input {
+    color: white !important;
+  }
+
+  .mat-mdc-floating-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+}
+
+.advanced-search-card mat-card-title {
+  display: block;
+  text-align: center;
+}
+
+.advanced-form .btn-cerca {
+ margin-bottom: 8px;
+}
+
+

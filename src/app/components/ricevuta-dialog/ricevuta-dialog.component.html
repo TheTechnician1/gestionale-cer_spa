@@ -1,0 +1,18 @@
+<div class="dialog-wrapper">
+  <mat-icon class="dialog-icon success">check_circle</mat-icon>
+
+  <h2 mat-dialog-title>
+    {{ data.tipo === 'pdf' ? 'PDF scaricato!' : 'Email inviata!' }}
+  </h2>
+
+  <mat-dialog-content>
+    <p *ngIf="data.tipo === 'pdf'">La ricevuta è stata scaricata correttamente.</p>
+    <p *ngIf="data.tipo === 'email'">La ricevuta è stata inviata alla tua email.</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="continua()">
+      <mat-icon>store</mat-icon> Continua a fare shopping
+    </button>
+  </mat-dialog-actions>
+</div>

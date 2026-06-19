@@ -1,0 +1,16 @@
+
+<div *ngIf="erroreServer" class="server-error-overlay">
+  <mat-icon>cloud_off</mat-icon>
+  <h2>Server non raggiungibile</h2>
+  <p>Il server è momentaneamente offline. Riprova tra qualche minuto.</p>
+  <p>Ci scusiamo per il disagio :(</p>
+  <button mat-raised-button (click)="riprova()">Riprova</button>
+</div>
+
+<ng-container *ngIf="!erroreServer">
+  <app-header></app-header>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer></app-footer>
+</ng-container>

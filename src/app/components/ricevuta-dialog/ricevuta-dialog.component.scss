@@ -1,0 +1,33 @@
+.dialog-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  text-align: center;
+}
+
+.dialog-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+
+  &.success {
+    color: #1f8a3c;
+  }
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+mat-dialog-content p {
+  color: #334155;
+  font-size: 15px;
+}
+
+mat-dialog-actions {
+  margin-top: 16px;
+}

@@ -1,0 +1,101 @@
+.profilo-wrapper {
+  min-height: 100vh;
+  background-image: url('/assets/images/sfondo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 24px;
+}
+
+.profilo-content {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profilo-card, .saldo-card, .ordini-card {
+  padding: 16px;
+  background-color: #f1e0cc !important;
+
+  mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1a237e;
+    margin-bottom: 16px;
+  }
+}
+
+.utente-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+  }
+
+  .saldo {
+    color: #e65100;
+    font-weight: bold;
+    font-size: 18px;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.nessun-ordine {
+  color: #999;
+  text-align: center;
+  padding: 24px;
+}
+
+.ordine-item {
+  margin-bottom: 12px;
+  background-color: #ffffff !important;
+}
+
+.ordine-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .totale {
+    color: #e65100;
+    font-weight: bold;
+  }
+
+  .stato {
+    color: green;
+    font-weight: bold;
+  }
+}
+
+.back-btn {
+  background-color: #f1e0cc !important;
+  color: #1a237e !important;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.ordini-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.saldo-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

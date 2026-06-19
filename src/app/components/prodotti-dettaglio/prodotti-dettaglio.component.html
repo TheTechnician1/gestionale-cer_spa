@@ -1,0 +1,56 @@
+<div class="dettaglio-wrapper">
+  <div *ngIf="prodotto">
+
+    <button mat-stroked-button color="primary" (click)="torna()" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> Torna ai prodotti
+    </button>
+
+    <mat-card class="dettaglio-card">
+      <div class="dettaglio-content">
+        <div class="dettaglio-immagine">
+          <img [src]="prodotto.immagine" [alt]="prodotto.nomeProdotto" class="prodotto-img" />
+        </div>
+        <div class="dettaglio-info">
+          <h2>{{ prodotto.nomeProdotto }}</h2>
+          <p class="descrizione">{{ prodotto.descrizioneCompleta }}</p>
+          <p class="prezzo">{{ prodotto.prezzo }} €</p>
+          <p class="disponibilita" [class.esaurito]="disponibilitaEffettiva() === 0">
+            Disponibilità: {{ disponibilitaEffettiva() }}
+          </p>
+          <p class="categoria">
+            <mat-icon>category</mat-icon> {{ prodotto.categoria | categoria }}
+          </p>
+
+          <div class="quantita-selector">
+            <button mat-icon-button (click)="decrementa()" [disabled]="quantita <= 1">
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="quantita-valore">{{ quantita }}</span>
+            <button mat-icon-button (click)="incrementa()" [disabled]="quantita >= disponibilitaEffettiva()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <button mat-raised-button color="accent" (click)="aggiungiAlCarrello()"
+            [disabled]="disponibilitaEffettiva() === 0" class="aggiungi-btn">
+            <mat-icon>add_shopping_cart</mat-icon> Aggiungi al carrello
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="prodotti-simili" *ngIf="prodottiSimili.length > 0">
+      <h3>Potrebbe interessarti anche:</h3>
+      <div class="simili-grid">
+        <mat-card *ngFor="let p of prodottiSimili" class="simile-card" (click)="vaiADettaglio(p.idProdotto)">
+          <img mat-card-image [src]="p.immagine" [alt]="p.nomeProdotto" />
+          <mat-card-content>
+            <p class="simile-nome">{{ p.nomeProdotto }}</p>
+            <p class="simile-prezzo">{{ p.prezzo }} €</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+</div>

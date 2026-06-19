@@ -1,0 +1,79 @@
+<div class="profilo-wrapper">
+
+  <div class="profilo-content">
+    <button mat-raised-button color="primary" routerLink="/prodotti" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> Torna ai prodotti
+    </button>
+
+    <mat-card class="profilo-card" *ngIf="utente">
+      <mat-card-title>
+        <mat-icon>person</mat-icon> Il mio profilo
+      </mat-card-title>
+      <mat-card-content>
+        <div class="utente-info">
+          <p><mat-icon>badge</mat-icon> <strong>Nome:</strong> {{ utente.nome }} {{ utente.cognome }}</p>
+          <p><mat-icon>email</mat-icon> <strong>Email:</strong> {{ utente.email }}</p>
+          <p class="saldo-row">
+            <mat-icon>account_balance_wallet</mat-icon>
+            <strong>Saldo:</strong>
+            <span class="saldo">{{ showSaldo ? (utente.saldo | number:'1.2-2') + ' €' : '••••••' }}</span>
+            <button mat-icon-button type="button" (click)="showSaldo = !showSaldo">
+              <mat-icon>{{ showSaldo ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="saldo-card">
+      <mat-card-title>
+        <mat-icon>add_card</mat-icon> Ricarica saldo
+      </mat-card-title>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Importo da aggiungere</mat-label>
+          <input matInput type="number" [(ngModel)]="importoSaldo" placeholder="Es. 100" min="0" step="0.01" />
+          <span matSuffix>€</span>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="aggiungiSaldo()" class="full-width">
+          <mat-icon>add</mat-icon> Aggiungi saldo
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="ordini-card">
+      <mat-card-title>
+        <div class="ordini-header">
+          <div>
+            <mat-icon>receipt_long</mat-icon> I miei ordini
+          </div>
+          <button mat-stroked-button color="primary" (click)="toggleOrdinamento()">
+            <mat-icon>{{ ordinamento === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            {{ ordinamento === 'asc' ? 'Più vecchi' : 'Più recenti' }}
+          </button>
+        </div>
+      </mat-card-title>
+      <mat-card-content>
+        <p *ngIf="ordini.length === 0" class="nessun-ordine">Nessun ordine effettuato</p>
+        <mat-card *ngFor="let ordine of ordini" class="ordine-item">
+          <mat-card-content>
+            <div class="ordine-info">
+              <div>
+                <p><strong>Codice:</strong> {{ ordine.codiceOrdine }}</p>
+                <p><strong>Data:</strong> {{ ordine.dataOrdine }}</p>
+                <p><strong>Totale:</strong> <span class="totale">{{ ordine.totaleOrdine | number:'1.2-2' }} €</span></p>
+                <p><strong>Stato:</strong> <span class="stato">{{ ordine.stato }}</span></p>
+              </div>
+              <button mat-raised-button color="primary" (click)="downloadPdf(ordine.id)">
+                <mat-icon>picture_as_pdf</mat-icon> Scarica PDF
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
