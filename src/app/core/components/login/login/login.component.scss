@@ -1,11 +1,82 @@
-.error {
-  color: red;
-  font-size: small;
-  margin-top: -30px;
+.login-page {
+  min-height:calc(100vh - 64px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#f5f7fb;
 }
 
-.campo-obbligatorio {
-  font-size: 10px;
-  color: grey;
-  font-style: italic;
+.login-card {
+  width:380px;
+  background:white;
+  padding:35px;
+  border-radius:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  text-align:center;
+}
+
+.brand {
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.my {
+  color:#061b33;
+}
+
+.store {
+  color:#ff9800;
+}
+
+.icon mat-icon {
+  font-size:65px;
+  width:65px;
+  height:65px;
+  color:#061b33;
+}
+
+h2 {
+  margin-bottom:25px;
+}
+
+.full {
+  width:100%;
+  margin-bottom:12px;
+}
+
+.options {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.options a,
+.register-link a {
+  color:#1515d3;
+  cursor:pointer;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.login-btn {
+  width:100%;
+  height:45px;
+  background:#ff9800 !important;
+  color:white !important;
+  font-size:16px;
+  font-weight:600;
+  border-radius:10px;
+}
+
+.register-link {
+  margin-top:25px;
+  color:#666;
+}
+
+.error {
+  color:#d32f2f;
+  margin-bottom:10px;
 }

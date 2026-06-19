@@ -1,0 +1,37 @@
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.register-card {
+  width: 600px;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register-btn {
+  width: 100%;
+  height: 45px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+/* FORZA ANGULAR MATERIAL */
+.register-btn.mat-mdc-raised-button {
+  background-color: #ff9800 !important;
+  color: white !important;
+}
+
+.register-btn.mat-mdc-raised-button:hover {
+  background-color: #e68900 !important;
+}

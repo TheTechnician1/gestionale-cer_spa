@@ -14,18 +14,20 @@ import { FullLayoutComponent } from "./core/layout/full-layout.component";
 import { HeaderComponent } from "./core/layout/header/header.component";
 import { FooterComponent } from "./core/layout/footer/footer.component";
 import { SidebarComponent } from "./core/layout/sidebar/sidebar.component";
-import { UtenteComponent } from "./core/components/utente/utente.component";
 import { LoginComponent } from "./core/components/login/login/login.component";
-import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { RegistrazioneUtenteComponent } from "./core/components/login/registrazione-utente/registrazione-utente.component";
-import { NotAuthorizedComponent } from "./core/components/not-authorized/not-authorized.component";
+import { RegistrazioneComponent } from "./core/components/login/registrazione/registrazione.component";
+import { MatButtonModule } from "@angular/material/button";
+import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { CdkOverlayOrigin } from "@angular/cdk/overlay";
-import { A11yModule } from "@angular/cdk/a11y";
+import { A11yModule } from "@angular/cdk/a11y"; 
+import { ListaProdottiComponent } from './core/components/lista-prodotti/lista-prodotti.component';
+import { DettaglioProdottiComponent } from './core/components/dettaglio-prodotti/dettaglio-prodotti.component';
+import { CartComponent } from './core/components/cart/cart.component';
 
 @NgModule({
-  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, UtenteComponent, RegistrazioneUtenteComponent, LoginComponent, DashboardComponent, NotAuthorizedComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule],
+  declarations: [AppComponent, FullLayoutComponent, HeaderComponent, FooterComponent, SidebarComponent, RegistrazioneComponent, LoginComponent, ListaProdottiComponent, DettaglioProdottiComponent, CartComponent],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, SharedModule, TranslateRootModule, CdkOverlayOrigin, A11yModule, MatButtonModule, MatToolbarModule],
   providers: [
     { provide: ErrorHandler, useClass: GlobalErrorHandlerService },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

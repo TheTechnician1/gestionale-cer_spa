@@ -1,0 +1,43 @@
+<div class="page">
+  <div class="filters">
+    <h3>Filtri</h3>
+    <label>Categoria</label>
+    <select>
+      <option value="">Tutte</option>
+      <option>INFORMATICA</option>
+      <option>ELETTRONICA</option>
+      <option>TELEFONIA</option>
+    </select>
+    <label>Prezzo min</label>
+    <input type="number">
+    <label>Prezzo max</label>
+    <input type="number">
+  </div>
+  <div class="content">
+    <div class="top-bar">
+      <h2>Catalogo Prodotti</h2>
+      <!-- <input type="text" placeholder="Cerca prodotti..."> -->
+    </div>
+    <div class="grid">
+      <div class="card" *ngFor="let product of products">
+        <img [src]="'assets/products/' + product.immagine">
+        <h4>{{ product.nomeProdotto }}</h4>
+        <p class="desc">
+          {{ product.descrizioneBreve }}
+        </p>
+        <p class="price">
+          € {{ product.prezzo }}
+        </p>
+        <p class="stock">
+          Disponibili: {{ product.quantitaDisponibile }}
+        </p>
+        <button [routerLink]="['/products', product.idProdotto]">
+          Dettagli
+        </button>
+        <button (click)="addToCart(product)" [disabled]="product.quantitaDisponibile === 0">
+          Aggiungi
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

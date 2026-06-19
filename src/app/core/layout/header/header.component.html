@@ -1,19 +1,32 @@
-<mat-toolbar class="app-toolbar">
-  <button mat-icon-button (click)="toggleSidebar.emit()" aria-label="Apri/chiudi menu">
-    <mat-icon>menu</mat-icon>
-  </button>
-
-  <span class="title">CER Gestionale</span>
-
-  <span class="spacer"></span>
-
-  <button mat-icon-button aria-label="Profilo" [matMenuTriggerFor]="menu">
-    <mat-icon>account_circle</mat-icon>
-    <mat-menu #menu="matMenu">
-      <button *ngIf="!(isLoggedIn$ | async)" mat-menu-item routerLink="login">Login</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="/dashboard">Home</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item routerLink="profilo/:id">Profilo</button>
-      <button *ngIf="isLoggedIn$ | async" mat-menu-item (click)="logout()" routerLink="/login">Logout</button>
-    </mat-menu>
-  </button>
-</mat-toolbar>
+<header class="topbar">
+  <div class="logo" routerLink="products">
+    <span class="my">My</span><span class="store">Store</span>
+  </div>
+  <div class="search-box">
+    <input type="text" placeholder="Cerca prodotti..." />
+    <button>
+      <mat-icon>search</mat-icon>
+    </button>
+  </div>
+  <div class="actions">
+    <ng-container *ngIf="user; else login">
+      <div class="user">
+        <mat-icon>person</mat-icon>
+        {{ userName }}
+      </div>
+      <button routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        Carrello ({{ cartCount }})
+      </button>
+      <button (click)="logout()">
+        Logout
+      </button>
+    </ng-container>
+    <ng-template #login>
+      <button routerLink="/login">
+        <mat-icon>person</mat-icon>
+        Accedi
+      </button>
+    </ng-template>
+  </div>
+</header>

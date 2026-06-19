@@ -1,0 +1,39 @@
+<div class="cart-page" *ngIf="cart">
+  <div class="cart-container">
+    <div class="cart-left">
+      <h2>Il tuo carrello</h2>
+      <div class="cart-item" *ngFor="let item of cart.items">
+        <div class="img">
+          <img [src]="item.imageUrl" />
+        </div>
+        <div class="info">
+          <div class="name">{{ item.productName }}</div>
+          <div class="price">€ {{ item.prezzoUnitario }}</div>
+        </div>
+        <div class="qty">
+          <button (click)="decrease(item)">-</button>
+          <span>{{ item.quantita }}</span>
+          <button (click)="increase(item)">+</button>
+        </div>
+        <div class="total">
+          € {{ item.totaleRiga }}
+        </div>
+        <button class="delete" (click)="remove(item)">🗑</button>
+      </div>
+    </div>
+    <div class="cart-right">
+      <h3>Riepilogo ordine</h3>
+      <div class="row">
+        <span>Subtotale</span>
+        <span>€ {{ cart.totalPrice }}</span>
+      </div>
+      <div class="row">
+        <span>Totale</span>
+        <span>€ {{ cart.totalPrice }}</span>
+      </div>
+      <button class="checkout">
+        Procedi al checkout
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
-import { UtenteService } from "../services/utente.service";
+import { AuthService } from "../services/auth.service";
 import { Observable } from "rxjs";
 import { ToastService } from "../services/toast.service";
 
@@ -10,7 +10,7 @@ import { ToastService } from "../services/toast.service";
 })
 export class FullLayoutComponent implements OnInit, OnDestroy {
   constructor(
-    private authService: UtenteService,
+    private authService: AuthService,
     private toastService: ToastService,
     private viewContainerRef: ViewContainerRef,
   ) {

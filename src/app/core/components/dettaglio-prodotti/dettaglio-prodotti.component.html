@@ -1,0 +1,27 @@
+<div class="product-detail" *ngIf="product">
+  <!-- COLONNA SINISTRA -->
+  <div class="left">
+    <img class="main-img" [src]="'assets/products/' + product.immagine">
+    <div class="gallery">
+      <img [src]="product.immagine">
+      <img [src]="product.immagine">
+      <img [src]="product.immagine">
+    </div>
+  </div>
+  <!-- COLONNA DESTRA -->
+  <div class="right">
+    <p class="category">{{ product.categoria }}</p>
+    <h2>{{ product.nomeProdotto }}</h2>
+    <h3 class="price">€ {{ product.prezzo }}</h3>
+    <p class="desc">{{ product.descrizioneCompleta }}</p>
+    <p class="stock">
+      Disponibili: {{ product.quantitaDisponibile }}
+    </p>
+    <button (click)="addToCart()" [disabled]="product.quantitaDisponibile === 0">
+      Aggiungi al carrello
+    </button>
+  </div>
+</div>
+<div *ngIf="loading">
+  Caricamento prodotto...
+</div>

@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { UtenteService } from "src/app/core/services/utente.service";
+import { AuthService } from "src/app/core/services/auth.service";
 import { ToastService } from "src/app/core/services/toast.service";
 
 @Component({
@@ -9,67 +9,48 @@ import { ToastService } from "src/app/core/services/toast.service";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
   loginForm!: FormGroup;
   loginError = false;
+  hide = true;
+
   readonly passwordErrorMessages: Record<string, string>[] = [{ pattern: "Password non valida per formato o lunghezza." }];
+
   constructor(
     private fb: FormBuilder,
-    private authService: UtenteService,
+    private authService: AuthService,
     private route: Router,
     private toastService: ToastService,
   ) {}
 
-  hide = true;
-
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      utente_email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.pattern("^[a-zA-Z0-9\d#@èé€çòà°ù§ì£$^!(/>{}'|/`~<)-_%*?&]{8,64}$")]],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", [Validators.required, Validators.minLength(6)]],
       rememberMe: [false],
     });
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const payload = this.loginForm.value;
-      this.doLogin(payload);
-
-      console.log(this.loginForm.value);
+    if (this.loginForm.invalid) {
+      this .loginForm.markAllAsTouched();
+      this.toastService.warning("Controlla email e password","Form non valido");
       return;
     }
-
-    this.loginForm.markAllAsTouched();
-    this.toastService.warning("Controlla email e password prima di continuare.", "Form non valido");
-  }
-
-  guestIn() {
-    const payload = {
-      utente_email: "guest@guest.guest",
-      password: "guest",
-    };
-
-    this.doLogin(payload);
-  }
-
-  private doLogin(payload: any) {
-    this.authService.login(payload).subscribe({
-      next: (user) => {
-        this.authService.isAuthenticated(user);
-
-        if (user) {
-          console.log("Login riuscito");
-          this.loginError = false;
-          this.route.navigate(["/dashboard"]);
-        } else {
-          console.log("Credenziali errate");
-          this.loginError = true;
-        }
+      
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => {
+        this.loginError = false;
+        this.route.navigate(["/products"]);
       },
       error: (err) => {
-        console.error("Errore login:", err);
+        console.log("ERRORE LOGIN");
+        console.log(err);
+
         this.loginError = true;
-      },
+        this.toastService.warning("Credenziali errate", "Login fallito");
+      }
     });
   }
 }
