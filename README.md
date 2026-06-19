@@ -1,8 +1,43 @@
-# Frontend E-commerce
+# E-commerce Frontend
 
-Frontend Angular per un'applicazione e-commerce full stack. La SPA gestisce catalogo prodotti, offerte, ricerca, autenticazione, carrello guest/utente, checkout, pagamento simulato, ordini e ricevute.
+Frontend Angular per un'applicazione e-commerce full stack. La SPA gestisce autenticazione, catalogo prodotti, offerte, ricerca, carrello guest/utente, checkout, pagamento simulato, ordini, ricevute PDF e invio ricevuta via email.
 
 Il backend atteso espone API REST su `http://localhost:8080`, configurato in [app-settings.ts](src/app/core/config/app-settings.ts).
+
+## Indice
+
+- [E-commerce Frontend](#e-commerce-frontend)
+  - [Indice](#indice)
+  - [Stack](#stack)
+  - [Funzionalità principali](#funzionalità-principali)
+    - [Autenticazione e profilo](#autenticazione-e-profilo)
+    - [Catalogo prodotti](#catalogo-prodotti)
+    - [Ricerca e offerte](#ricerca-e-offerte)
+    - [Carrello e ordini](#carrello-e-ordini)
+  - [Prerequisiti](#prerequisiti)
+  - [Configurazione API](#configurazione-api)
+  - [Installazione e avvio](#installazione-e-avvio)
+  - [Script disponibili](#script-disponibili)
+  - [Build](#build)
+  - [Architettura frontend](#architettura-frontend)
+    - [Responsabilità principali](#responsabilità-principali)
+  - [Rotte principali](#rotte-principali)
+  - [Servizi Angular](#servizi-angular)
+  - [Gestione sessione](#gestione-sessione)
+  - [Gestione carrello](#gestione-carrello)
+    - [Guest](#guest)
+    - [Utente loggato](#utente-loggato)
+  - [Checkout e pagamento](#checkout-e-pagamento)
+  - [Endpoint backend utilizzati](#endpoint-backend-utilizzati)
+    - [Auth](#auth)
+    - [Products](#products)
+    - [Cart](#cart)
+    - [Orders](#orders)
+    - [Receipt](#receipt)
+  - [Gestione errori](#gestione-errori)
+  - [Note di sviluppo](#note-di-sviluppo)
+  - [Note di allineamento con il backend](#note-di-allineamento-con-il-backend)
+  - [Stato](#stato)
 
 ## Stack
 
@@ -12,140 +47,143 @@ Il backend atteso espone API REST su `http://localhost:8080`, configurato in [ap
 - Reactive Forms
 - Angular Material
 - RxJS
-- SCSS
 - HttpClient
-- localStorage/sessionStorage
+- HTML
+- SCSS
+- localStorage / sessionStorage
 
-## Funzionalita
+## Funzionalità principali
 
-- Registrazione utente con validazioni form.
+### Autenticazione e profilo
+
+- Registrazione utente con validazioni lato frontend.
 - Login con opzione `Ricordami`.
-- Sessione guest automatica.
-- Catalogo prodotti nella dashboard.
-- Dettaglio prodotto con selezione quantita.
+- Persistenza sessione tramite `localStorage` o `sessionStorage`.
+- Reset password tramite email.
+- Visualizzazione profilo utente.
+- Modifica dati profilo.
+- Aggiornamento saldo utente.
+- Protezione rotte tramite `AuthGuard`.
+
+### Catalogo prodotti
+
+- Dashboard prodotti.
+- Visualizzazione immagine, nome, descrizione breve, prezzo, categoria e disponibilità.
+- Pagina dettaglio prodotto.
+- Selezione quantità dal dettaglio prodotto.
+- Blocco aggiunta al carrello quando la quantità richiesta supera la disponibilità gestita lato frontend.
+
+### Ricerca e offerte
+
 - Ricerca semplice dall'header.
-- Ricerca avanzata per categoria, prezzo minimo/massimo e quantita minima.
-- Pagina offerte con prezzo scontato, prezzo originale barrato, percentuale sconto e risparmio.
+- Ricerca avanzata per:
+  - categoria;
+  - prezzo minimo;
+  - prezzo massimo;
+  - quantità minima disponibile.
+- Pagina offerte con:
+  - prezzo originale barrato;
+  - prezzo scontato;
+  - percentuale sconto;
+  - risparmio calcolato.
+
+### Carrello e ordini
+
 - Carrello guest persistito in `localStorage`.
 - Carrello utente sincronizzato con backend.
 - Merge del carrello guest dopo login.
-- Checkout con indirizzo spedizione e pagamento simulato tramite saldo.
-- Aggiornamento saldo e svuotamento carrello dopo pagamento.
-- Conferma ordine con codice ordine e totale.
+- Incremento, decremento e rimozione prodotti.
+- Calcolo totale carrello e totale righe.
+- Checkout con dati spedizione e metodo pagamento.
+- Pagamento simulato tramite saldo utente.
+- Conferma ordine.
 - Lista ordini utente.
-- Dettaglio ordine in dialog.
+- Dettaglio ordine in dialog/pagina dedicata.
 - Download ricevuta PDF.
 - Invio ricevuta via email.
-- Interceptor HTTP per toast, errori e redirect su 401/403.
 
-## Sessione e "Ricordami"
+## Prerequisiti
 
-Il login supporta due modalita:
+- Node.js compatibile con Angular 15.
+- npm.
+- Angular CLI installato globalmente o eseguito tramite `npx`.
+- Backend Spring Boot avviato su `http://localhost:8080`.
+- Browser moderno.
 
-- `Ricordami` selezionato: l'utente viene salvato in `localStorage` e resta loggato anche dopo la chiusura del browser.
-- `Ricordami` non selezionato: l'utente viene salvato in `sessionStorage` e torna Guest alla chiusura della sessione browser.
+## Configurazione API
 
-Il logout pulisce entrambi gli storage.
+La configurazione principale è in:
 
-## Carrello
+```text
+src/app/core/config/app-settings.ts
+```
 
-Il carrello usa due flussi:
+Esempio:
 
-- Guest: gli item vengono salvati in `localStorage` con chiave `guest_cart`.
-- Utente loggato: gli item vengono gestiti tramite API backend.
+```ts
+export const APP_SETTINGS = {
+  apiBaseUrl: 'http://localhost:8080',
+  i18nBasePath: '/assets/i18n',
+};
+```
 
-Il carrello mantiene uno stato locale reattivo tramite `BehaviorSubject`, usato anche dall'header per aggiornare il contatore.
+Se il backend usa host o porta diversi, modificare `apiBaseUrl`.
 
-Per le offerte, il frontend conserva anche:
+## Installazione e avvio
 
-- `prezzoOriginale`
-- `prezzoScontato`
-- `sconto`
-- `totaleRiga`
+Installare le dipendenze:
 
-Questi dati permettono di mostrare prezzo barrato, sconto e risparmio nel carrello e nel checkout.
+```bash
+npm install
+```
 
-## Checkout e pagamento
+Avviare il frontend in sviluppo:
 
-Il checkout invia al backend:
+```bash
+npm start
+```
 
-- dati spedizione;
-- metodo pagamento;
-- prodotti;
-- totale prodotti;
-- costo spedizione;
-- totale ordine.
+oppure:
 
-Gli importi monetari vengono arrotondati a massimo 2 decimali prima dell'invio, per rispettare la validazione backend.
+```bash
+ng serve
+```
 
-Dopo pagamento riuscito:
+Applicazione disponibile su:
 
-- il saldo utente locale viene aggiornato;
-- il carrello locale viene svuotato;
-- l'utente viene portato alla pagina di conferma ordine.
+```text
+http://localhost:4200
+```
 
-## Rotte principali
+## Script disponibili
 
-| Rotta | Descrizione |
+| Comando | Descrizione |
 | --- | --- |
-| `/` | Dashboard prodotti |
-| `/login` | Login |
-| `/registrazione` | Registrazione |
-| `/reset-password` | Reset password |
-| `/profilo/:id` | Profilo utente |
-| `/modifica-profilo/:id` | Modifica profilo |
-| `/prodotto/:id` | Dettaglio prodotto |
-| `/carrello/:id` | Carrello |
-| `/offerte` | Offerte |
-| `/ricerca-avanzata` | Ricerca avanzata |
-| `/checkout` | Checkout |
-| `/payment` | Pagamento simulato |
-| `/ordine-confermato` | Conferma ordine |
-| `/ricevuta-ordine` | Ricevuta ordine |
-| `/ordini` | Lista ordini |
-| `/ordini/:id` | Dettaglio ordine |
-| `/not-authorized` | Accesso non autorizzato |
+| `npm start` | Avvia Angular in modalità sviluppo |
+| `ng serve` | Avvia il server Angular CLI |
+| `npm run build` | Genera la build di produzione |
+| `npm test` | Esegue i test configurati |
+| `npm run lint` | Esegue il lint, se configurato nel progetto |
 
-Le rotte profilo, checkout, pagamento, ordini e ricevuta sono protette da `AuthGuard`.
+Formattazione consigliata:
 
-## Servizi principali
+```bash
+npx prettier --config prettier.config.json --write "{*,src/**/*}.{ts,html,js,scss,css,json,md,yaml,yml}"
+```
 
-| Servizio | Responsabilita |
-| --- | --- |
-| `ApiService` | Wrapper HTTP, URL base, params, response type JSON/text/blob |
-| `UtenteService` | Login, logout, registrazione, sessione, saldo |
-| `ProductService` | Prodotti, dettaglio, ricerca, ricerca avanzata |
-| `CartService` | Stato carrello, guest cart, merge guest, CRUD carrello, offerte |
-| `OrderService` | Checkout, pagamento, completamento ordine, ordini, ricevute |
-| `ToastService` | Feedback utente tramite snackbar custom |
+## Build
 
-## Endpoint backend usati
+```bash
+npm run build
+```
 
-| Area | Metodo | Endpoint |
-| --- | --- | --- |
-| Auth | `POST` | `/api/auth/login` |
-| Auth | `POST` | `/api/auth/register` |
-| Auth | `POST` | `/api/auth/edit/{id}` |
-| Auth | `POST` | `/api/auth/edit/{id}/balance` |
-| Auth | `GET` | `/api/auth/reset-password/request/{email}` |
-| Auth | `POST` | `/api/auth/reset-password` |
-| Products | `GET` | `/api/products/` |
-| Products | `GET` | `/api/products/{id}` |
-| Products | `GET` | `/api/products/search/{term}` |
-| Products | `GET` | `/api/products/advanced-search` |
-| Cart | `GET` | `/api/users/{userId}/cart` |
-| Cart | `POST` | `/api/users/{userId}/cart/items` |
-| Cart | `PUT` | `/api/users/{userId}/cart/items/{cartItemId}` |
-| Cart | `DELETE` | `/api/users/{userId}/cart/items/{cartItemId}` |
-| Orders | `GET` | `/api/users/{userId}/orders` |
-| Orders | `GET` | `/api/orders/{orderId}` |
-| Orders | `POST` | `/api/users/{userId}/orders/checkout` |
-| Orders | `POST` | `/api/users/{userId}/orders/payment/{orderId}` |
-| Orders | `POST` | `/api/users/{userId}/orders/completed/{orderId}` |
-| Receipt | `GET` | `/api/orders/{orderId}/receipt/pdf` |
-| Receipt | `POST` | `/api/orders/{orderId}/receipt/email` |
+Gli artefatti vengono generati nella cartella `dist/`.
 
-## Struttura progetto
+Se nel progetto compaiono ancora nomi come `gestionale-cer_spa`, è consigliato rinominare il progetto Angular in `ecommerce-frontend` dentro `angular.json` e aggiornare i riferimenti nel README.
+
+## Architettura frontend
+
+Struttura indicativa:
 
 ```text
 src/
@@ -167,78 +205,209 @@ src/
   assets/
 ```
 
-## Configurazione API
+### Responsabilità principali
 
-La configurazione principale e in:
+| Area | Responsabilità |
+| --- | --- |
+| `core/components` | Componenti principali dell'applicazione |
+| `core/layout` | Header, navbar, layout generale |
+| `core/services` | Comunicazione HTTP e gestione stato |
+| `core/interfaces` | Modelli TypeScript usati dal frontend |
+| `core/guard` | Protezione delle rotte private |
+| `core/interceptor` | Gestione globale errori HTTP, toast e redirect |
+| `shared` | Componenti e moduli riutilizzabili |
+| `assets` | Immagini, traduzioni e risorse statiche |
+
+## Rotte principali
+
+| Rotta | Accesso | Descrizione |
+| --- | --- | --- |
+| `/` | Pubblico/utente | Dashboard prodotti |
+| `/login` | Pubblico | Login |
+| `/registrazione` | Pubblico | Registrazione |
+| `/reset-password` | Pubblico | Reset password |
+| `/profilo/:id` | Protetta | Profilo utente |
+| `/modifica-profilo/:id` | Protetta | Modifica profilo |
+| `/prodotto/:id` | Pubblico/utente | Dettaglio prodotto |
+| `/carrello/:id` | Utente/guest gestito lato FE | Carrello |
+| `/offerte` | Pubblico/utente | Prodotti in offerta |
+| `/ricerca-avanzata` | Pubblico/utente | Ricerca avanzata |
+| `/checkout` | Protetta | Checkout |
+| `/payment` | Protetta | Pagamento simulato |
+| `/ordine-confermato` | Protetta | Conferma ordine |
+| `/ricevuta-ordine` | Protetta | Ricevuta ordine |
+| `/ordini` | Protetta | Lista ordini |
+| `/ordini/:id` | Protetta | Dettaglio ordine |
+| `/not-authorized` | Pubblico | Accesso non autorizzato |
+
+## Servizi Angular
+
+| Servizio | Responsabilità |
+| --- | --- |
+| `ApiService` | Wrapper HTTP, base URL, params, response type `json`, `text` e `blob` |
+| `UtenteService` | Login, logout, registrazione, reset password, profilo, saldo e sessione |
+| `ProductService` | Catalogo prodotti, dettaglio prodotto, ricerca semplice e avanzata |
+| `CartService` | Stato carrello, guest cart, merge guest, CRUD carrello utente |
+| `OrderService` | Checkout, pagamento, completamento ordine, ordini, PDF e email ricevuta |
+| `ToastService` | Feedback utente tramite snackbar/toast custom |
+
+## Gestione sessione
+
+Il login supporta due modalità:
+
+- `Ricordami` selezionato: dati utente salvati in `localStorage`.
+- `Ricordami` non selezionato: dati utente salvati in `sessionStorage`.
+
+Il logout deve pulire entrambi gli storage e riportare lo stato utente a guest.
+
+> Nota sicurezza: il backend attuale non usa JWT. La sessione è quindi gestita lato frontend tramite storage locale. Per un ambiente reale servirebbe un sistema di autenticazione più robusto.
+
+## Gestione carrello
+
+Il carrello usa due flussi:
+
+### Guest
+
+- Persistenza locale tramite chiave `guest_cart` in `localStorage`.
+- Possibilità di aggiungere prodotti senza login.
+- Merge verso il carrello backend dopo login.
+
+### Utente loggato
+
+- Persistenza su database tramite API backend.
+- Aggiornamento reattivo dello stato tramite `BehaviorSubject`.
+- Header aggiornato tramite stato carrello condiviso.
+
+Il frontend conserva anche informazioni utili alla visualizzazione delle offerte:
+
+- `prezzoOriginale`;
+- `prezzoScontato`;
+- `sconto`;
+- `totaleRiga`.
+
+## Checkout e pagamento
+
+Il checkout invia al backend:
+
+- dati di spedizione;
+- metodo pagamento;
+- prodotti;
+- totale prodotti;
+- costo spedizione;
+- totale ordine.
+
+Gli importi monetari vengono arrotondati a massimo 2 decimali prima dell'invio, per rispettare le validazioni backend.
+
+Flusso previsto:
 
 ```text
-src/app/core/config/app-settings.ts
+Carrello -> Checkout -> Creazione ordine -> Pagamento -> Conferma -> Ricevuta
 ```
 
-Valore attuale:
+Dopo pagamento riuscito:
 
-```ts
-export const APP_SETTINGS = {
-  apiBaseUrl: "http://localhost:8080",
-  i18nBasePath: "/assets/i18n",
-};
-```
+- il saldo utente locale viene aggiornato;
+- il carrello locale viene svuotato;
+- l'utente viene reindirizzato alla conferma ordine;
+- sono disponibili download PDF e invio email della ricevuta.
 
-Se il backend gira su host o porta diversa, aggiornare `apiBaseUrl`.
+## Endpoint backend utilizzati
 
-## Installazione
-
-```bash
-npm install
-```
-
-## Avvio sviluppo
-
-```bash
-npm start
-```
-
-oppure:
-
-```bash
-ng serve
-```
-
-Aprire:
+Base URL:
 
 ```text
-http://localhost:4200
+http://localhost:8080
 ```
 
-## Build
+### Auth
 
-```bash
-npm run build
-```
+| Metodo | Endpoint | Descrizione |
+| --- | --- | --- |
+| `POST` | `/api/auth/login` | Login utente |
+| `POST` | `/api/auth/register` | Registrazione utente |
+| `POST` | `/api/auth/edit/{id}` | Modifica utente |
+| `POST` | `/api/auth/edit/{id}/balance?balance={amount}` | Aggiunta saldo |
+| `GET` | `/api/auth/reset-password/request/{email}` | Richiesta reset password |
+| `POST` | `/api/auth/reset-password` | Reset password |
 
-Gli artefatti vengono generati in:
+### Products
+
+| Metodo | Endpoint | Descrizione |
+| --- | --- | --- |
+| `GET` | `/api/products/` | Lista prodotti |
+| `GET` | `/api/products/{id}` | Dettaglio prodotto |
+| `GET` | `/api/products/search/{term}` | Ricerca semplice per nome |
+| `GET` | `/api/products/advanced-search` | Ricerca avanzata |
+
+Parametri ricerca avanzata:
 
 ```text
-dist/gestionale-cer_spa
+category
+minPrice
+maxPrice
+minQuantity
 ```
 
-## Test
+### Cart
 
-```bash
-npm test
+| Metodo | Endpoint | Descrizione |
+| --- | --- | --- |
+| `GET` | `/api/users/{userId}/cart` | Recupera carrello utente |
+| `POST` | `/api/users/{userId}/cart/items` | Aggiunge prodotto al carrello |
+| `PUT` | `/api/users/{userId}/cart/items/{cartItemId}` | Aggiorna quantità item |
+| `DELETE` | `/api/users/{userId}/cart/items/{cartItemId}` | Rimuove item |
+
+Payload add/update item:
+
+```json
+{
+  "productId": 1,
+  "quantity": 2
+}
 ```
 
-## Lint
+### Orders
 
-```bash
-npm run lint
+| Metodo | Endpoint | Descrizione |
+| --- | --- | --- |
+| `GET` | `/api/users/{userId}/orders` | Lista ordini utente |
+| `GET` | `/api/orders/{orderId}` | Dettaglio ordine |
+| `POST` | `/api/users/{userId}/orders/checkout` | Crea ordine in stato `CREATO` |
+| `POST` | `/api/users/{userId}/orders/payment/{orderId}` | Paga ordine e passa a `PAGATO` |
+| `POST` | `/api/users/{userId}/orders/completed/{orderId}` | Completa ordine e passa a `COMPLETATO` |
+
+### Receipt
+
+| Metodo | Endpoint | Response type | Descrizione |
+| --- | --- | --- | --- |
+| `GET` | `/api/orders/{orderId}/receipt/pdf` | `blob` | Download ricevuta PDF |
+| `POST` | `/api/orders/{orderId}/receipt/email` | `text` | Invio ricevuta via email |
+
+## Gestione errori
+
+Gli errori HTTP vengono intercettati globalmente tramite interceptor e mostrati all'utente tramite toast/snackbar.
+
+Il backend può restituire due formati principali:
+
+Errore applicativo:
+
+```json
+{
+  "error": "Saldo insufficiente",
+  "status": "403 FORBIDDEN"
+}
 ```
 
-## Formattazione
+Errore di validazione:
 
-```bash
-npx prettier --config prettier.config.json --write "{*,src/**/*}.{ts,html,js,scss,css,json,md,yaml,yml}"
+```json
+{
+  "email": "Email non valida, deve contenere la @",
+  "password": "La password deve contenere almeno una maiuscola, una minuscola, un numero e un carattere speciale"
+}
 ```
+
+Il frontend dovrebbe quindi gestire sia `error.error` sia mappe campo/messaggio.
 
 ## Note di sviluppo
 
@@ -249,21 +418,35 @@ npx prettier --config prettier.config.json --write "{*,src/**/*}.{ts,html,js,scs
 - Il carrello guest resta locale finche l'utente non effettua login.
 - Alla login, se esiste un carrello guest, viene fuso nel carrello utente.
 
+## Note di allineamento con il backend
+
+- Il backend reale usa `/api/products/search/{term}`, non `/api/products/search?name={name}`.
+- Il login restituisce una response wrappata in `ApiResponse<T>` con campi `message` e `data`.
+- Il pagamento è diviso in tre step backend: `checkout`, `payment`, `completed`.
+- Il download PDF richiede `responseType: 'blob'`.
+- L'invio email ricevuta può restituire testo semplice, quindi usare `responseType: 'text'`.
+- Gli importi devono avere massimo 2 decimali.
+
 ## Stato
 
-- [x] Registrazione
+- [x] Registrazione utente
 - [x] Login con ricordami
+- [x] Reset password
+- [x] Profilo utente
+- [x] Modifica profilo
 - [x] Catalogo prodotti
 - [x] Dettaglio prodotto
 - [x] Offerte con sconto
+- [x] Ricerca semplice
 - [x] Ricerca avanzata
 - [x] Carrello guest
 - [x] Carrello utente
+- [x] Merge carrello guest dopo login
 - [x] Checkout
 - [x] Pagamento simulato
 - [x] Aggiornamento saldo
 - [x] Conferma ordine
 - [x] Lista ordini
 - [x] Dettaglio ordine
-- [x] Download PDF
+- [x] Download ricevuta PDF
 - [x] Invio ricevuta email
