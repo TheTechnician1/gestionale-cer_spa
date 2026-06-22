@@ -83,7 +83,7 @@ export class OrderComponent {
     const value = this.filterValue?.trim().toLowerCase();
     if(value) {
       filtered = filtered.filter(o =>
-        o.codiceOrdine?.toLowerCase().includes(this.filterValue) ||
+        o.codiceOrdine?.toLowerCase().includes(value) ||
         o.date?.toString().toLowerCase().includes(value) ||
         o.total?.toString().toLowerCase().includes(value) ||
         o.status?.toLowerCase().includes(value)
@@ -99,23 +99,25 @@ export class OrderComponent {
 
   applyFilter(value: string) {
     this.filterValue = value.trim().toLowerCase();
+    this.paginator?.firstPage();
     this.applyClientFilters();
   }
 
   clearFilter() {
     this.filterValue = '';
-    this.loadOrders();
+    this.paginator?.firstPage();
+    this.applyClientFilters();
   }
 
   filterByStatus(status: string) {
     this.statusFilter = status;
+    this.paginator?.firstPage();
     this.applyClientFilters();
   }
 
   pageChanged(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadOrders();
   }
 
   refresh() {

@@ -16,8 +16,33 @@ export class ProductComponent {
   prodotto!: Prodotto | null;
   loading = true;
   quantity = 1;
+
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      this.loadProduct(id);
+    });
+  }
+
+  getAvailable(product: Prodotto): number {
+    return product.quantita! - this.cartService.getCartState(product.id!);
+  }
+
+  reloadProduct(id: number) {
+    this.loadProduct(id, false);
+  }
+
+  private loadProduct(id: number, resetQuantity = true) {
+    if (!id) {
+      this.prodotto = null;
+      this.loading = false;
+      return;
+    }
+
+    this.loading = true;
+    if (resetQuantity) {
+      this.quantity = 1;
+    }
 
     this.productService.getProductById(id).subscribe({
       next: (data) => {
@@ -28,16 +53,6 @@ export class ProductComponent {
         this.prodotto = null;
         this.loading = false;
       }
-    });
-  }
-
-  getAvailable(product: Prodotto): number {
-    return product.quantita! - this.cartService.getCartState(product.id!);
-  }
-
-  reloadProduct(id: number) {
-    this.productService.getProductById(id).subscribe(data => {
-      this.prodotto = data;
     });
   }
 
